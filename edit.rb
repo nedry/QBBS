@@ -2,21 +2,18 @@ require 'fsed'
 require "tools.rb"
 #require "raspell"
 
-
-
-
 #Consts
 
 SPELL_CHECK = true     #if you don't want raspell, comment out the require above.
 
 COLORTABLE = {
-	'%R' => "\e[;1;31;44m", '%G' => "\e[;1;32;44m",
-	'%Y' => "\e[;1;33;44m", '%B' => "\e[;1;34;44m",
-	'%M' => "\e[;1;35;44m", '%C' => "\e[;1;36;44m",
-	'%W' => "\e[;1;37;44m", '%r' => "\e[;31;44m",
-	'%g' => "\e[;32;44m", '%y' => "\e[;33;44m",
-	'%b' => "\e[;34;44m", '%m' => "\e[;35;44m",
-	'%c' => "\e[;36;44m", '%w' => "\e[;31;44m"
+  '%R' => "\e[;1;31;44m", '%G' => "\e[;1;32;44m",
+  '%Y' => "\e[;1;33;44m", '%B' => "\e[;1;34;44m",
+  '%M' => "\e[;1;35;44m", '%C' => "\e[;1;36;44m",
+  '%W' => "\e[;1;37;44m", '%r' => "\e[;31;44m",
+  '%g' => "\e[;32;44m", '%y' => "\e[;33;44m",
+  '%b' => "\e[;34;44m", '%m' => "\e[;35;44m",
+  '%c' => "\e[;36;44m", '%w' => "\e[;31;44m"
 }
 
 REDRAW = true
@@ -35,28 +32,28 @@ def tcsetattr(io, attr)
 end
 
 def writefile (filename,array)
-  
+
   lf = File.new(filename, File::WRONLY|File::TRUNC|File::CREAT, 0644)
   array.each {|x|
-                    print "."  
-                    lf.puts x}
-  lf.close
-  puts
-  end
-  
+    print "."  
+    lf.puts x}
+    lf.close
+    puts
+end
+
 def pull_apart_args(args)
-  
+
   bbs_mode = false
   filename = nil
   if !args.nil then
-   filename = args.last
-   args.each {|arg| bbs_mode = true if arg == "-L" 
-                           #put more switches here
-                           }
+    filename = args.last
+    args.each {|arg| bbs_mode = true if arg == "-L" 
+      #put more switches here
+    }
   end
   return [bbs_mode,filename]
 end
-  
+
 
 begin
   unless RUBY_PLATFORM =~ /mswin32/
@@ -89,12 +86,12 @@ begin
   puts "bbsmode: #{bbs_mode}"
   sleep(2)
   editor = Editors::FSED::Editor.new(80, 23, STDIN.to_io, $>.to_io,in_file,bbs_mode)
-  
+
   buffer = editor.run
- # if bbs_mode then
-   $lf.print "writing file...\n"
-   writefile(in_file,buffer.buff_out)
-   $lf.print "file written...\n"
+  # if bbs_mode then
+  $lf.print "writing file...\n"
+  writefile(in_file,buffer.buff_out)
+  $lf.print "file written...\n"
   #end
 ensure
   unless RUBY_PLATFORM =~ /mswin32/
