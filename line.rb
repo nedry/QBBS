@@ -9,7 +9,7 @@ class Session
  def quoter(reply_text)
   prompt = "[C]ut/Paste [L]ist [R]eturn: "
   while true
-   getinp(prompt,false) {|inp|
+   getinp(prompt) {|inp|
    happy = inp.upcase
    parameters = Parse.parse(happy)
    happy.gsub!(/[-\d]/,"")
@@ -123,7 +123,7 @@ class Session
 		list [replaceline, 0]
 		if yes("Replace this line(y/N)? ",false,false) then
 			prompt = "Enter new line or enter <CR> to abort: "
-			newline = getinp(prompt,false)
+			newline = getinp(prompt)
 			if newline == "" then print "Line NOT replaced"
 			else 
 				print "Line REPLACED."
@@ -175,12 +175,12 @@ class Session
 	 end
 	 return if editline == 0
 	 list ([editline, 0 ])
-	 oldline = getinp("Enter old string: ",false)
+	 oldline = getinp("Enter old string: ")
 	 return if oldline == ""
 	 x = @lineeditor.msgtext[editline-1].index(oldline)
 	 print "Not found!" if x == nil
 
-	 newline = getinp("Enter new string: ",false)
+	 newline = getinp("Enter new string: ")
 	 @lineeditor.msgtext[editline-1].sub!(oldline,newline) if newline != ''
 	 end
 
@@ -197,7 +197,7 @@ class Session
 
 		while true
 			prompt = "Edit Prompt: " 
-			happy = getinp(prompt,false).upcase
+			happy = getinp(prompt).upcase
 			parameters = Parse.parse(happy)
 			happy.gsub!(/[-\d]/,"")
 			case happy

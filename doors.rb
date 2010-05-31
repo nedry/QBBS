@@ -291,7 +291,7 @@ def irc_do(channel,d_type)
    existfileout('gdmenu',0,true)
    while true
    prompt = "\r\n%WWhat is your choice? [P, H, I, Q]: "
-   getinp(prompt,false) {|inp|
+   getinp(prompt) {|inp|
     happy = inp.upcase
     t = happy.to_i
     case happy
@@ -357,7 +357,7 @@ def doors(parameters)
   displaydoors  if !existfileout('doors',0,true)
   while true
    prompt = "\r\n%WGame #[1-#{d_total}] ? %Y<--^%W to quit: "
-   getinp(prompt,false) {|inp|
+   getinp(prompt) {|inp|
     happy = inp.upcase
     t = happy.to_i
     case happy

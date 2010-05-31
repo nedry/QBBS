@@ -12,7 +12,7 @@ def readmenu(args)
 	while true
 
 	prmpt = o_prompt.gsub("%p","#{ptr}")
-	inp = getinp(eval(prmpt),false)
+	inp = getinp(eval(prmpt))
 		oldptr = ptr
 		sel = inp.upcase
  

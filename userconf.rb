@@ -24,7 +24,7 @@ class Session
 	def usersettings
 		usersettingsmenu if !existfileout('usersetmnu',0,true)	
 		prompt = "%WChange Which User Setting ? %Y<--^%W to quit: " 
-		getinp(prompt,false) {|inp|
+		getinp(prompt) {|inp|
 			
 			if !inp.integer?
 			 parameters = Parse.parse(inp)
@@ -92,7 +92,7 @@ def changenick
 	here
 
 	prompt = "Enter Chat Alias (Max 15 Characters): %Y"
-	tempstr = getinp(prompt,false)
+	tempstr = getinp(prompt)
 	if tempstr == '' then
 		print "%RNot Changed%G" 
 		return
@@ -192,7 +192,7 @@ def zipfix
   while true
    if tempint.nil?  then
     prompt = CRLF+"%WArea to toggle (1-#{(a_total - 1)}) ? %Y<--^%W to quit:  " 
-    happy = getinp(prompt,false).upcase
+    happy = getinp(prompt).upcase
     tempint = happy.to_i
    end
     case happy

@@ -80,7 +80,7 @@ class Session
 	  user = fetch_user(upointer)
 		prompt = "%WMessage Area to Change (0 - #{(a_total)})<?: list, Q: Quit>: "
 		tempstr = ''
-		getinp(prompt,false) {|inp|
+		getinp(prompt) {|inp|
 			tempstr = inp.upcase
 			showareas if tempstr == "?"
 			((tempstr =~ /[0Q]/) or (tempstr.to_i > 0)) ? true : false
@@ -91,7 +91,7 @@ class Session
 		if tempstr != "Q" then
 			if (0..a_total).include?(tempint2)
 				prompt = "Enter new access level for area #{tempint2}: "
-				tempstr2 = getinp(prompt,false).upcase
+				tempstr2 = getinp(prompt).upcase
 				if tempstr2 =~ /[NIWRMC]/
 					user.areaaccess[tempint2] = tempstr2
 					print "Area #{tempint2} access changed to #{tempstr2}"
@@ -133,7 +133,7 @@ class Session
 	  user = fetch_user(upointer)
 		prompt = "%WUser Name?: "
 		if upointer != 0 then
-			user.name = getinp(prompt,false).slice(0..24)
+			user.name = getinp(prompt).slice(0..24)
 			update_user(user,upointer)
 		else 
 			print "%RYou cannot change the name of the SYSOP" 
@@ -144,7 +144,7 @@ class Session
 	  user = fetch_user(upointer)
 		prompt = "%WLocation?: "
 
-			user.citystate = getinp(prompt,false).slice(0..40)
+			user.citystate = getinp(prompt).slice(0..40)
 			update_user(user,upointer)
 
 	end
@@ -152,7 +152,7 @@ class Session
 	def changeuseremail(upointer)
 	  user = fetch_user(upointer)
 		prompt = "%WEnter new email address: "
-		address = getinp(prompt,false)
+		address = getinp(prompt)
 		user.address = address
 		update_user(user,upointer)
 		print

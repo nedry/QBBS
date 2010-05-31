@@ -95,7 +95,7 @@ end
   if game then ogfileout("gd_enter",1,true) else header end
   
 while true  
-  getinp(nil,true) {|line|
+  getinp(nil, :chat) {|line|
     puts line
    if game
     if !line.nil? then

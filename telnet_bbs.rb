@@ -135,7 +135,7 @@ def bbs(parameters)
   displaybbs if !existfileout('bbs',0,true)
   while true
    prompt = "\r\n%WBBS #[1-#{o_total}] (<CR>/quit, ?/list): "
-   getinp(prompt,false) {|inp|
+   getinp(prompt) {|inp|
     happy = inp.upcase
     t = happy.to_i
     case happy

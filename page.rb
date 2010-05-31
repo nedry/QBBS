@@ -1,13 +1,13 @@
 class Session
 	def page
-		to = getinp("%GUser to Page: ",false)
+		to = getinp("%GUser to Page: ")
 		return if to == ""
 		if @who.user(to).nil? then
 			print "%R-Sorry, that user is not online..."
 			print " "
 			return
 		end
-		message = getinp("%CMessage: ",false)
+		message = getinp("%CMessage: ")
 		return if message == "" 
 		#print to
 		@who.user(to).page ||= Array.new #yet another linux nil check

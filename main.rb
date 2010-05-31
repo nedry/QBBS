@@ -80,7 +80,7 @@ class Session
 		o_prompt = "%G-=%p%W:? for menu%G:=-"
 		area = fetch_area(@c_area)
 		prompt = o_prompt.gsub("%p","#{area.name}")
-		imp = getinp(prompt,false)
+		imp = getinp(prompt)
 			sel = imp.upcase
 			parameters = Parse.parse(sel)
 			sel.gsub!(/[-\d]/,"")
