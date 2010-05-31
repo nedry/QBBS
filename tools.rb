@@ -1,5 +1,3 @@
-require 'withindex.rb'
-
 def default(inp, d)
   (yield inp) ? inp : d
 end
