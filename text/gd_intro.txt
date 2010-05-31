@@ -1,0 +1,107 @@
+%C
+Global Destruction is game about nuclear war and other seedy,
+suspicious things nations do to each other.  When you play a game, you
+get a country and a whole bunch of nuclear bombs, as well as some
+pieces of an air force and an intelligence agency.
+
+The environment for Global Destruction takes place in the normal chat
+system (IRC).  Anything you type is sent out to everyone else at the
+same channel. 
+
+The real fun begins when someone starts a nuclear war.  You start out
+with a number of national resources (or "items" for short).  Among
+these will be warheads, missiles, jet fighters, and all kinds of
+complicated things that are just about to be explained.  In the
+meantime, remember that you can enter "%Wstock%C" at any time in
+the game to see what you have available.  (By the way, the command to
+start a war is "%Wstart%C"!)
+
+The most common items are in three groups: missiles, warheads, and
+ABM's.  ABM is short for anti-ballistic missile, or anti-missile.  More
+on ABM's later.  Each of these kind of items has a rating, which is a
+Roman numeral from I to VI after the name of the item.  The higher the
+rating, the better the item.  If you want to launch a missile, one of
+the most common activities in this game, you use a missile item.  To
+use an item (any item!), enter "use" followed by the item's name in your
+stockpile.  Let's say you have a %GTrident III%C you want to fire at the poor
+computer players.  When your turn comes around, you enter "%Wuse tri%C".
+You can enter abbreviations as short as you like when using a resource.
+Once you do that, your turn is over and the %GTrident III%C is loaded into a
+silo, ready to fire.
+
+Your turn comes back around after everyone else plays and the game
+tells you that your %GTrident III%C is standing by for a warhead.  Good,
+because you want to blow someone up!  If you forgot what warheads you
+have, you could enter "%Wstock%C" here to see what you have.  Assume for the
+example that you have a %G100 mt V%C and a %G40 mt III%C.  Now, a %G100 mt V%C is a
+good warhead: 100 megatons of nuclear power.  But, if you try to play
+it now, the game won't let you.  Why?  Because that %GTrident III%C can't
+carry such a big warhead.  Remember, it's a %GTrident III%C, not a %GTrident V%C!
+You need a missile of rating V to carry that warhead.
+
+So, you decide to use the %G40 mt III%C, since that's the biggest one you
+can put on the missile.  You type "%Wuse 40%C" and then you are prompted
+for a target.  If you didn't already have one in mind, then enter
+"%Wtable%C" at the target prompt.  Once you choose your target, enter the
+name of the victim.  Assuming you still want to pick on the computer
+players, you could enter "%WLibya%C" to bother Moammar Khadafy.
+
+The missile is in the air now - either it's going to explode over his
+country or he's going to intercept it.  This is where ABM's come in.
+When you use an ABM, it moves into a special area called your active
+defense arsenal.  Once an ABM is in this area, it can be used to
+intercept an incoming missile.  Assume you are Moammar Khadafy.  When
+you saw this player load the %GTrident III%C into a silo, you got nervous
+and used your %GPatriot III%C, which is an ABM.
+
+Now that %GTrident III%C is headed for you and you have to do something
+about it!  You can type "%Wincoming%C" to fire off ABM's at incoming
+missiles.  However, you CAN'T use an ABM this turn and use it for
+incoming missiles.  You have to have the ABM already ready when the
+missile starts coming in.  It's not all bad news, though!  Firing an
+ABM doesn't take up your turn.  You can still use another item normally.
+
+The rating of the ABM comes in to play here: ABM's will usually
+intercept a missile of the same rating.  If you use a higher rating ABM
+on a smaller missile, then it is more likely to work.  By the same token,
+a %GLiberator I%C is not very likely to bring down an incoming %GAres IV%C!
+%C
+Here's something to note: the rating of the ABM applies to the missile,
+not the warhead.  If someone were to fire a %GThunderbolt VI%C with a puny
+%G20 mt II%C warhead, your %GGuardian II%C wouldn't do very well against it.
+In that case, you might not even want to use a big ABM - the warhead is
+so small, you'd be better off saving the ABM for a %GThunderbolt VI%C with a
+bigger bomb.  Then again, if you only have 2 million population left...
+
+Speaking of population, that is the meter of how well your country is
+doing.  The more population you have, the longer you will live.  When
+your population reaches zero, your country collapses and you are out of
+the game.  Needless to say, nuclear bombs detonating over your country
+will cause you to lose population!  Enter "%Wstat%C" to see your
+population at any time.  This also shows any ready missiles.
+
+There are plenty of other types of items in the game, such as the
+persuasion devices, bombers, spies, and immigration plans.  You can get
+help for any item in your stockpile by entering "help", followed by the item's
+name.  So, if you had this mysterious %GMisinformation%C item handy, enter
+"%Whelp misinf%C" for detail on it.
+
+Before you start a game, make sure you check out a couple of the help
+files in the game.  An important one to check out is "%Whelp tables%C"
+inside the game.  You can go off to a vacant table to check out the
+files if you don't want to be disturbed by a game in progress.  Just
+entering "%Whelp%C" by itself in the game gives you a list of topics.
+Eventually, you'll probably want to read them all, but you can wait
+until the appropriate moment in the game.  Until then, make sure you
+check out "%Whelp commands%C", also.
+
+To enter the game, enter "%WP%C" at the next prompt...
+
+Before you start a game, make sure you check out a couple of the help
+files in the game.  An important one to check out is "%Whelp tables%C"
+inside the game.  You can go off to a vacant table to check out the
+files if you don't want to be disturbed by a game in progress.  Just
+entering "%Whelp%C" by itself in the game gives you a list of topics.
+Eventually, you'll probably want to read them all, but you can wait
+until the appropriate moment in the game.  Until then, make sure you
+check out "%Whelp commands%C", also.

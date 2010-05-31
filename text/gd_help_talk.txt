@@ -1,0 +1,5 @@
+%GTalking to other players is very simple.  Just type what you want to
+say at the prompt and press %Y<Enter>%G.  The message you type will be to
+everyone in the game, which is handy for intimidating multiple people
+at once.  If you wish to send a message to only one person, enter a
+%Y/MSG%G, followed by the user's name, followed by the text. 

@@ -1,0 +1,12 @@
+[?7h[255D[40m
+[0;1;34mT[32mA[36mR[31mD[35mI[33mS [37mBBS
+
+[13C[36mSYSOP COMMANDS
+
+[32m[[33mAM[32m]Area Maintenance [[33mBM[32m]Bulletin Maintenance
+[[33mKU[32m]Kill User (punt) [[33mKL[32m]Kill User Log
+[[33mUM[32m]User Maintenance
+
+Use a [33m; [32mto stack commands together (I.E., [33m%;a;q[32m)
+Some commands take parameters (I.E., [33ma2[32m)
+[0m[255D

@@ -1,0 +1,21 @@
+%RWelcome to...
+%C
+   ____   ___    ___  __     _     ___              ___        _         
+  /___ \ / __\  / __\/ _\   / |   ( _ )            / __\  ___ | |_  __ _ 
+ //  / //__\// /__\//\ \    | |   / _ \   _____   /__\// / _ \| __|/ _` |
+/ \_/ // \/  \/ \/  \_\ \   | | _| (_) | |_____| / \/  \|  __/| |_| (_| |
+\___,_\\_____/\_____/\__/   |_|(_)\___/          \_____/ \___| \__|\__,_|
+                                                                         
+
+ 
+%W  QBBS 1.8x BBS for Linux 
+%g  Copyright %G1993%g-%G2006 %gFly By Night Software - http://www.retrobbs.org
+
+
+New features in this version:  %Wo%G Fidonet Echomail and Netmail
+                               %Wo%G SMTP Email send and receive
+                               %Wo%G QWK/REP Netmail
+                               %Wo%G ZIPread (new message scan)
+
+%CComming soon...  Exportable message bases, web access, and native games.
+

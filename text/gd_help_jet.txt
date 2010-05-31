@@ -1,0 +1,18 @@
+[0;1mÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
+³ [32mJet Fighter            [37m³
+ÃÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÁÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
+³[24CA [32mJet Fighter [37mis automatically used when an enemy    ³
+³[17C [D[6C bomber invades your country.  To use the [32mJet Fighter [37m³
+³[17C[31mú[6C[37msimply play it and it will be put your defensive[5C³
+³[5C  [D[5C[0mÛ[5C[1;31mú[6C[37marsenal. From then on, the [32mJet Fighter [37mwill be [6C³
+³[5C[31mú    [0mÜÛÜ    [31mú[6C[1;37mconstantly on alert.[33C³
+³[5C[31mú    [0mÛ[1;47mÛ[0mÛ    [31mú[59C[1;37m³
+³[5C[0;31mú  [37mÜÛÛÛÛÛÜ  [31mú[6C[1;37mWhen an enemy bomber is intercepted, it is usually   ³
+³[5CŞ[0mÜÛÛÛÛÛÛÛÛÛÜ[1mİ[6Ccaught before it can drop any bombs.  There is a[5C³
+³[10C[0mÛ[30;47m³[37;40mÛ[11C[1mchance, however, that it will drop one before it is  ³
+³[8C[0mÜÛÛ[30;47mº[37;40mÛÛÜ[9C[1mshot down, and might even escape altogether![9C³
+³[10C[31m±[33m²[31m±[64C[37m³
+³[10C[31m°[33m±[31m°[64C[37m³
+³[11C[31m°[65C[37m³
+³[24CSee also: [32mBomber[37m.[36C³
+ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ

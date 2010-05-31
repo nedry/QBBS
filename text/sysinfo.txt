@@ -1,0 +1,14 @@
+%WSystem Information
+
+This system has been in operation, in one form or antoher, since 1993.
+
+For much of that time, it has run QBBS, our homebrew BBS software.
+
+It has run on systems ranging from an Apple //, to a Tandy 1000HD, to it's current home.
+
+The system used to be written in Turbo Pascal.  It is currently written in Ruby 1.8.4
+
+Currently, it runs in a Debian virtual machine, on a Mac Mini.
+
+
+

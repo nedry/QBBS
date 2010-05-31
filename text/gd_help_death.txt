@@ -1,0 +1,16 @@
+%GDeath can take many forms.  In this game, however, death has only a few
+forms.  1) Your country is hit with a nuclear warhead, causing your
+population to reach zero.  2) A wily opponent lures the last of your
+population away with persuasion and brainwashing.  3) You take too long
+when the game is waiting for your turn.  Surrendering, exiting the
+game, and hanging up are all considered shameful forms of defeat and
+are not discussed here.
+
+When you die, all of your items are thrown away and anything that is active
+is discarded, as well.  So, if you die with a %YBomber%G in the air,
+then the %YBomber%G simply disappears.  However, any missiles that you
+have played and loaded with warheads WILL continue to fly.  The kills from
+the missile won't be attributed to you, however, since you are dead.
+When a player wins the game, any missiles in the air are discarded.  So,
+if you die and there is only one other player left, that player wins and
+the game is over.

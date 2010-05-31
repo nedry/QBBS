@@ -1,0 +1,12 @@
+
+TARDIS BBS
+
+         BULLETIN MAINT. COMMANDS
+
+[A]dd an Bulletin    [K]ill (Delete)
+[N]ame               [PU]Page User
+[Q]uit               [W]ho's Online
+[/]Redisplay         [?]This Menu
+
+Use a ; to stack commands together (I.E., %;a;q)
+Some commands take parameters (I.E., a2)

@@ -1,0 +1,11 @@
+%WWelcome to... %RGlobal Destruction%W!
+%C
+If you haven't already read the introduction to the game, we suggest
+that you peruse that to get familiar with the game.  To do that, enter
+%Y"\quit"%C at the next prompt, press %Y<Enter>%C, enter "%YI%C", then press %Y<Enter>%C
+again!
+
+Remember, when playing the game, you can always type %Yhelp%C (or a "%Y?%C"
+question mark) for help!  May the best dictator win...
+
+To start a game, type %YStart%C.

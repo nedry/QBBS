@@ -1,0 +1,13 @@
+%G_%Y_%Br%Ce%Wt%Mr%Ro %GC%YO%BM%CP%WU%MT%RI%GN%YG%B %CB%WB%MS%R_%G_%Y_%B_%C_%W_%M_%R_%G_%Y_%B_%C_%W_%M_%R_%G_%Y_%B_%C_%W_%M_%R_%G_%Y_%B_%C_%W_%M_%R_%G_%Y_%B_
+
+%C     AREA MAINTENANCE COMMANDS
+
+%W[%YA%W]%Gdd an Area        %W[%YD%W]%Gefault Access
+%W[%YK%W]%Gill               %W[%YN%W]%Game
+%W[%YPU%W]%GPage User        %W[%YS%W]%Gecuire (lock)
+%W[%YV%W]%Galidate Access    %W[%YW%W]%Gho's Online
+%W[%YQ%W]%Guit               %W[%Y/%W]%GRedisplay
+%W[%Y?%W]%GThis Menu
+
+%CUse a %R; %Cto stack commands together %W(%CI.E., %R%;a;q%W)
+%CSome commands take parameters %W(%CI.E., %Ra2%W)

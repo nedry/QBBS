@@ -1,0 +1,16 @@
+%GAn ABM (anti-ballistic missile, or anti-missile for short) is a missile
+capable of shooting down another missile.  ABM's are used for your
+defense:  when an incoming missile enters your airspace, you can fire
+one of your ABM's at it and destroy it (hopefully) before the warhead
+detonates over your sensitive populace.  Before an ABM can be used, it
+must be put your active defenses, however.  To do this, simply "%Wuse%G" the
+ABM in question on your turn and it will be ready next turn.
+
+ABM's, like missiles, are rated from I to VI in Roman numerals.  An
+%CAegis VI%G ABM is the best (and rarest) ABM - it is capable of bringing
+down almost any missile.  When you fire an ABM, the two levels of the
+missiles are compared.  If your ABM has a higher rating, it is more
+likely to bring down the missile.  Likewise, if your ABM is of a lower
+rating, it is less likely.  In general, an ABM has about a 60%% chance
+of bringing down a missile of the same rating.  For more information on
+actually using ABM's, read "%Whelp turn%G".

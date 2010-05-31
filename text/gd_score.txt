@@ -1,0 +1,15 @@
+%CTitle
+ Commander Name                           %RDamage             Overkills  %GWins
+ %W---------------------------------------  ------             ---------  ----
+%CPeacekeeper
+ Richard_Nixon                            %R279 million        0          %G0
+
+%CPeacekeeper
+ Moammar_Khadafy                          %R171 million        0          %G0
+
+%CDiplomat
+ PAULNICOLAIDES                           %R13 million         0          %G0
+
+%CDiplomat
+ MARKFIRESTONE611                         %R0 million          0          %G0
+

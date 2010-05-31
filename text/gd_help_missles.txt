@@ -1,0 +1,20 @@
+%GUsing a missile to carry a warhead is the most common way to set off a
+nuclear explosion.  The warhead is mounted on the missile and the
+missile is aimed at the offending nation.  However, there are a few
+considerations to be taken.  When you wish to detonate a nuclear bomb,
+you must first ready the missile with the "%Yuse%G" command.  This moves
+the missile into a silo and prepares it for launch.  (Other players
+will see you doing this!)  The next time your turn comes around, you
+can mount a warhead on the missile.  Once the warhead is mounted, you
+will be asked for the target.  You can then enter the the country name
+of the victim.  Then the missile is on its way and will land on the
+target player's next turn.
+
+Missiles can only carry a warhead equal to or smaller than the
+missile's rating.  The rating is a Roman numeral after the missile's
+name.  For example, a %YAres IV%G can carry a %Y70 mt IV%G warhead, but it
+cannot carry a %Y150 mt VI%G.  Only the extremely powerful %YThunderbolt VI%G
+can carry that warhead.  But, the %YAres IV%G can carry a %Y40 mt III%G
+warhead, for example.  Generally, you want to put the biggest possible
+warhead on a missile, but there are times when you might not want to,
+such as testing the enemy for ABM's.

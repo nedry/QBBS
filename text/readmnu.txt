@@ -1,0 +1,15 @@
+ %C
+   ____  ___    ___  __       __                _                           
+  /___ \/ __\  / __\/ _\     /__\ ___  __ _  __| |   /\/\   ___ _ __  _   _ 
+ //  / /__\// /__\//\ \     / \/// _ \/ _` |/ _` |  /    \ / _ \ '_ \| | | |
+/ \_/ / \/  \/ \/  \_\ \   / _  \  __/ (_| | (_| | / /\/\ \  __/ | | | |_| |
+\___,_\_____/\_____/\__/   \/ \_/\___|\__,_|\__,_| \/    \/\___|_| |_|\__,_|
+                                                                            
+
+      %W[%YA%W]%Grea Change          %W[%YE%W]%G-Mail               %W[%YK%W]%Gill Message%W(%Gs%W)     
+      %W[%YP%W]%Gost a Message       %W[%YPU%W]%GPage User          %W[%YR%W]%Geply     
+      %W[%YQ%W]%Guit to Main Menu    %W[%YW%W]%Gho is Online        %W[%Y+%W]%GForward Read     
+      %W[%Y-%W]%GBackward Read       %W[%Y/%W]%GRe-Read Message     %W[%Y?%W]%GThis Menu
+
+             %CEnter a %W<%CRETURN%W> %Cto read the Next%W/%CPrevious Msg.
+           %R; %CBetween Commands Stacks then %W(%CI.E., %Rpu;sysop;hi%W)

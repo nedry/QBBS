@@ -1,0 +1,17 @@
+%GWhen you are playing a game, there are a few commands you can enter any
+time, even if it's not your turn.  These commands are:
+
+    %WSTAT       --%C  Show your population, active weapon, and total kills.
+    %WTABLE      --%C  Show all the players at the table and their countries.
+    %WSTOCK      --%C  List all the resources you have.
+    %WDEFENSE    --%C  List all the items in your active defense.
+    %WHIGH       --%C  Show the high scores.
+    %WSCORE      --%C  Your score and rank.
+    %WSURRENDER  --%C  Give up and quit the game totally.
+    %WTURN       --%C  Show which player's turn is waiting.
+
+%GThe commands that only function when it is your turn:
+
+    %WPASS       --%C  Pass your turn without playing.
+    %WUSE        --%C  Use an item you have.
+    %WINCOMING   --%C  Process incoming missiles with your ABM's.

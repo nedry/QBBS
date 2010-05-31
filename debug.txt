@@ -1,0 +1,134 @@
+Backspace: normal delete
+Backspace: no redraw
+Backspace: normal delete
+Backspace: no redraw
+I'm here...wrap line
+Backspace: normal delete
+Backspace: no redraw
+Backspace: normal delete
+Backspace: no redraw
+Backspace: normal delete
+Backspace: no redraw
+Backspace: normal delete
+Backspace: no redraw
+Backspace: normal delete
+Backspace: no redraw
+Backspace: normal delete
+Backspace: no redraw
+Backspace: normal delete
+Backspace: no redraw
+Backspace: normal delete
+Backspace: no redraw
+Backspace: normal delete
+Backspace: no redraw
+Backspace: normal delete
+Backspace: no redraw
+Backspace: normal delete
+Backspace: no redraw
+Backspace: normal delete
+Backspace: no redraw
+Backspace: normal delete
+Backspace: no redraw
+Backspace: normal delete
+Backspace: no redraw
+Backspace: normal delete
+Backspace: no redraw
+Backspace: normal delete
+Backspace: no redraw
+Backspace: normal delete
+Backspace: no redraw
+Backspace: normal delete
+Backspace: no redraw
+@buffer.length + wrap.length: 83
+@screen_width: 80
+room on line: false
+@buffer.length: 8
+in insert not at end of line...
+on a new line...
+done with insert before line
+@buffer.length + wrap.length: 83
+@screen_width: 80
+room on line: true
+@buffer.length: 9
+in insert not at end of line...
+on next existing line...
+done with insert before line
+@buffer.length + wrap.length: 84
+@screen_width: 80
+room on line: true
+@buffer.length: 9
+in insert not at end of line...
+on next existing line...
+done with insert before line
+@buffer.length + wrap.length: 85
+@screen_width: 80
+room on line: true
+@buffer.length: 9
+in insert not at end of line...
+on next existing line...
+done with insert before line
+@buffer.length + wrap.length: 86
+@screen_width: 80
+room on line: true
+@buffer.length: 9
+in insert not at end of line...
+on next existing line...
+done with insert before line
+@buffer.length + wrap.length: 87
+@screen_width: 80
+room on line: true
+@buffer.length: 9
+in insert not at end of line...
+on next existing line...
+done with insert before line
+@buffer.length + wrap.length: 88
+@screen_width: 80
+room on line: true
+@buffer.length: 9
+in insert not at end of line...
+on next existing line...
+done with insert before line
+@buffer.length + wrap.length: 89
+@screen_width: 80
+room on line: true
+@buffer.length: 9
+in insert not at end of line...
+on next existing line...
+done with insert before line
+@buffer.length + wrap.length: 90
+@screen_width: 80
+room on line: true
+@buffer.length: 9
+in insert not at end of line...
+on next existing line...
+done with insert before line
+@buffer.length + wrap.length: 91
+@screen_width: 80
+room on line: true
+@buffer.length: 9
+in insert not at end of line...
+on next existing line...
+done with insert before line
+@buffer.length + wrap.length: 92
+@screen_width: 80
+room on line: true
+@buffer.length: 9
+in insert not at end of line...
+on next existing line...
+done with insert before line
+Backspace: normal delete
+Backspace: no redraw
+Backspace: normal delete
+Backspace: no redraw
+Backspace: normal delete
+Backspace: no redraw
+Backspace: normal delete
+Backspace: no redraw
+Backspace: delete at BOL
+Backspace: blank line above
+Backspace: redraw
+Backspace: delete at BOL
+Backspace: blank line above
+Backspace: redraw
+writing file...
+file written...

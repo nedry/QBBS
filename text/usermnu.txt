@@ -1,0 +1,20 @@
+
+TARDIS BBS
+
+       USER MAINT. COMMANDS
+
+[A]ccess Change      [E]nter New User
+[F]ind User          [K]ill User
+[L]evel Change       [P]assword Change
+[S]ecure (Lock) user [V]alidate
+[W]ho's Online       [Q]uit
+
+[+] Forward          [-] Backward
+[/] Redisplay        [?] This Menu
+
+[AC]Access Check     [AD]ress
+[AL]Caller Alarm     [CA]alls Made
+[LO]cation           [LC]Level Check
+[PN]Phone Number     [PO]sts Made
+[PU]Page User        [MASS]Access Change
+[REPLY] to User
