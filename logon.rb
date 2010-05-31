@@ -70,17 +70,12 @@ class Session
 		while true
 		
 			count +=1
-			username = ''
-			getinp("Enter your name: ",false) {|inp|
-				username = inp.strip
-				#print "got #{username}"
-			  username != ""
-			}
+			username = getinp("Enter your name: ",false) {|inp| inp != "" }
 			#print "Username = #{username}"
 			if username.split.length < 2
 				userlastname = getinp("Enter your LAST name or <CR>: ",false) {|inp|
 					inp == "CR" ? crerror : true
-				}.strip
+				}
 				username = (username + SPACE + userlastname).strip
 				
 			end

@@ -353,6 +353,7 @@ class Session
 			# print "block given"
 			while true do
 				t = getcmd(prompt, ECHO, 0, chat,overwrite)
+        t = t.strip # since we almost never want trailing whitespace
 				break if yield t
 				print errmsg if errmsg
 			end

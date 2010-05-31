@@ -77,7 +77,7 @@ return cont
   while true
    if tempint == - 1 then
     prompt = CRLF+"%WArea #[#{@c_area}] (1-#{(a_total - 1)}) ? %Y<--^%W to quit:  " 
-    happy = getinp(prompt,false).upcase.strip
+    happy = getinp(prompt,false).upcase
     tempint = happy.to_i
    end
 
@@ -212,7 +212,7 @@ def qwk_kludge_search(msg_array)	#searches the message buffer for kludge lines a
    #puts "r_message.m_from: #{r_message.m_from}"
    while true 
      prompt = "%GPrivate (y,N,x - abort)? "
-     reptype = getinp(prompt,false).strip.upcase
+     reptype = getinp(prompt,false).upcase
      if (r_message.network or r_message.f_network) and reptype == "Y"
        replyemail(mpointer,@c_area)
        return
@@ -263,7 +263,7 @@ def qwk_kludge_search(msg_array)	#searches the message buffer for kludge lines a
 
 	def get_or_cr(prompt, crvalue)
 		until DONE
-			tempstr = getinp(prompt,false).strip
+			tempstr = getinp(prompt,false)
 			break if tempstr.upcase != "CR"
 			crerror
 		end
@@ -328,7 +328,7 @@ end
 		print
 		to = get_or_cr("%CTo (<CR> for All): ", "ALL")
 		prompt = "%GTitle: "
-		title = getinp(prompt,false).strip
+		title = getinp(prompt,false)
 		return if title == ""
 		reply_text = ["***No Message to Quote***"]
 		if @c_user.fullscreen then
@@ -734,7 +734,7 @@ end
  area = fetch_area(apointer)
 
   prompt = "Enter new validated access level for board #{apointer}: "
-  tempstr2 = getinp(prompt,false).strip.upcase
+  tempstr2 = getinp(prompt,false).upcase
   if tempstr2 =~ /[NIWRMC]/
    area.v_access = tempstr2
    print "Board #{apointer} validated access changed to #{tempstr2}"
@@ -764,7 +764,7 @@ end
   area = fetch_area(apointer)
 
   prompt = "Enter new default access level for board #{apointer}: "
-  tempstr2 = getinp(prompt,false).strip.upcase
+  tempstr2 = getinp(prompt,false).upcase
    if tempstr2 =~ /[NIWRMC]/
    area.d_access = tempstr2
    print "Board #{apointer} default access changed to #{tempstr2}"
@@ -779,14 +779,14 @@ end
   print ADDAREAWARNING
   while true
    prompt = "Enter new area name: "
-   name = getinp(prompt,false) {|n| n.strip != ""}.strip
+   name = getinp(prompt,false) {|n| n != ""}
    if name.length > 40 then 
     print "%RName too long.  40 Character Maximum"
    else break end
   end
   while true
    prompt = "Enter new area table: "
-   table = getinp(prompt,false) {|p| p.strip != ""}.strip
+   table = getinp(prompt,false) {|p| p != ""}
    if table.length > 10 then
     print "%RTable name too long.  10 Character Maximum"
    else break end
@@ -816,7 +816,7 @@ end
  
   while true
   prompt = "Enter new QWK/REP number (N / no mapping): "
-  netnum = getinp(prompt,false) {|n| n.strip != ""}.strip
+  netnum = getinp(prompt,false) {|n| n != ""}
    if netnum =="N" or netnum == "n"
     area.netnum = -1
     break 
@@ -837,7 +837,7 @@ end
 
    while true
    prompt = "Enter new area name: "
-   name = getinp(prompt,false) {|n| n.strip != ""}.strip
+   name = getinp(prompt,false) {|n| n != ""}
    if name.length > 40 then 
     print "Name too long.  40 Character Maximum"
    else break end
@@ -853,7 +853,7 @@ end
 
    while true
    prompt = "Enter new FidoNet Area Mapping: "
-   fido_net= getinp(prompt,false) {|n| n.strip != ""}.strip
+   fido_net= getinp(prompt,false) {|n| n != ""}
    if fido_net.length > 40 then 
     print "Area too long.  40 Character Maximum"
    else break end

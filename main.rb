@@ -81,7 +81,7 @@ class Session
 		area = fetch_area(@c_area)
 		prompt = o_prompt.gsub("%p","#{area.name}")
 		imp = getinp(prompt,false)
-			sel = imp.upcase.strip
+			sel = imp.upcase
 			parameters = Parse.parse(sel)
 			sel.gsub!(/[-\d]/,"")
 			ulevel = @c_user.level

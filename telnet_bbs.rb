@@ -136,7 +136,7 @@ def bbs(parameters)
   while true
    prompt = "\r\n%WBBS #[1-#{o_total}] (<CR>/quit, ?/list): "
    getinp(prompt,false) {|inp|
-    happy = inp.upcase.strip
+    happy = inp.upcase
     t = happy.to_i
     case happy
      when "";   return

@@ -63,7 +63,7 @@ class Session
    o_prompt = "%M[Email]%C #{sdir} Read[#{epointer}] (1-#{e_total(area.tbl,u.name)}): "
    inp = getinp(o_prompt,false) 
       
- 			happy = inp.upcase.strip 
+ 			happy = inp.upcase
  			if !happy.integer? 
  				#happy.gsub!(/[-\d]/,"")
 
@@ -170,7 +170,7 @@ class Session
    displaymessage(hash[epointer - 1],area.tbl,true)
    done = false
    getinp("%M( -, R, K, /, F, Q, N, ?): ",false) {|inp|
-			happy = inp.upcase.strip 
+			happy = inp.upcase
 			if !happy.integer? 
 				happy.gsub!(/[-\d]/,"")
 				happy = "" if happy == "N"
@@ -287,7 +287,6 @@ end
 
    while true
     inp = getinp("%CTo: ",false) 
-    inp.strip!
     to,zone,net,node,point = netmailadr(inp)
     return if inp == ""
     if !to.nil? then
@@ -324,7 +323,7 @@ end
   end
   #to.upcase!
   to.strip!
-  title = getinp("%GTitle: ",false).strip
+  title = getinp("%GTitle: ",false)
   return false if title == "" 
   reply_text = ["***No Message to Quote***"]
  # m_type = LOCAL
@@ -420,10 +419,7 @@ end
   end
   print "%GTitle: #{title}"
   prompt = "%REnter New Subject or %W %Y<--^%W: "
-  tempstr = getinp(prompt,false) {|inp|
-				tempstr = inp.strip
-				tempstr.upcase == "CR" ? crerror : true
-					}
+  tempstr = getinp(prompt,false) {|inp| inp.upcase == "CR" ? crerror : true }
   title = tempstr if tempstr != ""
     if @c_user.fullscreen then
       write "%W"
@@ -464,7 +460,7 @@ end
 	def email
 		prompt ="[R]ead [S]end [Q]uit: "
 		getinp(prompt,false) {|inp|
-			happy = inp.upcase.strip 
+			happy = inp.upcase
 			parameters = Parse.parse(happy)
 			happy.gsub!(/[-\d]/,"")
 			case happy

@@ -81,7 +81,7 @@ class Session
 		prompt = "%WMessage Area to Change (0 - #{(a_total)})<?: list, Q: Quit>: "
 		tempstr = ''
 		getinp(prompt,false) {|inp|
-			tempstr = inp.strip.upcase
+			tempstr = inp.upcase
 			showareas if tempstr == "?"
 			((tempstr =~ /[0Q]/) or (tempstr.to_i > 0)) ? true : false
 		}
@@ -91,7 +91,7 @@ class Session
 		if tempstr != "Q" then
 			if (0..a_total).include?(tempint2)
 				prompt = "Enter new access level for area #{tempint2}: "
-				tempstr2 = getinp(prompt,false).strip.upcase
+				tempstr2 = getinp(prompt,false).upcase
 				if tempstr2 =~ /[NIWRMC]/
 					user.areaaccess[tempint2] = tempstr2
 					print "Area #{tempint2} access changed to #{tempstr2}"
@@ -152,7 +152,7 @@ class Session
 	def changeuseremail(upointer)
 	  user = fetch_user(upointer)
 		prompt = "%WEnter new email address: "
-		address = getinp(prompt,false).strip
+		address = getinp(prompt,false)
 		user.address = address
 		update_user(user,upointer)
 		print

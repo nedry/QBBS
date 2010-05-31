@@ -41,8 +41,8 @@ class Session
 
  def addbulletin
  
-  name = getinp("Enter new bulletin name: ",false) {|inp| inp.strip != ""}.strip
-  path = getinp("Enter new bulletin path: ",false) {|inp| inp.strip != ""}.strip
+  name = getinp("Enter new bulletin name: ",false) {|inp| inp != ""}
+  path = getinp("Enter new bulletin path: ",false) {|inp| inp != ""}
   if yes("Are you sure (Y,n)? ", false, false,true)
    add_bulletin(name, path)
   else
@@ -54,7 +54,7 @@ class Session
  def changebulletinname(bpointer)
  
   bulletin = fetch_bulletin(bpointer)
-  name = getinp("Enter new bulletin name: ",false).strip
+  name = getinp("Enter new bulletin name: ",false)
   if name !='' then
    bulletin.name = name
    update_bulletin(bulletin)
@@ -68,7 +68,7 @@ class Session
  
   bulletin = fetch_bulletin(bpointer)
   print CHANGEBULLETINPATHWARNING
-  path = getinp("Enter new bulletin path: ",false).strip
+  path = getinp("Enter new bulletin path: ",false)
   if path != ""
    bulletin.path = path
    update_bulletin(bulletin)
@@ -122,7 +122,7 @@ class Session
    prompt = "\r\n%WBulletin #[1-#{b_total}] ? %Y<--^%W to quit: " 
    while true
    getinp(prompt,false) {|inp|
-				happy = inp.upcase.strip
+				happy = inp.upcase
 				t = happy.to_i
 				case happy
 				when "";   return

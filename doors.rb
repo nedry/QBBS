@@ -292,7 +292,7 @@ def irc_do(channel,d_type)
    while true
    prompt = "\r\n%WWhat is your choice? [P, H, I, Q]: "
    getinp(prompt,false) {|inp|
-    happy = inp.upcase.strip
+    happy = inp.upcase
     t = happy.to_i
     case happy
      when "Q";   return
@@ -358,7 +358,7 @@ def doors(parameters)
   while true
    prompt = "\r\n%WGame #[1-#{d_total}] ? %Y<--^%W to quit: "
    getinp(prompt,false) {|inp|
-    happy = inp.upcase.strip
+    happy = inp.upcase
     t = happy.to_i
     case happy
      when "";   return

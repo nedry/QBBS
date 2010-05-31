@@ -30,7 +30,7 @@ class Session
 			 parameters = Parse.parse(inp)
 			 inp.gsub!(/[-\d]/,"")
 			end
-			case inp.upcase.strip 
+			case inp.upcase
 			when "L"; changelength
 			when "W"; changewidth
 			when "P"; changepwd
@@ -192,7 +192,7 @@ def zipfix
   while true
    if tempint.nil?  then
     prompt = CRLF+"%WArea to toggle (1-#{(a_total - 1)}) ? %Y<--^%W to quit:  " 
-    happy = getinp(prompt,false).upcase.strip
+    happy = getinp(prompt,false).upcase
     tempint = happy.to_i
    end
     case happy

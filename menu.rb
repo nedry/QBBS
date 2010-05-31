@@ -14,7 +14,7 @@ def readmenu(args)
 	prmpt = o_prompt.gsub("%p","#{ptr}")
 	inp = getinp(eval(prmpt),false)
 		oldptr = ptr
-		sel = inp.upcase.strip 
+		sel = inp.upcase
  
  # Martin, can you do this better?
 	        high = 0 if high.nil?

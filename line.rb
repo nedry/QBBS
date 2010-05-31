@@ -10,7 +10,7 @@ class Session
   prompt = "[C]ut/Paste [L]ist [R]eturn: "
   while true
    getinp(prompt,false) {|inp|
-   happy = inp.upcase.strip 
+   happy = inp.upcase
    parameters = Parse.parse(happy)
    happy.gsub!(/[-\d]/,"")
 
@@ -197,7 +197,7 @@ class Session
 
 		while true
 			prompt = "Edit Prompt: " 
-			happy = getinp(prompt,false).upcase.strip 
+			happy = getinp(prompt,false).upcase
 			parameters = Parse.parse(happy)
 			happy.gsub!(/[-\d]/,"")
 			case happy
