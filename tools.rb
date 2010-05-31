@@ -47,6 +47,6 @@ class Array
 	end
 
 	def formatrow(widths)
-		map_with_index {|a,i| (a.to_s).fit(widths[i])}.join
+		map.with_index {|a,i| (a.to_s).fit(widths[i])}.join
 	end
 end
