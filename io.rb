@@ -347,26 +347,33 @@ class Session
 		end
 	end
 
-	def getinp(prompt,chat,errmsg = nil, overwrite = false, &block)
-		# print "in getinp"
-		if block_given?
-			# print "block given"
-			while true do
-				t = getcmd(prompt, ECHO, 0, chat,overwrite)
+  # pass in arguments as symbols, e.g.
+  #   getinp(prompt, :chat, :nonempty)
+  def getinp(prompt, *args)
+    chat = args.include?(:chat)
+    overwrite = args.include?(:overwrite)
+    nonempty = args.include?(:nonempty)
+    # print "in getinp"
+    if block_given? or nonempty
+      # print "block given"
+      while true do
+        t = getcmd(prompt, ECHO, 0, chat,overwrite)
         t = t.strip # since we almost never want trailing whitespace
-				break if yield t
-				print errmsg if errmsg
-			end
-			print
-			return t
-		else
-			getcmd(prompt, ECHO, 0, chat, false)
-		end
-	end
+        unless (nonempty and t.empty?) # fail right away if this happens
+          break if yield t
+        end
+        print errmsg if errmsg
+      end
+      print
+      return t
+    else
+      getcmd(prompt, ECHO, 0, chat, false)
+    end
+  end
 
 	def _getnum(prompt, low = nil, high = nil)
 		while true
-			a = getinp(prompt,false)
+			a = getinp(prompt)
 			if a == ""
 				return nil
 			elsif !a.integer?
@@ -412,7 +419,7 @@ class Session
 def get_max_length(prompt,len,msg)
 
  while true
-  temp = getinp(prompt,false).strip
+  temp = getinp(prompt).strip
    if temp.length > len then
     print "%R#{msg} too long.  40 Character Maximum"
    else break end
