@@ -9,9 +9,9 @@ require 'net/smtp'
 require "pg_ext"
 require 'rmail'
 require "consts.rb"
-require "db_message.rb"
-require "db_area.rb"
-require "db_class.rb"
+require "db/db_message.rb"
+require "db/db_area.rb"
+require "db/db_class.rb"
 require "db.rb"
 
 def part_type(part)

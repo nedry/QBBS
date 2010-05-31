@@ -10,8 +10,8 @@ require "pg_ext"
 require "consts.rb"
 require "t_class.rb"
 require "t_const.rb"
-require "db_area"
-require "db_message"
+require "db/db_area"
+require "db/db_message"
 require "db"
 
 def nul_delimited(buffer,pointer,max) #reads in a field delimited by nulls with a maximum length

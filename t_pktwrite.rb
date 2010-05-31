@@ -11,9 +11,9 @@ require "tools.rb"
 require "consts.rb"
 require "t_class.rb"
 require "t_const.rb"
-require "db_class.rb"
-require "db_area"
-require "db_message"
+require "db/db_class.rb"
+require "db/db_area"
+require "db/db_message"
 require "db"
 
 
