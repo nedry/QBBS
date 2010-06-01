@@ -120,27 +120,7 @@ def read_mailbox
           msgtext = smtp_to_msgtxt(message.body.to_s)
         else
           puts "-SMTP: Multiple Part Message"
-          result = find_a_part(message)
-
-          if result.index("text/plain") then 
-            msgtext = smtp_to_msgtxt(message.part(result.index("text/plain")))
-          else
-            if result.index("text/html") then
-              msgtext = smtp_to_msgtxt(message.part(result.index("test/html")))
-            else
-              if result.index("multipart/alternative") then
-                result2 = find_a_part(message.part(result.index("multipart/alternative")))
-                if result2.index("text/plain") then
-                  msgtext = smtp_to_msgtxt(message.part(result.index("multipart/alternative")).part(result2.index("text/plain")))
-                else
-                  if result2.index("text/html") then
-                    msgtext = smtp_to_msgtxt(message.part(result.index("multipart/alternative")).part(result2.index("test/html")))
-                  end
-                end
-              end
-            end
-          end
-
+          msgtext = extract_multipart_msg(message)
         end
         puts msgtext
         add_msg(area.tbl, l_address,from,msg_date,subject,msgtext,false,false,false,nil,nil,nil,nil,true)
@@ -151,6 +131,23 @@ def read_mailbox
 
     }
   }
+end
+
+def extract_multipart_msg(message)
+  result = find_a_part(message)
+  # if there is a text/plain or text/html part, return that
+  ix = result.index('text/plain') || result.index('text/html')
+  if ix
+    return smtp_to_msgtxt(message.part(ix))
+  end
+
+  # else, unpack the multipart/alternative
+  ix = result.index('multipart/alternative')
+  if ix
+    return extract_msg(message.part(ix))
+  else
+    return nil
+  end
 end
 
 def do_smtp
