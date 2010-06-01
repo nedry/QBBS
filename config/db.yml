@@ -1,5 +1,3 @@
-adapter: postgres
+adapter: sqlite3
 host: localhost
 db: qbbs
-user: qbbs
-password: qbbs

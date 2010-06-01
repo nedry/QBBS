@@ -6,7 +6,7 @@ class Area
   property :tbl, String, :length => 10
   property :delete, Boolean, :default => false
   property :locked, Boolean, :default => false
-  property :number, Integer, :nullable => false
+  property :number, Integer, :required => true
   property :netnum, Integer, :default => -1
   property :d_access, String, :length => 1
   property :v_access, String, :length => 1

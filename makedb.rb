@@ -7,7 +7,15 @@ require 'yaml'
 Dir['models/*'].each {|i| require i}
 
 c = YAML.load(IO.read('config/db.yml'))
-DataMapper.setup(:default, "#{c['adapter']}://#{c['user']}:#{c['password']}@#{c['host']}/#{c['db']}")
+if c['adapter'] == 'sqlite3'
+  cstr = "#{c['adapter']}://#{Dir.pwd}/#{c['db']}"
+else
+  cstr = "#{c['adapter']}://#{c['user']}:#{c['password']}@#{c['host']}/#{c['db']}"
+end
+
+puts cstr
+DataMapper.setup(:default, cstr)
+
 DataMapper.auto_migrate!
 
 # create initial groups
