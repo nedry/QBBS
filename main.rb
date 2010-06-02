@@ -94,7 +94,11 @@ class Session
       when "A"; areachange(parameters)
       when "B"; bullets(parameters)
       when "C"; print "%GUnder Construction"
-      when "T"; teleconference(nil)
+      when "T";  if IRC_ON then 
+        teleconference(nil) 
+      else
+        print "%RTeleconference is disabled!%W\r\n"
+      end
       when "KU"; youreoutahere if ulevel == 255
       when "Q"; questionaire
       when "ZZ"; new_displaylist

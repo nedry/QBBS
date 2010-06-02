@@ -48,8 +48,7 @@ class Session
       #print header
       # print underscore
       @irc_who.each{|w|
-        temp = cols.zip(["*",w.name,w.where])
-        print temp.formatrow(widths)
+        print cols.zip(["*",w.name,w.where]).map{|a,b| "#{a}#{b}"}.formatrow(widths)
       }
     else 
 
@@ -72,8 +71,7 @@ class Session
       underscore = cols.zip(['-'*30]*5).map{|a,b| a+b}.formatrow(widths)
 
       fetch_who_list.each {|x|
-        temp = cols.zip(["W",x[1],x[4],x[2]])
-        print temp.formatrow(widths)
+        print cols.zip(["W",x[1],x[4],x[2]]).map{|a,b| "#{a}#{b}"}.formatrow(widths)
       }
 
     end
@@ -96,8 +94,7 @@ class Session
       print underscore
       @who.each_with_index {|w,i|
 
-        temp = cols.zip([w.node, w.name, w.where, w.location])
-        print temp.formatrow(widths)
+        print cols.zip([w.node, w.name, w.where, w.location]).map{|a,b| "#{a}#{b}"}.formatrow(widths)
       }
     else 
       print "No Users on Line.  That's fucked up, because you're on-line. Doh!" 

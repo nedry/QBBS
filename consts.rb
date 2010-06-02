@@ -2,7 +2,7 @@ DEBUG = true
 LISTENPORT = 2323
 QWK  = false 
 FIDO = false 
-IRC_ON =  true 
+IRC_ON =  false
 
 BS = 8 
 ESC = 27
@@ -35,18 +35,18 @@ SYSOPNAME = "SYSOP"
 SYSTEMNAME = "Retro Computing BBS"
 
 NODES = 10
-ROOT_PATH = "/home/mark/qbbs2/"
+ROOT_PATH = "/home/mark/qbbs/"
 
 
 
 #QOTD location (or nil for disabled)
 
-QOTD = "fortune > /home/mark/qbbs2/text/quote.txt"
+QOTD = "fortune > /home/mark/qbbs/text/quote.txt"
 
 # Full Screen Editor
 #FULLSCREENPROG = 'nano -Q"> " -t -o %a'
-FULLSCREENPROG = 'ruby /home/mark/qbbs2/edit.rb -L '
-FULLSCREENDIR = "/home/mark/qbbs2/quote"
+FULLSCREENPROG = 'ruby /home/mark/qbbs/edit.rb -L '
+FULLSCREENDIR = "/home/mark/qbbs/quote"
 
 #IRC/Chat Settings
 
@@ -112,19 +112,19 @@ TID = "QUARKtoss .5"
 TEAR = "--- #{VER}" 
 ORGIN = " * Origin: retroCOMPUTING BBS - bbs.retrobbs.org 2323 (#{FIDOZONE}:#{FIDONET}/#{FIDONODE}.#{FIDOPOINT})"
 
-TEMPINDIR = "/home/mark/qbbs2/fido/tempin"
-TEMPOUTDIR = "/home/mark/qbbs2/fido/tempout"
-BUNDLEOUTDIR = "/home/mark/qbbs2/fido/out"
-BUNDLEINDIR = "/home/mark/qbbs2/fido/in"
-PKTTEMP	= "/home/mark/qbbs2/fido/packet"
-BACKUPIN = "/home/mark/qbbs2/fido/backup_in"
-BACKUPOUT = "/home/mark/qbbs2/fido/backup_out"
-SPOOL = "/home/mark/qbbs2/fido/spool/out"
+TEMPINDIR = "/home/mark/qbbs/fido/tempin"
+TEMPOUTDIR = "/home/mark/qbbs/fido/tempout"
+BUNDLEOUTDIR = "/home/mark/qbbs/fido/out"
+BUNDLEINDIR = "/home/mark/qbbs/fido/in"
+PKTTEMP	= "/home/mark/qbbs/fido/packet"
+BACKUPIN = "/home/mark/qbbs/fido/backup_in"
+BACKUPOUT = "/home/mark/qbbs/fido/backup_out"
+SPOOL = "/home/mark/qbbs/fido/spool/out"
 
 #SMTP Settings
 
 MAILBOXDIR = "/var/mail/mark"
-TEMPSMTPDIR = "/home/mark/qbbs2/smtp-in/mark"
+TEMPSMTPDIR = "/home/mark/qbbs/smtp-in/mark"
 POSTMASTER = "postmaster@bbs.retrobbs.org"
 SMTPDOMAIN = "bbs.retrobbs.org"
 SMTPSERVER = "127.0.0.1"
