@@ -441,7 +441,7 @@ end
    end
    
     message = []
-    curmessage.msg_text.each(DLIM) {|line| message.push(line.chop!)}
+    curmessage.msg_text.each_line(DLIM) {|line| message.push(line.chop!)}  #changed from .each for ruby 1.9
     
    if curmessage.network then
     message,q_msgid,q_via,q_tz,q_reply = qwk_kludge_search(message)

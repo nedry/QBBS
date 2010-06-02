@@ -57,14 +57,14 @@ class Session
 			print underscore
   fetch_log(0).each {|x|
    t= Time.parse(x[1]).strftime("%m/%d/%y %I:%M%p")
-  temp = cols.zip([t,x[0],x[2]])
+  temp = cols.zip([t,x[0],x[2]]).map{|a,b| "#{a}#{b}"}.formatrow(widths) #fix for 1.9
   				j = j + 1
 				if j == (@c_user.length - 2) and @c_user.more then
 					cont = moreprompt
 					j = 1
 				end
 				break if !cont 
-  print temp.formatrow(widths)
+  print temp
   }
 
  else
@@ -96,7 +96,11 @@ class Session
 			when "A"; areachange(parameters)
 			when "B"; bullets(parameters)
 			when "C"; print "%GUnder Construction"
-			when "T"; teleconference(nil)
+			when "T";  if IRC_ON then 
+				            teleconference(nil) 
+					   else
+					     print "%RTeleconference is disabled!%W\r\n"
+					   end
 			when "KU"; youreoutahere if ulevel == 255
 			when "Q"; questionaire
 			when "ZZ"; new_displaylist

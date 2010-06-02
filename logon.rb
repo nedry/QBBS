@@ -23,13 +23,12 @@ class Session
    print "\e[0m_"		#Set Normal Colours
    print "\e[2J"		#Clear Screen
    print "\e[H"			#Home Cursor
-   print "\eC"			#Clear Screen (if non ansi)
-   print "\r"			#Move Cursor left (in case prev. character printed)
+
    i = 0
    while i < 50
     i +=1
     test = @socket.getc if select([@socket],nil,nil,0.1) != nil
-    if test == ESC
+    if test == ESC.chr #fix for 1.9
      sleep(2)
      while select([@socket],nil,nil,0.1) != nil
       junk = @socket.getc
@@ -206,14 +205,14 @@ class Session
 	    print underscore
             fetch_wall.each {|x|
             t= Time.parse(x[1]).strftime("%m/%d/%y %I:%M%p")
-            temp = cols.zip([x[0],t,x[3]])
+            temp = cols.zip([x[0],t,x[3]]).map{|a,b| "#{a}#{b}"}.formatrow(widths) #fix for 1.9
 	       j = j + 1
 	       if j == (@c_user.length - 2) and @c_user.more then
 		  cont = moreprompt
 		  j = 1
 	       end
 	    break if !cont 
-       print temp.formatrow(widths)
+       print temp
   }
   
  else
