@@ -50,7 +50,7 @@ FULLSCREENDIR = "/home/mark/qbbs/quote"
 
 #IRC/Chat Settings
 
-IRCSERVER = "127.0.0.1"
+IRCSERVER = "irc.larryniven.net"
 IRCPORT = 6667
 IRCCHANNEL = "#knownspace"
 IRCBOTUSER = "HAL9000"

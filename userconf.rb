@@ -99,8 +99,8 @@ def changenick
 		return
 	end
 	#newname = tempstr.strip.split.to_s.slice(0..14)
-	newname = tempstr.strip.slice(0..14).gsub!(/\W/,"")
-
+	newname = tempstr.gsub(/\W/,"")
+puts newname
 	if !alias_exists(newname) then 
 		@c_user.alais = newname
 		update_user(@c_user,get_uid(@c_user.name))
