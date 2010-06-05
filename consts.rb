@@ -2,7 +2,7 @@ DEBUG = true
 LISTENPORT = 2323
 QWK  = false 
 FIDO = false 
-IRC_ON =  false
+IRC_ON =  true
 
 BS = 8 
 ESC = 27
@@ -50,7 +50,7 @@ FULLSCREENDIR = "/home/mark/qbbs/quote"
 
 #IRC/Chat Settings
 
-IRCSERVER = "irc.larryniven.net"
+IRCSERVER = "127.0.0.1"
 IRCPORT = 6667
 IRCCHANNEL = "#knownspace"
 IRCBOTUSER = "HAL9000"
@@ -164,90 +164,88 @@ DATABASE = "qbbs"
 DATAIP   = "127.0.0.1"
 
 COLORTABLE = {
-  '%R' => "\e[;1;31;40m", '%G' => "\e[;1;32;40m",
-  '%Y' => "\e[;1;33;40m", '%B' => "\e[;1;34;40m",
-  '%M' => "\e[;1;35;40m", '%C' => "\e[;1;36;40m",
-  '%W' => "\e[;1;37;40m", '%r' => "\e[;31;40m",
-  '%g' => "\e[;32;40m", '%y' => "\e[;33;40m",
-  '%b' => "\e[;34;40m", '%m' => "\e[;35;40m",
-  '%c' => "\e[;36;40m", '%w' => "\e[;31;40m"
+	'%R' => "\e[;1;31;40m", '%G' => "\e[;1;32;40m",
+	'%Y' => "\e[;1;33;40m", '%B' => "\e[;1;34;40m",
+	'%M' => "\e[;1;35;40m", '%C' => "\e[;1;36;40m",
+	'%W' => "\e[;1;37;40m", '%r' => "\e[;31;40m",
+	'%g' => "\e[;32;40m", '%y' => "\e[;33;40m",
+	'%b' => "\e[;34;40m", '%m' => "\e[;35;40m",
+	'%c' => "\e[;36;40m", '%w' => "\e[;31;40m"
 }
 
 CELERITY_COLORTABLE = {
-  '|R' => "\e[;1;31;40m", '|G' => "\e[;1;32;40m",
-  '|Y' => "\e[;1;33;40m", '|B' => "\e[;1;34;40m",
-  '|M' => "\e[;1;35;40m", '|C' => "\e[;1;36;40m",
-  '|W' => "\e[;1;37;40m", '|r' => "\e[;31;40m",
-  '|g' => "\e[;32;40m", '|y' => "\e[;33;40m",
-  '|b' => "\e[;34;40m", '|m' => "\e[;35;40m",
-  '|c' => "\e[;36;40m", '|w' => "\e[;31;40m"
+	'|R' => "\e[;1;31;40m", '|G' => "\e[;1;32;40m",
+	'|Y' => "\e[;1;33;40m", '|B' => "\e[;1;34;40m",
+	'|M' => "\e[;1;35;40m", '|C' => "\e[;1;36;40m",
+	'|W' => "\e[;1;37;40m", '|r' => "\e[;31;40m",
+	'|g' => "\e[;32;40m", '|y' => "\e[;33;40m",
+	'|b' => "\e[;34;40m", '|m' => "\e[;35;40m",
+	'|c' => "\e[;36;40m", '|w' => "\e[;31;40m"
 }
 
 IRCCOLORTABLE = {
-  "\cc04" => "\e[;1;31;40m", "\cc03" => "\e[;1;32;40m",
-  "\cc08" => "\e[;1;33;40m", "\cc02" => "\e[;1;34;40m",
-  "\cc06" => "\e[;1;35;40m", "\cc11" => "\e[;1;36;40m",
-  "\cc16" => "\e[;1;37;40m", "\cc05" => "\e[;31;40m",
-  "\cc09" => "\e[;32;40m", "\cc07" => "\e[;33;40m",
-  "\cc12" => "\e[;34;40m", "\cc14" => "\e[;35;40m",
-  "\cc10" => "\e[;36;40m", "\cc15" => "\e[;31;40m",
-  "\co" =>  "\e[;1;37;40m"
+	"\cc04" => "\e[;1;31;40m", "\cc03" => "\e[;1;32;40m",
+	"\cc08" => "\e[;1;33;40m", "\cc02" => "\e[;1;34;40m",
+	"\cc06" => "\e[;1;35;40m", "\cc11" => "\e[;1;36;40m",
+	"\cc16" => "\e[;1;37;40m", "\cc05" => "\e[;31;40m",
+	"\cc09" => "\e[;32;40m", "\cc07" => "\e[;33;40m",
+	"\cc12" => "\e[;34;40m", "\cc14" => "\e[;35;40m",
+	"\cc10" => "\e[;36;40m", "\cc15" => "\e[;31;40m",
+	"\co" =>  "\e[;1;37;40m"
 }
 
 GD_COMMANDS = ["TURN","NIFTY","STOCK","DEFENCE","DEFENSE",
-  "STAT","TABLE","USE","PASS","INCOMING","SURRENDER"]
-
-GD_HELP_TABLE = {
-  "AUTHORS" => "gd_help_authors", "TALKING" => "gd_help_talk",
-  "COMMANDS" => "gd_help_commands", "JETS" => "gd_help_jets",
-  "ABMS" => "gd_help_abms", "MISSILES" => "gd_help_missles",
-  "WHISPER" => "gd_help_whisper", "STARTING" => "gd_help_start",
-  "DEATH" => "gd_help_death", "TURN" => "gd_help_turn",
-  "INTRO" => "gd_help_intro", "PERSUASION" => "gd_help_persuasion",
-  "BRAINWASHING" => "gd_help_persuasion", "MISINFORMATION" => "gd_help_persuasion",
-  "MISINFORMATION" =>  "gd_help_persuasion", "WARHEADS" =>  "gd_help_warheads",
-  "IMMIGRATION" =>  "gd_help_immigration", "SUPER" =>  "gd_help_immigration",
-  "SPECIAL" =>  "gd_help_special", "SPY" =>  "gd_help_spy",
-  "COUNTERSPY" =>  "gd_help_counterspy", "BOMBER" =>  "gd_help_bomber",
-  "JET" =>  "gd_help_counterspy", "JET" =>  "d_help_jet",
-  "12" =>  "gd_help_warheads", "20" =>  "gd_help_warheads",
-  "40" =>  "gd_help_warheads", "70" =>  "gd_help_warheads",
-  "100" =>  "gd_help_warheads", "150" =>  "gd_help_warheads",
-  "VIPER" =>  "gd_help_missile", "TRIDENT" =>  "gd_help_missile",
-  "ARES" =>  "gd_help_missile", "HELLBORE" =>  "gd_help_missile",
-  "THUNDERBOLT" =>  "gd_help_missile", "LIBERATOR" =>  "gd_help_abm",
-  "GUARDIAN" =>  "gd_help_abm", "PATRIOT" =>  "gd_help_abm",
-  "AVATAR" =>  "gd_help_abm", "NEXUS" =>  "gd_help_abm",
-  "AEGIS" =>  "gd_help_abm", "NEXUS" =>  "gd_help_abm",
-  "MIRV" =>  "gd_help_mirv", "ITEMS" =>  "gd_help_items",
+      "STAT","TABLE","USE","PASS","INCOMING","SURRENDER"]
+      
+ GD_HELP_TABLE = {
+	"AUTHORS" => "gd_help_authors", "TALKING" => "gd_help_talk",
+	"COMMANDS" => "gd_help_commands", "JETS" => "gd_help_jets",
+	"ABMS" => "gd_help_abms", "MISSILES" => "gd_help_missles",
+	"WHISPER" => "gd_help_whisper", "STARTING" => "gd_help_start",
+	"DEATH" => "gd_help_death", "TURN" => "gd_help_turn",
+	"INTRO" => "gd_help_intro", "PERSUASION" => "gd_help_persuasion",
+	"BRAINWASHING" => "gd_help_persuasion", "MISINFORMATION" => "gd_help_persuasion",
+	"MISINFORMATION" =>  "gd_help_persuasion", "WARHEADS" =>  "gd_help_warheads",
+	"IMMIGRATION" =>  "gd_help_immigration", "SUPER" =>  "gd_help_immigration",
+	"SPECIAL" =>  "gd_help_special", "SPY" =>  "gd_help_spy",
+	"COUNTERSPY" =>  "gd_help_counterspy", "BOMBER" =>  "gd_help_bomber",
+	"JET" =>  "gd_help_counterspy", "JET" =>  "d_help_jet",
+	"12" =>  "gd_help_warheads", "20" =>  "gd_help_warheads",
+	"40" =>  "gd_help_warheads", "70" =>  "gd_help_warheads",
+	"100" =>  "gd_help_warheads", "150" =>  "gd_help_warheads",
+	"VIPER" =>  "gd_help_missile", "TRIDENT" =>  "gd_help_missile",
+	"ARES" =>  "gd_help_missile", "HELLBORE" =>  "gd_help_missile",
+	"THUNDERBOLT" =>  "gd_help_missile", "LIBERATOR" =>  "gd_help_abm",
+	"GUARDIAN" =>  "gd_help_abm", "PATRIOT" =>  "gd_help_abm",
+	"AVATAR" =>  "gd_help_abm", "NEXUS" =>  "gd_help_abm",
+	"AEGIS" =>  "gd_help_abm", "NEXUS" =>  "gd_help_abm",
+	"MIRV" =>  "gd_help_mirv", "ITEMS" =>  "gd_help_items",
 }
 
 GD_IRCUSER = "GD"
 
 TIME_TABLE = {
-  "40F0"  => "Atlantic", "412C"  => "Eastern",
-  "4168"  => "Central", "41A4"  => "Mountain",
-  "41E0"  => "Pacific", "421C"  => "Yukon",
-  "4258"  => "Hawaii/Alaska", "4294"  => "Bering",
-  "C0F0" => "Atlantic-D","C12C" => "Eastern-D",
-  "C168" => "Central-D","C1A4" => "Mountain-D",
-  "C1E0" => "Pacific","C21C" => "Yukon",
-  "C258" => "Hawaii/Alaska-D","C294" => "BerinG-D",
-  "2294" => "Midway","21E0" => "Vancouver",
-  "21A4" => "Edmonton","2168" => "Winnipeg",
-  "212C" => "Bogota","20F0" => "Caracas",
-  "20B4" => "Rio de Janeiro","2078" => "Fernando de Noronha",
-  "203C" => "Azores","1000" => "London",
-  "103C" => "Berlin","1078" => "Athens",
-  "10B4" => "Moscow","10F0" => "Dubai",
-  "110E" => "Kabul","112C" => "Karachi",
-  "114A" => "Bombay","1159" => "Kathmandu",
-  "1168" => "Dhaka", "11A4" => "Bangkok",
-  "11E0" => "Hong Kong","121C" => "Tokyo",
-  "1258" => "Sydney","1294" => "Noumea",
-  "12D0" => "Wellington"
-}
-
+		"40F0"  => "Atlantic", "412C"  => "Eastern",
+                "4168"  => "Central", "41A4"  => "Mountain",
+                "41E0"  => "Pacific", "421C"  => "Yukon",
+                "4258"  => "Hawaii/Alaska", "4294"  => "Bering",
+                "C0F0" => "Atlantic-D","C12C" => "Eastern-D",
+                "C168" => "Central-D","C1A4" => "Mountain-D",
+                "C1E0" => "Pacific","C21C" => "Yukon",
+                "C258" => "Hawaii/Alaska-D","C294" => "BerinG-D",
+                "2294" => "Midway","21E0" => "Vancouver",
+                "21A4" => "Edmonton","2168" => "Winnipeg",
+                "212C" => "Bogota","20F0" => "Caracas",
+                "20B4" => "Rio de Janeiro","2078" => "Fernando de Noronha",
+                "203C" => "Azores","1000" => "London",
+                "103C" => "Berlin","1078" => "Athens",
+                "10B4" => "Moscow","10F0" => "Dubai",
+                "110E" => "Kabul","112C" => "Karachi",
+                "114A" => "Bombay","1159" => "Kathmandu",
+                "1168" => "Dhaka", "11A4" => "Bangkok",
+                "11E0" => "Hong Kong","121C" => "Tokyo",
+                "1258" => "Sydney","1294" => "Noumea",
+                "12D0" => "Wellington"}
 #Mail Types
 
 Q_NETMAIL = 1

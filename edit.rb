@@ -31,29 +31,29 @@ def tcsetattr(io, attr)
   io.ioctl(_TCSETA, attr)
 end
 
-def writefile (filename,array)
-
+def writefile(filename, array)
+  return unless filename
   lf = File.new(filename, File::WRONLY|File::TRUNC|File::CREAT, 0644)
   array.each {|x|
     print "."  
-    lf.puts x}
-    lf.close
-    puts
+    lf.puts x
+  }
+  lf.close
+  puts
 end
 
 def pull_apart_args(args)
-
   bbs_mode = false
   filename = nil
-  if !args.nil then
+  if !args.nil? then
     filename = args.last
-    args.each {|arg| bbs_mode = true if arg == "-L" 
+    args.each {|arg| 
+      bbs_mode = true if arg == "-L" 
       #put more switches here
     }
   end
   return [bbs_mode,filename]
 end
-
 
 begin
   unless RUBY_PLATFORM =~ /mswin32/

@@ -7,30 +7,40 @@
 # $Id: fsed.rb,v 1.1 2002/09/12 12:27:16 dossy Exp $
 #
 
+require 'term/ansicolor'
+
 module Editors
   module FSED
-    VERSION = "0.7"
+    VERSION = "0.75"
     ESC = 27.chr
     RETURN = 10.chr
 
     class Buffer
-      def initialize(max_lines,in_file)
-        @buffer = getfile(in_file)
+      def initialize(max_lines, in_file)
+        read_from_file(in_file)
         @max_lines = max_lines
+        @buffer = []
+      end
+
+      def row(y)
+        # indexing rows from 1
+        @buffer[y - 1]
+      end
+
+      def ensure_row(y)
+        @buffer[y - 1] ||= []
       end
 
       def []=(x, y, value)
-        if @buffer[y - 1] == nil
-          @buffer[y - 1] = []
-        end
-        @buffer[y - 1][x - 1] = value
+        ensure_row(y)
+        row(y)[x - 1] = value
       end
 
       def [](x, y)
-        if @buffer[y - 1].nil?
+        if row(y).nil?
           nil
         else
-          @buffer[y - 1][x - 1]
+          row(y)[x - 1]
         end
       end
 
@@ -43,36 +53,38 @@ module Editors
       end
 
       def delete_at(x, y)
-        unless @buffer[y - 1].nil?
-          @buffer[y - 1].delete_at(x - 1)
+        if row(y)
+          row(y).slice!(x - 1)  # used to use delete_at but that didn't always work.
         end
       end
 
-      def insert_at_line(y,x,in_str)
-        inthing = nil 
-        if !in_str.nil? then
-          in_str.each_with_index {|c,i| @buffer[y-1].insert(x+ i,c)} 
+      def insert_at(y, x, chars)
+        if chars
+          row(y).insert(x, chars).flatten!
         end
       end
 
-      def insert_line_at(y,ln)
-        @buffer[y] = []  if @buffer[y] == nil
-        @buffer.insert(y,ln)   
+      def insert_line(y, chars)
+        ensure_row(y)
+        @buffer.insert(y, chars)
       end
 
       def delete_line_at(y)
         @buffer.delete_at(y - 1)    
       end
 
-      def buffer_length
+      def split_line_at(y, x)
+        chars = delete_to_end(y, x)
+        insert_line(y, chars)
+      end
 
+      def buffer_length
         return @buffer.length
       end
 
-
-      def length_y(y)
-        if !@buffer[y - 1].nil?
-          return @buffer[y - 1].length
+      def line_length(y)
+        if row(y)
+          return row(y).length
         else
           return 0
         end
@@ -80,28 +92,28 @@ module Editors
 
       def del_range(y,x1,x2)
         total = x2 - x1
-        str = @buffer[y-1].slice!(-(total),total)
+        str = row(y).slice!(-(total),total)
         return str
       end
 
+      def delete_to_end(y, x)
+        row(y).slice!(x..-1)
+      end
+
       def insert_char(x, y, value)
-        @buffer[y - 1] = []  if @buffer[y - 1] == nil
-        if (x-1) > @buffer[y-1].length then
-          @buffer[y-1] << value
-        else
-          @buffer[y - 1].insert(x-1,value)
-        end
+        ensure_row(y)
+        row(y).insert(x-1,value)
       end
 
       def find_first_space(y)
-        return @buffer[y-1].index(" ")
+        return row(y).index(" ")
       end
 
       def find_nearest_space(y,space)
         result = nil
-        @buffer[y - 1] = [] if @buffer[y - 1].nil? 
+        ensure_row(y)
         highest = 0
-        @buffer[y-1].each_with_index {|c,i| 
+        row(y).each_with_index {|c,i|
           highest = i
           result = i	 if (c == " ") and (i <= space) 
         }
@@ -110,100 +122,72 @@ module Editors
       end 
 
       def paragraph_up(start_y,width)
-
         for i in start_y..@buffer.length #- 1
-          if @buffer[i,0].nil? then
-            break 
-          end
-          pos = length_y(i-1)
+          break if @buffer[i,0].nil? 
+          pos = line_length(i-1)
           space = width - pos #how much space on the line above?
           unwrap_space = find_nearest_space(i,space)
           break if unwrap_space.nil? or unwrap_space == 0
           unwrap_str = del_range(i,0,unwrap_space+1)
-          insert_at_line(i - 1,pos,unwrap_str)
+          insert_at(i - 1,pos,unwrap_str)
         end
       end
 
-      def detect_and_wrap(y,x,width)
-        l_space = 0; wrap = nil
-        @buffer[y - 1] = [] if @buffer[y - 1].nil? 
-        l  = @buffer[y-1].length - 1
-        test = @buffer[y-1]
+      def wrap_to_width(y, width)
+        ensure_row(y)
+        line = row(y)
 
-        if !@buffer[y-1][width].nil? then #is there now a character past max_width
-          test.slice!(-1)  if test.last == " "
-          l_space = test.rindex(' ') 
-          wrap = @buffer[y-1][l_space..l]
-          del_range(y,l_space+1,l+1)
-          return [l_space,wrap]
+        if line[width] then # is there a character past max_width
+          # if there is a space, break on it, else break the line arbitrarily
+          # at _width_ ( TODO: add hyphenation if this happens )
+          l_space = line[0..width].rindex(' ')
+
+          if !l_space
+            l_space = width - 1
+          end
+          wrap = delete_to_end(y, l_space + 1)
+
+          # if we are on the last row, add a row for the spillover,
+          # otherwise prepend to the next row and cascade-wrap
+          if y == buffer_length
+            insert_line(y, wrap)
+          else
+            insert_at(y + 1, 0, wrap)
+            wrap_to_width(y + 1, width)
+          end
+          return wrap.length # so we know where to move the cursor
         end
+      end
+
+      def str_of_line(line)
+        line ? line.collect {|c| c.nil? ? " " : c}.join("").chomp : ""
       end
 
       def line(line)
-        if !@buffer[line - 1].nil? then  #protect against backspace on an empty line -- produces a nil
-          @buffer[line - 1].collect { |char|
-            if char.nil?
-              " "
-            else
-              char
-            end
-          }.to_s.chomp
-        end
+        str_of_line(row(line))
       end
 
       def buff_out
-        @buffer.collect { |line|
-          if line.nil?
-            "\n"
-          else
-            [ line.collect { |char|
-              if char.nil?
-                " "
-              else
-                char
-              end
-            }, "\n" ].to_s
-          end
-        }
+        @buffer.collect {|line| str_of_line(line) + "\n" }
       end
-
 
       def dump
-        @buffer.collect { |line|
-          if line.nil?
-            "\n"
-          else
-            [ line.collect { |char|
-              if char.nil?
-                " "
-              else
-                char
-              end
-            }, "\n" ].to_s
-          end
-        }.to_s.chomp
+        buff_out.join("").chomp
       end
 
-
       def to_s(top_start,vp_height)
+        # see if we have enough lines in to print the whole buffer
+        top_stop = [@buffer.length - 1, vp_height + top_start - 1].min
 
-        out = String.new
-        top_stop = @buffer.length - 1
-        top_stop = vp_height + top_start - 1 if @buffer.length - 1 >= vp_height + top_start
-
-        for i in top_start..top_stop
-          one_line = @buffer[i].to_s
-          out = out+ one_line + "\n"
-        end
-        out
+        (top_start .. top_stop).map {|i|
+          str_of_line(@buffer[i]) + "\n"
+        }.join("")
       end
 
       def room_on_line(y,str,width)
-
         room = false
 
         if !@buffer[y].nil? 
-
           if !str.nil? then
             room = true  if (@buffer[y].length - 1) + str.length < width 
           end
@@ -211,25 +195,25 @@ module Editors
         return room
       end
 
-      def getfile(filename)
-        file_array = []
-        if !filename.nil? then
-          #this used to use chars.to_a but it didn't always work right
-          if File.exists?(filename) 
-            IO.foreach(filename) { |line|
-              line.gsub!("\n","")
-              line.gsub!("\r","")  
-              build = []
-              for i in 0..line.length-1
-                build << line[i].chr
-              end
-              file_array << build}
-          end
-        end
-        puts
-        file_array
+      def read_from_io(io)
+        @buffer = []
+        io.each {|line|
+          line.gsub!(/[\n\r]/,"")
+          @buffer << line.split(//)
+        }
       end
 
+      def read_from_file(filename)
+        # if the filename is invalid, return an empty buffer rather than complain
+        unless filename and File.exists?(filename)
+          return []
+        end
+        file_array = nil
+        File.open(filename, 'r') do |f|
+          file_array = read_from_io(f)
+        end
+        file_array
+      end
     end
 
     class EditorState
@@ -271,6 +255,13 @@ module Editors
         @current_cursor_position[1]
       end
 
+      def current_line
+        current_y + @buffer_top
+      end
+
+      def line_end
+        @buffer.line_length(current_line) - 1
+      end
 
       def place_cursor(x, y)
         @previous_cursor_position = @current_cursor_position
@@ -309,7 +300,7 @@ module Editors
       end
 
       def page_down
-        down = @buffer.buffer_length - (current_y+ @buffer_top)  
+        down = @buffer.buffer_length - current_line
         if down > @viewport_height then 
           redraw = move_cursor_down(@viewport_height)
           return redraw
@@ -317,7 +308,6 @@ module Editors
           return NO_REDRAW
         end
       end
-
 
       def move_cursor_left(x)
         new_x = current_x - x
@@ -336,7 +326,7 @@ module Editors
       end
 
       def end_cursor
-        end_line = @buffer.length_y(current_y)+1
+        end_line = @buffer.line_length(current_y)+1
         end_line = @viewport_width if end_line > @viewport_width
         place_cursor(end_line,current_y)
       end 
@@ -359,23 +349,18 @@ module Editors
         out_str = "OVR" if !@insert
         out = String.new
         out << parse_c("%WQuark%YEDIT #{VERSION}%W".fit(79)) +"\n"
-        out << parse_c("%YCTRL + e%YX%Wit %Y|%W %YG%W Help %Y|%W %YS%Wave %Y|%W %YN%Wewline %Y|%W %YY%W Delete %Y|%W #{out_str} %Y|%W Line: #{current_y + @buffer_top}".fit(79)) << "\n" 
+        out << parse_c("%YCTRL + e%YX%Wit %Y|%W %YG%W Help %Y|%W %YS%Wave %Y|%W %YN%Wewline %Y|%W %YY%W Delete %Y|%W #{out_str} %Y|%W Line: #{current_line}".fit(79)) << "\n"
         out << bg("black") << fg("WHITE")
         return out
       end
 
       def redraw(force)
-        @dirty = true if force
-        if @dirty
+        if force or @dirty
           @dirty = false
-          if force
-            [clear_screen,
-              header,
-              buffer.to_s(@buffer_top,@viewport_height),
-              update_cursor_position].to_s
-          else
-            ""
-          end
+          [clear_screen,
+            header,
+            buffer.to_s(@buffer_top,@viewport_height),
+            update_cursor_position].join("")
         else
           ""
         end
@@ -385,86 +370,48 @@ module Editors
         @buffer.clear
       end
 
-      # this is complicated... too complicated...
-
-
-
       def input_char_at_cursor(c)
-        if @insert then                                        #we are in insert mode
-          @buffer.insert_char(current_x,(current_y) + @buffer_top,c)
-          l_space,wrap = @buffer.detect_and_wrap(current_y,current_x,@screen_width - 1)
-          if !wrap.nil? then
-            if !(current_x < @buffer.length_y(current_y) - 1) then    #no wrap... insert a character
-              if (current_x + wrap.length) < @screen_width  then
-                move_cursor_right(1)
-                return [c,NO_REDRAW]
-              else                                                           #wrap at insert at end of line
-                @buffer.insert_line_at(current_y,wrap.to_s.strip!)
-                home_cursor
-                move_cursor_right(wrap.length - 1)
-                move_cursor_down(1)
-              end
-              $lf.print "I'm here...wrap line\n"
-              return [nil,REDRAW]        #we don't want a character printed because we are in overflow
-            end
-
-            $lf.print "@buffer.length + wrap.length: #{@buffer.length_y(current_y) +(wrap.length + 2)}\n"
-            $lf.print "@screen_width: #{@screen_width}\n"
-            $lf.print "room on line: #{@buffer.room_on_line(current_y + 1,wrap,@screen_width)}\n"
-            $lf.print "@buffer.length: #{@buffer.length}\n"
-            if (@buffer.length_y(current_y) + (wrap.length + 2)) >= @screen_width then #wrap for insert not at end of line
-              $lf.print "in insert not at end of line...\n"
-              if @buffer.room_on_line(current_y + 1,wrap,@screen_width) then	   
-
-                @buffer.insert_at_line(current_y+1,0,wrap)  #subsequent words go to next line
-
-                $lf.print "on next existing line...\n"
-              else
-
-                @buffer.insert_line_at(current_y,wrap) #out of room so make a new line
-
-                $lf.print "on a new line...\n"
-              end
-              move_cursor_right(1)
-              $lf.print "done with insert before line\n"
-              return [c,REDRAW]
-            end
-          end
-          move_cursor_right(1)  #redraw because we are inserting...
-          if (@buffer.length_y(current_y)+1) == current_x then
-            return [c,NO_REDRAW]     #insert mode at eol so no redraw
-          else
-            return [c,REDRAW] #insert mode not at eol, so redraw
-          end
-
-        else
-          if current_x < @screen_width then
-            @buffer[current_x,(current_y) + @buffer_top] = c    #we are in over-write mode....
+        # are we in insert or overwrite mode?
+        if @insert then
+          @buffer.insert_char(current_x, current_line, c)
+          split_pos, wrap = @buffer.wrap_to_width(current_line, @screen_width - 1)
+          if !wrap then
             move_cursor_right(1)
-            $lf.print "Overwrite Mode\n"
             return [c,NO_REDRAW]
           else
-            $lf.print "I'm here...sixth return\n"
+            # move to the end of the wrapped portion
+            home_cursor
+            move_cursor_down(1)
+            move_cursor_right(wrap)
+            # we don't want a character printed because we are in overflow
+            return [nil,REDRAW]
+          end
+        else # overwrite mode
+          if current_x < @screen_width then
+            @buffer[current_x, current_line] = c
+            move_cursor_right(1)
+            return [c,NO_REDRAW]
+          else
+            home_cursor
+            move_cursor_down(1)
             return [nil,NO_REDRAW]
           end
         end
       end
 
-
       def newline
-
-        if @buffer.length_y(current_y) == 0 then
-          @buffer.insert_line_at(current_y,nil)
+        l = current_line
+        x = current_x - 1
+        if @buffer.line_length(l) == 0 then
+          @buffer.insert_line(l, nil)
           move_cursor_down(1)
         else
-          str = @buffer.del_range(current_y,current_x-1,@buffer.length_y(current_y))
-          @buffer.insert_line_at(current_y,str)
-          move_cursor_left(current_x)
+          @buffer.split_line_at(l, x)
+          move_cursor_left(x)
           move_cursor_down(1)
         end
         @dirty = true
       end
-
 
       def deleteline
         @buffer.delete_line_at(current_y)
@@ -472,30 +419,23 @@ module Editors
 
       def backspace
         if current_x > 1  then                           #normal delete, not at BOL
-          $lf.print "Backspace: normal delete\n"
           move_cursor_left(1)
           @buffer.delete_at(current_x, current_y)
         else
           if current_y > 1 then                         # delete at BOL
-            $lf.print "Backspace: delete at BOL\n"
-            if @buffer.length_y(current_y-1) == 0 then   #blank line above
-              $lf.print "Backspace: blank line above\n"
+            if @buffer.line_length(current_y-1) == 0 then   #blank line above
               @buffer.delete_line_at(current_y-1)
               move_cursor_up(1)
             else
               @buffer.paragraph_up(current_y,@screen_width)   #move up until you hit a blank line...
-              $lf.print "Backspace: nothing above?  Paragraph move up\n"
               move_cursor_up(1)
               home_cursor
-              move_cursor_right(@buffer.length_y(current_y))
+              move_cursor_right(@buffer.line_length(current_y))
             end
-            $lf.print "Backspace: redraw\n"
             return REDRAW
-
           end
         end
-        $lf.print "Backspace: no redraw\n"
-        return NO_REDRAW
+        return REDRAW
       end
 
       def update_cursor_position
@@ -510,75 +450,30 @@ module Editors
         return @c.reset
       end
 
-      def fg(forground)
-
-        out = String.new
-
-        case forground
-        when "red"
-          out =  "[31m"
-        when "RED"
-          out  = "[;1;31m"
-        when "green"
-          out << "[32m"
-        when "GREEN"
-          out = "[;1;32m"
-        when "blue"
-          out  = "[34m"
-        when "BLUE"
-          out = "[;1;34m"
-        when "cyan"
-          out = "[36m"
-        when "CYAN"
-          out = "[;1;36m"
-        when "magenta"
-          out = "[35m"
-        when "MAGENTA"
-          out = "[;1;35m"
-        when "yellow"
-          out = "[33m"
-        when "YELLOW"
-          out = "[;1;33m"
-        when "black"
-          out = "[30m"
-        when "BLACK"
-          out = "[;1;30m"
-        when "hide"
-          out = "[?25l"
-        when "show"
-          out = "[?25h"
-        when "reset"
-          out = "[0m"
-
+      def fg(col)
+        t = Term::ANSIColor
+        case col
+        when %w(red green blue cyan magenta yellow black reset)
+          return t.send col
+        when %w(RED GREEN BLUE CYAN MAGENTA YELLOW BLACK)
+          return t.bold + t.send(col.downcase)
+        when 'hide'
+          return "\e[?25l"
+        when 'show'
+          return "\e[?25h"
+        else
+          return ""
         end
-        return out
       end
 
-      def bg(background)
-
-        out = String.new
-
-        case background
-        when "red"
-          out =  "[41m"
-        when "green"
-          out = "[42m"
-        when "blue"
-          out  = "[44m"
-        when "cyan"
-          out = "[46m"
-        when "magenta"
-          out = "[45m"
-        when "yellow"
-          out = "[43m"
-        when "black"
-          out = "[40m"
-        when "white"
-          out = "[47m"
+      def bg(col)
+        t = Term::ANSIColor
+        if %w(red green blue cyan magenta yellow black).include? col
+          return t.send("on_#{col}")
+        else
+          return ""
         end
-        return out
       end
-
 
       def center(string,width,color)
         result = String.new
@@ -648,32 +543,29 @@ module Editors
         out << center("QUARKedit #{VERSION}",width,fg("white"))
         out << w_update_cursor(idt,str+3)
         out << center("By Dossy and Mark Firestone",width,fg("white"))
-        out <<w_update_cursor(idt+36,str+7)
-   #out << fg("hide")
- end
+        out << w_update_cursor(idt+36,str+7)
+        #out << fg("hide")
+      end
 
- def yes_no_window(question)
-   idt = 11
-   str = 10
-   w_width = question.length + 14
-   width = w_width - 2
-   out = make_window(idt-2,str-1,w_width,4,"WHITE","red","yellow","Confirm")
-   out << w_update_cursor(idt+1,str+1)
-   out << fg("WHITE") << bg("red")
-   out << question << "(Y,n): "
- end
+      def yes_no_window(question)
+        idt = 11
+        str = 10
+        w_width = question.length + 14
+        width = w_width - 2
+        out = make_window(idt-2,str-1,w_width,4,"WHITE","red","yellow","Confirm")
+        out << w_update_cursor(idt+1,str+1)
+        out << fg("WHITE") << bg("red")
+        out << question << "(Y,n): "
+      end
 
- def screen_clear       # I don't know why.  Needs two redraws or the background color is wrong....
-   out = redraw(true)
-   out << redraw(true)
-   return out
- end
+      def screen_clear       
+        # I don't know why.  Needs two redraws or the background color is wrong....
+        out = redraw(true)
+        out << redraw(true)
+        return out
+      end
 
- end #of class
-
-
-
-
+    end #of class
 
     class Editor
 
@@ -687,163 +579,163 @@ module Editors
         @state = EditorState.new(width, height,in_file)
         @in_io  = in_io
         @out_io    = out_io
-  @w_mode = false
+        @w_mode = false
         @w_type = MESSAGE
-  @supress = false
-  @bbs_mode = bbs_mode
+        @supress = false
+        @bbs_mode = bbs_mode
       end
 
       def run
         @out_io.sync = true
         @in_io.sync = false
-  @out_io.print @state.screen_clear
+        @out_io.print @state.screen_clear
         @out_io.print @state.redraw(true)
-  @out_io.print @state.splash_window
-  sleep(1)
+        @out_io.print @state.splash_window
+        sleep(1)
         @out_io.print @state.redraw(true)
-  @out_io.print @state.redraw(true)
+        @out_io.print @state.redraw(true)
         buf = nil
 
         while true
 
-        if select([@in_io], nil, nil, 1) 
-        c = @in_io.sysread(1)
-        #c = @in_io.getc
-     #    $lf.print"c: #{c}\n"
-       #  $lf.print"c-chr: #{c[0]}\n"
-        #       if @supress then   # if we are suppressing the mysterious extra linefeed... we do that here.
-        #     @supress = false
-        #         c = 0.chr if c.bytes.to_a[0] = 10
-        #       end
-
-        if @w_mode then    #We are in window mode, not edit mode...
-        # $lf.print "in wmode\n"
-        #$lf.print "c: #{c.upcase}"
-
-        case c
-        when "\e"      #effectively, esc this is cancel for everything
-          @w_mode = false
-          @out_io.print @state.screen_clear
-        else
-
-          case @w_type
-          when ABORT,SAVE
-            if c.upcase == "Y" or c == RETURN then
-              print "Y"
-              @state.clear if @w_type == ABORT
-              @state.clear_screen
-              sleep(2)
-              break
-            else
-              @out_io.print @state.screen_clear
-              @w_mode = false
-            end
-          end
-        end
+          if select([@in_io], nil, nil, 1) 
+            $lf.print "I made it"
 
 
-        else
-          case c
-          when "\cX" # exit
-            @out_io.print @state.yes_no_window("Post message... Are you sure?")
-            @w_type = SAVE
-            @w_mode = true   
-          when "\cG","\eOP"
-            @out_io.print @state.help_window
-            @w_type  = MESSAGE
-            @w_mode = true
-          when "\cA"
-            @out_io.print @state.yes_no_window("Abort message... Are you sure?")
-            @w_type = ABORT
-            @w_mode = true       
-          when "\cN" #insert line
-            @state.newline
-            @out_io.print @state.redraw(true)
-          when "\cY" #delete line
-            @state.deleteline
-            @out_io.print @state.redraw(true)
-          when "\cL" # refresh
-            @out_io.print @state.redraw(true)
-          when "\r","\n"
-            @state.newline
-            @supress = true if @bbs_mode  #telnet seems to like to echo linefeeds.  lets supress this ...
-            @out_io.print @state.redraw(true)
-          when "\010", "\177"
-            redraw = @state.backspace
-            @out_io.print "\e[#{@state.current_y + @state.header_height};1H\e[K"
-            @out_io.print @state.buffer.line(@state.current_y)
-            @out_io.print @state.update_cursor_position
-            @out_io.print @state.redraw(true) if redraw
-          when "\e" # escape
-            buf = c
-          else
-            if buf.nil?
-              chr = c.unpack("c")[0]
-              if (chr >= 32 && chr <= 127)
-                out_c,redraw = @state.input_char_at_cursor(c)
-                @out_io.putc(out_c) if !out_c.nil?
-                @out_io.print @state.redraw(true) if redraw
-              end
-            else
-              buf << c
-              #	$lf.print "buf: #{buf}\n"
-              case buf
-              when "\e[H","\e[1"
-                @state.home_cursor
-                @out_io.print @state.update_cursor_position
-              when "\e[F","\e[4"
-                @state.end_cursor
-                @out_io.print @state.update_cursor_position
-              when "\e[6"
-                redraw = @state.page_down
-                @out_io.print @state.redraw(true) if redraw
-              when "\e[5"
-                redraw = @state.page_up
-                @out_io.print @state.redraw(true) if redraw
-              when "\e[2"
-                @state.toggle_ins
-                @out_io.print @state.redraw(true)
-              when "\e[A"
-                redraw = @state.move_cursor_up(1)
-                if redraw
-                  @out_io.print @state.redraw(true)
-                else
-                  @out_io.print @state.update_cursor_position
-                end
-                buf = nil
-              when "\e[B"
-                redraw = @state.move_cursor_down(1)
-                if redraw
-                  @out_io.print @state.redraw(true)
-                else
-                  @out_io.print @state.update_cursor_position
-                end
-                buf = nil
-              when "\e[D"
-                @state.move_cursor_left(1)
-                @out_io.print @state.update_cursor_position
-                buf = nil
-              when "\e[C"
-                @state.move_cursor_right(1)
-                @out_io.print @state.update_cursor_position
-                buf = nil
+            c = @in_io.sysread(1)
+            $lf.print "after sysread"
+            #c = @in_io.getc
+            #    $lf.print"c: #{c}\n"
+            #  $lf.print"c-chr: #{c[0]}\n"
+            #       if @supress then   # if we are suppressing the mysterious extra linefeed... we do that here.
+            #     @supress = false
+            #         c = 0.chr if c.bytes.to_a[0] = 10
+            #       end
+
+            if @w_mode then    #We are in window mode, not edit mode...
+              # $lf.print "in wmode\n"
+              #$lf.print "c: #{c.upcase}"
+
+              case c
+              when "\e"      #effectively, esc this is cancel for everything
+                @w_mode = false
+                @out_io.print @state.screen_clear
               else
-                if buf.size >= 3
-                  buf = nil
+
+                case @w_type
+                when ABORT,SAVE
+                  if c.upcase == "Y" or c == RETURN then
+                    print "Y"
+                    @state.clear if @w_type == ABORT
+                    @state.clear_screen
+                    sleep(2)
+                    break
+                  else
+                    @out_io.print @state.screen_clear
+                    @w_mode = false
+                  end
+                end
+              end
+
+
+            else
+              case c
+              when "\cX" # exit
+                @out_io.print @state.yes_no_window("Post message... Are you sure?")
+                @w_type = SAVE
+                @w_mode = true   
+              when "\cG","\eOP"
+                @out_io.print @state.help_window
+                @w_type  = MESSAGE
+                @w_mode = true
+              when "\cA"
+                @out_io.print @state.yes_no_window("Abort message... Are you sure?")
+                @w_type = ABORT
+                @w_mode = true       
+              when "\cN" #insert line
+                @state.newline
+                @out_io.print @state.redraw(true)
+              when "\cY" #delete line
+                @state.deleteline
+                @out_io.print @state.redraw(true)
+              when "\cL" # refresh
+                @out_io.print @state.redraw(true)
+              when "\r","\n"
+                @state.newline
+                @supress = true if @bbs_mode  #telnet seems to like to echo linefeeds.  lets supress this ...
+                @out_io.print @state.redraw(true)
+              when "\010", "\177"
+                redraw = @state.backspace
+                @out_io.print "\e[#{@state.current_y + @state.header_height};1H\e[K"
+                @out_io.print @state.buffer.line(@state.current_y)
+                @out_io.print @state.update_cursor_position
+                @out_io.print @state.redraw(true) if redraw
+              when "\e" # escape
+                buf = c
+              else
+                if buf.nil?
+                  chr = c.unpack("c")[0]
+                  if (chr >= 32 && chr <= 127)
+                    out_c,redraw = @state.input_char_at_cursor(c)
+                    @out_io.putc(out_c) if !out_c.nil?
+                    @out_io.print @state.redraw(true) if redraw
+                  end
+                else
+                  buf << c
+                  #	$lf.print "buf: #{buf}\n"
+                  case buf
+                  when "\e[H","\e[1"
+                    @state.home_cursor
+                    @out_io.print @state.update_cursor_position
+                  when "\e[F","\e[4"
+                    @state.end_cursor
+                    @out_io.print @state.update_cursor_position
+                  when "\e[6"
+                    redraw = @state.page_down
+                    @out_io.print @state.redraw(true) if redraw
+                  when "\e[5"
+                    redraw = @state.page_up
+                    @out_io.print @state.redraw(true) if redraw
+                  when "\e[2"
+                    @state.toggle_ins
+                    @out_io.print @state.redraw(true)
+                  when "\e[A"
+                    redraw = @state.move_cursor_up(1)
+                    if redraw
+                      @out_io.print @state.redraw(true)
+                    else
+                      @out_io.print @state.update_cursor_position
+                    end
+                    buf = nil
+                  when "\e[B"
+                    redraw = @state.move_cursor_down(1)
+                    if redraw
+                      @out_io.print @state.redraw(true)
+                    else
+                      @out_io.print @state.update_cursor_position
+                    end
+                    buf = nil
+                  when "\e[D"
+                    @state.move_cursor_left(1)
+                    @out_io.print @state.update_cursor_position
+                    buf = nil
+                  when "\e[C"
+                    @state.move_cursor_right(1)
+                    @out_io.print @state.update_cursor_position
+                    buf = nil
+                  else
+                    if buf.size >= 3
+                      buf = nil
+                    end
+                  end
                 end
               end
             end
           end
         end
+        @state.buffer
       end
     end
-    @state.buffer
-
   end
-
-end
-
-  end
-
 end
 
