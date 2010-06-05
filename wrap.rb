@@ -23,7 +23,7 @@ class WordWrapper
 
 	def doWrap(text, margin)
 		output = ''
-		text.each do
+		text.each_line do #1.9 fix
 			| paragraph |
 			if (paragraph !~ /^>/)
 				paragraph = wrapParagraph(paragraph, margin-1)
