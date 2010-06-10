@@ -24,10 +24,10 @@ end
 
 
 get '/' do
-  haml :layout
+  haml :index
  #"<h1>Hello world  #{Time.now}</h1>"
 end
 
 get '/about' do
-	"I'm running on Version " + Sinatra::VERSION
+  haml :about
 end
