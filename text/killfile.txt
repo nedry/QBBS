@@ -1,7 +1,15 @@
+    __ __ _ ____   _______ __   
+   / //_/(_) / /  / ____(_) /__ 
+  / ,<  / / / /  / /_  / / / _ \
+ / /| |/ / / /  / __/ / / /  __/
+/_/ |_/_/_/_/  /_/   /_/_/\___/ 
+
+
+
 Your account has been deleted from this system.  You must have annoyed someone.
 
 
-To appeal, please email sysop@retrobbs.org
+To appeal, please email dennis@cortex-media.info
 
 
 Thank you,

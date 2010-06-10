@@ -27,7 +27,7 @@ ECHO = true
 NOECHO = false
 WRAP = true
 NOWRAP = false
-VER = "QUARKware (QBBS) 1.95"
+VER = "QUARKseven (QBBS) beta"
 DONE = false
 
 SYSOPNAME = "SYSOP"

@@ -1,0 +1,253 @@
+/* Thanks to Veritas - northstar networks for this style */
+/* Copyright David Leadbeater 2002, Licensed under the GPL */
+
+/* This CSS File controls nearly all the layout related options
+ * and colours in CGI:IRC.
+ * The exceptions are the main frame - where background colour is set
+ * in formats.
+ *
+ * Also note this only affects decently javascript enabled browsers
+ * for older browsers the nonjs.pm is used which has hardly any style
+ * settings
+ */
+
+.userlist-body {
+   margin: 0;
+   scrollbar-base-color: #BBBBBB;
+   scrollbar-darkshadow-color: #222222;
+   scrollbar-face-color: #555555;
+   scrollbar-highlight-color: #222222;
+   scrollbar-shadow-color: #AAAAAA;
+   scrollbar-track-color: #444444;
+   background-color: #303030;
+   border-left: 1px solid #999999;
+}
+
+.userlist-div {
+   width: 100%;
+}
+
+.userlist-item {
+   font-family: MS Sans Serif,arial,verdana,helvetica,sans serif,sans;
+   font-size: 10px;
+   cursor: default;
+   color: #808080;
+}
+
+.userlist-select {
+   font-family: MS Sans Serif,arial,verdana,helvetica,sans serif,sans;
+   font-size: 10px;
+   background-color: #707070;
+}
+
+.userlist-btn {
+   font-family: MS Sans Serif,arial,verdana,helvetica,sans serif,sans;
+   font-size: 10px;
+   background-color: #606060;
+   color: #909090;
+   cursor: default;
+   border-bottom: 1px solid #505050;
+   border-right: 1px solid #505050;
+   border-top: 1px solid #404040;
+   border-left: 1px solid #404040;
+}
+
+.userlist-form {
+   float: right;
+}
+
+.userlist-hover {
+   width: 95%;
+   font-size: 10px;
+   font-family: MS Sans Serif,arial,verdana,helvetica,sans serif,sans;
+   cursor: default;
+   background-color: #808080;
+}
+
+.userlist-selected {
+   width: 95%;
+   font-size: 10px;
+   font-family: MS Sans Serif,arial,verdana,helvetica,sans serif,sans;
+   background-color: #909090;
+}
+
+.userlist-table TR {
+   vertical-align: top;
+   margin-bottom: 5px;
+}
+
+
+.userlist-status {
+   width: 14px;
+   font-size: 10px;
+   font-family: courier,monospace,fixed;
+   text-align: center;
+}
+
+.userlist-item {
+   width: 95%;
+   font-size: 10px;
+}
+
+.userlist-op {
+   color: #0000dd;
+   background-color: #404040;
+   border: 1px solid #0000dd;
+}
+
+.userlist-voice {
+   color: #a0a0a0;
+   background-color: #404040;
+   border: 1px solid #a0a0a0;
+}
+
+.main-body { 
+   word-wrap: break-word;
+   scrollbar-base-color: #BBBBBB;
+   scrollbar-darkshadow-color: #222222;
+   scrollbar-face-color: #555555;
+   scrollbar-highlight-color: #222222;
+   scrollbar-shadow-color: #AAAAAA;
+   scrollbar-track-color: #444444;
+   background-color: #303030;
+   color: #909090;
+   font-family: arial;
+   font-size: 12px;
+}
+
+.main-span IMG {
+   border: 0;
+}
+
+.main-link {
+   color: #000099;
+   text-decoration: underline;
+   background-color: #303030;
+}
+
+.main-motd {
+   font-family: monospace;
+}
+
+.main-item {
+   margin-left: 15px;
+   text-indent: -15px;
+}
+
+.form-body {
+   border-top: 1px solid #404040;
+   margin: 0;
+   background-color: #303030;
+   border: 1px
+   color: #b0b0b0;
+}
+
+.form-form {
+   display: inline;
+}
+
+.form-econtain {
+   display: inline;
+   position: absolute;
+   right: 0;
+}
+
+.form-say {
+   border: 0;
+   width: 90%;
+   padding-left: 4px;
+   background-color: #505050;
+}
+
+.form-nickname {
+   padding-left: 4px;
+   background-color: #303030;
+   color: #303030;
+}
+
+.form-extra { 
+   display: none; 
+}
+
+.form-boldbutton { 
+   font-weight: bold;
+}
+
+.form-expand {
+   border: 0;
+   background-color: #303030;
+   color: #909090;
+}
+
+.wlist-body {
+   margin: 0px;
+   background: #303030;
+   cursor: default;
+}
+
+.wlist-chooser { 
+   border: 1px solid #f1f1f1;
+   padding: 2px;
+   margin: 2px;
+   cursor: default;
+}
+
+.wlist-container {
+   width: 100%;
+   height: 100%;
+   padding: 5px;
+   cursor: default;
+}
+
+.wlist-mouseover {
+   background-color: #505050;
+   border: 1px solid #000000;
+   padding: 2px;
+   margin: 2px;
+   cursor: default;
+}
+
+.wlist-active {
+   background: #404040;
+   border: 1px solid #909090;
+   padding: 2px;
+   margin: 2px;
+   cursor: default;
+}
+
+.wlist-buttons {
+    text-align: right;
+    width: 30px;
+}
+
+.wlist-button {
+   border: 0;
+   cursor: default;
+}
+
+.wlist-container {
+}
+
+.wlist-table {
+   width: 100%;
+   height: 100%;
+   border-bottom: 1px solid #999999;
+}
+
+.options-body {}
+.options-title {}
+.options-table {}
+.options-checkbox {}
+.options-select {}
+.options-option {}
+.options-input {}
+
+.options-close { /* http://www.tom.me.uk/scripting/links.asp */
+   text-decoration: underline;
+   text-align: right;
+   color: #00f;
+   cursor: pointer;
+   cursor: hand;
+}
+
+

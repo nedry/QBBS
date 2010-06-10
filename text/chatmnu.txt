@@ -1,6 +1,9 @@
-%G_%Y_%Br%Ce%Wt%Mr%Ro %GC%YO%BM%CP%WU%MT%RI%GN%YG%B %CB%WB%MS%R_%G_%Y_%B_%C_%W_%M_%R_%G_%Y_%B_%C_%W_%M_%R_%G_%Y_%B_%C_%W_%M_%R_%G_%Y_%B_%C_%W_%M_%R_%G_%Y_%B_
-
-%C                          IRC CHAT COMMANDS
+%C    ________  ______   ________          __ 
+   /  _/ __ \/ ____/  / ____/ /_  ____ _/ /_
+   / // /_/ / /      / /   / __ \/ __ `/ __/
+ _/ // _, _/ /___   / /___/ / / / /_/ / /_  
+/___/_/ |_|\____/   \____/_/ /_/\__,_/\__
+                     
   
 %W[%Y/JOIN%W]%G a channel                    %W[%Y/LIST%W]%G Channels
 %W[%Y/NAMES%W]%G of users on current channel %W[%Y/ME%W]%G Perform Action
