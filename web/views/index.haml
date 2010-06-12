@@ -1,4 +1,23 @@
 = partial("header")
+#hmain-l
+  #hmain2-l
+    #hmain3-l
+    = partial("display_text",:locals => {:display => display_text})
+    .main-content
+      %table{:border => "0"}
+        %form{:action => "clogon", :method => "post"}
+          %tr
+            %td Account Name
+            %td 
+              %input{:name => "acc_name", :id => "acc_name", :type => "text", :maxlength => "50"}
+          %tr
+            %td Password
+            %td 
+              %input{:name => "password", :id => "password", :type => "password", :maxlength => "50"}	    
+          %tr
+            %td{:colspan => "2"}
+              %input{:name => "login", :type => "submit", :value => "Login"} 
+	     
 = partial("footer")
 		
  
