@@ -1,27 +1,25 @@
-= partial("header")
-#main-l
-	#main2-l
-		#main3-l
-			.main-title
-				%h2{:class => "w_header"}==About #{title}
-			.main-body
-				%h2{:class=> "w_header"}QBBS is a production of:
-				%img{:src => "../graphix/logo.gif"}
-				%h2{:class => "w_header"}Programmers:
-				%ul
-					%li 
-						%a{:href => "mark"}Mark Firestone
-					%li Martin Demello
-					%li 
-						%a{:href => "http://www.yagni.com"}Wayne Conrad
-					%li John Lorance
-
-
-				%h2{:class => "w_header"}Libraries:
-				%ul
-					%li 
-						%a{:href => "http://www.modruby.net"}Mod_Ruby
-					%li 
-						%a{:href => "http://ruby.scripting.ca/postgres/"}Postgresql Library
+.main_frame
+  #main-l
+    #main2-l
+      #main3-l
+        .main-title
+          %h2{:class => "w_header"}==About #{title}
+          .main-body
+            %h2{:class=> "w_header"}QBBS is a production of:
+            %img{:src => "../graphix/logo.gif"}
+            %h2{:class => "w_header"}Programmers:
+            %ul
+              %li 
+                %a{:href => "mark"}Mark Firestone
+              %li Martin Demello
+              %li 
+                %a{:href => "http://www.yagni.com"}Wayne Conrad
+              %li John Lorance
+            %h2{:class => "w_header"}Libraries:
+            %ul
+              %li 
+                %a{:href => "http://www.modruby.net"}Mod_Ruby
+              %li 
+                %a{:href => "http://ruby.scripting.ca/postgres/"}Postgresql Library
 
 = partial("footer")
