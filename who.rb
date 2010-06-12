@@ -1,4 +1,4 @@
-require "db_who_telnet.rb"
+require "db/db_who_telnet.rb"
 
 class Session
 

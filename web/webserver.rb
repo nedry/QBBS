@@ -5,8 +5,8 @@ require "pg_ext"
 
 require "ansi.rb"
 require "../db.rb"
-require "../db_user.rb"
-require "../db_who.rb"
+require "../db/db_user.rb"
+require "../db/db_who.rb"
 require "../consts.rb"
 
 

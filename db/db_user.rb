@@ -44,8 +44,10 @@ end
 def alias_exists(alais)
 
 
-  alais.gsub!("'",BEL) 
-  alais.upcase! 
+  if alais != nil then
+    alais.gsub!("'",BEL)
+    alais.upcase!
+  end
   result = false
 
   res = @db.exec("SELECT COUNT(*) FROM users WHERE alias = '#{alais}'")
