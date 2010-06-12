@@ -7,14 +7,14 @@ class Session
     print
     print "%R#%W#{number} %G #{bulletin.name}"
     print "%CPath: %G#{bulletin.path}"
-  end
+  end 
 
   def bullmaint
 
     readmenu(
-    :initval => 1,
-    :range => 1..(b_total),
-    :prompt => '"%W#{sdir}Bulletin [%p] (1-#{b_total}): "'
+      :initval => 1,
+      :range => 1..(b_total),
+      :prompt => '"%W#{sdir}Bulletin [%p] (1-#{b_total}): "'
     ) {|sel, bpointer, moved|
       if !sel.integer?
         parameters = Parse.parse(sel)
@@ -37,12 +37,12 @@ class Session
       end # of case
       p_return = [bpointer,(b_total)]
     }
-  end
+  end 
 
   def addbulletin
 
-    name = getinp("Enter new bulletin name: ",false) {|inp| inp.strip != ""}.strip
-    path = getinp("Enter new bulletin path: ",false) {|inp| inp.strip != ""}.strip
+    name = getinp("Enter new bulletin name: ", :nonempty)
+    path = getinp("Enter new bulletin path: ", :nonempty)
     if yes("Are you sure (Y,n)? ", false, false,true)
       add_bulletin(name, path)
     else
@@ -54,12 +54,12 @@ class Session
   def changebulletinname(bpointer)
 
     bulletin = fetch_bulletin(bpointer)
-    name = getinp("Enter new bulletin name: ",false).strip
+    name = getinp("Enter new bulletin name: ")
     if name !='' then
       bulletin.name = name
       update_bulletin(bulletin)
-    else
-      print "%RNot Changed."
+    else 
+      print "%RNot Changed." 
     end
     print
   end
@@ -68,7 +68,7 @@ class Session
 
     bulletin = fetch_bulletin(bpointer)
     print CHANGEBULLETINPATHWARNING
-    path = getinp("Enter new bulletin path: ",false).strip
+    path = getinp("Enter new bulletin path: ")
     if path != ""
       bulletin.path = path
       update_bulletin(bulletin)
@@ -91,9 +91,9 @@ class Session
   def showbulletin(bpointer)
     if b_total > 0 then
       displaybull(bpointer)
-    else
+    else 
       print
-      print "#%RNo bulletins.  Why not add one?"
+      print "#%RNo bulletins.  Why not add one?" 
     end
   end
 
@@ -113,23 +113,21 @@ class Session
     print
   end
 
-
   def bullets(parameters)
-    t = (parameters[0] > 0) ? parameters[0] : 0
+    t = (parameters[0] > 0) ? parameters[0] : 0   
 
     if t == 0 then
       displaybullet  if !existfileout('bulletins',0,true)
-      prompt = "\r\n%WBulletin #[1-#{b_total}] ? %Y<--^%W to quit: "
+      prompt = "\r\n%WBulletin #[1-#{b_total}] ? %Y<--^%W to quit: " 
       while true
-        getinp(prompt,false) {|inp|
-          happy = inp.upcase.strip
+        getinp(prompt, :nonempty) {|inp|
+          happy = inp.upcase
           t = happy.to_i
           case happy
-          when "";   return
           when "CR"; crerror
           when "?";  displaybullet  if !existfileout('bulletins',0,true)
           else
-            if t > 0 and t <= b_total then
+            if t > 0 and t <= b_total then 
               bulletin = fetch_bulletin(t)
               gfileout(bulletin.path) #if @bulletins.has_index?(t)
             end
@@ -137,6 +135,6 @@ class Session
         }
       end
     end
-  end
+  end 
 
 end #class Session
