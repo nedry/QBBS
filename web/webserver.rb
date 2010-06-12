@@ -3,6 +3,7 @@ require 'sinatra'
 require 'haml'
 require "pg_ext"
 
+require "ansi.rb"
 require "../db.rb"
 require "../db_user.rb"
 require "../db_who.rb"
@@ -12,7 +13,7 @@ require "../consts.rb"
  enable :sessions
 
 TEXT_ROOT = "/home/mark/qbbs/text/"
-TITLE = "QUARKseven Web Interface (v.01)"
+TITLE = "QUARKseven Web v.01"
 
 helpers do
 
@@ -40,7 +41,7 @@ end
  	if File.exists?(filename) 
 		output << "<br>"
  		IO.foreach(filename) { |line| line=line+"<br>" 
- 		  line.gsub!(" ","&nbsp;")
+ 		  line = parse_webcolor(line)
  		  output << line } 
  	else
  		output =  "<br>#{filename} has run away...please tell sysop!<br>"
@@ -63,7 +64,14 @@ end
 
 get '/' do
 	
-  haml :index, :locals => {:display_text => text_to_html("welcome1.txt")}
+graphfile =  "welcome1.ans"
+ plainfile =  "welcome1.txt"
+
+ t_file = ROOT_PATH + TEXTPATH + "welcome1.ans"
+
+ test = File.exists?(t_file) ? graphfile : plainfile
+	
+  haml :index, :locals => {:display_text => text_to_html(test)}
 end
 
 get '/about' do
@@ -72,13 +80,35 @@ end
 
 post '/clogon' do
   open_database
+  happy =""
   name = params["acc_name"]
-  passwd = params["password"]
+  passwd = params["password"].upcase
   if user_exists(name) then 
    if check_password(name,passwd) then
-     haml :success 
+     session[:name] = name
+     redirect "/welcome"
    else
      haml :failure
   end
 end
+end
+
+get '/goodbye' do
+  session[:name] = nil
+  haml :goodbye  
+end
+
+get '/welcome' do
+  graphfile =  "welcome2.ans"
+   plainfile =  "welcome2.txt"
+
+ t_file = ROOT_PATH + TEXTPATH + "welcome2.ans"
+
+ test = File.exists?(t_file) ? graphfile : plainfile
+ if !session[:name].nil? then
+   haml :welcome,  :locals => {:display_text => text_to_html(test)}
+ else
+   haml :notlogged
+ end
+  
 end
