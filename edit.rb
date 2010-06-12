@@ -35,7 +35,7 @@ def writefile(filename, array)
   return unless filename
   lf = File.new(filename, File::WRONLY|File::TRUNC|File::CREAT, 0644)
   array.each {|x|
-    print "."  
+    print "."
     lf.puts x
   }
   lf.close
@@ -47,8 +47,8 @@ def pull_apart_args(args)
   filename = nil
   if !args.nil? then
     filename = args.last
-    args.each {|arg| 
-      bbs_mode = true if arg == "-L" 
+    args.each {|arg|
+      bbs_mode = true if arg == "-L"
       #put more switches here
     }
   end
