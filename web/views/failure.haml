@@ -1,0 +1,21 @@
+.main_frame
+  #main-l
+    #main2-l
+      #main3-l
+        .main-title
+          %h2{:class => "w_header"}Logon Failure
+          .main-content
+            %table
+              %tr
+                %td
+                  %img{:src => "../graphix/boom.gif"}
+                %td
+                  Incorrect account or password. <br>
+                  You may create a new account 
+                  %a{:href => "/new"}here.
+                  %br
+                  Try
+                  %a{:href => "/"}again.
+
+
+= partial("footer")
