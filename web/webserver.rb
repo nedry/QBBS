@@ -80,6 +80,25 @@ def close_database
   @db.close
 end
 
+def side_menu_gubbins
+ open_database 
+ groups = fetch_groups
+ name = session[:name]
+ uid = get_uid(name)
+
+    if w_scanformail(uid) then
+    e_out = '<a href="/email">Email (New!)</a><br>'
+   else
+     e_out = '<a href="/email">Email</a><br>'
+   end
+   
+   g_out = ""
+      groups.each {|group| line = "<li><a href='areas.rbx?m_grp=#{group.number}'>#{group.groupname}</a></li>"
+              g_out << (line)}
+   close_database
+ return [e_out,g_out]
+end
+
 get '/' do
 	
 graphfile =  "welcome1.ans"
@@ -138,22 +157,9 @@ get "/main" do
 
 if !session[:name].nil? then
  
- open_database 
- groups = fetch_groups
- name = session[:name]
- uid = get_uid(name)
-
-    if w_scanformail(uid) then
-    e_out = '<a href="email.rbx">Email (New!)</a><br>'
-   else
-     e_out = '<a href="email.rbx">Email</a><br>'
-   end
-   
-   g_out = ""
-      groups.each {|group| line = "<li><a href='areas.rbx?m_grp=#{group.number}'>#{group.groupname}</a></li>"
-              g_out << (line)}
+ e_out,g_out = side_menu_gubbins
 		
-  haml :main, :locals => {:email => e_out, :groups => g_out, :uid => uid }
+  haml :main, :locals => {:email => e_out, :groups => g_out}
  else 
    haml :notlogged
  end
