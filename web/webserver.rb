@@ -5,8 +5,12 @@ require "pg_ext"
 
 require "ansi.rb"
 require "../db.rb"
+require "../db/db_class.rb"
+require "../db/db_area.rb"
+require "../db/db_email.rb"
 require "../db/db_user.rb"
 require "../db/db_who.rb"
+require "../db/db_groups.rb"
 require "../consts.rb"
 
 
@@ -49,14 +53,28 @@ end
    return output
  end
 
-def w_open_database
- 
- begin
-  @db = PGconn.connect(DATAIP,5432,"","",DATABASE,DB_UID,DB_PASSWD)
- rescue
-  print "Fatal Error: Database Connection Failed.  Halted."
+  def fix_pointer(user,m_area)
+   user.lastread = Array.new(2,0) if user.lastread == nil or user.lastread == 0
+   user.lastread[m_area] ||= 0 
+   return user
  end
-end
+ 
+def w_scanformail(uid)
+  
+  user = fetch_user(uid.to_i)
+  user = fix_pointer(user,0)
+  area = fetch_area(0)
+
+  hash = email_lookup_table(area.tbl,user.name)
+  total =  e_total(area.tbl,user.name)
+  pointer = find_epointer(hash,user.lastread[0],area.tbl,user.name) 
+  if pointer != nil then  
+   if total > pointer then	
+    return true #new mail
+   end
+  end
+  return false #no new mail
+ end
 
 def close_database
   @db.close
@@ -86,8 +104,11 @@ post '/clogon' do
   if user_exists(name) then 
    if check_password(name,passwd) then
      session[:name] = name
+     session[:uid] =  get_uid(name) 
+     close_database
      redirect "/welcome"
    else
+     close_database
      haml :failure
   end
 end
@@ -95,6 +116,7 @@ end
 
 get '/goodbye' do
   session[:name] = nil
+  session[:uid] = nil
   haml :goodbye  
 end
 
@@ -110,5 +132,29 @@ get '/welcome' do
  else
    haml :notlogged
  end
-  
+end
+
+get "/main" do
+
+if !session[:name].nil? then
+ 
+ open_database 
+ groups = fetch_groups
+ name = session[:name]
+ uid = get_uid(name)
+
+    if w_scanformail(uid) then
+    e_out = '<a href="email.rbx">Email (New!)</a><br>'
+   else
+     e_out = '<a href="email.rbx">Email</a><br>'
+   end
+   
+   g_out = ""
+      groups.each {|group| line = "<li><a href='areas.rbx?m_grp=#{group.number}'>#{group.groupname}</a></li>"
+              g_out << (line)}
+		
+  haml :main, :locals => {:email => e_out, :groups => g_out, :uid => uid }
+ else 
+   haml :notlogged
+ end
 end
