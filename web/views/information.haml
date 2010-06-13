@@ -1,11 +1,13 @@
 .main_frame
   = partial("side", :locals => {:email => email, :groups => groups})
-  #main-l
-    #main2-l
-      #main3-l
+  #wmain-l
+    #wmain2-l
+      #wmain3-l
         .main-title
           %h2{:class => "w_header"}
-          Pick Something 
-          =name
+            System Information
+        .main-content
+          =bulletin
+	  
        
 = partial("footer")
