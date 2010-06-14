@@ -185,3 +185,9 @@ def add_user(name,ip,password,citystate,address,length,width,ansi, more, level, 
 
 
 end
+
+def fetch_user_list
+ res = @db.exec("SELECT  name, citystate, number FROM users ORDER BY name") 
+ result = result_as_array(res)
+return result
+end
