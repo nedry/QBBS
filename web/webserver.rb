@@ -14,13 +14,20 @@ require "../db/db_who.rb"
 require "../db/db_wall.rb"
 require "../db/db_groups.rb"
 require "../db/db_bulletins.rb"
+require "../db/db_log.rb"
+require "../db/db_who.rb"
+require "../db/db_who_telnet.rb"
 require "../consts.rb"
+require "../wrap.rb"
 
 
  enable :sessions
 
 TEXT_ROOT = "/home/mark/qbbs/text/"
 TITLE = "QUARKseven Web v.01"
+EXISTS = 1
+INVALID = 2
+OKAY = 3
 
 helpers do
 
@@ -254,6 +261,194 @@ def pntr(user,c_area)
  return h_msg
 end
 
+def validate_user(username)
+
+ happy = username.rindex(/[,*@:\']/)
+ 
+  if happy.nil? then
+   if !user_exists(username) then
+    puts username
+    return OKAY
+   else
+    return EXISTS
+   end
+  else
+    return INVALID
+ end
+end
+
+post "/postsave" do
+
+if !session[:name].nil? then
+  open_database
+  name = session[:name]
+  uid = get_uid(name)
+  who_list_update(uid,"Writing a Message:")
+  
+  m_area = params['m_area']
+  m_area = m_area.to_i
+  last = params["last"]
+  last = last.to_i
+  dir =params["dir"]
+  dir = "+" if dir == ""
+  msg_to = params["msg_to"]
+  msg_subject=params["msg_subject"]
+  msg_text=params['msg_text']
+
+  post_out = ""
+    area=fetch_area(m_area)
+    user = fetch_user(get_uid(name))
+  if (user.areaaccess[area.number] == "W") or (user.level == 255) and (!area.delete) then
+       msg_to = msg_to[0..39] if msg_to.length > 40
+       msg_subject = msg_subject[0..39] if msg_subject.length > 40
+       msg_text = WordWrapper.wrap(msg_text,79)
+       msg_text.gsub!(10.chr,"")
+       msg_text.gsub!(CR.chr,DLIM)
+
+      msg_date = Time.now.strftime("%m/%d/%Y %I:%M%p")
+      absolute = add_msg(area.tbl,msg_to,name,msg_date,msg_subject,msg_text,false,false,false,nil,nil,nil,nil,false)
+      post_out << "Posted Absolute Message ##{absolute}<BR>"
+      post_out << ("<a href='/message?m_area=#{m_area}&last=#{last}&dir=#{dir}'>Return</a>&nbsp;&nbsp;")
+     else
+      post_out << 'You do not have access.'
+     end
+  e_out,g_out = side_menu_gubbins    #make the side menu database inserts on the sinatra side, like the manual says
+   close_database
+   haml :post, :locals => {:email => e_out, :groups => g_out, :post => post_out}
+  else 
+   haml :notlogged
+  end
+ end
+get '/post' do
+
+if !session[:name].nil? then
+  open_database
+  name = session[:name]
+  uid = get_uid(name)
+  who_list_update(uid,"Information:")
+  
+  m_area = params['m_area']
+  m_area = m_area.to_i
+  last =params["last"]
+  last = last.to_i
+  dir = params["dir"]
+  dir = "+" if dir == ""
+  to = params["to"]
+  subject=params["subject"]
+  
+   user = fetch_user(get_uid(name))
+
+   area=fetch_area(m_area)
+   
+    post_out = ""
+     if (user.areaaccess[area.number] == "W") or (user.level == 255) and (!area.delete) then
+       reply = ""
+        if to !="" then 
+	       curmessage = fetch_msg(area.tbl,absolute_message(area.tbl,last))
+	       curmessage.msg_text.gsub!(10.chr,'')
+	       reply = curmessage.msg_text.split(227.chr)
+	        if curmessage.network then
+	         reply,q_msgid,q_via,q_tz,q_reply = qwk_kludge_search(reply)
+          end
+        end
+          post_out <<  "<table>"
+          post_out << "<form name='main' method='post' action='/postsave'>" 
+          post_out << "<input name='dir' type='hidden'  value='#{dir}'>" 
+          post_out <<  "<input name='last' type='hidden' value='#{last}'>" 
+          post_out <<  "<input name='m_area' type='hidden' value='#{m_area}'>"
+          
+	     if to != "" then
+	      post_out <<  "<input name='msg_to' type='hidden' value='#{to}'>"
+	     end
+          post_out <<  "<tr><td>From: </td> <td>#{name}</td></tr>" 
+          post_out << "<tr><td>To:</td>"
+          if to == "" then 
+           post_out << "<td><input name='msg_to' type='text' id='msg_to'>" 
+          else 
+           post_out << "<td>#{to}"
+          end
+          post_out << "</td></tr>" 
+          post_out <<  "<tr><td>Subject:</td><td><input name='msg_subject' type='text' id='msg_subject' value='#{subject}'></td></tr>"
+          post_out <<  "#{CRLF}"
+          post_out <<  "<tr><td colspan=2><textarea style='font-size:12px' name='msg_text' cols='79' rows='25'  id='msg_text'>#{CRLF}"
+          if to != "" then 
+           post_out <<  ("--- #{to} wrote --- #{CRLF}")
+           reply.each {|line| post_out << "&gt; #{line[0..75].strip}#{CRLF}"}
+          end
+    
+               
+         post_out << "</textarea></td>" 
+         post_out << "</tr>"
+          post_out << "<tr>" 
+          post_out << "<td>&nbsp;</td>" 
+          post_out << "<td><input type='submit' name='Submit' value='Post'>" 
+          post_out << "<input type='reset' name='Reset' value='Reset Form'> </td>" 
+          post_out << "</tr>" 
+          post_out << "</form>" 
+	  post_out << "</table>"
+     else
+     post_out << 'You do not have access.'
+     end
+  
+  
+   e_out,g_out = side_menu_gubbins    #make the side menu database inserts on the sinatra side, like the manual says
+   close_database
+   haml :post, :locals => {:email => e_out, :groups => g_out, :post => post_out}
+  else 
+   haml :notlogged
+  end
+ end
+ 
+
+
+
+
+post '/usersave' do
+
+username= params['username']
+new_password = params["new_password"]
+verify_password = params["verify_password"]
+email = params['email']
+location = params['location']
+open_database
+
+    if (new_password.upcase.strip == verify_password.upcase.strip) and (new_password.length > 4) then
+        happy = (/^(\S*)@(\S*)\.(\S*)/) =~ email
+	 if !happy.nil? then 
+	  if location.length > 5 then
+	  user_to_make = validate_user(username)
+	  if user_to_make == OKAY then
+	   puts "here I am"
+	   add_user(username,'000.000.000',new_password.upcase,location,email,24,80,true, true, DEFLEVEL, true) 
+	   haml :usersuccess
+	  else
+	    case user_to_make
+		    when 1
+		       haml :userfailure, :locals => {:error => "Username Already Exists..."}
+		     when 2
+		       haml :userfailure, :locals => {:error => "User IDs must be between 3 and 25 characters, and may not contain...<br>the characters : * @ , ' "}
+		end
+	    end
+	  else
+	    haml :userfailure, :locals => {:error => "Invalid location."}
+	  end
+	 else 
+	  haml :userfailure, :locals => {:error => "Invalid E-mail address."}
+	 end
+       else
+        if new_password.length < 5 then
+	 haml :userfailure, :locals => {:error =>"Passwords must be at least 5 characters."}
+	else
+	  haml :userfailure, :locals => {:error => "Passwords do not match."}
+	end
+   end
+end
+
+get '/newuser' do
+	
+  haml :newuser
+end
+
 get '/' do
 	
 graphfile =  "welcome1.ans"
@@ -264,6 +459,18 @@ graphfile =  "welcome1.ans"
  test = File.exists?(t_file) ? graphfile : plainfile
 	
   haml :index, :locals => {:display_text => text_to_html(test)}
+end
+
+get '/newusermsg' do
+	
+graphfile =  "newuser.ans"
+ plainfile =  "newuser.txt"
+
+ t_file = ROOT_PATH + TEXTPATH + "newuser.ans"
+
+ test = File.exists?(t_file) ? graphfile : plainfile
+	
+  haml :newusermsg, :locals => {:display_text => text_to_html(test)}
 end
 
 get "/information" do
@@ -287,7 +494,100 @@ if !session[:name].nil? then
    haml :notlogged
   end
  end
+ 
 
+ 
+ get "/showuser" do
+
+if !session[:name].nil? then
+  open_database
+  name = session[:name]
+  uid = get_uid(name)
+  who_list_update(uid,"User Details:")
+  
+  o_uid=params['uid'].to_i
+  o_user = fetch_user(o_uid)
+  
+  
+  o_out = ""
+  o_out << "<table cellspacing='5'>"
+  o_out <<  '<table>'
+  o_out <<  "<tr><td>email:</td><td>#{o_user.address}</td></tr>"
+  o_out <<  "<tr><td>location:</td><td>#{o_user.citystate}</td></tr>"
+  o_out <<  "<tr><td>last on:</td><td>#{o_user.laston}</td></tr>"
+  o_out <<  "<tr><td>access level:</td><td>#{o_user.level}</td></tr>"
+  o_out <<  "<tr><td>chat alias:</td><td>#{o_user.alais}</td></tr>"
+  o_out << '</table>'
+   e_out,g_out = side_menu_gubbins    #make the side menu database inserts on the sinatra side, like the manual says
+   close_database
+   haml :showuser, :locals => {:email => e_out, :groups => g_out, :output => o_out, :username => o_user.name }
+  else 
+   haml :notlogged
+  end
+ end
+ 
+ get "/users" do
+
+if !session[:name].nil? then
+  open_database
+  name = session[:name]
+  uid = get_uid(name)
+  who_list_update(uid,"User List:")
+  u_out = ""
+  u_out << "<table cellspacing='5'>"
+  u_out << "<tr><td><b>User ID</b></td><td><b>Location</b></td></tr>"
+  fetch_user_list.each {|x| 
+           u_out << "<tr>"
+	   for i in 0..1 do
+	          if i == 0 then 
+		   u_out << "<td><a href='/showuser?uid=#{x[2]}'>#{x[0]}</a>"
+		  else
+		   u_out <<  "<td>#{x[i]} </td>"
+	   end
+	 
+	   end
+	   u_out << "</tr>"}
+	   u_out << "</table>"
+   e_out,g_out = side_menu_gubbins    #make the side menu database inserts on the sinatra side, like the manual says
+   close_database
+   haml :userlist, :locals => {:email => e_out, :groups => g_out, :users => u_out}
+  else 
+   haml :notlogged
+  end
+ end
+
+get "/who" do
+
+if !session[:name].nil? then
+  open_database
+  name = session[:name]
+  uid = get_uid(name)
+  who_list_update(uid,"Who is Online:")
+  w_out = ""
+  w_out << "<h3>Web Users:</h3>"
+  w_out <<  "<table cellspacing=5>"
+  w_out <<  "<tr><td><b>User ID</b></td><td><b>Location</b></td><td><b>Last Activity</b></td><td><b>Where</b></td></tr>"
+  fetch_who_list.each {|x| 
+	   w_out <<  "<tr><td><a href='show_user.rbx?uid=#{x[0]}'>#{x[1]}</a>"
+           w_out <<  "<td>#{x[2]} </td><td>#{x[3].to_s} </td><td>#{x[4]}</td></tr>"
+	   }
+   w_out <<  "</table>"
+   w_out <<   "<table cellspacing=5>"
+   w_out <<  "<h3>Telnet Users:</h3>"
+   w_out <<  "<tr><td><b>Node</b></td><td><b>User ID</b></td><td><b>Location</b></td><td><b>Where</b></td></tr>"
+   fetch_who_t_list.each {|x| 
+	   w_out <<   "<tr><td>#{x[1]}"
+           w_out <<   "<td>#{x[5]} </td><td>#{x[2]} </td><td>#{x[3]}</td></tr>"
+	   }
+  w_out <<   "</table>"
+   e_out,g_out = side_menu_gubbins    #make the side menu database inserts on the sinatra side, like the manual says
+   close_database
+   haml :who, :locals => {:email => e_out, :groups => g_out, :who => w_out}
+  else 
+   haml :notlogged
+  end
+ end
+ 
 get "/last" do
 
 if !session[:name].nil? then
@@ -312,6 +612,68 @@ if !session[:name].nil? then
   end
  end
 
+get "/log" do
+
+if !session[:name].nil? then
+  open_database
+  name = session[:name]
+  uid = get_uid(name)
+  who_list_update(uid,"System Log:")
+  dir = "f"
+  last = 0
+
+  D_MAX = 25
+
+  dir = params['dir'] if !params['dir'].nil?
+  last = params['last'].to_i if !params['last'].nil?
+    
+  if dir == "f" then
+   stop = last + D_MAX
+   stop = log_size-1 if stop >= log_size-1
+  end
+  
+  if dir =="b" then
+   stop = last -  D_MAX
+   last = last - (D_MAX * 2)
+   stop = 0 if stop < 0
+ end
+ 
+  l_out = ""
+  
+ if stop - D_MAX > 0 then 
+   l_out << "<a href='/log?last=#{stop}&dir=b'>Prev</a>&nbsp;&nbsp;&nbsp;"
+ end 
+
+  if stop < log_size-1 then
+   l_out << "<a href='/log?last=#{stop}&dir=f'>Next</a>"
+  end
+ 
+ l_out << "<table><tr><td><b>Date</b></td><td><b>Sub-system</b></td><td><b>Entry</b></td></tr>"
+   arr = fetch_log(0)
+   for i in last..stop
+	  x = arr[i]
+	  t= Time.parse(x[1]).strftime("%m/%d/%y %I:%M%p")
+
+         l_out << "<tr><td>#{t} </td><td>#{x[0]} </td><td>#{x[2]}</td></tr>"
+	   end
+   l_out << "</table>"
+ 
+
+ if stop-D_MAX > 0 then 
+   l_out << "<a href='/log?last=#{stop}&dir=b'>Prev</a>&nbsp;&nbsp;&nbsp;"
+end 
+
+ if stop < log_size-1 then
+   l_out <<  "<a href='/log?last=#{stop}&dir=f'>Next</a>"
+ end
+
+   e_out,g_out = side_menu_gubbins    #make the side menu database inserts on the sinatra side, like the manual says
+   close_database
+   haml :log, :locals => {:email => e_out, :groups => g_out, :log => l_out}
+  else 
+   haml :notlogged
+  end
+ end
 
 get '/about' do
   haml :about, :locals =>{:title => TITLE}
@@ -325,6 +687,9 @@ post '/clogon' do
   if user_exists(name) then 
    if check_password(name,passwd) then
      session[:name] = name
+     uid = get_uid(name)
+     who_list_add(uid) #add user to the list of web users online
+     add_wall(uid,Time.now,"","Web Interface")
      close_database
      redirect "/welcome"
    else
