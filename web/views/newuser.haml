@@ -1,0 +1,38 @@
+.main_frame
+  #main-l
+    #main2-l
+      #main3-l
+        .main-title
+          %h2{:class => "w_header"}
+            New User Account
+        .main-content
+          %table{:border => "0"}
+            %form{:action => "/usersave", :method => "post"}
+              %tr
+                %td Account Name
+                %td 
+                  %input{:name => "username", :id => "username", :type => "text", :maxlength => "50"}
+              %tr
+                %td Password
+                %td 
+                  %input{:name => "new_password", :id => "new_password", :type => "password", :maxlength => "50"}	 
+              %tr
+                %td Verify Password
+                %td 
+                  %input{:name => "verify_password", :id => "verify_password", :type => "password", :maxlength => "50"}
+              %tr	
+                %td Email
+                %td 
+                  %input{:name => "email", :id => "email", :type => "text", :maxlength => "50"}	    
+              %tr	
+                %td Location
+                %td 
+                  %input{:name => "location", :id => "location", :type => "test", :maxlength => "50"}	    
+              %tr
+                %td{:colspan => "2"}
+                  %input{:name => "login", :type => "submit", :value => "Create"} 
+
+	     
+= partial("footer")
+		
+ 
