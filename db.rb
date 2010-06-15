@@ -66,21 +66,16 @@ def db_num(arr)
 end
 
 def db_true(str)
-
   result = false
   result = true if str == "t"
   return result
-  endhash << row[0].to_i
+end
 
-  def hash_table(table)
+def hash_table(table)
+  hash = []
 
-    hash = []
-
-    res = @db.exec("SELECT id FROM #{table} ORDER BY id")
-    hash = result_as_array(res).flatten
-  end
-
-  hash.each {|x| puts "hash #{x}"}
+  res = @db.exec("SELECT id FROM #{table} ORDER BY id")
+  hash = result_as_array(res).flatten
 
   return hash
 end
