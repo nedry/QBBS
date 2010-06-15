@@ -362,7 +362,6 @@ class Session
         unless (nonempty and t.empty?) # fail right away if this happens
           break if yield t
         end
-        print errmsg if errmsg
       end
       print
       return t
