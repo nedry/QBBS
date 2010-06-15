@@ -1,9 +1,0 @@
-
-
-[3C[0;1;33m [D   [31mGlobal Destruction   [33m [D
-   [D  [D[22C [D  [D
-
-%WP  %C=>  Play Global Destruction
-%WH  %C=>  High scores
-%WI  %C=>  An introduction to the game
-%WQ  %C=>  Quit to the menuing system

@@ -24,7 +24,7 @@ require "../wrap.rb"
  enable :sessions
 
 TEXT_ROOT = "/home/mark/qbbs/text/"
-TITLE = "QUARKseven Web v.01"
+TITLE = "QUARKseven Web v.5"
 EXISTS = 1
 INVALID = 2
 OKAY = 3
@@ -684,8 +684,7 @@ post '/clogon' do
   happy =""
   name = params["acc_name"]
   passwd = params["password"].upcase
-  if user_exists(name) then 
-   if check_password(name,passwd) then
+  if user_exists(name) and  check_password(name,passwd) then 
      session[:name] = name
      uid = get_uid(name)
      who_list_add(uid) #add user to the list of web users online
@@ -695,7 +694,6 @@ post '/clogon' do
    else
      close_database
      haml :failure
-  end
 end
 end
 
