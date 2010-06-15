@@ -5,6 +5,8 @@ require "tools.rb"
 require "consts.rb"
 require "class.rb"
 require "bot.rb"
+require 'dm-core'
+require 'dm-validations'
 require "db/db_email"
 require "db/db_area"
 require "db/db_bulletins"

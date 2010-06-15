@@ -6,5 +6,5 @@ class Bulletin
   property :locked, Boolean, :default => false
   property :number, Integer
   property :modify_date, DateTime
-  property :b_path, String, :length => 40
+  property :path, String, :length => 40, :field => 'b_path'
 end

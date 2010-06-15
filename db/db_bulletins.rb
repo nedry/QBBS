@@ -1,83 +1,51 @@
+require 'models/bulletin'
 
 def b_total
-
-  res = @db.exec("SELECT COUNT(*) FROM bulletins")
-  result = single_result(res).to_i
-  return result
+  Bulletin.count
 end
 
+# TODO: we should not be creating tables in our code at all
+# Should be done with a separate setup script
 def create_bulletin_table
-
   puts "-DB: Creating Bulletins Table"
   @db.exec("CREATE TABLE bulletins (name varchar(40), \
         locked boolean DEFAULT false, number int, \
            modify_date timestamp, b_path varchar(40),\
             id serial PRIMARY KEY)")
-
 end
 
 def delete_bulletin(ind)
-
-  @db.exec("DELETE FROM bulletins WHERE number = '#{ind}'")
+  b = Bulletin.first(:number => ind)
+  b.destroy! if b
 end
 
 def update_bulletin(r)
-
-  r.name.gsub!("'",QUOTE) if r.name != nil
-  r.path.gsub!("'",QUOTE) if r.path != nil
-
-  @db.exec("UPDATE bulletins SET name = '#{r.name}', \
-           locked = #{r.locked}, modify_date = '#{r.modify_date}', \
-           b_path = '#{r.path}' WHERE number = #{r.number}")
+  r.save
 end
 
 def fetch_bulletin(record)
-
-  res = @db.exec("SELECT * FROM bulletins WHERE number = #{record}") 
-
-  temp = result_as_array(res).flatten
-
-  t_name = temp[0]
-  t_locked = db_true(temp[1])
-  t_number = temp[2].to_i
-  t_modify_date = temp[3]
-  t_path = temp[4]
-
-  t_name.gsub!(QUOTE,"'") if t_name != nil
-  t_path.gsub!(QUOTE,"'") if t_path != nil
-
-  result = DB_bulletin.new( t_name,t_locked,t_number, \
-                           t_modify_date,t_path)
-  return result
+  b = Bulletin.first(:number => record)
+  if b
+    b.name.gsub!(QUOTE,"'") if b.name
+    b.path.gsub!(QUOTE,"'") if b.path
+  end
+  return b
 end
 
-
-
 def renumber_bulletins
-
-  if b_total > 0 then
-    hash = hash_table("bulletins")
-
-    for i in 0..hash.length - 1
-      puts("UPDATE bulletins SET number = #{i+1} WHERE id = #{hash[i]}")
-      @db.exec("UPDATE bulletins SET number = #{i+1} WHERE id = #{hash[i]}")
-    end
+  n = 1
+  Bulletin.all(:order => :number).each do |b|
+    b.update(:number => n)
+    n = n + 1
   end
 end
 
 def add_bulletin(name, path)
-
-  name.gsub!("'",QUOTE)
-  path.gsub!("'",QUOTE)
-
-  number = b_total + 1  
-
-  msg_date = Time.now.strftime("%m/%d/%Y %I:%M%p")
-
-  @db.exec("INSERT INTO bulletins (name, number, modify_date, b_path) \ 
-                VALUES ('#{name}', #{number},'#{msg_date}', '#{path}')")
-
+  n = b_total + 1
+  b = Bulletin.create(
+    :name => name,
+    :path => path,
+    :number => n,
+    :modify_date => Time.now
+  )
 end
-
-
-

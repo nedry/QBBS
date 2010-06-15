@@ -5,6 +5,8 @@ require 'top.rb'
 #puts "hello world"
 $stdout.flush
 
+DataMapper::Logger.new('log/db', :debug)
+DataMapper.setup(:default, "postgres://#{DATAIP}/#{DATABASE}")
 who = Who.new
 message = []
 log = Log.new

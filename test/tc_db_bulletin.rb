@@ -1,21 +1,19 @@
 require 'test/unit'
+require 'dm-core'
+require 'dm-validations'
 require 'db/db_bulletins.rb'
-require 'db/db_class.rb'
-require 'db.rb'
 require 'consts.rb'
-require 'pg_ext'
 
 DATAIP = 'localhost'
 DATABASE = 'qbbs_test'
 
 class TestDbBulletin < Test::Unit::TestCase
   def setup
-    open_database
-    @db.exec("delete from bulletins;")
+    DataMapper.setup(:default, "postgres://#{DATAIP}/#{DATABASE}")
+    Bulletin.all.each {|i| i.destroy!}
   end
 
   def teardown
-    @db.close
   end
 
   def test_add_bulletin
@@ -69,14 +67,14 @@ class TestDbBulletin < Test::Unit::TestCase
     delete_bulletin(2)
     assert_equal 3, b_total
     a = fetch_bulletin(2)
-    assert_nil a.name
+    assert_nil a
     renumber_bulletins
     # this should not change the total number of bulletins
     assert_equal 3, b_total
     # but the numbers should be compacted
     a = fetch_bulletin(2)
-    assert_not_nil a.name
+    assert_not_nil a
     a = fetch_bulletin(4)
-    assert_nil a.name
+    assert_nil a
   end
 end
