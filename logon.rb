@@ -90,7 +90,7 @@ class Session
     if happy.nil? then
 			if !user_exists(username) then
 				username.upcase!
-				if yes("Create new user #{username}? [Y,n]",true,false,true)
+				if yes("Create new user #{username}?")
 				   newuser(username, ip)
 				else
 					next # input name again
@@ -118,7 +118,7 @@ class Session
 #		}
 		logandgreetuser(username, ip)
 		ogfileout("welcome2",4,true)
-		yes("%WPress %Y<--^%W: ",true,false,true)
+		yes("%WPress %Y<--^%W: ", :yesno => false)
 		displaywho
 		
 	end 
@@ -150,17 +150,17 @@ class Session
 		end
 		prompt = "Enter your Location:            : "
 		location = getinputlen(prompt,ECHO,6,false)
-		prompt = "ANSI [IBM] Graphics        [Y,n]? "
-		ansi = yes(prompt,true,false,true)
-		prompt = "Full Screen Editor         [Y,n]? "
-		fullscreen = yes(prompt,true,false,true)
-		prompt = "MORE prompt                [Y,n]? "
-		more =yes(prompt,true,false,true)
+		prompt = "ANSI [IBM] Graphics        : "
+		ansi = yes(prompt)
+		prompt = "Full Screen Editor         : "
+		fullscreen = yes(prompt)
+		prompt = "MORE prompt                : "
+		more =yes(prompt)
     add_user(username,ip,password,location,address,24,80,ansi, more, DEFLEVEL, fullscreen) 
 		@c_user = fetch_user(get_uid(username))
 		add_log_entry(5,Time.now,"New user #{@c_user.name} created.")
 		ogfileout("newuser",2,true)
-		yes("Press <--^: ",true,false,true)
+		yes("%WPress %Y<--^%W: ", :yesno => false)
 	end
 
 	def checkkillfile(username)
@@ -233,10 +233,10 @@ class Session
 		 print "Quote of the Day: " if !existfileout('qotdhdr',0,true)		 
 		 door_do("#{QOTD}","")
 		 existfileout('quote',0,true)
-		 yes("Press %Y<--^%W: ",true,false,true)
+		 yes("Press %Y<--^%W: ")
 		add_user_to_wall
 		display_wall
-		 yes("Press %Y<--^%W: ",true,false,true)
+		 yes("Press %Y<--^%W: ")
 		 bullets(0)
 		end
 		@c_user.logons = @c_user.logons.succ

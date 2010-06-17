@@ -67,9 +67,9 @@ class Session
     telnetsetup
     logon 
     if scanformail == true then 
-      emailmenu if yes("Would you like to read it now (Y,n): ",true,false,true)
+      emailmenu if yes("Would you like to read it now:")
     end
-    messagemenu (true) if yes("Would you like to perform a new message scan (ZIPread)? (Y,n): ",true,false,true)
+    messagemenu (true) if yes("Would you like to perform a new message scan (ZIPread)?:")
     commandLoop
   end
 end

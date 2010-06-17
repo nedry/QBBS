@@ -22,7 +22,7 @@ class Session
 	def leave
 		@who.user(@c_user.name).where="Goodbye"
 		update_who_t(@c_user.name,"Goodbye")
-		if yes("Log off now (Y,n)? ", true, false,false) then
+		if yes("Log off now?", :overwrite => false) then
 			write "%W"
 			gfileout('bye')
 			print "NO CARRIER"

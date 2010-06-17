@@ -34,7 +34,7 @@ class Session
   end
 
   def readitnow
-    reademail(true) if yes(CRLF+"Read it now (Y,n)? ", true, false,true)
+    reademail(true) if yes(CRLF+"Read it now?")
   end
 
   def emailmenu
@@ -333,8 +333,7 @@ def sendemail(feedback)
     msg_file = write_quote_msg("")
     launch_editor(msg_file)
     suck_in_text(msg_file)
-    prompt = "Send email (Y,n)? "
-    saveit = yes(prompt, true, false,true)
+    saveit = yes("Send email?")
   else
     saveit = lineedit(1,reply_text)
     puts saveit
@@ -428,8 +427,7 @@ def replyemail(epointer,carea)
     launch_editor(msg_file)
     suck_in_text(msg_file)
     print (CLS)
-    prompt = "Send message (Y,n)? "
-    saveit = yes(prompt, true, false,true)
+    saveit = yes("Send message?")
   else
     saveit = lineedit(1,msg_text)
   end

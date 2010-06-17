@@ -447,18 +447,30 @@ class Session
     return result
   end
 
-  def yes(prompt,default,chat, overwrite)
+  def yes(prompt, args = {})
+    default, chat, overwrite, yesno = args[:default], args[:chat], args[:overwrite], args[:yesno]
+    default   = true  if default.nil?
+    chat      = false if chat.nil?
+    overwrite = true  if overwrite.nil?
+    yesno     = true  if yesno.nil?
+
+    if yesno
+      prompt = prompt + default ? ' [Y/n]' : ' [y/N]'
+    end
+
     validanswers = {"Y" => true, "N" => false, ""=> default}
     ans = ''
 
-    t = getcmd(prompt, ECHO, 0, chat,overwrite)
-    ans = t.upcase.strip
-    validanswers.has_key?(ans)
-    result = validanswers[ans]
-
-
-    return result
+    while true
+      t = getcmd(prompt, ECHO, 0, chat,overwrite)
+      ans = t.upcase.strip
+      if validanswers.has_key?(ans)
+        result = validanswers[ans]
+        return result
+      end
+    end
   end
+
   def hangup 
     @socket.flush 
     @socket.close 
@@ -498,7 +510,7 @@ class Session
   end
 
   def moreprompt
-    moreprompt = yes("*** More [Y,n]? ", true, false,true)
+    moreprompt = yes("*** More?")
   end
 
   def telnetsetup

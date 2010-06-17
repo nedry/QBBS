@@ -52,7 +52,7 @@ def addbbs
   address = get_max_length("Enter new BBS telnet address: ",40,"BBS address") 
   address.strip! if address != ""
 
-  if yes("Are you sure (Y,n)? ", false, false)
+  if yes("Are you sure?", :default => false)
     add_other(name,address)
   else
     print "%RAborted."

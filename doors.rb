@@ -174,7 +174,7 @@ def adddoor
   path = get_max_length("Enter new door path (script file): ",40,"Door path") 
   path.strip! if path != ""
 
-  if yes("Are you sure (Y,n)? ", false, false,true)
+  if yes("Are you sure?", :default => false)
     add_door(name,path)
   else
     print "%RAborted."
