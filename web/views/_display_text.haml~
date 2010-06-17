@@ -1,8 +1,8 @@
 .main-content
   %div{:style => "background-color:black;color:white;text-align: left; padding: 3px; font-family:'courier new'; font-size: 11px; line-height:1;"}
     %pre
-      :preserve
-        #{display}
+      =display
+
   
 
 		

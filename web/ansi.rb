@@ -1,3 +1,5 @@
+# encoding:  ISO-8859-1
+
 BBS_COLORTABLE = {
 	'%R' => "<span style='color: #fc5454'>", 
 	'%G' => "<span style='color: #54fc54'>",
@@ -14,37 +16,69 @@ BBS_COLORTABLE = {
 	'%c' => "<span style='color: #00a8a8'>", 
 	'%w' => "<span style='color: #a8a8a8'>"}
 
- BOLD_ANSI_FG_TABLE = {"0" => "<span style='color: #545454'>",  # grey
-					"1" => "<span style='color: #fc5454'>",  # bright red
-					"2" => "<span style='color: #54fc54'>",  # bright green
-					"3" => "<span style='color: #fcfc54'>",  # bright yellow
-					"4" => "<span style='color: #5454fc'>",  # bright blue
-					"5" => "<span style='color: #fc54fc'>",  # bright magenta
-					"6" => "<span style='color: #54fcfc'>",  # bright cyan
-					"7" => "<span sytle='color: white'>"}    # bright white
+ BOLD_ANSI_FG_TABLE = {"0" => "color: #545454;",  # grey
+					"1" => "color: #fc5454;",  # bright red
+					"2" => "color: #54fc54;",  # bright green
+					"3" => "color: #fcfc54;",  # bright yellow
+					"4" => "color: #5454fc;",  # bright blue
+					"5" => "color: #fc54fc;",  # bright magenta
+					"6" => "color: #54fcfc;",  # bright cyan
+					"7" => "color: white;"}    # bright white
 					
- ANSI_FG_TABLE = {"0" => "<span style='color: black'>",
-			      "1" => "<span style='color: #a80000'>",  # red
-			      "2" => "<span style='color: #00a800'>",  # green
-			      "3" => "<span style='color: #a85400'>",  # yellow
-			      "4" => "<span style='color: #0000a8'>",  # blue
-			      "5" => "<span style='color: #a800a8'>",  # magenta
-			      "6" => "<span style='color: #00a8a8'>",  # cyan
-			      "7" => "<span style='color: #a8a8a8'>"} # white
+ ANSI_FG_TABLE = {"0" => "color: black;",
+			      "1" => "color: #a80000;",  # red
+			      "2" => "color: #00a800;",  # green
+			      "3" => "color: #a85400;",  # yellow
+			      "4" => "color: #0000a8;",  # blue
+			      "5" => "color: #a800a8;",  # magenta
+			      "6" => "color: #00a8a8;",  # cyan
+			      "7" => "color: #a8a8a8;"} # white
 			      
-ANSI_BG_TABLE = {"0" => "<span style='background-color: black'>",
-			      "1" => "<span style='background-color: #a80000'>", # red
-			      "2"=> "<span style='background-color: #00a800'>",  # green
-			      "3"=> "<span style='background-color: #a85400'>",  # dark yellow (brown)
-			      "4"=> "<span style='background-color: #0000a8'>",  # blue
-			      "5" => "<span style='background-color: #a800a8'>",  # magenta
-			      "6" => "<span style='background-color: #00a8a8'>",  # cyan
-			      "7" => "<span style='background-color: #a8a8a8'>"  # white
+ANSI_BG_TABLE = {"0" => "background-color: black;",
+			      "1" => "background-color: #a80000;", # red
+			      "2"=> "background-color: #00a800;",  # green
+			      "3"=> "background-color: #a85400;",  # dark yellow (brown)
+			      "4"=> "background-color: #0000a8;",  # blue
+			      "5" => "background-color: #a800a8;",  # magenta
+			      "6" => "background-color: #00a8a8;",  # cyan
+			      "7" => "background-color: #a8a8a8;"  # white
 			      }
 
 					
 
 EXTENDED_ANSI_TABLE = {
+         0.chr => "nbsp",  	# NULL non-breaking space 
+	 1.chr => "&#9786",	# white smiling face */
+	 2.chr => "&#9787", # black smiling face
+	 3.chr => "&hearts",# black heart suit 
+	 4.chr => "&diams", # black diamond suit 
+	 5.chr =>	"&clubs",  # black club suit */
+	 6.chr => "&spades", # black spade suit 
+	 7.chr => "&bull",  # bullet 
+	 8.chr => "&#9688", # inverse bullet 
+	 9.chr => "&#9702", # white bullet 
+#	 10.chr => "&#9689", # inverse white circle 
+	 11.chr => "&#9794", # male sign 
+	 12.chr => "&#9792", # female sign 
+#	 13.chr => "&#9834", # eighth note 
+	 14.chr => "&#9835", # beamed eighth notes 
+	 15.chr => "&#9788", # white sun with rays 
+	 16.chr => "&#9654",  # black right-pointing triangle 
+	 17.chr => "&#9664", # black left-pointing triangle 
+	 18.chr => "&#8597", # up down arrow 
+	 19.chr => "&#8252", # double exclamation mark 
+	 20.chr => "&para",  # pilcrow sign 
+	 21.chr =>  "&sect", # section sign 
+	 22.chr => "&#9644", # black rectangle 
+	 23.chr => "&#8616",  # up down arrow with base 
+	 24.chr => "&uarr",  # upwards arrow 
+	 25.chr => "&darr",  # downwards arrow 
+	 26.chr => "&rarr", # rightwards arrow 
+	# 27.chr => "&larr",  # leftwards arrow 
+	 28.chr =>  "&#8985", # turned not sign 
+	 29.chr => "&harr", # left right arrow 
+	 30.chr => "&#9650", # black up-pointing triangle 
+	 31.chr => "&#9660",  #] black down-pointing triangle 
         227.chr => "<br>",
 	32.chr => "&nbsp;",
 	128.chr => "&Ccedil;",	#128 C, cedilla (199)
@@ -189,6 +223,7 @@ EXTENDED_ANSI_TABLE = {
 	def parse_bbs_color(str)
 
 			BBS_COLORTABLE.each_pair {|color, result|
+			       # s_color = color
 				str = str.gsub(color,result)
 			}
 		return str
@@ -213,8 +248,8 @@ EXTENDED_ANSI_TABLE = {
 def parse_ansi(str)
 	
 	outstr = ""
-	l_fg = -1
-	l_bg = -1
+	l_fg = 7
+	l_bg = 0
 	bold = false
 	underline = false
 	result = ""
@@ -233,22 +268,25 @@ def parse_ansi(str)
 											if !array[0].nil? then
 											  array[0].to_i.times {result << "&nbsp;"}
 											  doit = false
-											end
+										  end
+										   #  when "A" #cursor up
+										  #   doit= false
 										      when "m"
 										        
 											array.each {|color| c = color.to_i
 										                          #    puts "l_fg:#{l_fg}"
 													 #     puts "l_bg:#{l_bg}"
-											                          fg = 0
-														  bg =0
+											                          fg = l_fg
+														  bg = l_bg
 														  doit = true
 														  replace = ""
 											                     case c
 														when 0  #reset
-														 bold = false
+														#bold = false
+														 bold = true
 														 blink = false
 														 fg = 7
-														 bg = 0
+														 bg  = 0
 														when  1 #bold
 														  bold = true
 														  doit= false
@@ -257,7 +295,7 @@ def parse_ansi(str)
 														  doit=true
 														 when 5 #blink
 														  blink = true
-														  doit=false
+														  doit=true
 														 when 6 #fast blink 
 														  blink = true
 														  doit=false
@@ -271,19 +309,24 @@ def parse_ansi(str)
 													#	puts "fg:#{fg}"
 													#	puts "bg:#{bg}"
 														if doit then
-                                                                                                                  if fg != l_fg then
+														  result = "</span><span style='"
+                                                                                                                  if fg != l_fg and fg != -1 then
 														     l_fg = fg
-														     if bold
-														      result <<  parse_fg_bold_color(fg) 
-														     else 
-														      result << parse_fgcolor(fg)
-														     end
 													           end
-													        if bg != l_bg then
-														 l_bg = bg
-													         result << parse_bg_color(bg)
-												                end 
-												  end
+													          if bg != l_bg and bg !=-1 then
+														    l_bg = bg
+													           end 
+													          result << parse_bg_color(bg)
+												                   if bold
+														    result <<  parse_fg_bold_color(fg) 
+													          else 
+														   result << parse_fgcolor(fg)
+													          end
+													        if blink then 
+														  result << "text-decoration:blink;"
+														end
+													         result << "'>"
+												              end
 												  
 													} 
 											end		  
@@ -293,6 +336,7 @@ def parse_ansi(str)
  end
  
  def parse_webcolor(instr)
+  #puts  instr.encode("US-ASCII")
   out = parse_ansi( parse_ansi_ext(instr))
   out = parse_bbs_color(out)
   return out

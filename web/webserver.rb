@@ -1,7 +1,12 @@
+$LOAD_PATH << "/home/mark/qbbs"
+
 require 'rubygems'
 require 'sinatra'
 require 'haml'
 require "pg_ext"
+
+require 'dm-core'
+require 'dm-validations'
 
 require "ansi.rb"
 require "../db.rb"
@@ -77,8 +82,8 @@ def who_list_delete (uid)
    output = ""
 
  	if File.exists?(filename) 
-		output << "<br>"
- 		IO.foreach(filename) { |line| line=line+"<br>" 
+		output << "\n"
+ 		IO.foreach(filename, :external_encoding=>"ASCII-8BIT") { |line| #line=line+"\n" 
  		  line = parse_webcolor(line)
  		  output << line } 
  	else
