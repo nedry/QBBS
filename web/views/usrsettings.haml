@@ -1,0 +1,18 @@
+.main_frame
+  = partial("side", :locals => {:email => email, :groups => groups})
+  #main-l
+    #main2-l
+      #main3-l
+        .main-title
+          %h2{:class => "w_header"}
+            Change Password
+        .main-content
+          =password
+        .main-title
+          %h2{:class => "w_header"}
+            Change Chat Alias
+        .main-content
+          =chat
+	  
+       
+= partial("footer")

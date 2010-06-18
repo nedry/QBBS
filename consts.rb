@@ -1,8 +1,8 @@
-DEBUG = false
+DEBUG = true
 LISTENPORT = 2323
 QWK  = false
 FIDO = false
-IRC_ON =  true
+IRC_ON =  false
 
 BS = 8
 ESC = 27

@@ -32,10 +32,9 @@ def user_exists(uname)
 
 
   uname.gsub!("'",BEL) 
-  uname.upcase! 
   result = false
 
-  res = @db.exec("SELECT COUNT(*) FROM users WHERE name = '#{uname}'")
+  res = @db.exec("SELECT COUNT(*) FROM users WHERE upper(name) = '#{uname.upcase}'")
   temp = single_result(res).to_i
   result = true if temp > 0 
   return result
@@ -46,11 +45,10 @@ def alias_exists(alais)
 
   if alais != nil then
     alais.gsub!("'",BEL)
-    alais.upcase!
   end
   result = false
 
-  res = @db.exec("SELECT COUNT(*) FROM users WHERE alias = '#{alais}'")
+  res = @db.exec("SELECT COUNT(*) FROM users WHERE upper(alias) = '#{alais.upcase}'")
   temp = single_result(res).to_i
   result = true if temp > 0 
   return result
@@ -61,10 +59,9 @@ def check_password(uname,psswd)
 
   uname.gsub!("'",BEL) 
   psswd.gsub!("'",BEL)
-  uname.upcase! 
   result = false
 
-  res = @db.exec("SELECT COUNT(*) FROM users WHERE name = '#{uname}' and password ='#{psswd}'")
+  res = @db.exec("SELECT COUNT(*) FROM users WHERE upper(name) = '#{uname.upcase}' and password ='#{psswd}'")
   temp = single_result(res).to_i
   result = true if temp > 0
   return result
@@ -73,11 +70,10 @@ end
 def get_uid(uname)
 
 
-  uname.gsub!("'",BEL) 
-  uname.upcase! 
+  uname.gsub!("'",BEL)  
   result = false
 
-  res= @db.exec("SELECT number FROM users WHERE name = '#{uname}'")
+  res= @db.exec("SELECT number FROM users WHERE upper(name) = '#{uname.upcase}'")
   result= single_result(res).to_i
   return result
 end

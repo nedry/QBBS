@@ -97,7 +97,7 @@ def changenick
     print "%RNot Changed%G" 
     return
   end
-  newname = tempstr.strip.split.to_s.slice(0..14)
+  newname = tempstr.strip.to_s.slice(0..14)
   if !alias_exists(newname) then 
     @c_user.alais = newname
     update_user(@c_user,get_uid(@c_user.name))

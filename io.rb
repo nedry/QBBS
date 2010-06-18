@@ -455,7 +455,7 @@ class Session
     yesno     = true  if yesno.nil?
 
     if yesno
-      prompt = prompt + default ? ' [Y/n]' : ' [y/N]'
+      prompt = prompt +( default ? ' [Y/n]' : ' [y/N]')
     end
 
     validanswers = {"Y" => true, "N" => false, ""=> default}

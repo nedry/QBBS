@@ -309,7 +309,7 @@ def parse_ansi(str)
 													#	puts "fg:#{fg}"
 													#	puts "bg:#{bg}"
 														if doit then
-														  result = "</span><span style='"
+														  result = "</span></blink><span style='"
                                                                                                                   if fg != l_fg and fg != -1 then
 														     l_fg = fg
 													           end
@@ -323,9 +323,9 @@ def parse_ansi(str)
 														   result << parse_fgcolor(fg)
 													          end
 													        if blink then 
-														  result << "text-decoration:blink;"
+														  result << "'><blink>"
 														end
-													         result << "'>"
+													         result << "'>" if !blink
 												              end
 												  
 													} 

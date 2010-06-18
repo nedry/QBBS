@@ -4,9 +4,22 @@
 	%head
 		%link{ :rel => "stylesheet", :type => "text/css", :href => "qbbs.css"}
 		%title QBBS Web Interface
+	:javascript
+		function doBlink() {
+		var blink = document.all.tags("BLINK")
+		for (var i=0; i<blink.length; i++)
+		blink[i].style.visibility = blink[i].style.visibility == "" ? "hidden" : "" 
+		}
+
+		function startBlink() {
+		if (document.all)
+		setInterval("doBlink()",1000)
+		}
+		window.onload = startBlink;
+
 	%body
 		.header
-			%h3 QBBS V2.0 retroCOMPUTING BBS &nbsp;&nbsp;Job 1 &nbsp;&nbsp;KB0&nbsp;&nbsp; #{Time.now} 
+			%h3 QUARKseven TARDIS BBS &nbsp;&nbsp;Job 1 &nbsp;&nbsp;KB0&nbsp;&nbsp; #{Time.now} 
 		= yield
 		
  

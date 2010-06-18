@@ -26,13 +26,20 @@ require "../consts.rb"
 require "../wrap.rb"
 
 
- enable :sessions
+ 
 
 TEXT_ROOT = "/home/mark/qbbs/text/"
 TITLE = "QUARKseven Web v.5"
 EXISTS = 1
 INVALID = 2
 OKAY = 3
+
+configure do
+	enable :sessions
+	set :static, true
+	DataMapper::Logger.new('log/db', :debug)
+        DataMapper.setup(:default, "postgres://#{DATAIP}/#{DATABASE}")
+end
 
 helpers do
 
@@ -98,6 +105,46 @@ def who_list_delete (uid)
    return user
  end
  
+ def qwk_kludge_search(msg_array)	#searches the message buffer for kludge lines and returns them
+
+ tz		= nil
+ msgid		= nil
+ via		= nil
+ reply		= nil
+
+
+
+
+ msg_array.each_with_index {|x,i|
+ 	if x.slice(0) == 64 then
+   x.slice!(0)
+ 	 match = (/^(\S*)(.*)/) =~ x
+ 
+  	 if !match.nil? then 
+  	  case $1
+  	   when "MSGID:"
+         msgid = $2.strip
+         msg_array[i] = nil
+       when "VIA:"
+         via = $2.strip
+         msg_array[i] = nil
+       when "TZ:"
+         tz = $2.strip
+         msg_array[i] = nil
+       when "REPLY:"
+         reply = $2.strip
+         msg_array[i] = nil
+		  end
+		 end
+	end}
+
+
+   msg_array.compact!	#Delete every line we marked with a nil, cause it had a kludge we caught!
+
+
+ return [msg_array,msgid,via,tz,reply]
+ end
+
 def w_scanformail(uid)
   
   user = fetch_user(uid.to_i)
@@ -324,6 +371,7 @@ if !session[:name].nil? then
    haml :notlogged
   end
  end
+ 
 get '/post' do
 
 if !session[:name].nil? then
@@ -501,6 +549,189 @@ if !session[:name].nil? then
  end
  
 
+
+ get "/chat" do
+
+if !session[:name].nil? then
+  open_database
+  name = session[:name]
+  uid = get_uid(name)
+  who_list_update(uid,"IRC Chat:")
+  user = fetch_user(get_uid(name))
+  m_out = ""
+  
+    e_out,g_out = side_menu_gubbins    #make the side menu database inserts on the sinatra side, like the manual says
+    
+ if user.alais.nil? then
+   m_out << "<p>You do not have an chat alias set. To set one click on <a href='/chsettings'>User Settings</a>.</p>" 
+   haml :chat, :locals => {:email => e_out, :groups => g_out, :message => m_out}
+ else
+  m_out << '<p>Click chat to chat.  This will launch the our HTTP IRC client...</p>'
+   m_out <<  "<form name='cgiirclogin' method='post' onsubmit='return openCgiIrc(this, 0)' action='chat/irc.cgi'>"
+   m_out <<  "<input type='hidden' name='interface' value='nonjs'>"
+   m_out <<  "<input type='hidden' name='Nickname' value='#{user.alais}'>"
+   m_out <<  "<input type='hidden' name='Server' value='irc.larryniven.org'>"
+   m_out <<  "<input type='hidden' name='Channel' value='#knownspace'>"
+   m_out <<  "<input type='submit' value='Login'>"
+   m_out <<  "</form>"
+end
+ 
+   close_database
+   haml :chat, :locals => {:email => e_out, :groups => g_out, :message => m_out}
+  else 
+   haml :notlogged
+  end
+ end
+ 
+  get "/showuser" do
+
+if !session[:name].nil? then
+  open_database
+  name = session[:name]
+  uid = get_uid(name)
+  who_list_update(uid,"User Details:")
+  
+  o_uid=params['uid'].to_i
+  o_user = fetch_user(o_uid)
+  
+  
+  o_out = ""
+  o_out << "<table cellspacing='5'>"
+  o_out <<  '<table>'
+  o_out <<  "<tr><td>email:</td><td>#{o_user.address}</td></tr>"
+  o_out <<  "<tr><td>location:</td><td>#{o_user.citystate}</td></tr>"
+  o_out <<  "<tr><td>last on:</td><td>#{o_user.laston}</td></tr>"
+  o_out <<  "<tr><td>access level:</td><td>#{o_user.level}</td></tr>"
+  o_out <<  "<tr><td>chat alias:</td><td>#{o_user.alais}</td></tr>"
+  o_out << '</table>'
+   e_out,g_out = side_menu_gubbins    #make the side menu database inserts on the sinatra side, like the manual says
+   close_database
+   haml :showuser, :locals => {:email => e_out, :groups => g_out, :output => o_out, :username => o_user.name }
+  else 
+   haml :notlogged
+  end
+ end
+
+ post "/passwordsave" do
+
+if !session[:name].nil? then
+  open_database
+  name = session[:name]
+  
+  old_password = params['old_password']
+  new_password = params["new_password"]
+  verify_password = params["verify_password"]
+  
+  uid = get_uid(name)
+  user = fetch_user(uid)
+
+  e_out,g_out = side_menu_gubbins
+  who_list_update(uid,"Saving User Settings:")
+
+       if old_password.upcase.strip != user.password.strip then
+         err_out = "You must enter your correct current password!"
+	 close_database
+	 haml :passerror, :locals => {:email => e_out, :groups => g_out, :err => err_out}
+       else
+       if new_password.upcase.strip == verify_password.upcase.strip then
+        user.password = new_password.upcase.strip
+	update_user(user,get_uid(user.name))
+	puts "DUDE THIS IS THE SHIT"
+	close_database
+	haml :passsucc, :locals => {:email => e_out, :groups => g_out}
+       else
+         err_out = "Passwords do not match.  Try again!"
+	 close_database
+	 haml :passerror, :locals => {:email => e_out, :groups => g_out, :err =>err_out}   	
+end
+end
+
+  else 
+	  puts "not logged"
+   haml :notlogged
+  end
+ end
+ 
+ 
+  post "/chatsave" do
+
+if !session[:name].nil? then
+  open_database
+  name = session[:name]
+  new_alias=params["chat_alias"]
+  uid = get_uid(name)
+  user = fetch_user(uid)
+
+  e_out,g_out = side_menu_gubbins
+  who_list_update(uid,"Saving Chat Alias:")
+  newalias = new_alias.strip.to_s.slice(0..14)
+	if newalias == user.alais then
+         err_out = "That is already your alias."
+	 close_database
+	 haml :aliaserror, :locals => {:email => e_out, :groups => g_out, :err => err_out}
+       else
+	if !alias_exists(newalias) then 
+	  user.alais = newalias
+	  update_user(user,get_uid(user.name))
+	  haml :aliassucc, :locals => {:email => e_out, :groups => g_out}
+	else
+	   err_out << "That alias is in use by another user."
+	   haml :aliaserror, :locals => {:email => e_out, :groups => g_out, :err => err_out}
+   end
+   end
+
+  else 
+   haml :notlogged
+  end
+ end
+ 
+ 
+get "/usrsettings" do
+
+if !session[:name].nil? then
+  open_database
+  name = session[:name]
+  uid = get_uid(name)
+  who_list_update(uid,"User Settings:")
+  
+   user = fetch_user(get_uid(name))
+       pass_out = ""
+       pass_out << '<table border="0">'
+       pass_out <<  '<td>'
+       pass_out <<  '<FORM ACTION="/passwordsave" METHOD="post"> '
+       pass_out <<  ' <TR><TD>Old Password</td><td>'
+       pass_out <<   '<input name="old_password" type="password" id="old_password">'
+       pass_out <<   '</td></tr>'
+       pass_out <<   ' <TR><TD>New Password</td><td>'
+       pass_out <<   '<input name="new_password" type="password" id="new_password">'
+       pass_out <<   '</td></tr>'
+       pass_out <<   ' <TR><TD>Verify Password</td><td>'
+       pass_out <<   '<input name="verify_password" type="password" id="verify_password">'
+       pass_out <<   '</td></tr>'
+       pass_out <<   '<TR><TD>'
+       pass_out <<   '<input type="submit" name="Submit" value="Save">'
+       pass_out <<   '</form>'
+       pass_out <<   '</table>'
+
+       chat_out = ""
+
+       chat_out << '<table border="0">'
+       chat_out <<'<td>'
+       chat_out << '<FORM ACTION="/chatsave" METHOD="post"> '
+       chat_out << ' <TR><TD>Chat Alias</td><td>'
+       chat_out << "<input name='chat_alias' value='#{user.alais}' id='chat_alias'>"
+       chat_out << '</td></tr>'
+       chat_out << '<TR><TD>'
+       chat_out << '<input type="submit" name="Submit" value="Save">'
+       chat_out << '</form>'
+       chat_out << '</table>'
+   e_out,g_out = side_menu_gubbins    #make the side menu database inserts on the sinatra side, like the manual says
+   close_database
+   haml :usrsettings, :locals => {:email => e_out, :groups => g_out, :password => pass_out, :chat => chat_out }
+  else 
+   haml :notlogged
+  end
+ end
  
  get "/showuser" do
 

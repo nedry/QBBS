@@ -125,6 +125,8 @@ class Session
           t = happy.to_i
           case happy
           when "CR"; crerror
+	  when ""; return
+	  when "Q";return
           when "?";  displaybullet  if !existfileout('bulletins',0,true)
           else
             if t > 0 and t <= b_total then 
