@@ -45,9 +45,11 @@
            color:#FFFFFF;
 		   margin-right:auto;
 		   margin-left:auto;
-		   width:799px;
+		   width:738px;
+		   height:177px;
            text-align:center;
-           background-color:#6F6F6F;}
+           background-color:#6F6F6F;
+		   background-image:url('graphix/tardis.jpg');}
 	   
 .inverse   {font-family:Verdana;
            color:#FFFFFF;
@@ -57,7 +59,7 @@
            background-color:#6F6F6F;}
 body {
   background:#1649FF;
-  background-image:url('graphix/silent.jpg');
+  background-image:url('graphix/background.gif');
 
   margin:0;
   padding:10px 5px;
@@ -302,7 +304,7 @@ a img {
 #side {
   width:150px;
   float:left;
-  background:#709DFF url("graphix/side-bot.gif") no-repeat left bottom;
+  background:#4FDB7A url("graphix/side-bot.gif") no-repeat left bottom;
   margin:10px 5px 0;
   padding:0 0px 10px;
   color:#000;
