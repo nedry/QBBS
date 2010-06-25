@@ -236,7 +236,8 @@ class Session
         msg_file = write_quote_msg(reply_text)
         launch_editor(msg_file)
         suck_in_text(msg_file)
-        saveit = yes("Post message?")
+        prompt = "Post message (Y,n)? "
+        saveit = yes(prompt, true, false,true)
       else
         saveit = lineedit(1,reply_text)
       end
@@ -335,7 +336,8 @@ class Session
       msg_file = write_quote_msg(nil)
       launch_editor(msg_file)
       suck_in_text(msg_file)
-      prompt = yes("Post message?")
+      prompt = "Post message (Y,n)? "
+      saveit = yes(prompt, true, false,true)
     else
       saveit = lineedit(1,reply_text)
     end
@@ -616,8 +618,8 @@ class Session
 
     first = absolute_message(area.tbl,start)
     last = absolute_message(area.tbl,stop)
-    prompt = "%RDelete absolute messages #{first} to #{last}? "
-    delete_msgs(area.tbl,first,last) if yes(prompt)
+    prompt = "%RDelete absolute messages #{first} to #{last} (Y,n)? "
+    delete_msgs(area.tbl,first,last) if yes(prompt, true, false,true) 
   end
 
   def replytomessage(mpointer)
@@ -790,7 +792,7 @@ class Session
       else break end
     end
     if table =~ /[A-Za-z]/ 
-      commit = yes("Are you sure?", :default => false)
+      commit = yes("Are you sure (Y,n)?",false,false,true)
       if commit then 
         add_area(name,table,"W","W")
         create_msg_table(table)
@@ -863,7 +865,7 @@ class Session
   def clearfidoarea(apointer)
 
     area = fetch_area(apointer)
-    commit = yes("Clear Fidonet Area Mapping. Are you sure?", :default => false)
+    commit = yes("Clear Fidonet Area Mapping.  Are you sure (Y,n)? ",false,false,true)
 
     if commit then 
       area.fido_net = nil

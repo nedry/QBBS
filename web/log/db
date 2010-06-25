@@ -5,3 +5,11 @@ Fri, 18 Jun 2010 09:10:42 GMT  ~  info  ~  Logfile created
  ~ (0.009850) SELECT "id", "name", "locked", "number", "modify_date", "b_path" FROM "bulletins" ORDER BY "id"
  ~ (0.001812) SELECT "id", "name", "locked", "number", "modify_date", "b_path" FROM "bulletins" WHERE "number" = 1 ORDER BY "id" LIMIT 1
  ~ (0.000477) SELECT "id", "name", "locked", "number", "modify_date", "b_path" FROM "bulletins" WHERE "number" = 1 ORDER BY "id" LIMIT 1
+ ~ (0.046046) SET backslash_quote = off
+ ~ (0.000292) SET standard_conforming_strings = on
+ ~ (0.000172) SET client_min_messages = warning
+ ~ (0.042511) SELECT "id", "name", "locked", "number", "modify_date", "b_path" FROM "bulletins" ORDER BY "id"
+ ~ (0.001455) SELECT "id", "name", "locked", "number", "modify_date", "b_path" FROM "bulletins" WHERE "number" = 1 ORDER BY "id" LIMIT 1
+ ~ (0.001041) SELECT "id", "name", "locked", "number", "modify_date", "b_path" FROM "bulletins" WHERE "number" = 1 ORDER BY "id" LIMIT 1
+ ~ (0.000373) SELECT "id", "name", "locked", "number", "modify_date", "b_path" FROM "bulletins" ORDER BY "id"
+ ~ (0.000337) SELECT "id", "name", "locked", "number", "modify_date", "b_path" FROM "bulletins" WHERE "number" = 1 ORDER BY "id" LIMIT 1

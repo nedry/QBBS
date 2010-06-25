@@ -121,7 +121,7 @@ class Session
     return if replaceline == 0
 
     list [replaceline, 0]
-    if yes("Replace this line?", :default => false) then
+    if yes("Replace this line(y/N)? ",false,false) then
       prompt = "Enter new line or enter <CR> to abort: "
       newline = getinp(prompt)
       if newline == "" then print "Line NOT replaced"

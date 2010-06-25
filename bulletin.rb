@@ -43,7 +43,7 @@ class Session
 
     name = getinp("Enter new bulletin name: ", :nonempty)
     path = getinp("Enter new bulletin path: ", :nonempty)
-    if yes("Are you sure?", :default => false)
+    if yes("Are you sure (Y,n)? ", false, false,true)
       add_bulletin(name, path)
     else
       print "%RAborted."
@@ -125,8 +125,8 @@ class Session
           t = happy.to_i
           case happy
           when "CR"; crerror
-	  when ""; return
-	  when "Q";return
+	  when "Q" ; return
+	   when ""; return
           when "?";  displaybullet  if !existfileout('bulletins',0,true)
           else
             if t > 0 and t <= b_total then 

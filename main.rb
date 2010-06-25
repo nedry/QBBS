@@ -22,7 +22,7 @@ class Session
 	def leave
 		@who.user(@c_user.name).where="Goodbye"
 		update_who_t(@c_user.name,"Goodbye")
-		if yes("Log off now?", :overwrite => false) then
+		if yes("Log off now (Y,n)? ", true, false,false) then
 			write "%W"
 			gfileout('bye')
 			print "NO CARRIER"
@@ -95,7 +95,6 @@ class Session
 			when "BM"; run_if_ulevel {bullmaint}
 			when "A"; areachange(parameters)
 			when "B"; bullets(parameters)
-			when "C"; print "%GUnder Construction"
 			when "T";  if IRC_ON then 
 				            teleconference(nil) 
 					   else

@@ -1,29 +1,20 @@
 class Session
 
-  def scanformail
+  def scanformail  # revised
     i = 0
     ptr_check
     u = @c_user
     area = fetch_area(0)
-    print; write "Scanning for New Email..."
+    print; write "Scanning for New Email...  "
+    new =  new_email(area.tbl,u.lastread[0],u.name)
 
-    #puts "lastread: #{u.lastread[0]}"
-    hash = email_lookup_table(area.tbl,u.name)
-    #puts "hash: #{hash}"
-    total =  e_total(area.tbl,u.name)
-    #puts "total: #{total}"
-    pointer = find_epointer(hash,u.lastread[0],area.tbl,u.name) 
-    if pointer != nil then  
-      #puts "pointer: #{pointer}"
-      if total > pointer then	
-        print "%Gfound!"
+    if new > 0 then  
+        print "%G#{new} new messages found."
         return true
-      end
     end
-    #puts "pointer: #{pointer}"
-    print "none."
-    return false
-  end
+     print "none."
+     return false
+   end
 
   def ptr_check
     area = fetch_area(0)
@@ -34,10 +25,10 @@ class Session
   end
 
   def readitnow
-    reademail(true) if yes(CRLF+"Read it now?")
+    reademail(true) if yes(CRLF+"Read them now (Y,n)? ", true, false,true)
   end
 
-  def emailmenu
+  def emailmenu  #revised
     @who.user(@c_user.name).where="Email Menu"
     update_who_t(@c_user.name,"Email Menu")
     out = "Read" 
@@ -45,17 +36,10 @@ class Session
     area = fetch_area(0)
     ptr_check
     u = @c_user
-    hash = email_lookup_table(area.tbl,u.name)
-    #puts "initial hash:#{hash}"
-    #puts 
     p_area = @c_area
     @c_area = 0
-    epointer = find_epointer(hash,u.lastread[0],area.tbl,u.name)
-    #puts "initial epointer: #{epointer}"
-    epointer = 1 if epointer == nil 
-
-
-
+    epointer = e_total(area.tbl,u.name) - new_email(area.tbl,u.lastread[0],u.name)
+    epointer = 1 if epointer == 0
 
     done = false
 
@@ -72,16 +56,17 @@ class Session
       case happy
 
       when ""; if sdir == "+" then epointer = nextmail(epointer) else epointer = lastmail(epointer) end
-    when "+"; sdir="+"; epointer = nextmail(epointer)
-    when "-"; sdir="-"; epointer = lastmail(epointer)
-    when "G"; leave
-    when "R"; replyemail(epointer,0)
-    when "?"; write "%W"; gfileout ("emailmnu")
-    when "/"; displaymessage(hash[epointer - 1],area.tbl,true)
-    when "K"; deletemessage(epointer-1)
-    when "N"; gfileout ("emailsnd");sendemail(false)
-    when "Q"; break # exit input loop
-    when /\d+/; epointer = jumpemail(happy.to_i,epointer,e_total(area.tbl,u.name)+1)
+      when "+"; sdir="+"; epointer = nextmail(epointer)
+      when "-"; sdir="-"; epointer = lastmail(epointer)
+      when "G"; leave
+      when "R"; replyemail(epointer,0)
+      when "?"; write "%W"; gfileout ("emailmnu")
+      when "/"; displaymessage(email_absolute_message(area.tbl,epointer,u.name),area.tbl,true)
+   
+      when "K"; deletemessage(epointer-1)
+      when "N"; gfileout ("emailsnd");sendemail(false)
+      when "Q"; break # exit input loop
+      when /\d+/; epointer = jumpemail(happy.to_i,epointer,e_total(area.tbl,u.name)+1)
     else; print "Out of Range."
     end #of case 
     done
@@ -90,115 +75,59 @@ class Session
 
 end
 
-def jumpemail(inp,epointer,max)
+def jumpemail(inp,epointer,max) #revised
   ptr_check
   u = @c_user
   area = fetch_area(0)
-  hash = email_lookup_table(area.tbl,u.name)
   total =  e_total(area.tbl,u.name)
-  #puts "inp:#{inp}"
+
   if inp > 0 and inp <= max and total > 0 then
     epointer = inp
-    displaymessage(hash[epointer - 1],area.tbl,true)
+    displaymessage(email_absolute_message(area.tbl,epointer,u.name),area.tbl,true)
   else print "Out of Range" end
   epointer
 end 
 
-def nextmail(epointer)
+def nextmail(epointer)  #revised
 
   ptr_check
   u = @c_user
   area = fetch_area(0)
-  hash = email_lookup_table(area.tbl,u.name)
   total =  e_total(area.tbl,u.name)
-  #puts "epointer: #{epointer}"
-  #puts "total: #{total}"
-  #puts "hash: #{hash}"
 
   if epointer < total and total > 0 then
     epointer +=1
-    displaymessage(hash[epointer - 1],area.tbl,true)
+    displaymessage(email_absolute_message(area.tbl,epointer,u.name),area.tbl,true)
   else
     print("No More Email")
   end
   return epointer
 end
 
-def lastmail(epointer)
+def lastmail(epointer) #revised
 
   ptr_check
   u = @c_user
   area = fetch_area(0)
-  hash = email_lookup_table(area.tbl,u.name)
   total =  e_total(area.tbl,u.name)
-  #puts "epointer: #{epointer}"
-  #puts "total: #{total}"
-  #puts "hash: #{hash}"
 
   if epointer > 1 then
     epointer -=1
-    displaymessage(hash[epointer - 1],area.tbl,true)
+    displaymessage(email_absolute_message(area.tbl,epointer,u.name),area.tbl,true)
   else
     print("No More Email")
   end
   return epointer
 end
 
-def reademail(new)
-  area = fetch_area(0)
-  ptr_check
-  u = @c_user
-  hash = email_lookup_table(area.tbl,u.name)
-  p_area = @c_area
-  epointer = 0
-  @c_area = 0
-  @who.user(@c_user).where="Reading Email"
-  #puts "lastread: #{u.lastread[0]}"
-  #puts "hash: #{hash}"
-  if new then
-    epointer = find_epointer(hash,u.lastread[0],area.tbl,u.name)
-    #puts "result #{epointer}"
-    if epointer == nil then epointer = 0 else epointer += 1 end
-  else
-    epointer = 1 if e_total(area.tbl,u.name) > 0
-  end
-  if epointer < 1 then 
-    print "You have no email."
-    @c_area = p_area
-    return
-  end
-  #puts "epointer: #{epointer}"
-  displaymessage(hash[epointer - 1],area.tbl,true)
-  done = false
-  getinp("%M( -, R, K, /, F, Q, N, ?): ") {|inp|
-    happy = inp.upcase
-    if !happy.integer? 
-      happy.gsub!(/[-\d]/,"")
-      happy = "" if happy == "N"
-    end
-    case happy
-    when ""; epointer = nextmail(epointer)
-    when "G"; leave
 
-    when "R"; replyemail(epointer,0)
-    when "?"; write "%W"; gfileout ("emailmnu")
-    when "/"; displaymessage(hash[epointer - 1],area.tbl,true)
-    when "K"; deletemessage(epointer)
-    when "Q"; done = true # exit input loop
-    else; print "Out of Range."
-    end #of case 
-    done
-  }
-  @c_area = p_area
-end 
-
-def deletemessage(epointer)
+def deletemessage(epointer) #revised
 
   u = @c_user
   area = fetch_area(0)
-  hash = email_lookup_table(area.tbl,u.name)
+ # hash = email_lookup_table(area.tbl,u.name)
   total = e_total(area.tbl,u.name)
-  del = hash[epointer - 1]
+  del = email_absolute_message(area.tbl,epointer,u.name)
 
   if total > 0 then
     delete_msg(area.tbl,del)
@@ -208,8 +137,6 @@ def deletemessage(epointer)
     print; print "No Messages"
   end
 end
-
-
 
 
 def qwkmailadr(address)
@@ -333,7 +260,8 @@ def sendemail(feedback)
     msg_file = write_quote_msg("")
     launch_editor(msg_file)
     suck_in_text(msg_file)
-    saveit = yes("Send email?")
+    prompt = "Send email (Y,n)? "
+    saveit = yes(prompt, true, false,true)
   else
     saveit = lineedit(1,reply_text)
     puts saveit
@@ -427,7 +355,8 @@ def replyemail(epointer,carea)
     launch_editor(msg_file)
     suck_in_text(msg_file)
     print (CLS)
-    saveit = yes("Send message?")
+    prompt = "Send message (Y,n)? "
+    saveit = yes(prompt, true, false,true)
   else
     saveit = lineedit(1,msg_text)
   end
@@ -456,18 +385,5 @@ def replyemail(epointer,carea)
   end
 end
 
-def email
-  prompt ="[R]ead [S]end [Q]uit: "
-  getinp(prompt) {|inp|
-    happy = inp.upcase
-    parameters = Parse.parse(happy)
-    happy.gsub!(/[-\d]/,"")
-    case happy
-    when "Q"; done = true
-    when "R"; reademail(false)
-    when "S"; gfileout ("emailsnd");sendemail(false)
-    end 
-    done
-  }
-end 
+
 end
