@@ -424,17 +424,19 @@ class Session
 
   def displaymessage(mpointer,table,email)
 
+   if mpointer != 0 then 
     i = 0
     @c_user.lastread = Array.new(2,0) if @c_user.lastread == 0
     @c_user.lastread[@c_area] ||= 0
     u = @c_user	
     if email then
-      abs = mpointer
+     
+      abs =  email_absolute_message(table,mpointer,u.name)
     else		 
       abs = absolute_message(table,mpointer)
     end
     curmessage = fetch_msg(table, abs)
-    puts @c_user.lastread[@c_area].class
+    
     if @c_user.lastread[@c_area] < curmessage.number then
       @c_user.lastread[@c_area] = curmessage.number
       update_user(@c_user,get_uid(@c_user.name))
@@ -501,6 +503,9 @@ class Session
         print end
     }
     print
+ else
+   print "%ROut of Range"
+end
   end #displaymesasge
 
   def h_msg
@@ -600,10 +605,6 @@ class Session
 
     area = fetch_area(@c_area)
     start,stop  = parameters[0..1]
-
-    puts "start: #{start}"
-    puts "stop: #{stop}"
-    puts "h_msg: #{h_msg}"
 
     if (start < 1) or (start > h_msg) or (stop < 1) or (stop > h_msg) then
       print "%ROut of Range dude!"

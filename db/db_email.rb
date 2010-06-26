@@ -16,16 +16,6 @@ def new_email(table,ind,user)
   result = single_result(res).to_i
 end
 
-def find_epointer(hash,absolute,table,user)
-
-  total = (e_total(table,user) - 1 )
-  for i in 0..total
-    result = i
-    return result + 1 if hash[i] >= absolute.to_i
-  end
-  return nil
-end
-
 def email_absolute_message(table,ind,m_to)
   ind = 0 if ind.nil?
   @db.exec("BEGIN")
@@ -37,25 +27,6 @@ def email_absolute_message(table,ind,m_to)
   @db.exec("END")
   return result
 end
-
-
-def email_lookup_table(table,user)
-
-  hash = []
-
-  res = @db.exec("SELECT number FROM #{table} WHERE lower(m_to) = '#{user.downcase}' ORDER BY number") 
-  hash = result_as_array(res).flatten
-  for i in 0..hash.length-1
-    hash[i] = hash[i].to_i
-  end
-
-  #hash.each {|x| puts "email hash #{x}"}
-
-  hash = nil if hash.length < 1 
-
-  return hash
-end
-
 
 def new_messages(table,ind)
 

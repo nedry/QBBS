@@ -9,7 +9,9 @@ class Session
     new =  new_email(area.tbl,u.lastread[0],u.name)
 
     if new > 0 then  
-        print "%G#{new} new messages found."
+	m = "message"
+	m = "messages" if new > 1
+        print "%G#{new} new #{m} found."
         return true
     end
      print "none."
@@ -61,9 +63,9 @@ class Session
       when "G"; leave
       when "R"; replyemail(epointer,0)
       when "?"; write "%W"; gfileout ("emailmnu")
-      when "/"; displaymessage(email_absolute_message(area.tbl,epointer,u.name),area.tbl,true)
+      when "/"; displaymessage(epointer,area.tbl,true)
    
-      when "K"; deletemessage(epointer-1)
+      when "K"; deletemessage(epointer)
       when "N"; gfileout ("emailsnd");sendemail(false)
       when "Q"; break # exit input loop
       when /\d+/; epointer = jumpemail(happy.to_i,epointer,e_total(area.tbl,u.name)+1)
@@ -81,10 +83,11 @@ def jumpemail(inp,epointer,max) #revised
   area = fetch_area(0)
   total =  e_total(area.tbl,u.name)
 
-  if inp > 0 and inp <= max and total > 0 then
+  if inp > 0 and inp <  max and total > 0 then
     epointer = inp
-    displaymessage(email_absolute_message(area.tbl,epointer,u.name),area.tbl,true)
-  else print "Out of Range" end
+    puts "epointer: #{epointer}"
+    displaymessage(epointer,area.tbl,true)
+  else print "%ROut of Range" end
   epointer
 end 
 
@@ -97,9 +100,9 @@ def nextmail(epointer)  #revised
 
   if epointer < total and total > 0 then
     epointer +=1
-    displaymessage(email_absolute_message(area.tbl,epointer,u.name),area.tbl,true)
+    displaymessage(epointer,area.tbl,true)
   else
-    print("No More Email")
+    print("%RNo More Email")
   end
   return epointer
 end
@@ -113,9 +116,9 @@ def lastmail(epointer) #revised
 
   if epointer > 1 then
     epointer -=1
-    displaymessage(email_absolute_message(area.tbl,epointer,u.name),area.tbl,true)
+    displaymessage(epointer,area.tbl,true)
   else
-    print("No More Email")
+    print("%RNo More Email")
   end
   return epointer
 end
@@ -125,7 +128,6 @@ def deletemessage(epointer) #revised
 
   u = @c_user
   area = fetch_area(0)
- # hash = email_lookup_table(area.tbl,u.name)
   total = e_total(area.tbl,u.name)
   del = email_absolute_message(area.tbl,epointer,u.name)
 
@@ -240,7 +242,7 @@ def sendemail(feedback)
       if !findlocal(inp) then
         print "%RLocal User not found..."
       else 
-        to = inp.upcase
+        to = inp
         m_type = LOCAL
         break
       end
@@ -249,7 +251,6 @@ def sendemail(feedback)
   else 
     to = SYSOPNAME  # because it's feedback.  
   end
-  #to.upcase!
   to.strip!
   title = getinp("%GTitle: ")
   return false if title == "" 
@@ -303,12 +304,10 @@ def replyemail(epointer,carea)
     abs = absolute_message(area.tbl,epointer)
     r_message = fetch_msg(area.tbl, abs)
   else
-    hash = email_lookup_table(area.tbl,u.name)
-    r_message = fetch_msg(area.tbl, hash[epointer - 1] )
+    r_message = fetch_msg(area.tbl,email_absolute_message(area.tbl,epointer,u.name) )
   end
   msg_text = []
-  # r_message.msg_text.each('ã') {|line| msg_text.push(line.chop!)}
-  r_message.msg_text.each(DLIM) {|line| msg_text.push(line.chop!)}
+  r_message.msg_text.each_line(DLIM) {|line| msg_text.push(line.chop!)} #1.9 modification
   done = false
   print
   if %w(R N).include?(@c_user.areaaccess[0])
