@@ -25,7 +25,7 @@ class Session
 
       case sel
       when "/"; showbulletin(bpointer)
-      when "Q"; bpointer = true
+      when "Q"; bpointer = truee
       when "W"; displaywho
       when "PU";page
       when "A"; addbulletin
@@ -120,7 +120,8 @@ class Session
       displaybullet  if !existfileout('bulletins',0,true)
       prompt = "\r\n%WBulletin #[1-#{b_total}] ? %Y<--^%W to quit: " 
       while true
-        getinp(prompt, :nonempty) {|inp|
+        getinp(prompt) {|inp|    #removed :nonempty... the loop can't detect a return if this is set.
+	  puts "inp: #{inp}"
           happy = inp.upcase
           t = happy.to_i
           case happy
@@ -135,6 +136,7 @@ class Session
             end
           end #of case
         }
+	puts "i'm here"
       end
     end
   end 

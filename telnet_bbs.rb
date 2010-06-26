@@ -141,6 +141,7 @@ def bbs(parameters)
         case happy
         when "";   return
         when "CR"; crerror
+	when "Q"; return
         when "?";  displaybbs if !existfileout('bbs',0,true)
         else
           runbbs(t) if (t) > 0 and (t) <= o_total
