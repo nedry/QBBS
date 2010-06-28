@@ -10,7 +10,7 @@ end
 
 def update_groups(number,name)
   g = Group.first(:number => number)
-  g.update(:name => name)
+  g.update(:groupname => name)
 end
 
 def fetch_groups
