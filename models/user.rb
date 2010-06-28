@@ -27,5 +27,5 @@ class User
   property :zipread, Text
   property :signature, Text
 
-  has_one :who, :child_key => [:number]
+  has 1, :who, :child_key => [:number]
 end
