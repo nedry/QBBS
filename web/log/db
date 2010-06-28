@@ -13,3 +13,75 @@ Fri, 18 Jun 2010 09:10:42 GMT  ~  info  ~  Logfile created
  ~ (0.001041) SELECT "id", "name", "locked", "number", "modify_date", "b_path" FROM "bulletins" WHERE "number" = 1 ORDER BY "id" LIMIT 1
  ~ (0.000373) SELECT "id", "name", "locked", "number", "modify_date", "b_path" FROM "bulletins" ORDER BY "id"
  ~ (0.000337) SELECT "id", "name", "locked", "number", "modify_date", "b_path" FROM "bulletins" WHERE "number" = 1 ORDER BY "id" LIMIT 1
+ ~ (0.015690) SET backslash_quote = off
+ ~ (0.000529) SET standard_conforming_strings = on
+ ~ (0.000183) SET client_min_messages = warning
+ ~ (0.008080) SELECT "area_key", "name", "tbl", "delete", "locked", "number", "netnum", "d_access", "v_access", "modify_date", "network", "fido_net", "grp" FROM "areas" ORDER BY "area_key"
+ ~ (0.000726) SELECT "area_key", "name", "tbl", "delete", "locked", "number", "netnum", "d_access", "v_access", "modify_date", "network", "fido_net", "grp" FROM "areas" ORDER BY "area_key"
+ ~ (0.001203) SELECT "number", "groupname" FROM "groups" ORDER BY "number"
+ ~ (0.000826) SELECT "area_key", "name", "tbl", "delete", "locked", "number", "netnum", "d_access", "v_access", "modify_date", "network", "fido_net", "grp" FROM "areas" ORDER BY "area_key"
+ ~ (0.000647) SELECT "area_key", "name", "tbl", "delete", "locked", "number", "netnum", "d_access", "v_access", "modify_date", "network", "fido_net", "grp" FROM "areas" ORDER BY "area_key"
+ ~ (0.000525) SELECT "number", "groupname" FROM "groups" ORDER BY "number"
+ ~ (0.001429) SET backslash_quote = off
+ ~ (0.000702) SET standard_conforming_strings = on
+ ~ (0.000319) SET client_min_messages = warning
+ ~ (0.016042) SELECT "number", "deleted", "locked", "name", "alias", "ip", "citystate", "address", "password", "length", "modify_date", "width", "ansi", "more", "level", "create_date", "laston", "logons", "posted", "rsts_pw", "rsts_acc", "fullscreen" FROM "users" WHERE (upper(name) = 'SYSOP') ORDER BY "number" LIMIT 1
+ ~ (0.000631) SET backslash_quote = off
+ ~ (0.000295) SET standard_conforming_strings = on
+ ~ (0.000193) SET client_min_messages = warning
+ ~ (0.009979) SELECT "number", "deleted", "locked", "name", "alias", "ip", "citystate", "address", "password", "length", "modify_date", "width", "ansi", "more", "level", "create_date", "laston", "logons", "posted", "rsts_pw", "rsts_acc", "fullscreen" FROM "users" WHERE (upper(name) = 'SYSOP') ORDER BY "number" LIMIT 1
+ ~ (0.000884) SELECT "id", "number", "lastactivity", "place" FROM "whos" WHERE "number" = 1 ORDER BY "id" LIMIT 1
+ ~ ERROR:  relation "whos" does not exist
+ (code: 16908420, sql state: 42P01, query: SELECT "id", "number", "lastactivity", "place" FROM "whos" WHERE "number" = 1 ORDER BY "id" LIMIT 1, uri: postgres://127.0.0.1/qbbs)
+ ~ (0.001612) SET backslash_quote = off
+ ~ (0.000343) SET standard_conforming_strings = on
+ ~ (0.000182) SET client_min_messages = warning
+ ~ (0.012513) SELECT "number", "deleted", "locked", "name", "alias", "ip", "citystate", "address", "password", "length", "modify_date", "width", "ansi", "more", "level", "create_date", "laston", "logons", "posted", "rsts_pw", "rsts_acc", "fullscreen" FROM "users" WHERE (upper(name) = 'SYSOP') ORDER BY "number" LIMIT 1
+ ~ (0.000840) SELECT "id", "number", "lastactivity", "place" FROM "whos" WHERE "number" = 1 ORDER BY "id" LIMIT 1
+ ~ ERROR:  relation "whos" does not exist
+ (code: 16908420, sql state: 42P01, query: SELECT "id", "number", "lastactivity", "place" FROM "whos" WHERE "number" = 1 ORDER BY "id" LIMIT 1, uri: postgres://127.0.0.1/qbbs)
+ ~ (0.002375) SET backslash_quote = off
+ ~ (0.000606) SET standard_conforming_strings = on
+ ~ (0.000199) SET client_min_messages = warning
+ ~ (0.008891) SELECT "number", "deleted", "locked", "name", "alias", "ip", "citystate", "address", "password", "length", "modify_date", "width", "ansi", "more", "level", "create_date", "laston", "logons", "posted", "rsts_pw", "rsts_acc", "fullscreen" FROM "users" WHERE (upper(name) = 'SYSOP') ORDER BY "number" LIMIT 1
+ ~ (0.000966) SELECT "id", "number", "lastactivity", "place" FROM "whos" WHERE "number" = 1 ORDER BY "id" LIMIT 1
+ ~ ERROR:  relation "whos" does not exist
+ (code: 16908420, sql state: 42P01, query: SELECT "id", "number", "lastactivity", "place" FROM "whos" WHERE "number" = 1 ORDER BY "id" LIMIT 1, uri: postgres://127.0.0.1/qbbs)
+ ~ (0.000000) SELECT "number", "deleted", "locked", "name", "alias", "ip", "citystate", "address", "password", "length", "modify_date", "width", "ansi", "more", "level", "create_date", "laston", "logons", "posted", "rsts_pw", "rsts_acc", "fullscreen" FROM "users" WHERE (upper(name) = 'SYSOP') ORDER BY "number" LIMIT 1
+ ~ (0.000436) SELECT "id", "number", "lastactivity", "place" FROM "whos" WHERE "number" = 1 ORDER BY "id" LIMIT 1
+ ~ ERROR:  relation "whos" does not exist
+ (code: 16908420, sql state: 42P01, query: SELECT "id", "number", "lastactivity", "place" FROM "whos" WHERE "number" = 1 ORDER BY "id" LIMIT 1, uri: postgres://127.0.0.1/qbbs)
+ ~ (0.001090) SET backslash_quote = off
+ ~ (0.000217) SET standard_conforming_strings = on
+ ~ (0.000170) SET client_min_messages = warning
+ ~ (0.010541) SELECT "number", "deleted", "locked", "name", "alias", "ip", "citystate", "address", "password", "length", "modify_date", "width", "ansi", "more", "level", "create_date", "laston", "logons", "posted", "rsts_pw", "rsts_acc", "fullscreen" FROM "users" WHERE (upper(name) = 'SYSOP') ORDER BY "number" LIMIT 1
+ ~ (0.006428) SELECT "id", "number", "lastactivity", "place" FROM "who" WHERE "number" = 1 ORDER BY "id" LIMIT 1
+ ~ ERROR:  column "id" does not exist
+LINE 1: SELECT "id", "number", "lastactivity", "place" FROM "who" WH...
+               ^
+ (code: 50360452, sql state: 42703, query: SELECT "id", "number", "lastactivity", "place" FROM "who" WHERE "number" = 1 ORDER BY "id" LIMIT 1, uri: postgres://127.0.0.1/qbbs)
+ ~ (0.001585) SET backslash_quote = off
+ ~ (0.000309) SET standard_conforming_strings = on
+ ~ (0.000210) SET client_min_messages = warning
+ ~ (0.014827) SELECT "number", "deleted", "locked", "name", "alias", "ip", "citystate", "address", "password", "length", "modify_date", "width", "ansi", "more", "level", "create_date", "laston", "logons", "posted", "rsts_pw", "rsts_acc", "fullscreen" FROM "users" WHERE (upper(name) = 'SYSOP') ORDER BY "number" LIMIT 1
+ ~ (0.001835) SELECT "id", "number", "lastactivity", "place" FROM "who" WHERE "number" = 1 ORDER BY "id" LIMIT 1
+ ~ (0.001418) SET backslash_quote = off
+ ~ (0.000374) SET standard_conforming_strings = on
+ ~ (0.000216) SET client_min_messages = warning
+ ~ (0.014368) SELECT "number", "deleted", "locked", "name", "alias", "ip", "citystate", "address", "password", "length", "modify_date", "width", "ansi", "more", "level", "create_date", "laston", "logons", "posted", "rsts_pw", "rsts_acc", "fullscreen" FROM "users" ORDER BY "number"
+ ~ (0.000000) SELECT "number", "deleted", "locked", "name", "alias", "ip", "citystate", "address", "password", "length", "modify_date", "width", "ansi", "more", "level", "create_date", "laston", "logons", "posted", "rsts_pw", "rsts_acc", "fullscreen" FROM "users" ORDER BY "number"
+ ~ (0.000027) SELECT "number", "deleted", "locked", "name", "alias", "ip", "citystate", "address", "password", "length", "modify_date", "width", "ansi", "more", "level", "create_date", "laston", "logons", "posted", "rsts_pw", "rsts_acc", "fullscreen" FROM "users" ORDER BY "number"
+ ~ (0.002244) SELECT "number", "deleted", "locked", "name", "alias", "ip", "citystate", "address", "password", "length", "modify_date", "width", "ansi", "more", "level", "create_date", "laston", "logons", "posted", "rsts_pw", "rsts_acc", "fullscreen" FROM "users" ORDER BY "number"
+ ~ (0.000000) SELECT "number", "deleted", "locked", "name", "alias", "ip", "citystate", "address", "password", "length", "modify_date", "width", "ansi", "more", "level", "create_date", "laston", "logons", "posted", "rsts_pw", "rsts_acc", "fullscreen" FROM "users" ORDER BY "number"
+ ~ (0.000937) SELECT "number", "deleted", "locked", "name", "alias", "ip", "citystate", "address", "password", "length", "modify_date", "width", "ansi", "more", "level", "create_date", "laston", "logons", "posted", "rsts_pw", "rsts_acc", "fullscreen" FROM "users" ORDER BY "number"
+ ~ (0.002211) SELECT "number", "deleted", "locked", "name", "alias", "ip", "citystate", "address", "password", "length", "modify_date", "width", "ansi", "more", "level", "create_date", "laston", "logons", "posted", "rsts_pw", "rsts_acc", "fullscreen" FROM "users" ORDER BY "number"
+ ~ (0.021425) SET backslash_quote = off
+ ~ (0.000373) SET standard_conforming_strings = on
+ ~ (0.000169) SET client_min_messages = warning
+ ~ (0.009316) SELECT "number", "deleted", "locked", "name", "alias", "ip", "citystate", "address", "password", "length", "modify_date", "width", "ansi", "more", "level", "create_date", "laston", "logons", "posted", "rsts_pw", "rsts_acc", "fullscreen" FROM "users" ORDER BY "number"
+ ~ (0.001157) SELECT "number", "deleted", "locked", "name", "alias", "ip", "citystate", "address", "password", "length", "modify_date", "width", "ansi", "more", "level", "create_date", "laston", "logons", "posted", "rsts_pw", "rsts_acc", "fullscreen" FROM "users" ORDER BY "number"
+ ~ (0.004637) INSERT INTO "users" ("deleted", "locked", "name", "ip", "citystate", "address", "password", "length", "width", "ansi", "more", "level", "create_date", "fullscreen") VALUES (FALSE, FALSE, 'joe test', '000.000.000', 'asdlfkjasdflsakdfj', 'joe@test.com', 'JOETEST', 24, 80, TRUE, TRUE, 60, '2010-06-28', TRUE) RETURNING "number"
+ ~ (0.001529) SELECT "number", "deleted", "locked", "name", "alias", "ip", "citystate", "address", "password", "length", "modify_date", "width", "ansi", "more", "level", "create_date", "laston", "logons", "posted", "rsts_pw", "rsts_acc", "fullscreen" FROM "users" ORDER BY "number"
+ ~ (0.000531) SELECT "number", "deleted", "locked", "name", "alias", "ip", "citystate", "address", "password", "length", "modify_date", "width", "ansi", "more", "level", "create_date", "laston", "logons", "posted", "rsts_pw", "rsts_acc", "fullscreen" FROM "users" ORDER BY "number"
+ ~ (0.001642) SELECT "number", "deleted", "locked", "name", "alias", "ip", "citystate", "address", "password", "length", "modify_date", "width", "ansi", "more", "level", "create_date", "laston", "logons", "posted", "rsts_pw", "rsts_acc", "fullscreen" FROM "users" ORDER BY "number"
+ ~ (0.004145) SELECT "number", "deleted", "locked", "name", "alias", "ip", "citystate", "address", "password", "length", "modify_date", "width", "ansi", "more", "level", "create_date", "laston", "logons", "posted", "rsts_pw", "rsts_acc", "fullscreen" FROM "users" ORDER BY "number"

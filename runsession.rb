@@ -7,7 +7,7 @@ $stdout.flush
 
 DataMapper::Logger.new('log/db', :debug)
 DataMapper.setup(:default, "postgres://#{DATAIP}/#{DATABASE}")
-who = Who.new
+who = Who_old.new
 message = []
 log = Log.new
 irc_who =Irc_who.new
