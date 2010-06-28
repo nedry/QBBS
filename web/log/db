@@ -85,3 +85,8 @@ LINE 1: SELECT "id", "number", "lastactivity", "place" FROM "who" WH...
  ~ (0.000531) SELECT "number", "deleted", "locked", "name", "alias", "ip", "citystate", "address", "password", "length", "modify_date", "width", "ansi", "more", "level", "create_date", "laston", "logons", "posted", "rsts_pw", "rsts_acc", "fullscreen" FROM "users" ORDER BY "number"
  ~ (0.001642) SELECT "number", "deleted", "locked", "name", "alias", "ip", "citystate", "address", "password", "length", "modify_date", "width", "ansi", "more", "level", "create_date", "laston", "logons", "posted", "rsts_pw", "rsts_acc", "fullscreen" FROM "users" ORDER BY "number"
  ~ (0.004145) SELECT "number", "deleted", "locked", "name", "alias", "ip", "citystate", "address", "password", "length", "modify_date", "width", "ansi", "more", "level", "create_date", "laston", "logons", "posted", "rsts_pw", "rsts_acc", "fullscreen" FROM "users" ORDER BY "number"
+ ~ (0.001943) SET backslash_quote = off
+ ~ (0.000436) SET standard_conforming_strings = on
+ ~ (0.000338) SET client_min_messages = warning
+ ~ (0.026562) SELECT "number", "deleted", "locked", "name", "alias", "ip", "citystate", "address", "password", "length", "modify_date", "width", "ansi", "more", "level", "create_date", "laston", "logons", "posted", "rsts_pw", "rsts_acc", "fullscreen" FROM "users" ORDER BY "number"
+ ~ (0.001608) SELECT "number", "deleted", "locked", "name", "alias", "ip", "citystate", "address", "password", "length", "modify_date", "width", "ansi", "more", "level", "create_date", "laston", "logons", "posted", "rsts_pw", "rsts_acc", "fullscreen" FROM "users" ORDER BY "number"
