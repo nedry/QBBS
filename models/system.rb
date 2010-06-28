@@ -6,5 +6,5 @@ class System
   property :qwkrepsuccess, Boolean 
   property :qwkrepwake, DateTime
   property :rec, Integer, :default => 1  
-  property :f_msgid, BigDecimal
+  property :f_msgid, Integer, :min => 0, :max => 2**32
 end

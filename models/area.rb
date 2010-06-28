@@ -15,7 +15,7 @@ class Area
   property :modify_date, DateTime
   property :network, String, :length => 40
   property :fido_net, String, :length => 40
-  property :grp, BigDecimal, :default => 1
+  property :grp, Integer, :default => 1, :min => 0, :max => 2**32
 
   # groupname, actually - will change to group object when we fix legacy code
   def group
