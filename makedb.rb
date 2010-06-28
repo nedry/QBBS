@@ -3,6 +3,7 @@
 require 'datamapper'
 require 'yaml'
 require 'consts'
+require 'db/db_area'
 
 
 Dir['models/*'].each {|i| require i}
@@ -45,3 +46,7 @@ s.save!
 YAML.load(IO.read('config/initusers.yml')).each {|u|
   User.new(u).save!
 }
+
+# initial area
+add_area("Email","email","I","I")
+add_area("General Discussions","general","W","W")
