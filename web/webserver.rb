@@ -1,4 +1,4 @@
-$LOAD_PATH << "/home/mark/qbbs"
+$LOAD_PATH << ".."
 
 require 'rubygems'
 require 'sinatra'
