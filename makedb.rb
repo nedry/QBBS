@@ -2,18 +2,27 @@
 
 require 'datamapper'
 require 'yaml'
+require 'consts'
 
 
 Dir['models/*'].each {|i| require i}
 
 c = YAML.load(IO.read('config/db.yml'))
-if c['adapter'] == 'sqlite3'
-  cstr = "#{c['adapter']}://#{Dir.pwd}/#{c['db']}"
+if c['connect_string']
+  cstr = c['connect_string']
 else
-  cstr = "#{c['adapter']}://#{c['user']}:#{c['password']}@#{c['host']}/#{c['db']}"
+  if c['adapter'] == 'sqlite3'
+    cstr = "#{c['adapter']}://#{Dir.pwd}/#{c['db']}"
+  else
+    cstr = "#{c['adapter']}://#{c['user']}:#{c['password']}@#{c['host']}/#{c['db']}"
+  end
 end
 
-puts cstr
+# use consts.rb for now
+cstr = "postgres://#{DATAIP}/#{DATABASE}"
+
+puts "connecting to #{cstr}"
+
 DataMapper.setup(:default, cstr)
 
 DataMapper.auto_migrate!
