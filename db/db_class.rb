@@ -149,20 +149,6 @@ class DB_message
     :reply, :origin, :smtp
 end
 
-class DB_bulletin
-
-  def initialize (name,locked,number,modify_date,path)
-
-    @name	 	= name
-    @locked		= locked
-    @number		= number
-    @modify_date	= modify_date
-    @path		= path
-  end
-
-  attr_accessor :name, :locked, :number, :modify_date, :path
-end
-
 class DB_doors
 
   def initialize (name,locked,number,modify_date,d_path,d_type,path,level,droptype)
@@ -179,21 +165,6 @@ class DB_doors
   end
 
   attr_accessor :name, :locked, :number,  :modify_date, :d_path, :d_type, :path, :level, :droptype
-end
-
-class DB_other
-
-  def initialize (name,locked,number,modify_date,address,level)
-    @name		= name
-    @locked	= locked
-    @number	= number
-    @modify_date	= modify_date
-    @address	= address
-    @level	= level
-
-  end
-
-  attr_accessor :name, :locked, :number,  :modify_date, :address,  :level
 end
 
 class DB_system
