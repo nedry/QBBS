@@ -1,5 +1,6 @@
-def create_group_table
+require 'models/group'
 
+def create_group_table
   puts "-DB: Creating Group Table"
   @db.exec("CREATE TABLE groups (number bigserial PRIMARY KEY, groupname varchar(40))")
 
