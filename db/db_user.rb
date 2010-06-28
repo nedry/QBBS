@@ -1,14 +1,12 @@
+require 'models/user'
+
 BEL = 7.chr
 
 def u_total
-
-  res = @db.exec("SELECT COUNT(*) FROM users")
-  result = single_result(res).to_i
-  return result
+  User.count
 end
 
 def create_user_table
-
   puts "-DB: Creating User Table"
   @db.exec("CREATE TABLE users (deleted boolean DEFAULT false, \
            locked boolean DEFAULT false, name varchar(40), \
@@ -29,53 +27,21 @@ def create_user_table
 end
 
 def user_exists(uname)
-
-
-  uname.gsub!("'",BEL) 
-  result = false
-
-  res = @db.exec("SELECT COUNT(*) FROM users WHERE upper(name) = '#{uname.upcase}'")
-  temp = single_result(res).to_i
-  result = true if temp > 0 
-  return result
+  User.count :conditions => ["upper(name) = ?", uname.upcase] > 0
 end
 
 def alias_exists(alais)
-
-
-  if alais != nil then
-    alais.gsub!("'",BEL)
-  end
-  result = false
-
-  res = @db.exec("SELECT COUNT(*) FROM users WHERE upper(alias) = '#{alais.upcase}'")
-  temp = single_result(res).to_i
-  result = true if temp > 0 
-  return result
+  User.count :conditions => ["upper(alias) = ?", alais.upcase] > 0
 end
 
+# TODO: improve password handling
 def check_password(uname,psswd)
-
-
-  uname.gsub!("'",BEL) 
-  psswd.gsub!("'",BEL)
-  result = false
-
-  res = @db.exec("SELECT COUNT(*) FROM users WHERE upper(name) = '#{uname.upcase}' and password ='#{psswd}'")
-  temp = single_result(res).to_i
-  result = true if temp > 0
-  return result
+  User.count :conditions => ["upper(name) = ? and password = ?", uname.upcase, psswd] > 0
 end
 
 def get_uid(uname)
-
-
-  uname.gsub!("'",BEL)  
-  result = false
-
-  res= @db.exec("SELECT number FROM users WHERE upper(name) = '#{uname.upcase}'")
-  result= single_result(res).to_i
-  return result
+  u = User.first :conditions => ["upper(name) = ?", uname.upcase] > 0
+  u ? u.number : nil
 end
 
 def update_user(r,uid)
@@ -167,20 +133,20 @@ def fetch_user(record)
 end
 
 def add_user(name,ip,password,citystate,address,length,width,ansi, more, level, fullscreen)
-
-
-  name.gsub!("'",BEL)
-  password.gsub!("'",BEL)
-  citystate.gsub!("'",BEL)
-  address.gsub!("'",BEL)
-
-
-  @db.exec("INSERT INTO users (name, ip, password, citystate, address, \ 
-           length,width,ansi, more, level,fullscreen,create_date) VALUES ('#{name}', '#{ip}','#{password}', '#{citystate}', \
-           '#{address}', '#{length}', '#{width}','#{ansi}','#{more}','#{level}', '#{fullscreen}','#{Time.now}')") 
-
-
-
+  User.create(
+    :name => name,
+    :ip => ip,
+    :password => password,
+    :citystate => citystate,
+    :address => address,
+    :length => length,
+    :width => width,
+    :ansi => ansi,
+    :more => more,
+    :level => level,
+    :fullscreen => fullscreen,
+    :create_date => Time.now
+  )
 end
 
 def fetch_user_list

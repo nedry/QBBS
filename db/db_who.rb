@@ -6,26 +6,28 @@ def create_who_table
 
 end
 
-
 def delete_who(uid)
-  @db.exec("Delete from who where number = '#{uid}'")
+  x = Who.first(:number => uid)
+  x.destroy! if x
 end
 
 def add_who(number,lastactivity,place)
-
-  @db.exec("INSERT INTO who (number,lastactivity,place) \
-  VALUES ('#{number}', '#{lastactivity}', '#{place}')") 
-
+  Who.create(
+    :number => number,
+    :lastactivity => lastactivity,
+    :place => place
+  )
 end
 
 def update_who(uid,lastactivity,place)
-
-
-  @db.exec("UPDATE who SET lastactivity = '#{lastactivity}', \
-           place = '#{place}' where number= '#{uid}'")
+  x = Who.first(:number => uid)
+  x.update(
+    :lastactivity => lastactivity,
+    :place => place
+  )
 end
 
-
+# TODO: move to datamapper
 def fetch_who_list
   res = @db.exec("SELECT users.number, users.name, users.citystate, who.lastactivity, who.place FROM who LEFT OUTER JOIN users ON who.number=users.number ORDER BY users.name ") 
   result = result_as_array(res)
@@ -33,15 +35,8 @@ def fetch_who_list
 end
 
 def who_exists(uid)
-
-  result = false
-
-  res = @db.exec("SELECT COUNT(*) FROM who WHERE number = '#{uid}'")
-  temp = single_result(res).to_i
-  result = true if temp > 0 
-  return result
+  Who.count(:number => uid) > 0
 end
-
 
 def who_list_check
   list = fetch_who_list

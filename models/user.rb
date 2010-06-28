@@ -26,4 +26,6 @@ class User
   property :fullscreen, Boolean
   property :zipread, Text
   property :signature, Text
+
+  has_one :who, :child_key => [:number]
 end
