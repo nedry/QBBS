@@ -1,3 +1,5 @@
+require 'models/other'
+
 def o_total
   Other.count
 end

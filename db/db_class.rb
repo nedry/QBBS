@@ -149,24 +149,6 @@ class DB_message
     :reply, :origin, :smtp
 end
 
-class DB_doors
-
-  def initialize (name,locked,number,modify_date,d_path,d_type,path,level,droptype)
-    @name		= name
-    @locked	 	= locked
-    @number		= number
-    @modify_date	= modify_date
-    @d_path		= d_path
-    @d_type		= d_type
-    @path		= path
-    @level		= level
-    @droptype	= droptype
-
-  end
-
-  attr_accessor :name, :locked, :number,  :modify_date, :d_path, :d_type, :path, :level, :droptype
-end
-
 class DB_system
 
   def initialize (lastqwkrep,qwkrepsuccess,qwkrepwake,f_msgid)

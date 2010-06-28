@@ -1,5 +1,9 @@
+require 'models/numbered'
+
 class Door
   include DataMapper::Resource
+  extend Numbered
+
   property :id, Serial
   property :name, String, :length => 40
   property :locked, Boolean, :default => false 
