@@ -1,13 +1,10 @@
+require 'models/area'
 
 def a_total
-
-  res = @db.exec("SELECT COUNT(*) FROM areas")
-  result = single_result(res).to_i
-  return result
+  Area.count
 end
 
 def create_area_table
-
   puts "-DB: Creating Area Table"
   @db.exec("CREATE TABLE areas (area_key SERIAL PRIMARY KEY, name varchar(40), \
            tbl varchar(10), delete boolean DEFAULT false, \
