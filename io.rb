@@ -245,15 +245,15 @@ class Session
 
   def warntimeout(idle, warn, warned, limit, todotime, prompt)
     if (idle >= limit)
-      print; print "Idle time limit exceeded.  Disconnecting!"
-      print "NO CARRIER"
+      print; print "%RIdle time limit exceeded.  Disconnecting!"
+      print "%WNO CARRIER"
       sleep(5)
       hangup
     end
 
     if (idle >= warn) and (!warned) 
       if todotime > 1 then tempstr = "minutes" else tempstr = "minute" end
-      print; print "You have #{todotime} #{tempstr} in which to do something!"
+      print; print "%RYou have #{todotime} #{tempstr} in which to do something!%W"
       write prompt
       warned = true
     end

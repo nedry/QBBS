@@ -111,15 +111,13 @@ class Session
 		checkmultiplelogon
 		#puts @message.class
 		@message.push("*** #{@c_user.name} has just logged into the system.")
-#		@who.each {|w|
-#			@users[w.name].page.push(
-#				"%C#{@c_user.name} %Ghas just logged into the system."
-#			)
-#		}
+
 		logandgreetuser(username, ip)
-		ogfileout("welcome2",4,true)
-		yes("%WPress %Y<--^%W: ",true,false,true)
-		displaywho
+		if !@c_user.fastlogon then
+		 ogfileout("welcome2",4,true)
+		 yes("%WPress %Y<--^%W: ",true,false,true)
+		 displaywho
+		end
 		
 	end 
 
@@ -228,16 +226,24 @@ class Session
 		ddate = @c_user.laston.strftime("%A %B %d, %Y")
 		dtime  = @c_user.laston.strftime("%I:%M%p (%Z)")
 		print "%GYou were last on %B#{ddate} %C #{dtime} %W"
-		if !QOTD.nil? then
+		if @c_user.fastlogon
+		  print
+		  print "%RFast User Logon Mode %YOn%R.  Skipping Logon Information."
+		  print "This may be changed at the User Configuration Menu." 
+		  print
+		end
+		if !QOTD.nil? and !@c_user.fastlogon then
 		 print
 		 print "Quote of the Day: " if !existfileout('qotdhdr',0,true)		 
 		 door_do("#{QOTD}","")
 		 existfileout('quote',0,true)
 		 yes("Press %Y<--^%W: ",true,false,true)
 		add_user_to_wall
-		display_wall
-		 yes("Press %Y<--^%W: ",true,false,true)
-		 bullets(0)
+		 if !@c_user.fastlogon then
+		  display_wall
+		  yes("Press %Y<--^%W: ",true,false,true)
+		  bullets(0)
+		 end
 		end
 		@c_user.logons = @c_user.logons.succ
 		@c_user.laston = Time.now

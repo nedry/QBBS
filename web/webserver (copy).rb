@@ -145,31 +145,39 @@ def who_list_delete (uid)
  return [msg_array,msgid,via,tz,reply]
  end
 
+def w_scanformail(uid)
+  
+  user = fetch_user(uid.to_i)
+  user = fix_pointer(user,0)
+  area = fetch_area(0)
 
-
-
+  hash = email_lookup_table(area.tbl,user.name)
+  total =  e_total(area.tbl,user.name)
+  pointer = find_epointer(hash,user.lastread[0],area.tbl,user.name) 
+  if pointer != nil then  
+   if total > pointer then	
+    return true #new mail
+   end
+  end
+  return false #no new mail
+ end
 
 def close_database
   @db.close
 end
 
 def side_menu_gubbins
- groups = fetch_groups 
- area = fetch_area(0)
+ groups = fetch_groups
  name = session[:name]
  uid = get_uid(name)
-   u = fetch_user(uid.to_i)
-  u = fix_pointer(u,0)
- new = new_email(area.tbl,u.lastread[0],u.name)
 
-    if new > 0  then
-    e_out = "<a href='/email'>Email (#{new} New!)</a><br>"
+    if w_scanformail(uid) then
+    e_out = '<a href="/email">Email (New!)</a><br>'
    else
      e_out = '<a href="/email">Email</a><br>'
    end
    
    g_out = ""
-     scanforaccess(u)
       groups.each {|group| line = "<li><a href='/areas?m_grp=#{group.number}'>#{group.groupname}</a></li>"
               g_out << (line)}
  return [e_out,g_out]
@@ -218,16 +226,14 @@ def area_list_gubbins(grp)
   return o_area,o_name
 end
 
-def m_menu(m_area,pointer,dir,subject,from,total,email)
+def m_menu(m_area,pointer,dir,subject,from,total)
   m_out = ""
-  t_out = "/message" 
-  t_out = "/email" if email
   m_out << "<table><tr><td><B>Messages 1 - #{total} [</b>#{pointer}<b>]:</b></td> "
-  m_out << "<td><a href='#{t_out}?m_area=#{m_area}&last=#{pointer}&dir=b'>Previous</a>&nbsp;&nbsp;"
-  m_out << "<a href='#{t_out}?m_area=#{m_area}&last=#{pointer}&dir=f'>Next</a>&nbsp;&nbsp;"
+  m_out << "<td><a href='/message?m_area=#{m_area}&last=#{pointer}&dir=b'>Previous</a>&nbsp;&nbsp;"
+  m_out << "<a href='/message?m_area=#{m_area}&last=#{pointer}&dir=f'>Next</a>&nbsp;&nbsp;"
   m_out << "<a href='/post?m_area=#{m_area}&subject=#{subject}&to=#{from}&last=#{pointer}&dir=f'>Reply</a>&nbsp;&nbsp;"
   m_out << "<a href='/post?m_area=#{m_area}&last=#{pointer}&dir=f'>Post</a>&nbsp;&nbsp;"
-  m_out <<  "</td><td><form action='#{t_out}' method='post'>"
+  m_out <<  '</td><td><form action="/message" method="post">'
   m_out <<  "<input type='hidden' name='m_area' value='#{m_area}'>"
   m_out <<  "<input type='hidden' name='dir' value='j'>"
   m_out <<  "Jump: <input type='text' name = 'last' size='4' value=''></td></td></table>"
@@ -238,19 +244,16 @@ end
 def w_display_message(mpointer,user,m_area,email,dir,total)
       area = fetch_area(m_area)
       table = area.tbl
-      if email then
-	 abs = email_absolute_message(table,mpointer,user.name)
-      else
-         abs = absolute_message(table,mpointer)
-      end
+      abs = absolute_message(table,mpointer)
       m_out = ""
       curmessage = fetch_msg(table, abs)
-      m_out << m_menu(m_area,mpointer,dir,curmessage.subject.strip,curmessage.m_from.strip,total,email)
+      m_out << m_menu(m_area,mpointer,dir,curmessage.subject.strip,curmessage.m_from.strip,total)
       if user.lastread[m_area] < curmessage.number then
        user.lastread[m_area] = curmessage.number
        update_user(user,get_uid(user.name))
       end
        message = []
+      # curmessage.msg_text.each('�') {|line| message.push(line.chop!)}
 
       if curmessage.network then
        message,q_msgid,q_via,q_tz,q_reply = qwk_kludge_search(message)
@@ -304,19 +307,6 @@ def pntr(user,c_area)
   return p_msg
  end
  
- def e_pntr(u)
-    area = fetch_area(0)
-	    
-    epointer = e_total(area.tbl,u.name) - new_email(area.tbl,u.lastread[0],u.name)
-    epointer = 1 if epointer == 0
-    return epointer
- end
- 
- def e_hmsg(u)
-   area = fetch_area(0)
-   e_total(area.tbl,u.name)
-end
-
  def h_msg(c_area)
  area = fetch_area(c_area)
  h_msg = m_total(area.tbl)
@@ -1008,99 +998,6 @@ if !session[:name].nil? then
 
 end
 
-get "/email" do
-
-if !session[:name].nil? then
-  open_database
- # grp = params["m_grp"]
-  m_area = 0
- # m_area = m_area.to_i
-  last = params["last"]
-  last = last.to_i
-  dir = params["dir"]
-  name = session[:name]
-  uid = get_uid(name)
-  who_list_update(uid,"Reading Email.")
-   user = fetch_user(get_uid(name))
-   user = fix_pointer(user,m_area)
-     scanforaccess(user)
-   area=fetch_area(m_area)
-   m_out = ""
-
-     if (user.areaaccess[area.number] != "N") or (user.level == 255) and (!area.delete) then
-     if last == 0 then
-      pointer = e_pntr(user) 
-      if e_hmsg(user) > 0 then
-
-       from,subject,tempstr = w_display_message(pointer,user,m_area,true,dir,e_hmsg(user)) 
-       m_out << tempstr
-       m_out << "<BR>"
-       m_out << m_menu(m_area,pointer,dir,subject,from,e_hmsg(user),true)
-      else m_out << "No Email." end
-
-      
-    else      
-    if e_hmsg(user) > 0 then
-     if dir == "j" then
-      if last <= e_hmsg(user) and last > 0 and e_hmsg(user) > 0 then
-       from,subject,tempstr = w_display_message(last,user,m_area,true,dir,e_hmsg(user))
-       m_out << tempstr
-       m_out << "<BR>"
-       m_out << m_menu(m_area,pointer,dir,subject,from,e_hmsg(user),true)
-      else
-       m_out << "Out of Range."
-      end
-     else
-     if dir == "f" then 
-       if last < e_hmsg(user) then
-       pointer = last+1
-
-       from,subject,tempstr = w_display_message(pointer,user,m_area,true,dir,e_hmsg(user))
-       m_out << tempstr
-       m_out << "<BR>"
-       m_out << m_menu(m_area,pointer,dir,subject,from,e_hmsg(user),true)
-      else
-      m_out << "Highest Message."
-       pointer = e_hmsg(user)
-       m_out << "<BR>"
-       m_out << m_menu(m_area,pointer,dir,subject,from,e_hmsg(user),true)
-	end
-      else
-       if last > 1 then 
-	pointer = last-1 
-
-	from,subject,tempstr = w_display_message(pointer,user,m_area,true,dir,e_hmsg(user))
-	m_out << tempstr
-       else
-	m_out << "Lowest Message"
-	pointer = 1
-	m_out << "<BR>"
-        m_out << m_menu(m_area,pointer,dir,subject,from,e_hmsg(user),true)
-       end
-      end
-      end
-
-     else
-      m_out << "No Email."
-     end
-
-    end
-
-  end
-
-
-
- 
-  e_out,g_out = side_menu_gubbins    #make the side menu database inserts on the sinatra side, like the manual says
-  close_database
-  haml :message, :locals => {:email => e_out, :groups => g_out, :message => m_out}
- else 
-   haml :notlogged
- end
-
-end
-
-
 get "/message" do
 
 if !session[:name].nil? then
@@ -1171,7 +1068,7 @@ if !session[:name].nil? then
 
 
 	m_out << "<BR>"
-        m_out << m_menu(m_area,pointer,dir,subject,from,h_msg(m_area),false)
+        m_out << m_menu(m_area,pointer,dir,subject,from,h_msg(m_area))
  
   e_out,g_out = side_menu_gubbins    #make the side menu database inserts on the sinatra side, like the manual says
   close_database

@@ -134,14 +134,14 @@ def bbs(parameters)
   if t == 0 then
     displaybbs if !existfileout('bbs',0,true)
     while true
-      prompt = "\r\n%WBBS #[1-#{o_total}] (<CR>/quit, ?/list): "
+      prompt = "\r\n%WBBS #[1-#{o_total}] (?/list): %Y<--^%W to quit:  "
       getinp(prompt) {|inp|
         happy = inp.upcase
         t = happy.to_i
         case happy
         when "";   return
-        when "CR"; crerror
 	when "Q"; return
+        when "CR"; crerror
         when "?";  displaybbs if !existfileout('bbs',0,true)
         else
           runbbs(t) if (t) > 0 and (t) <= o_total

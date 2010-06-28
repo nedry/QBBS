@@ -1,13 +1,16 @@
 class Session
   def usersettingsmenu
-    print <<-here
-    %BTerminal Settings                   
-    %G(%YC%G)hat Alias                      %G(%YF%G)ull Screen Editor
-    %G(%YG%G)raphics (ANSI) Toggle          %G(%YL%G)ines per Page     
-    %G(%YP%G)assword                        %G(%YM%G)ore Prompt Toggle
-    %G(%YW%G)idth                           %G(%YQ%G)uit
-    %G(%YZ%G)Zip Read Settings              %G(%Y?%G)This Menu
-    here
+    existfileout('usersethdr',0,true)
+    print "%G[%YC%G]hat Alias: %Y#{@c_user.alais}"
+    print "%GFull Screen [%YE%G]ditor: %Y#{@c_user.fullscreen ? "On" : "Off"}"
+    print "%G[%YG%G]raphics (ANSI): %Y#{@c_user.ansi ? "On" : "Off"}"          
+    print "%G[%YF%G]ast Logon: %Y#{@c_user.fastlogon ? "On" : "Off"}" 
+    print "%G[%YL%G]ines per Page: %Y#{@c_user.length}"    
+    print "%G[%YM%G]ore Prompt: %Y#{@c_user.more ? "On" : "Off"}"
+    print "%G[%YW%G]idth: %Y#{@c_user.width}"
+    print "%G[%YP%G]assword"                        
+    print "%G[%YZ%G]ip Read Settings"
+    print
   end
 
   def defaultalias(username)
@@ -22,7 +25,7 @@ class Session
   end
 
   def usersettings
-    usersettingsmenu if !existfileout('usersetmnu',0,true)	
+    usersettingsmenu	
     prompt = "%WChange Which User Setting ? %Y<--^%W to quit: " 
     getinp(prompt) {|inp|
 
@@ -37,10 +40,17 @@ class Session
       when "C"; changenick
       when "G"; togglegraphics 
       when "M"; togglemore
-      when "F"; togglefull
+      when "E"; togglefull
+      when "F"; togglefast
       when "Z"; changezip(parameters)
-      when "?"; usersettingsmenu if !existfileout('usersetmnu',0,true)	
+      when "?" 
+        if !existfileout('usersethdr',0,true)
+	  print "User Settings:"
+        end
+	usersettingsmenu
+                      	      
       when "";	done = true
+      when "Q";	done = true
       end
       done
     }
@@ -52,6 +62,7 @@ def changelength
   prompt = "Screen length? (10-60) [default=40]: "
   @c_user.length = getnum(prompt,10,60) || 40
   update_user(@c_user,get_uid(@c_user.name))
+  usersettingsmenu
 end
 
 def changewidth
@@ -59,6 +70,7 @@ def changewidth
   prompt = "Screen width? (22-80) [default=40]: "
   @c_user.width = getnum(prompt,22,80) || 40
   update_user(@c_user,get_uid(@c_user.name))
+  usersettingsmenu
 end
 
 def changepwd
@@ -69,6 +81,7 @@ def changepwd
       print "Password Changed."
       @c_user.password = pswd2
       update_user(@c_user,get_uid(@c_user.name))
+      usersettingsmenu
     else
       print "Aborted - Password not changed"
     end
@@ -97,10 +110,12 @@ def changenick
     print "%RNot Changed%G" 
     return
   end
-  newname = tempstr.strip.to_s.slice(0..14)
+  newname = tempstr.gsub(/\W/,"").slice(0..14)
+
   if !alias_exists(newname) then 
     @c_user.alais = newname
     update_user(@c_user,get_uid(@c_user.name))
+    usersettingsmenu
   else 
     print "%RThat alias is in use by another user.%G" 
   end
@@ -108,35 +123,42 @@ end
 
 def togglegraphics
   if @c_user.ansi == TRUE 
-    print "Graphics Now Off"
     @c_user.ansi = FALSE
   else
     @c_user.ansi = TRUE
-    print "Graphics Now On"
   end
   update_user(@c_user,get_uid(@c_user.name))
+  usersettingsmenu
 end
 
 def togglefull
   if @c_user.fullscreen == TRUE 
-    print "Using Line Editor"
     @c_user.fullscreen = FALSE
   else
     @c_user.fullscreen = TRUE
-    print "Using Full Screen Editor"
   end
   update_user(@c_user,get_uid(@c_user.name))
+  usersettingsmenu
+end
+
+def togglefast
+  if @c_user.fastlogon == TRUE 
+    @c_user.fastlogon = FALSE
+  else
+    @c_user.fastlogon = TRUE
+  end
+  update_user(@c_user,get_uid(@c_user.name))
+  usersettingsmenu
 end
 
 def togglemore
   if @c_user.more == TRUE 
-    print "More Prompt Now %ROff"
     @c_user.more = FALSE
   else
     @c_user.more = TRUE
-    print "More Prompt Now %GOn"
   end
   update_user(@c_user,get_uid(@c_user.name))
+  usersettingsmenu
 end
 
 def displayzipheader

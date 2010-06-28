@@ -33,7 +33,7 @@ class DB_user
   def initialize( deleted, locked, name, alais, ip, citystate, address, password,
                  length, modify_date, width, ansi,more, level, areaaccess, lastread,
                  createdate, laston, logons, posted,rsts_pw, rsts_acc, fullscreen, zipread,
-                 signature)
+                 signature,fastlogon)
     @deleted	= false 
     @locked 	= false 
     @name  	= name 
@@ -62,12 +62,13 @@ class DB_user
     @fullscreen = fullscreen
     @zipread       = zipread
     @signature  = signature
+    @fastlogon = fastlogon
 
   end
   attr_accessor :create_date, :deleted, :alais, :ip, :locked, :name, :phone,
     :citystate, :address, :password, :length, :width, :ansi, :more, :level,
     :areaaccess, :modify_date, :laston, :lastread, :newmsg, :logons, :posted, :page,
-    :pageuser, :channel,:rsts_pw, :rsts_acc, :fullscreen, :zipread, :signature
+    :pageuser, :channel,:rsts_pw, :rsts_acc, :fullscreen, :zipread, :signature, :fastlogon
 end 
 
 class DB_area_list

@@ -16,10 +16,10 @@ def create_user_table
            ip varchar(20), citystate varchar(40), address varchar(40),\
            password varchar(20), length int, modify_date date, \
            width int, ansi boolean, more boolean, level int, \
-     area_access text, lastread text, create_date date,\
+	area_access text, lastread text, create_date date,\
      laston date, logons int, posted int, rsts_pw varchar(40),\
      rsts_acc int, fullscreen boolean, zipread text,\
-     signature text)")
+     signature text, fastlogon boolean DEFAULT false)")
 
      puts "-DB: Adding Default Users"	   
 
@@ -101,7 +101,7 @@ def update_user(r,uid)
            laston = '#{r.laston}', logons = '#{r.logons}', \
            posted = '#{r.posted}', rsts_pw = '#{r.rsts_pw}',\
            rsts_acc = '#{r.rsts_acc}', fullscreen = '#{r.fullscreen}',\
-           zipread = '#{zipread}', signature = '#{r.signature}'\
+           zipread = '#{zipread}', signature = '#{r.signature}', fastlogon = '#{r.fastlogon}'\
            WHERE number = #{uid}")
  end
 
@@ -111,7 +111,7 @@ def fetch_user(record)
            citystate, address, password, length, modify_date,\
      width, ansi, more, level, area_access, lastread,\
      create_date, laston, logons, posted, rsts_pw,\
-     rsts_acc, fullscreen, zipread, signature \
+     rsts_acc, fullscreen, zipread, signature, fastlogon \
      FROM users WHERE number = #{record}") 
 
      temp = result_as_array(res).flatten
@@ -147,6 +147,7 @@ def fetch_user(record)
      t_fullscreen 	= db_true(temp[22])
      t_zipread 	= temp[23].split('#') if !temp[23].nil? 
      t_signature 	= temp[24]
+      t_fastlogon 	= db_true(temp[25])
 
      t_name.gsub!(BEL,"'") if t_name != nil
      t_alias.gsub!(BEL,"'")if t_alias != nil
@@ -161,7 +162,7 @@ def fetch_user(record)
                           t_more, t_level, t_area_access, t_lastread,
                           t_createdate, t_laston, t_logons, t_posted,
                           t_rsts_pw, t_rsts_acc, t_fullscreen, t_zipread,
-                          t_signature)
+                          t_signature,t_fastlogon)
      return result
 end
 

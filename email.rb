@@ -1,16 +1,16 @@
 class Session
 
-  def scanformail  # revised
+  def scanformail # revised
     i = 0
     ptr_check
     u = @c_user
     area = fetch_area(0)
-    print; write "Scanning for New Email...  "
-    new =  new_email(area.tbl,u.lastread[0],u.name)
+    print; write "Scanning for New Email... "
+    new = new_email(area.tbl,u.lastread[0],u.name)
 
-    if new > 0 then  
-	m = "message"
-	m = "messages" if new > 1
+    if new > 0 then
+m = "message"
+m = "messages" if new > 1
         print "%G#{new} new #{m} found."
         return true
     end
@@ -20,9 +20,9 @@ class Session
 
   def ptr_check
     area = fetch_area(0)
-    @c_user.lastread ||= [] 
+    @c_user.lastread ||= []
     @c_user.lastread[0] ||= 0
-    total = e_total(area.tbl,@c_user.name) 
+    total = e_total(area.tbl,@c_user.name)
     update_user(@c_user,get_uid(@c_user.name))
   end
 
@@ -30,10 +30,10 @@ class Session
     reademail(true) if yes(CRLF+"Read them now (Y,n)? ", true, false,true)
   end
 
-  def emailmenu  #revised
+  def emailmenu #revised
     @who.user(@c_user.name).where="Email Menu"
     update_who_t(@c_user.name,"Email Menu")
-    out = "Read" 
+    out = "Read"
     sdir="+"
     area = fetch_area(0)
     ptr_check
@@ -47,10 +47,10 @@ class Session
 
     while true
       o_prompt = "%M[Email]%C #{sdir} Read[#{epointer}] (1-#{e_total(area.tbl,u.name)}): "
-      inp = getinp(o_prompt) 
+      inp = getinp(o_prompt)
 
       happy = inp.upcase
-      if !happy.integer? 
+      if !happy.integer?
         #happy.gsub!(/[-\d]/,"")
 
       end
@@ -70,7 +70,7 @@ class Session
       when "Q"; break # exit input loop
       when /\d+/; epointer = jumpemail(happy.to_i,epointer,e_total(area.tbl,u.name)+1)
     else; print "Out of Range."
-    end #of case 
+    end #of case
     done
   end
   @c_area = p_area
@@ -81,22 +81,22 @@ def jumpemail(inp,epointer,max) #revised
   ptr_check
   u = @c_user
   area = fetch_area(0)
-  total =  e_total(area.tbl,u.name)
+  total = e_total(area.tbl,u.name)
 
-  if inp > 0 and inp <  max and total > 0 then
+  if inp > 0 and inp < max and total > 0 then
     epointer = inp
     puts "epointer: #{epointer}"
     displaymessage(epointer,area.tbl,true)
   else print "%ROut of Range" end
   epointer
-end 
+end
 
-def nextmail(epointer)  #revised
+def nextmail(epointer) #revised
 
   ptr_check
   u = @c_user
   area = fetch_area(0)
-  total =  e_total(area.tbl,u.name)
+  total = e_total(area.tbl,u.name)
 
   if epointer < total and total > 0 then
     epointer +=1
@@ -112,7 +112,7 @@ def lastmail(epointer) #revised
   ptr_check
   u = @c_user
   area = fetch_area(0)
-  total =  e_total(area.tbl,u.name)
+  total = e_total(area.tbl,u.name)
 
   if epointer > 1 then
     epointer -=1
@@ -135,7 +135,7 @@ def deletemessage(epointer) #revised
     delete_msg(area.tbl,del)
     print "Email ##{epointer} [#{del}] deleted."
     ptr_check
-  else 
+  else
     print; print "No Messages"
   end
 end
@@ -145,7 +145,7 @@ def qwkmailadr(address)
 
   to = nil;route = nil
   if !address.index(".") then
-    happy =  (/^(.+)@([a-z,A-Z]+)/) =~ address
+    happy = (/^(.+)@([a-z,A-Z]+)/) =~ address
     if happy then
       to = $1;route = $2
     end
@@ -154,14 +154,14 @@ def qwkmailadr(address)
 end
 
 def stmpmailadr(address)
-  happy =  (/^(.+)@(.+)\.(.+)/) =~ address
+  happy = (/^(.+)@(.+)\.(.+)/) =~ address
   if happy then return true else return false end
 end
 
 def netmailadr(address)
 
   to = nil;zone = nil;net = nil;node = nil;point = nil
-  happy =  (/^(.*)@(\d?):(\d{1,4})\/(.*)/) =~ address
+  happy = (/^(.*)@(\d?):(\d{1,4})\/(.*)/) =~ address
   if happy then
     to = $1;zone = $2;net = $3;node = $4
     grumpy = (/(\d{1,4})\.(\d{1,4})/) =~ node
@@ -175,7 +175,7 @@ end
 
 def parse_intl(address)
 
-  happy =  (/^(\d?):(\d{1,4})\/(.*)/) =~ address
+  happy = (/^(\d?):(\d{1,4})\/(.*)/) =~ address
   if happy then
     zone = $1;net = $2;node = $3
     grumpy = (/(\d{1,4})\.(\d{1,4})/) =~ node
@@ -188,9 +188,9 @@ end
 
 def findlocal(user)
 
-  if user_exists(user) then 
+  if user_exists(user) then
     return true
-  else 
+  else
     return false
   end
 end
@@ -216,7 +216,7 @@ def sendemail(feedback)
   if !feedback then
 
     while true
-      inp = getinp("%CTo: ") 
+      inp = getinp("%CTo: ")
       to,zone,net,node,point = netmailadr(inp)
       return if inp == ""
       if !to.nil? then
@@ -233,7 +233,7 @@ def sendemail(feedback)
         break
       end
       smtp = stmpmailadr(inp)
-      if smtp then 
+      if smtp then
         print "Sending a SMTP (Internet Email) Message to: #{inp}"
         to = inp
         m_type = SMTP
@@ -241,19 +241,19 @@ def sendemail(feedback)
       end
       if !findlocal(inp) then
         print "%RLocal User not found..."
-      else 
+      else
         to = inp
         m_type = LOCAL
         break
       end
     end
 
-  else 
-    to = SYSOPNAME  # because it's feedback.  
+  else
+    to = SYSOPNAME # because it's feedback.
   end
   to.strip!
   title = getinp("%GTitle: ")
-  return false if title == "" 
+  return false if title == ""
   reply_text = ["***No Message to Quote***"]
   # m_type = LOCAL
   if @c_user.fullscreen then
@@ -271,12 +271,12 @@ def sendemail(feedback)
   if saveit then
     case m_type
     when LOCAL
-      savecurmessage(0, to, title, false,false,nil,nil,nil,nil) 
+      savecurmessage(0, to, title, false,false,nil,nil,nil,nil)
       print "Sending Local e-mail..."
 
     when F_NETMAIL
       table,number = find_fido_area(NETMAIL)
-      intl = "#{zone}:#{net}/#{node} #{FIDOZONE}:#{FIDONET}/#{FIDONODE}" 
+      intl = "#{zone}:#{net}/#{node} #{FIDOZONE}:#{FIDONET}/#{FIDONODE}"
       savecurmessage(number,to,title,false,false,node,net,intl,point)
       print "Sending Netmail..."
 
@@ -327,7 +327,7 @@ def replyemail(epointer,carea)
       net = r_message.orgnet
       node = r_message.orgzone
     end
-    intl = "#{zone}:#{net}/#{node} #{FIDOZONE}:#{FIDONET}/#{FIDONODE}" 
+    intl = "#{zone}:#{net}/#{node} #{FIDOZONE}:#{FIDONET}/#{FIDONODE}"
     m_type = F_NETMAIL
   end
   if r_message.network then
@@ -363,7 +363,7 @@ def replyemail(epointer,carea)
     case m_type
     when F_NETMAIL
       table,number = find_fido_area(NETMAIL)
-      savecurmessage(number, to, title, false,false,node,net,intl,point) 
+      savecurmessage(number, to, title, false,false,node,net,intl,point)
       print "Sending Netmail..."
     when Q_NETMAIL
       number = find_qwk_area(QWKMAIL,nil)
@@ -373,12 +373,12 @@ def replyemail(epointer,carea)
 
       end
       print "Sending QWK Netmail..."
-      savecurmessage(number, to, title, false,false,node,net,intl,point) 
+      savecurmessage(number, to, title, false,false,node,net,intl,point)
     when SMTP
       print "Sending SMTP (Internet) Email..."
       smtp_send(to,@c_user.name,title,@lineeditor.msgtext)
     when LOCAL
-      savecurmessage(0, to, title, false,false,nil,nil,nil,nil) 
+      savecurmessage(0, to, title, false,false,nil,nil,nil,nil)
       print "Sending Local e-mail..."
     end
   end
@@ -386,3 +386,4 @@ end
 
 
 end
+

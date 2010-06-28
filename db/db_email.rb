@@ -1,5 +1,3 @@
-
-
 def e_total(table,user)
   res = @db.exec("SELECT COUNT(*) FROM #{table} WHERE lower(m_to) = '#{user.downcase}'")
   result = single_result(res).to_i
@@ -21,7 +19,7 @@ def email_absolute_message(table,ind,m_to)
   @db.exec("BEGIN")
   @db.exec("DECLARE c CURSOR FOR SELECT number FROM #{table} WHERE lower(m_to) = '#{m_to.downcase}' ORDER BY number")
   @db.exec("MOVE FORWARD #{ind+1} IN c")
-  res =  @db.query("FETCH BACKWARD 1 IN c")
+  res = @db.query("FETCH BACKWARD 1 IN c")
   result = single_result(res).to_i
   @db.exec("CLOSE c")
   @db.exec("END")

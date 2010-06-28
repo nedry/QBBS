@@ -23,7 +23,7 @@ class Session
     groups = fetch_groups
     prompt = "%WMore (Y,n) or Area #? "
     prompt2 = "Which, or %Y<--^ for all: "
-    print 
+    print
     print "%GMessage Groups:"
     groups.each_index {|j| print "#{j}: #{groups[j].groupname}"}
     print
@@ -36,7 +36,7 @@ class Session
     fetch_area_list(grp).each_with_index {|area,i|
 
       tempstr = (
-        case @c_user.areaaccess[area.number] 
+        case @c_user.areaaccess[area.number]
         when "I"; "Inv"
         when "R"; "Read"
         when "W"; "Write"
@@ -45,7 +45,7 @@ class Session
         if (user.areaaccess[area.number] != "I") or (user.level == 255) and (!area.delete) then
           more +=1
           l_read = new_messages(area.tbl,user.lastread[area.number])
-          print "%W#{area.number.to_s.ljust(5)}  %G#{l_read.to_s.rjust(4)}  %R#{tempstr.ljust(8)}%Y#{area.group.ljust(10)}%B#{area.name}"
+          print "%W#{area.number.to_s.ljust(5)} %G#{l_read.to_s.rjust(4)} %R#{tempstr.ljust(8)}%Y#{area.group.ljust(10)}%B#{area.name}"
         end
         if more > 19 then
           cont = yes_num(prompt,true,true)
@@ -54,12 +54,12 @@ class Session
         end
 
     }
-    return cont				
+    return cont
   end
 
   def displayheader
-    print "%W#      %GNew   %RAccess  %YGroup     %BBoard Description"
-    print "%W--     %G----  %R------  %Y-----     %B-----------------"
+    print "%W# %GNew %RAccess %YGroup %BBoard Description"
+    print "%W-- %G---- %R------ %Y----- %B-----------------"
   end
 
 
@@ -67,8 +67,8 @@ class Session
     tempint = -1
     scanforaccess
 
-    if (parameters[0] > -1) then 
-      tempint = parameters[0] 
+    if (parameters[0] > -1) then
+      tempint = parameters[0]
     else
       tempint = displaylist
       tempint = -1 if !tempint.kind_of?(Fixnum)
@@ -76,18 +76,18 @@ class Session
 
     while true
       if tempint == - 1 then
-        prompt = CRLF+"%WArea #[#{@c_area}] (1-#{(a_total - 1)}) ? %Y<--^%W to quit:  " 
+        prompt = CRLF+"%WArea #[#{@c_area}] (1-#{(a_total - 1)}) ? %Y<--^%W to quit: "
         happy = getinp(prompt).upcase
         tempint = happy.to_i
       end
 
       case happy
-      when "";   break
+      when ""; break
       when "CR"; crerror; tempint = -1
       when "?"
         tempint = displaylist
         tempint = -1 if !tempint.kind_of?(Fixnum)
-        #else 
+        #else
       end
       if (0..(a_total - 1)).include?(tempint)
         t = @c_user.areaaccess[tempint]
@@ -97,8 +97,8 @@ class Session
           print "%GChanging to the #{area.group}: #{area.name} sub-board"+CRLF
           break
         else
-          if t == "N" then 
-            print "%RYou do not have access" 
+          if t == "N" then
+            print "%RYou do not have access"
           else
             print "%RThat area does not exist."
           end
@@ -118,7 +118,7 @@ class Session
   def find_current_area(a_list,num)
     result = nil
     a_list.each_with_index {|list,i|
-      if list.number == num then 
+      if list.number == num then
         result = i
         break
       end}
@@ -151,15 +151,15 @@ class Session
     end
     print "No more messages"
     return nil
-  end  
+  end
 
-  #-----------------Message Section-------------------  
-  def qwk_kludge_search(msg_array)	#searches the message buffer for kludge lines and returns them
+  #-----------------Message Section-------------------
+  def qwk_kludge_search(msg_array) #searches the message buffer for kludge lines and returns them
 
-    tz		= nil
-    msgid		= nil
-    via		= nil
-    reply		= nil
+    tz = nil
+    msgid = nil
+    via = nil
+    reply = nil
 
 
 
@@ -169,7 +169,7 @@ class Session
         x.slice!(0)
         match = (/^(\S*)(.*)/) =~ x
         #puts "$1:#{$1} $2:#{$2}"
-        if !match.nil? then 
+        if !match.nil? then
           case $1
           when "MSGID:"
             msgid = $2.strip
@@ -191,7 +191,7 @@ class Session
       end}
 
 
-      msg_array.compact!	#Delete every line we marked with a nil, cause it had a kludge we caught!
+      msg_array.compact! #Delete every line we marked with a nil, cause it had a kludge we caught!
 
 
       return [msg_array,msgid,via,tz,reply]
@@ -207,10 +207,10 @@ class Session
       abs = absolute_message(area.tbl,mpointer)
       r_message = fetch_msg(area.tbl, abs)
       to = r_message.m_from
-      to.strip! if r_message.network #strip for qwk/rep but not for fido.  Why?
+      to.strip! if r_message.network #strip for qwk/rep but not for fido. Why?
       #puts "to: #{to}"
       #puts "r_message.m_from: #{r_message.m_from}"
-      while true 
+      while true
         prompt = "%GPrivate (y,N,x - abort)? "
         reptype = getinp(prompt).upcase
         if (r_message.network or r_message.f_network) and reptype == "Y"
@@ -245,7 +245,7 @@ class Session
         x = private ? 0 : @c_area
         savecurmessage(x, to, title, false,true,nil,nil,nil,nil)
         print private ? "Sending Private Mail..." : "%GSaving Message.."
-      else 
+      else
         print "%RMessage Cancelled."
       end
     end
@@ -270,7 +270,7 @@ class Session
     emptyv(tempstr, crvalue)
   end
 
-  def write_quote_msg(reply_text) 
+  def write_quote_msg(reply_text)
 
     num = rand(100000).to_s
     outfile = "msg#{num}"
@@ -288,10 +288,10 @@ class Session
       print "wow"
     end
     @lineeditor.msgtext = []
-    if File.exists?("#{FULLSCREENDIR}/#{msg_file}") 
+    if File.exists?("#{FULLSCREENDIR}/#{msg_file}")
       IO.foreach("#{FULLSCREENDIR}/#{msg_file}") { |line| @lineeditor.msgtext.push(line.chomp!) }
-    end		
-    #puts  "rm #{FULLSCREENDIR}/#{msg_file}"
+    end
+    #puts "rm #{FULLSCREENDIR}/#{msg_file}"
     happy = system("rm #{FULLSCREENDIR}/#{msg_file}")
     return true
   end
@@ -351,39 +351,39 @@ class Session
   def get_orig_address(msgid)
     orig = nil
     match = (/^(\S*)(\S*)/) =~ msgid.strip
-    orig = $1 if !match.nil? 
+    orig = $1 if !match.nil?
     return orig
   end
 
   def display_fido_header(mpointer)
     area = fetch_area(@c_area)
-    if (h_msg > 0) and (mpointer > 0)  then
+    if (h_msg > 0) and (mpointer > 0) then
       table = area.tbl
       @c_user.lastread = Array.new(2,0) if @c_user.lastread == 0
       @c_user.lastread[@c_area] ||= 0
-      u = @c_user	
+      u = @c_user
       abs = absolute_message(table,mpointer)
       fidomessage = fetch_msg(table, abs)
-      print "Org:       #{fidomessage.orgnet}/#{fidomessage.orgnode}"
-      print "Dest:      #{fidomessage.destnet}/#{fidomessage.destnode}"
+      print "Org: #{fidomessage.orgnet}/#{fidomessage.orgnode}"
+      print "Dest: #{fidomessage.destnet}/#{fidomessage.destnode}"
       print "Attribute: #{fidomessage.attribute}"
-      print "Cost:      #{fidomessage.cost}"
+      print "Cost: #{fidomessage.cost}"
       print "Date Time: #{fidomessage.msg_date}"
-      print "To:        #{fidomessage.m_to}"
-      print "From:      #{fidomessage.m_from}"
-      print "Subject:   #{fidomessage.subject}"
-      print "Area:      #{fidomessage.area}" if !fidomessage.area.nil?
-      print "Msgid:     #{fidomessage.msgid}" if !fidomessage.msgid.nil?
-      print "Path:      #{fidomessage.path}" if !fidomessage.path.nil?
-      print "TzUTZ:     #{fidomessage.tzutc}" if !fidomessage.tzutc.nil?
-      print "CharSet:   #{fidomessage.charset}" if !fidomessage.charset.nil?
+      print "To: #{fidomessage.m_to}"
+      print "From: #{fidomessage.m_from}"
+      print "Subject: #{fidomessage.subject}"
+      print "Area: #{fidomessage.area}" if !fidomessage.area.nil?
+      print "Msgid: #{fidomessage.msgid}" if !fidomessage.msgid.nil?
+      print "Path: #{fidomessage.path}" if !fidomessage.path.nil?
+      print "TzUTZ: #{fidomessage.tzutc}" if !fidomessage.tzutc.nil?
+      print "CharSet: #{fidomessage.charset}" if !fidomessage.charset.nil?
       print "Tosser ID: #{fidomessage.tid}" if !fidomessage.tid.nil?
-      print "Proc ID:   #{fidomessage.pid}" if !fidomessage.pid.nil?
-      print "Intl:      #{fidomessage.intl}" if !fidomessage.intl.nil?
-      print "Topt:      #{fidomessage.topt}" if !fidomessage.topt.nil?
-      print "Fmpt:      #{fidomessage.fmpt}" if !fidomessage.fmpt.nil?
-      print "Reply:     #{fidomessage.reply}" if !fidomessage.reply.nil?
-      print "Origin:    #{fidomessage.origin}" if !fidomessage.origin.nil?
+      print "Proc ID: #{fidomessage.pid}" if !fidomessage.pid.nil?
+      print "Intl: #{fidomessage.intl}" if !fidomessage.intl.nil?
+      print "Topt: #{fidomessage.topt}" if !fidomessage.topt.nil?
+      print "Fmpt: #{fidomessage.fmpt}" if !fidomessage.fmpt.nil?
+      print "Reply: #{fidomessage.reply}" if !fidomessage.reply.nil?
+      print "Origin: #{fidomessage.origin}" if !fidomessage.origin.nil?
       print
     else
       print "\r\n%YThis message area is empty. Why not %G[P]ost%Y a Message?" if h_msg == 0
@@ -393,7 +393,7 @@ class Session
 
   def parse_intl(address)
 
-    happy =  (/^(\d?):(\d{1,4})\/(.*)/) =~ address
+    happy = (/^(\d?):(\d{1,4})\/(.*)/) =~ address
     if happy then
       zone = $1;net = $2;node = $3
       grumpy = (/(\d{1,4})\.(\d{1,4})/) =~ node
@@ -406,16 +406,16 @@ class Session
 
   def non_standard_zone(inzone)
     #puts "inzone #{inzone}"
-    inzone = inzone[4..7] if inzone.length == 7 
+    inzone = inzone[4..7] if inzone.length == 7
     num = inzone.to_i(16)
     #puts "num: #{num}"
-    minutes_utc = num - 65536 
+    minutes_utc = num - 65536
     if minutes_utc > -720 and minutes_utc < 720 then
       hours_utc = minutes_utc / 60.0
       rem_h = hours_utc.ceil
       remainder = minutes_utc - (hours_utc.ceil * 60)
-      t_remainder  = remainder.abs.to_s
-      t_remainder << "0" if t_remainder.length < 2 
+      t_remainder = remainder.abs.to_s
+      t_remainder << "0" if t_remainder.length < 2
       return "#{rem_h}:#{t_remainder} UTC"
     else
       return "UNKNOWN"
@@ -424,15 +424,15 @@ class Session
 
   def displaymessage(mpointer,table,email)
 
-   if mpointer != 0 then 
+   if mpointer != 0 then
     i = 0
     @c_user.lastread = Array.new(2,0) if @c_user.lastread == 0
     @c_user.lastread[@c_area] ||= 0
-    u = @c_user	
+    u = @c_user
     if email then
      
-      abs =  email_absolute_message(table,mpointer,u.name)
-    else		 
+      abs = email_absolute_message(table,mpointer,u.name)
+    else
       abs = absolute_message(table,mpointer)
     end
     curmessage = fetch_msg(table, abs)
@@ -443,7 +443,7 @@ class Session
     end
 
     message = []
-    curmessage.msg_text.each_line(DLIM) {|line| message.push(line.chop!)}  #changed from .each for ruby 1.9
+    curmessage.msg_text.each_line(DLIM) {|line| message.push(line.chop!)} #changed from .each for ruby 1.9
 
     if curmessage.network then
       message,q_msgid,q_via,q_tz,q_reply = qwk_kludge_search(message)
@@ -456,7 +456,7 @@ class Session
       out = TIME_TABLE[tz]
       #puts out
       out = non_standard_zone(tz) if out.nil?
-      write " %W(%G#{out}%W)" 
+      write " %W(%G#{out}%W)"
     end
     write "%G [NETWORK MESSAGE]" if curmessage.network
     write "%G [SMTP]" if curmessage.smtp
@@ -464,9 +464,9 @@ class Session
     write "%Y [EXPORTED]" if curmessage.exported and !curmessage.f_network and !curmessage.network
     write "%B [REPLY]" if curmessage.reply
     print ""
-    print "%CTo:    %G#{curmessage.m_to}"
-    write "%CFrom:  %G#{curmessage.m_from.strip}"
-    if curmessage.f_network then 
+    print "%CTo: %G#{curmessage.m_to}"
+    write "%CFrom: %G#{curmessage.m_from.strip}"
+    if curmessage.f_network then
       out = "UNKNOWN"
       if curmessage.intl != "" then
         if curmessage.intl.length > 1 then
@@ -476,7 +476,7 @@ class Session
           out << ".#{point}" if !point.nil?
         end
       else out = get_orig_address(curmessage.msgid) end
-      write " %G(%C#{out}%G)" 
+      write " %G(%C#{out}%G)"
     end
     if curmessage.network then
       out = BBSID
@@ -497,7 +497,7 @@ class Session
         cont = moreprompt
 
         j = 1
-        break if !cont 
+        break if !cont
       else
 
         print end
@@ -522,9 +522,9 @@ end
   def messagemenu(zipread)
     @who.user(@c_user.name).where="Message Menu"
     update_who_t(@c_user.name,"Reading Messages")
-    out = "Read" 
+    out = "Read"
     if zipread then
-      out = "ZIPread" 
+      out = "ZIPread"
       return if !zipscan(1)
     end
     readmenu(
@@ -548,29 +548,29 @@ end
 
       if moved
         if (mpointer > 0) and (mpointer <= h_msg) then # range check
-          showmessage(mpointer)    
+          showmessage(mpointer)
         end
 
       end
       case sel
-      when "E";  email
-      when "/";  showmessage(mpointer)
+      when "E"; email
+      when "/"; showmessage(mpointer)
       when "PU"; page
-      when "K";  killmessage(mpointer)
-      when "Q";  mpointer = true  # passing back true tells the other block to exit
-      when "G";  leave
-      when "P";  post 
-      when "W";  displaywho
-      when "R";  replytomessage(mpointer)
+      when "K"; killmessage(mpointer)
+      when "Q"; mpointer = true # passing back true tells the other block to exit
+      when "G"; leave
+      when "P"; post
+      when "W"; displaywho
+      when "R"; replytomessage(mpointer)
       when "FH"; display_fido_header(mpointer)
-      when "A";  mpointer = areachange(parameters)
+      when "A"; mpointer = areachange(parameters)
       when "MK"; mass_kill(parameters)
-      when "?";  gfileout ("readmnu")
+      when "?"; gfileout ("readmnu")
       end
       p_return = [mpointer,h_msg,out] # evaluate so this is the value that is returned
 
     }
-  end 
+  end
 
   def killmessage(mpointer)
 
@@ -584,19 +584,19 @@ end
         return
       end
 
-      if !((@c_user.areaaccess[@c_area] =~ /[CM]/) or 
+      if !((@c_user.areaaccess[@c_area] =~ /[CM]/) or
            (@c_user.level == 255) ) then
            print CANNOTKILLMESSAGESERROR
            return
       end
 
-      if h_msg > 0 
+      if h_msg > 0
         delete_msg(area.tbl,abs)
         print "%RMessage ##{mpointer} [#{abs}] deleted."
-      else 
+      else
         print CRLF+"%RNo Messages"
       end
-    else 
+    else
       print CRLF+"%RYou can't delete message 0, because it doesn't exist!"
     end
   end
@@ -604,14 +604,14 @@ end
   def mass_kill(parameters)
 
     area = fetch_area(@c_area)
-    start,stop  = parameters[0..1]
+    start,stop = parameters[0..1]
 
     if (start < 1) or (start > h_msg) or (stop < 1) or (stop > h_msg) then
       print "%ROut of Range dude!"
       return
     end
 
-    if !((@c_user.areaaccess[@c_area] =~ /[CM]/) or 
+    if !((@c_user.areaaccess[@c_area] =~ /[CM]/) or
          (@c_user.level == 255) ) then
          print CANNOTKILLMESSAGESERROR
          return
@@ -620,11 +620,11 @@ end
     first = absolute_message(area.tbl,start)
     last = absolute_message(area.tbl,stop)
     prompt = "%RDelete absolute messages #{first} to #{last} (Y,n)? "
-    delete_msgs(area.tbl,first,last) if yes(prompt, true, false,true) 
+    delete_msgs(area.tbl,first,last) if yes(prompt, true, false,true)
   end
 
   def replytomessage(mpointer)
-    if mpointer > 0 then 
+    if mpointer > 0 then
       reply(mpointer)
     else
       print "%GYou haven't read a message yet."
@@ -634,8 +634,8 @@ end
   def showmessage(mpointer)
 
     area = fetch_area(@c_area)
-    if (h_msg > 0) and (mpointer > 0)  then
-      displaymessage(mpointer,area.tbl,false) 
+    if (h_msg > 0) and (mpointer > 0) then
+      displaymessage(mpointer,area.tbl,false)
     else
       print "\r\n%YThis message area is empty. Why not %G[P]ost%Y a Message?" if h_msg == 0
       print "\r\n%RYou haven't read any messages yet." if mpointer == 0
@@ -647,7 +647,7 @@ end
   def displayarea(number)
     area = fetch_area(number)
     write "\r\n%R#%W#{number} %G #{area.name}"
-    write "%R [DELETED]" if area.delete 
+    write "%R [DELETED]" if area.delete
     write "%R [LOCKED]" if area.locked
     print ""
     if area.netnum > -1 then
@@ -657,19 +657,19 @@ end
     end
 
     print <<-here
-  %CDefault Access:   %G#{area.d_access}
-  %CValidated Access: %G#{area.v_access}
-  %CQWK/REP Net #     %G#{out}
-  %CFidoNet Area:     %G#{area.fido_net}
-  %CLast Modified:    %G#{area.modify_date}
-  %CTotal Messages:   %G#{m_total(area.tbl)}  
-  %CSQL Table:        %G#{area.tbl}
-  %CGroup:            %G#{area.group}
-  here
+%CDefault Access: %G#{area.d_access}
+%CValidated Access: %G#{area.v_access}
+%CQWK/REP Net # %G#{out}
+%CFidoNet Area: %G#{area.fido_net}
+%CLast Modified: %G#{area.modify_date}
+%CTotal Messages: %G#{m_total(area.tbl)}
+%CSQL Table: %G#{area.tbl}
+%CGroup: %G#{area.group}
+here
 
   end #displayarea
 
-  def areamaintmenu 
+  def areamaintmenu
     readmenu(
       :initval => 0,
       :range => 0..(a_total - 1),
@@ -677,30 +677,30 @@ end
     ) {|sel, apointer, moved|
       displayarea(apointer) if moved
       case sel
-      when "/";  displayarea(apointer) 
-      when "Q";  apointer = true
-      when "A";  apointer = addarea 			
+      when "/"; displayarea(apointer)
+      when "Q"; apointer = true
+      when "A"; apointer = addarea
       when "NN"; changeqwkrep(apointer)
       when "FN"; changefidoarea(apointer)
       when "CF"; clearfidoarea(apointer)
-      when "W";  displaywho
+      when "W"; displaywho
       when "PU"; page
-      when "N";  changeareaname(apointer)
-      when "D";  changedefaultaccess(apointer)
-      when "V";  changevalidatedaccess(apointer)
-      when "K";  deletearea(apointer)
-      when "S";  lockarea(apointer)
-      when "G";  leave
+      when "N"; changeareaname(apointer)
+      when "D"; changedefaultaccess(apointer)
+      when "V"; changevalidatedaccess(apointer)
+      when "K"; deletearea(apointer)
+      when "S"; lockarea(apointer)
+      when "G"; leave
       when "CG"; changegroup(apointer)
-      when "?";  gfileout ("areamnu")
+      when "?"; gfileout ("areamnu")
       end # of case
       p_return = [apointer,(a_total - 1)]
     }
   end
 
   def deletearea(apointer)
-    if apointer <= 1 
-      print "%RYou cannot delete area 0 or 1." 
+    if apointer <= 1
+      print "%RYou cannot delete area 0 or 1."
       return
     end
 
@@ -709,7 +709,7 @@ end
     if area.delete
       area.delete = false
       print "Area ##{apointer} UNdeleted"
-    else 
+    else
       area.delete = true
       print "Area ##{apointer} deleted."
     end
@@ -723,7 +723,7 @@ end
     if area.locked then
       area.locked = false
       print "Area ##{apointer} UNlocked"
-    else 
+    else
       area.locked = true
       print "Area ##{apointer} locked."
     end
@@ -750,7 +750,7 @@ end
 
     area = fetch_area(apointer)
     groups = fetch_groups
-    print 
+    print
     print "Select New Group #"
     groups.each_index {|j| print "#{j}: #{groups[j].groupname}"}
     prompt = "Enter new group number for board #{apointer}: "
@@ -770,7 +770,7 @@ end
       area.d_access = tempstr2
       print "Board #{apointer} default access changed to #{tempstr2}"
       update_area(area)
-    else 
+    else
       print "%RInvalid Selection"
     end
   end
@@ -781,20 +781,20 @@ end
     while true
       prompt = "Enter new area name: "
       name = getinp(prompt) {|n| n != ""}
-      if name.length > 40 then 
-        print "%RName too long.  40 Character Maximum"
+      if name.length > 40 then
+        print "%RName too long. 40 Character Maximum"
       else break end
     end
     while true
       prompt = "Enter new area table: "
       table = getinp(prompt) {|p| p != ""}
       if table.length > 10 then
-        print "%RTable name too long.  10 Character Maximum"
+        print "%RTable name too long. 10 Character Maximum"
       else break end
     end
-    if table =~ /[A-Za-z]/ 
+    if table =~ /[A-Za-z]/
       commit = yes("Are you sure (Y,n)?",false,false,true)
-      if commit then 
+      if commit then
         add_area(name,table,"W","W")
         create_msg_table(table)
         apointer = a_total - 1
@@ -820,12 +820,12 @@ end
       netnum = getinp(prompt) {|n| n != ""}
       if netnum =="N" or netnum == "n"
         area.netnum = -1
-        break 
+        break
       end
       if netnum.to_i > -1 and netnum.to_i < 10000 then
         area.netnum = netnum.to_i
         break
-      end 
+      end
     end
     update_area(area)
     print
@@ -839,8 +839,8 @@ end
     while true
       prompt = "Enter new area name: "
       name = getinp(prompt) {|n| n != ""}
-      if name.length > 40 then 
-        print "Name too long.  40 Character Maximum"
+      if name.length > 40 then
+        print "Name too long. 40 Character Maximum"
       else break end
     end
     area.name = name
@@ -855,8 +855,8 @@ end
     while true
       prompt = "Enter new FidoNet Area Mapping: "
       fido_net= getinp(prompt) {|n| n != ""}
-      if fido_net.length > 40 then 
-        print "Area too long.  40 Character Maximum"
+      if fido_net.length > 40 then
+        print "Area too long. 40 Character Maximum"
       else break end
     end
     area.fido_net = fido_net.upcase
@@ -866,12 +866,12 @@ end
   def clearfidoarea(apointer)
 
     area = fetch_area(apointer)
-    commit = yes("Clear Fidonet Area Mapping.  Are you sure (Y,n)? ",false,false,true)
+    commit = yes("Clear Fidonet Area Mapping. Are you sure (Y,n)? ",false,false,true)
 
-    if commit then 
+    if commit then
       area.fido_net = nil
       update_area(area)
-      print 
+      print
       print "Cleared Fido Mapping"
     else
       print
@@ -879,3 +879,4 @@ end
     end
   end
 end # class Session
+
