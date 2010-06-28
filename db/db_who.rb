@@ -1,5 +1,6 @@
-def create_who_table
+require 'models/who'
 
+def create_who_table
   puts "-DB: Creating Who Table"
   @db.exec("CREATE TABLE who (number BigInt, lastactivity timestamp, \
            place varchar(40))")
