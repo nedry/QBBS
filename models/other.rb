@@ -1,5 +1,8 @@
+require 'models/numbered'
+
 class Other
   include DataMapper::Resource
+  extend Numbered
 
   property :id, Serial
   property :name, String, :length => 40

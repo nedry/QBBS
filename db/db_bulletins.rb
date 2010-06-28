@@ -15,8 +15,7 @@ def create_bulletin_table
 end
 
 def delete_bulletin(ind)
-  b = Bulletin.first(:number => ind)
-  b.destroy! if b
+  Bulletin.delete_number(ind)
 end
 
 def update_bulletin(r)
@@ -24,20 +23,11 @@ def update_bulletin(r)
 end
 
 def fetch_bulletin(record)
-  b = Bulletin.first(:number => record)
-  if b
-    b.name.gsub!(QUOTE,"'") if b.name
-    b.path.gsub!(QUOTE,"'") if b.path
-  end
-  return b
+  Bulletin.first(:number => record)
 end
 
 def renumber_bulletins
-  n = 1
-  Bulletin.all(:order => :number).each do |b|
-    b.update(:number => n)
-    n = n + 1
-  end
+  Bulletin.renumber!
 end
 
 def add_bulletin(name, path)
