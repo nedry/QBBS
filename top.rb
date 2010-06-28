@@ -7,6 +7,7 @@ require "class.rb"
 require "bot.rb"
 require 'dm-core'
 require 'dm-validations'
+require 'dm-aggregates'
 require "db/db_email"
 require "db/db_area"
 require "db/db_bulletins"

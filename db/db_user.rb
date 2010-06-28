@@ -27,16 +27,16 @@ def create_user_table
 end
 
 def user_exists(uname)
-  User.count(:conditions => ["upper(name) = ?", uname.upcase]) > 0
+  User.all(:conditions => ["upper(name) = ?", uname.upcase]).count > 0
 end
 
 def alias_exists(alais)
-  User.count(:conditions => ["upper(alias) = ?", alais.upcase]) > 0
+  User.all(:conditions => ["upper(alias) = ?", alais.upcase]).count > 0
 end
 
 # TODO: improve password handling
 def check_password(uname,psswd)
-  User.count(:conditions => ["upper(name) = ? and password = ?", uname.upcase, psswd]) > 0
+  User.all(:conditions => ["upper(name) = ? and password = ?", uname.upcase, psswd]).count > 0
 end
 
 def get_uid(uname)
