@@ -1,4 +1,5 @@
 require 'tools'
+require 'log'
 
 module Qwk
   Area = Struct.new("Area", :area, :name)
@@ -70,33 +71,12 @@ module Qwk
     end
   end
 
-  class Log
-    attr_reader :filename
-
-    def initialize(filename="qwklog.txt")
-      @filename = filename
-    end
-
-    def rewrite!
-      if File.exists?(filename) then
-        lf = File.new(filename, File::TRUNC|File::RDWR, 0644)
-        lf.close
-      end 
-    end
-
-    def write(line)
-      File.new(filename, File::CREAT|File::APPEND|File::RDWR, 0644) do |lf|
-        lf.puts line
-      end
-    end
-  end
-
   class Importer
     attr_accessor :file, :log
 
     def initialize(path)
       @file = path
-      @log = Log.new
+      @log = Log.new("qwklog.txt")
     end
 
     def putslog(output)
