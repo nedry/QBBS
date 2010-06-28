@@ -90,3 +90,18 @@ LINE 1: SELECT "id", "number", "lastactivity", "place" FROM "who" WH...
  ~ (0.000338) SET client_min_messages = warning
  ~ (0.026562) SELECT "number", "deleted", "locked", "name", "alias", "ip", "citystate", "address", "password", "length", "modify_date", "width", "ansi", "more", "level", "create_date", "laston", "logons", "posted", "rsts_pw", "rsts_acc", "fullscreen" FROM "users" ORDER BY "number"
  ~ (0.001608) SELECT "number", "deleted", "locked", "name", "alias", "ip", "citystate", "address", "password", "length", "modify_date", "width", "ansi", "more", "level", "create_date", "laston", "logons", "posted", "rsts_pw", "rsts_acc", "fullscreen" FROM "users" ORDER BY "number"
+ ~ (0.001363) SET backslash_quote = off
+ ~ (0.000516) SET standard_conforming_strings = on
+ ~ (0.000243) SET client_min_messages = warning
+ ~ (0.028594) SELECT "number", "deleted", "locked", "name", "alias", "ip", "citystate", "address", "password", "length", "modify_date", "width", "ansi", "more", "level", "create_date", "laston", "logons", "posted", "rsts_pw", "rsts_acc", "fullscreen" FROM "users" WHERE (upper(name) = 'SYSOP') ORDER BY "number"
+ ~ (0.012578) SELECT "number", "deleted", "locked", "name", "alias", "ip", "citystate", "address", "password", "length", "modify_date", "width", "ansi", "more", "level", "create_date", "laston", "logons", "posted", "rsts_pw", "rsts_acc", "fullscreen" FROM "users" WHERE (upper(name) = 'SYSOP' and password = 'STUPID') ORDER BY "number"
+ ~ (0.008984) SELECT "number", "deleted", "locked", "name", "alias", "ip", "citystate", "address", "password", "length", "modify_date", "width", "ansi", "more", "level", "create_date", "laston", "logons", "posted", "rsts_pw", "rsts_acc", "fullscreen" FROM "users" WHERE (upper(name) = 'SYSOP') ORDER BY "number" LIMIT 1
+ ~ (0.001066) SELECT "id", "number", "lastactivity", "place" FROM "who" ORDER BY "id"
+ ~ (0.006216) INSERT INTO "who" ("number", "lastactivity", "place") VALUES (1, '2010-06-29T00:37:54+01:00', 'Logging in...') RETURNING "id"
+ ~ (0.006307) SELECT "number", "deleted", "locked", "name", "alias", "ip", "citystate", "address", "password", "length", "modify_date", "width", "ansi", "more", "level", "create_date", "laston", "logons", "posted", "rsts_pw", "rsts_acc", "fullscreen" FROM "users" WHERE (upper(name) = 'SYSOP') ORDER BY "number" LIMIT 1
+ ~ (0.001006) SELECT "id", "number", "lastactivity", "place" FROM "who" WHERE "number" = 1 ORDER BY "id" LIMIT 1
+ ~ (0.001844) UPDATE "who" SET "lastactivity" = '2010-06-29T00:37:56+01:00', "place" = 'Main Menu.' WHERE "id" = 1
+ ~ (0.000712) SELECT "id", "number", "lastactivity", "place" FROM "who" ORDER BY "id"
+ ~ (0.001049) INSERT INTO "who" ("number", "lastactivity", "place") VALUES (1, '2010-06-29T00:37:56+01:00', 'Main Menu.') RETURNING "id"
+ ~ (0.001420) SELECT "area_key", "name", "tbl", "delete", "locked", "number", "netnum", "d_access", "v_access", "modify_date", "network", "fido_net", "grp" FROM "areas" WHERE "number" = 0 ORDER BY "area_key" LIMIT 1
+ ~ (0.001074) SELECT "number", "deleted", "locked", "name", "alias", "ip", "citystate", "address", "password", "length", "modify_date", "width", "ansi", "more", "level", "create_date", "laston", "logons", "posted", "rsts_pw", "rsts_acc", "fullscreen" FROM "users" WHERE (upper(name) = 'SYSOP') ORDER BY "number" LIMIT 1
