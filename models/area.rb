@@ -1,3 +1,5 @@
+require 'models/group'
+
 class Area
   include DataMapper::Resource
 
@@ -14,4 +16,9 @@ class Area
   property :network, String, :length => 40
   property :fido_net, String, :length => 40
   property :grp, BigDecimal, :default => 1
+
+  # groupname, actually - will change to group object when we fix legacy code
+  def group
+    Group.first(:number => grp).groupname
+  end
 end

@@ -1,8 +1,7 @@
-def m_total(table)
+require 'models/message'
 
-  res = @db.exec("SELECT COUNT(*) FROM #{table}")
-  result = single_result(res).to_i
-  return result
+def m_total(table)
+  Message.count
 end
 
 def create_msg_table(table)

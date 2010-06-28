@@ -20,58 +20,16 @@ def create_area_table
 end
 
 def update_group(r)
-  @db.exec("UPDATE areas SET grp = '#{r.group}' WHERE number = #{r.number}")
+  r.save
 end
 
 def update_area(r)
-
-  r.name.gsub!("'",QUOTE) if r.name != nil
-  r.tbl.gsub!("'",QUOTE) if r.tbl != nil
-  r.network.gsub!("'",QUOTE) if r.network != nil
-
-  @db.exec("UPDATE areas SET name = '#{r.name}', \
-           tbl = '#{r.tbl}', delete = #{r.delete}, \
-           locked = #{r.locked}, netnum = #{r.netnum},\
-           d_access = '#{r.d_access}', \
-           v_access = '#{r.v_access}', \
-           modify_date = '#{r.modify_date}', \
-           network = '#{r.network}', fido_net = '#{r.fido_net}'\	   
-           WHERE number = #{r.number}")
+  r.save
 end
 
 def fetch_area(record)
-
-  res = @db.exec("SELECT areas.name, areas.tbl, areas.delete, areas.locked, \
-          areas.number, areas.netnum, areas.d_access, areas.v_access,\
-          areas.modify_date, areas.network, areas.fido_net, groups.groupname \
-          FROM areas,groups WHERE areas.grp = groups.number and areas.number = #{record}") 
-
-          temp = result_as_array(res).flatten
-
-          t_name 			= temp[0]
-          t_table 			= temp[1]
-          t_delete 			= db_true(temp[2])
-          t_locked 			= db_true(temp[3])
-          t_number 		= temp[4].to_i
-          t_netnum 		= temp[5].to_i
-          t_d_access 		= temp[6]
-          t_v_access 		= temp[7]
-          t_modify_date 	= temp[8]
-          t_network 		= temp[9]
-          t_fido_net 		= temp[10]
-          t_group 			= temp[11]
-
-          t_name.gsub!(QUOTE,"'") if t_name != nil
-          t_table.gsub!(QUOTE,"'")if t_table != nil
-
-          result = DB_area.new(t_name,t_table,t_delete, \
-                               t_locked,t_number,t_netnum, \
-                               t_d_access,t_v_access, \
-                               t_modify_date,t_network,t_fido_net,t_group)
-          return result
+  Area.first(:number => record)
 end
-
-
 
 def fetch_area_list(num)
 
@@ -99,22 +57,18 @@ def fetch_area_list(num)
 end
 
 def find_qwk_area (number,name)  # name for future use.
-
-  result = nil
-
-  res = @db.exec("SELECT number FROM areas WHERE netnum = #{number}")
-  result = single_result(res).to_i if !single_result(res).nil?
-  return result
+  Area.first(:netnum => number)
 end
 
 def add_area(name, tbl, d_access,v_access)
-
   number = a_total  #area's start with 0, so the total will be the next area
 
-  name.gsub!("'",QUOTE)
-  tbl.gsub!("'",QUOTE)
-  puts current_date
-  @db.exec("INSERT INTO areas (name, tbl, number, d_access, v_access, \ 
-           modify_date) VALUES ('#{name}', '#{tbl}', #{number} ,\
-           '#{d_access}', '#{v_access}', '#{current_date}')") 
+  Area.create(
+    :number => number,
+    :name => name,
+    :tbl => tbl,
+    :d_access => d_access,
+    :v_access => v_access,
+    :modify_date => Time.now
+  )
 end

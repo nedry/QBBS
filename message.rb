@@ -755,7 +755,7 @@ here
     groups.each_index {|j| print "#{j}: #{groups[j].groupname}"}
     prompt = "Enter new group number for board #{apointer}: "
     tempint = getnum(prompt,0,groups.length - 1)
-    area.group = groups[tempint].number
+    area.grp = groups[tempint].number
     update_group(area)
     print "Area Updated"
   end
