@@ -1,5 +1,6 @@
 class Who
   include DataMapper::Resource
+  storage_names[:default] = 'who'
 
   property :id, Serial
   property :number, Integer, :min => 0, :max => 2**32

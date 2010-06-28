@@ -1,5 +1,6 @@
 class System
   include DataMapper::Resource
+  storage_names[:default] = 'system'
 
   property :id, Serial
   property :lastqwkrep, DateTime

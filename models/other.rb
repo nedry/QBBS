@@ -3,6 +3,7 @@ require 'models/numbered'
 class Other
   include DataMapper::Resource
   extend Numbered
+  storage_names[:default] = 'other'
 
   property :id, Serial
   property :name, String, :length => 40
