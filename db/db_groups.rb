@@ -9,21 +9,10 @@ def create_group_table
 end
 
 def update_groups(number,name)
-
-
-  @db.exec("UPDATE groups SET groupname = '#{name}' WHERE number = '#{number}'")
+  g = Group.first(:number => number)
+  g.update(:name => name)
 end
 
 def fetch_groups
-
-  groups = []
-
-  res = @db.exec("SELECT * FROM groups") 
-
-  temp = result_as_array(res)
-
-  for i in 0..temp.length - 1 do
-    groups << DB_group.new(temp[i][0].to_i,temp[i][1])
-  end
-  return groups
+  Groups.all(:order => number)
 end
