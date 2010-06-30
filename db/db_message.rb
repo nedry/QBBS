@@ -204,10 +204,7 @@ end
 
 def add_msg(m_to,m_from,msg_date,subject,msg_text,exported,network,reply,destnode,destnet,intl,topt,smtp,area)
 
-  #number = high_absolute(table) + 1  
 
-  #puts "number: #{number}"
-#p_msg
 
   msg_text.gsub!("'",QUOTE) if msg_text != nil
   m_to.gsub!("'",QUOTE) if m_to != nil
@@ -217,11 +214,6 @@ def add_msg(m_to,m_from,msg_date,subject,msg_text,exported,network,reply,destnod
   destnode = -1 if destnode.nil?
   destnet = -1 if destnet.nil?
 
-  #puts("INSERT INTO #{table} (m_to, m_from, \ 
-  #           msg_date, subject, msg_text, exported,network,reply,destnet,destnode,intl,topt,smtp) VALUES \ 
-  #         ('#{m_to}', '#{m_from}', '#{msg_date}', '#{subject}',\
-  #	  '#{msg_text}', '#{exported}','#{network}','#{reply}',\
-  #	  '#{destnet}','#{destnode}','#{intl}','#{topt}','#{smtp}')") 
 
 
   @db.exec("INSERT INTO messages (m_to, m_from, \ 

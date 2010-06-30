@@ -435,7 +435,6 @@ class Session
     else
       abs = absolute_message(table,mpointer)
     end
-    puts abs
     curmessage = fetch_msg(abs)
     puts " curmessage.number: #{curmessage.number}"
     if @c_user.lastread[@c_area] < curmessage.number then
@@ -622,10 +621,10 @@ end
          return
     end
 
-    first = absolute_message(area.tbl,start)  #this need rewriting for the new db format
-    last = absolute_message(area.tbl,stop)
-    prompt = "%RDelete absolute messages #{first} to #{last} (Y,n)? "
-    delete_msgs(area.tbl,first,last) if yes(prompt, true, false,true)
+    first = absolute_message(area.number,start)  #this need rewriting for the new db format
+    last = absolute_message(area.number,stop)
+    prompt = "%RDelete messages #{start} to #{stop} (Y,n)? "
+    delete_msgs(area.number,first,last) if yes(prompt, true, false,true)
   end
 
   def replytomessage(mpointer)

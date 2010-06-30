@@ -84,7 +84,7 @@ def create_table(table)
 
   case table
   when "areas"
-    create_area_table
+    puts "-- areas table not found  Run makedb.rb"
   when "bulletins"
     create_bulletin_table
   when "doors"
