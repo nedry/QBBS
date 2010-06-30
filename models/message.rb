@@ -1,5 +1,6 @@
 class Message
   include DataMapper::Resource
+  storage_names[:default] = 'messages'
 
   property :number, Serial
   property :delete, Boolean, :default => false
@@ -31,4 +32,11 @@ class Message
   property :reply, Boolean
   property :origin, String, :length => 80
   property :smtp, Boolean, :default => false 
+
+property :tbl, Integer,  :min => 0, :max => 2**32
+
+  # groupname, actually - will change to group object when we fix legacy code
+  def tbl
+    Area.first(:area_key => tbl).name
+  end
 end

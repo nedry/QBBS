@@ -1,53 +1,64 @@
 require 'models/message'
 
-def m_total(table)
-  Message.count
+#def m_total(area)
+ # Message.count
+#end
+
+
+def m_total(area)
+
+  res = @db.exec("SELECT COUNT(*) FROM messages WHERE tbl = '#{area}'")
+  result = single_result(res).to_i
+  puts "mtotal_res: #{result}"
+  return result
 end
 
-def create_msg_table(table)
+#def create_msg_table(table)
 
-  puts "-DB: Creating Message Table #{table}"
+ # puts "-DB: Creating Message Table #{table}"
   #begin
-  @db.exec("CREATE TABLE #{table} (delete boolean DEFAULT false, \
-           locked boolean DEFAULT false, number bigserial PRIMARY KEY, \
-            m_to varchar(40), \
-           m_from varchar(40), msg_date timestamp, subject varchar(80),\
-           msg_text text, exported boolean DEFAULT false,\
-     network boolean DEFAULT false, f_network boolean DEFAULT false, orgnode int, destnode int,\
-     orgnet int, destnet int, attribute int, cost int, area varchar(80), \
-     msgid varchar(80), path varchar(80),\
-     tzutc varchar(10), charset varchar(10), tid varchar(80), \
-     pid varchar(80), intl varchar(80), topt int,\
-     fmpt int, reply boolean, origin varchar(80),smtp boolean DEFAULT false )")
+ # @db.exec("CREATE TABLE #{table} (delete boolean DEFAULT false, \
+  #         locked boolean DEFAULT false, number bigserial PRIMARY KEY, \
+   #         m_to varchar(40), \
+    #       m_from varchar(40), msg_date timestamp, subject varchar(80),\
+   #        msg_text text, exported boolean DEFAULT false,\
+   #  network boolean DEFAULT false, f_network boolean DEFAULT false, orgnode int, destnode int,\
+   #  orgnet int, destnet int, attribute int, cost int, area varchar(80), \
+   #  msgid varchar(80), path varchar(80),\
+    # tzutc varchar(10), charset varchar(10), tid varchar(80), \
+    # pid varchar(80), intl varchar(80), topt int,\
+    # fmpt int, reply boolean, origin varchar(80),smtp boolean DEFAULT false )")
 
 
      #rescue
      # puts "-DB: Error Creating Message Table #{table}"
      #end
-end
+#end
 
 
 
 
-def new_messages(table,ind)
+def new_messages(area,ind)
 
   #puts "ind:#{ind}"
   ind = 0 if ind.nil?
-
-  res = @db.exec("SELECT COUNT(*) FROM #{table} WHERE number > #{ind}")
+  puts "nm_ind: #{ind}"
+  res = @db.exec("SELECT COUNT(*) FROM messages  WHERE number > #{ind} and tbl = '#{area}'")
   result = single_result(res).to_i
+  puts "nm_result: #{result}"
+  return result
 end
 
-def get_pointer(table,ind)
+def get_pointer(area,ind)
 
-  pointer = m_total(table)
+  pointer = m_total(area)
 
 end
 
-def absolute_message(table,ind)
+def absolute_message(area,ind)
   ind = 0 if ind.nil?
   @db.exec("BEGIN")
-  @db.exec("DECLARE c CURSOR FOR SELECT number FROM #{table} ORDER BY number")
+  @db.exec("DECLARE c CURSOR FOR SELECT number FROM messages WHERE tbl = '#{area}' ORDER BY number")
   @db.exec("MOVE FORWARD #{ind+1} IN c")
   res =  @db.query("FETCH BACKWARD 1 IN c")
   result = single_result(res).to_i
@@ -65,14 +76,14 @@ def high_absolute(table)
   return result
 end
 
-def delete_msg(table,ind)
+def delete_msg(ind)
 
-  @db.exec("DELETE FROM #{table} WHERE number = '#{ind}'")
+  @db.exec("DELETE FROM messages WHERE number = '#{ind}'")
 end
 
 def delete_msgs(table,first,last)
 
-  @db.exec("DELETE FROM #{table} WHERE number >= '#{first}' and number <= '#{last}'")
+  @db.exec("DELETE FROM messages WHERE number >= '#{first}' and number <= '#{last}'")
 end
 
 def find_fido_area (area)
@@ -86,14 +97,14 @@ def find_fido_area (area)
   return [table,number]
 end
 
-def exported(table,number)
-  @db.exec("UPDATE #{table} SET exported = true WHERE number = #{number}")
+def exported(number)
+  @db.exec("UPDATE messages SET exported = true WHERE number = #{number}")
 end
 
-def update_msg(table,r)
+def update_msg(r)
 
 
-  @db.exec("UPDATE #{table} SET delete = '#{r.delete}',\
+  @db.exec("UPDATE messages SET delete = '#{r.delete}',\
            locked = '#{r.locked}', \
            to = '#{r.m_to}', from = '#{r.m_from}',\
            subject = '#{r.subject}', \
@@ -125,17 +136,15 @@ def update_msg(table,r)
 end
 
 
-def fetch_msg(table, record)
+def fetch_msg(record)
 
   worked = false
 
-  res = @db.exec("SELECT * FROM #{table} WHERE number = #{record}") 
+  res = @db.exec("SELECT * FROM messages WHERE number = #{record}") 
   temp = result_as_array(res).flatten
-
-  t_delete		= db_true(temp[0])
-
-  t_locked	 	= db_true(temp[1])
-  t_number	= temp[2].to_i
+  t_number	= temp[0].to_i
+  t_delete		= db_true(temp[1])
+  t_locked	 	= db_true(temp[2])
   t_m_to	 	= temp[3]
   t_m_from	= temp[4]
   t_msg_date	= temp[5]
@@ -193,12 +202,12 @@ end
 
 
 
-def add_msg(table, m_to,m_from,msg_date,subject,msg_text,exported,network,reply,destnode,destnet,intl,topt,smtp)
+def add_msg(m_to,m_from,msg_date,subject,msg_text,exported,network,reply,destnode,destnet,intl,topt,smtp,area)
 
   #number = high_absolute(table) + 1  
 
   #puts "number: #{number}"
-
+#p_msg
 
   msg_text.gsub!("'",QUOTE) if msg_text != nil
   m_to.gsub!("'",QUOTE) if m_to != nil
@@ -215,11 +224,11 @@ def add_msg(table, m_to,m_from,msg_date,subject,msg_text,exported,network,reply,
   #	  '#{destnet}','#{destnode}','#{intl}','#{topt}','#{smtp}')") 
 
 
-  @db.exec("INSERT INTO #{table} (m_to, m_from, \ 
-           msg_date, subject, msg_text, exported,network,reply,destnet,destnode,intl,topt,smtp) VALUES \ 
+  @db.exec("INSERT INTO messages (m_to, m_from, \ 
+           msg_date, subject, msg_text, exported,network,reply,destnet,destnode,intl,topt,smtp,tbl) VALUES \ 
           ('#{m_to}', '#{m_from}', '#{msg_date}', '#{subject}',\
     '#{msg_text}', '#{exported}','#{network}','#{reply}',\
-           '#{destnet}','#{destnode}','#{intl}','#{topt}','#{smtp}')") 
+           '#{destnet}','#{destnode}','#{intl}','#{topt}','#{smtp}', '#{area}')") 
 
-           return high_absolute(table)
+           return high_absolute(area)
 end

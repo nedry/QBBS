@@ -41,6 +41,8 @@ s = System.new(
   :f_msgid => 9999999
 )
 s.save!
+t = 
+
 
 # initial users
 YAML.load(IO.read('config/initusers.yml')).each {|u|
@@ -50,3 +52,4 @@ YAML.load(IO.read('config/initusers.yml')).each {|u|
 # initial area
 add_area("Email","email","I","I")
 add_area("General Discussions","general","W","W")
+add_area("The APC Net","apc","W","W")

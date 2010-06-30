@@ -160,7 +160,7 @@ def side_menu_gubbins
  uid = get_uid(name)
    u = fetch_user(uid.to_i)
   u = fix_pointer(u,0)
- new = new_email(area.tbl,u.lastread[0],u.name)
+ new = new_email(u.lastread[0],u.name)
 
     if new > 0  then
     e_out = "<a href='/email'>Email (#{new} New!)</a><br>"
@@ -209,7 +209,7 @@ def area_list_gubbins(grp)
   				  end)
   				  
   				  if (user.areaaccess[area.number] != "I") or (user.level == 255) and (!area.delete) then
-  				   l_read = new_messages(area.tbl,user.lastread[area.number])
+  				   l_read = new_messages(area.number,user.lastread[area.number])
   				   o_area << "<tr><td><a href='/message?m_area=#{area.number}'>#{area.name}</a></td><td>#{l_read}</td><td>#{tempstr}</td></tr>"
   				   
   				  end
@@ -237,14 +237,14 @@ end
 
 def w_display_message(mpointer,user,m_area,email,dir,total)
       area = fetch_area(m_area)
-      table = area.tbl
+      table = area.number
       if email then
-	 abs = email_absolute_message(table,mpointer,user.name)
+	 abs = email_absolute_message(mpointer,user.name)
       else
          abs = absolute_message(table,mpointer)
       end
       m_out = ""
-      curmessage = fetch_msg(table, abs)
+      curmessage = fetch_msg(abs)
       m_out << m_menu(m_area,mpointer,dir,curmessage.subject.strip,curmessage.m_from.strip,total,email)
       if user.lastread[m_area] < curmessage.number then
        user.lastread[m_area] = curmessage.number
@@ -296,7 +296,7 @@ end
 
 def pntr(user,c_area)
    area = fetch_area(c_area)
-   p_msg = m_total(area.tbl) - new_messages(area.tbl,user.lastread[c_area])
+   p_msg = m_total(area.number) - new_messages(area.number,user.lastread[c_area])
   # print"user lastread: #{user.lastread[c_area]}<br>"
   # print "p_msg: #{p_msg}<br>m_total: #{m_total(area.tbl)}<br>new_messages: #{new_messages(area.tbl,user.lastread[c_area])}"
    p_msg = 1 if p_msg < 1
@@ -307,19 +307,19 @@ def pntr(user,c_area)
  def e_pntr(u)
     area = fetch_area(0)
 	    
-    epointer = e_total(area.tbl,u.name) - new_email(area.tbl,u.lastread[0],u.name)
+    epointer = e_total(u.name) - new_email(u.lastread[0],u.name)
     epointer = 1 if epointer == 0
     return epointer
  end
  
  def e_hmsg(u)
    area = fetch_area(0)
-   e_total(area.tbl,u.name)
+   e_total(u.name)
 end
 
  def h_msg(c_area)
  area = fetch_area(c_area)
- h_msg = m_total(area.tbl)
+ h_msg = m_total(area.number)
  return h_msg
 end
 
@@ -368,7 +368,7 @@ if !session[:name].nil? then
        msg_text.gsub!(CR.chr,DLIM)
 
       msg_date = Time.now.strftime("%m/%d/%Y %I:%M%p")
-      absolute = add_msg(area.tbl,msg_to,name,msg_date,msg_subject,msg_text,false,false,false,nil,nil,nil,nil,false)
+      absolute = add_msg(msg_to,name,msg_date,msg_subject,msg_text,false,false,false,nil,nil,nil,nil,false,area.number)
       post_out << "Posted Absolute Message ##{absolute}<BR>"
       post_out << ("<a href='/message?m_area=#{m_area}&last=#{last}&dir=#{dir}'>Return</a>&nbsp;&nbsp;")
      else
@@ -407,7 +407,7 @@ if !session[:name].nil? then
      if (user.areaaccess[area.number] == "W") or (user.level == 255) and (!area.delete) then
        reply = ""
         if to !="" then 
-	       curmessage = fetch_msg(area.tbl,absolute_message(area.tbl,last))
+	       curmessage = fetch_msg(absolute_message(area.number,last))
 	       curmessage.msg_text.gsub!(10.chr,'')
 	       reply = curmessage.msg_text.split(227.chr)
 	        if curmessage.network then
@@ -1131,7 +1131,7 @@ if !session[:name].nil? then
 
       
     else      
-    if m_total(area.tbl) > 0 then
+    if m_total(area.number) > 0 then
      if dir == "j" then
       if last <= h_msg(m_area) and last > 0 and m_total(area.tbl) > 0 then
        from,subject,tempstr = w_display_message(last,user,m_area,false,dir,h_msg(m_area))

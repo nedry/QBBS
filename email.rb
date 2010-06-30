@@ -6,11 +6,11 @@ class Session
     u = @c_user
     area = fetch_area(0)
     print; write "Scanning for New Email... "
-    new = new_email(area.tbl,u.lastread[0],u.name)
+    new = new_email(u.lastread[0],u.name)
 
     if new > 0 then
-m = "message"
-m = "messages" if new > 1
+     m = "message"
+     m = "messages" if new > 1
         print "%G#{new} new #{m} found."
         return true
     end
@@ -22,7 +22,7 @@ m = "messages" if new > 1
     area = fetch_area(0)
     @c_user.lastread ||= []
     @c_user.lastread[0] ||= 0
-    total = e_total(area.tbl,@c_user.name)
+    total = e_total(@c_user.name) # changed for new message format
     update_user(@c_user,get_uid(@c_user.name))
   end
 
@@ -30,6 +30,19 @@ m = "messages" if new > 1
     reademail(true) if yes(CRLF+"Read them now (Y,n)? ", true, false,true)
   end
 
+
+ def showemail(epointer)
+
+    area = fetch_area(0)
+    u = @c_user
+    if (e_total(u.name) > 0) and (epointer > 0) then
+      displaymessage(epointer,area.number,true)
+    else
+      print "\r\n%YYou have no email.  You have to send it to get it." if e_total(u.name) == 0
+      print "\r\n%RYou haven't read any email yet." if epointer == 0
+    end
+  end
+  
   def emailmenu #revised
     @who.user(@c_user.name).where="Email Menu"
     update_who_t(@c_user.name,"Email Menu")
@@ -40,13 +53,12 @@ m = "messages" if new > 1
     u = @c_user
     p_area = @c_area
     @c_area = 0
-    epointer = e_total(area.tbl,u.name) - new_email(area.tbl,u.lastread[0],u.name)
-    epointer = 1 if epointer == 0
+    epointer = e_total(u.name) - new_email(u.lastread[0],u.name)
 
     done = false
 
     while true
-      o_prompt = "%M[Email]%C #{sdir} Read[#{epointer}] (1-#{e_total(area.tbl,u.name)}): "
+      o_prompt = "%M[Email]%C #{sdir} Read[#{epointer}] (1-#{e_total(u.name)}): "
       inp = getinp(o_prompt)
 
       happy = inp.upcase
@@ -61,9 +73,9 @@ m = "messages" if new > 1
       when "+"; sdir="+"; epointer = nextmail(epointer)
       when "-"; sdir="-"; epointer = lastmail(epointer)
       when "G"; leave
-      when "R"; replyemail(epointer,0)
+      when "R"; if epointer > 0 then replyemail(epointer,0)  else print "%RNothing to reply to!" end
       when "?"; write "%W"; gfileout ("emailmnu")
-      when "/"; displaymessage(epointer,area.tbl,true)
+      when "/";  showemail(epointer)
    
       when "K"; deletemessage(epointer)
       when "N"; gfileout ("emailsnd");sendemail(false)
@@ -96,7 +108,7 @@ def nextmail(epointer) #revised
   ptr_check
   u = @c_user
   area = fetch_area(0)
-  total = e_total(area.tbl,u.name)
+  total = e_total(u.name)
 
   if epointer < total and total > 0 then
     epointer +=1
@@ -128,11 +140,11 @@ def deletemessage(epointer) #revised
 
   u = @c_user
   area = fetch_area(0)
-  total = e_total(area.tbl,u.name)
-  del = email_absolute_message(area.tbl,epointer,u.name)
+  total = e_total(u.name)
+  del = email_absolute_message(epointer,u.name)
 
   if total > 0 then
-    delete_msg(area.tbl,del)
+    delete_msg(del)
     print "Email ##{epointer} [#{del}] deleted."
     ptr_check
   else
@@ -301,10 +313,10 @@ def replyemail(epointer,carea)
   area = fetch_area(carea)
   u = @c_user
   if carea > 0 then
-    abs = absolute_message(area.tbl,epointer)
-    r_message = fetch_msg(area.tbl, abs)
+    abs = absolute_message(area.number,epointer)
+    r_message = fetch_msg(abs)
   else
-    r_message = fetch_msg(area.tbl,email_absolute_message(area.tbl,epointer,u.name) )
+    r_message = fetch_msg(email_absolute_message(epointer,u.name) )
   end
   msg_text = []
   r_message.msg_text.each_line(DLIM) {|line| msg_text.push(line.chop!)} #1.9 modification

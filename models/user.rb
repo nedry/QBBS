@@ -26,6 +26,7 @@ class User
   property :fullscreen, Boolean
   property :zipread, Text
   property :signature, Text
+  property :fastlogon, Boolean
 
   has 1, :who, :child_key => [:number]
 end

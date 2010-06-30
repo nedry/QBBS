@@ -44,7 +44,7 @@ class Session
         end)
         if (user.areaaccess[area.number] != "I") or (user.level == 255) and (!area.delete) then
           more +=1
-          l_read = new_messages(area.tbl,user.lastread[area.number])
+          l_read = new_messages(area.number,user.lastread[area.number])
           print "%W#{area.number.to_s.ljust(5)} %G#{l_read.to_s.rjust(4)} %R#{tempstr.ljust(8)}%Y#{area.group.ljust(10)}%B#{area.name}"
         end
         if more > 19 then
@@ -136,7 +136,7 @@ class Session
       #area = fetch_area(i)
 
       @c_user.lastread[a_list[i].number] = 0 if @c_user.lastread[a_list[i].number] == nil
-      l_read = new_messages(a_list[i].tbl,@c_user.lastread[a_list[i].number])
+      l_read = new_messages(a_list[i].number,@c_user.lastread[a_list[i].number])
       t = @c_user.areaaccess[a_list[i].number]
       if l_read > 0 then
         if @c_user.zipread[a_list[i].number] and (t !~ /[NI]/ or @c_user.level == 255) and (!a_list[i].delete) then
@@ -204,8 +204,8 @@ class Session
     area = fetch_area(@c_area)
 
     if user.areaaccess[@c_area] !~ /[RN]/
-      abs = absolute_message(area.tbl,mpointer)
-      r_message = fetch_msg(area.tbl, abs)
+      abs = absolute_message(area.number,mpointer)
+      r_message = fetch_msg(abs)
       to = r_message.m_from
       to.strip! if r_message.network #strip for qwk/rep but not for fido. Why?
       #puts "to: #{to}"
@@ -230,7 +230,7 @@ class Session
       title = get_or_cr("%REnter Title (<CR> for old): ", title)
       reply_text = []
       reply_text.push(">--- #{to} wrote ---")
-      r_message.msg_text.each(DLIM) {|line| reply_text.push("> #{line.chop!}")}
+      r_message.msg_text.each_line(DLIM) {|line| reply_text.push("> #{line.chop!}")}
       if @c_user.fullscreen then
         write "%W"
         msg_file = write_quote_msg(reply_text)
@@ -257,7 +257,7 @@ class Session
     msg_text = @lineeditor.msgtext.join(DLIM)
     m_from = @c_user.name
     msg_date = Time.now.strftime("%Y-%m-%d %I:%M%p")
-    absolute = add_msg(area.tbl,to,m_from,msg_date,title,msg_text,exported,false,reply,destnode,destnet,intl,point,false)
+    absolute = add_msg(to,m_from,msg_date,title,msg_text,exported,false,reply,destnode,destnet,intl,point,false,area.number)
     add_log_entry(5,Time.now,"#{@c_user.name} posted message absolute # #{absolute}")
   end
 
@@ -431,15 +431,17 @@ class Session
     u = @c_user
     if email then
      
-      abs = email_absolute_message(table,mpointer,u.name)
+      abs = email_absolute_message(mpointer,u.name)
     else
       abs = absolute_message(table,mpointer)
     end
-    curmessage = fetch_msg(table, abs)
-    
+    puts abs
+    curmessage = fetch_msg(abs)
+    puts " curmessage.number: #{curmessage.number}"
     if @c_user.lastread[@c_area] < curmessage.number then
       @c_user.lastread[@c_area] = curmessage.number
       update_user(@c_user,get_uid(@c_user.name))
+      puts "updated"
     end
 
     message = []
@@ -510,13 +512,16 @@ end
 
   def h_msg
     area = fetch_area(@c_area)
-    h_msg = m_total(area.tbl)
+    h_msg = m_total(area.number)
   end
 
   def p_msg
     user = @c_user
     area = fetch_area(@c_area)
-    p_msg = m_total(area.tbl) - new_messages(area.tbl,user.lastread[@c_area])
+    puts  "mtotal: #{m_total(area.number)}"
+    puts  "new_mess: #{new_messages(area.number,user.lastread[@c_area])}"
+    puts "user.lastread[@c_area]): #{user.lastread[@c_area]}"
+    p_msg = m_total(area.number) - new_messages(area.number,user.lastread[@c_area]) # modified for db change
   end
 
   def messagemenu(zipread)
@@ -534,9 +539,9 @@ end
       :prompt => '"%M[Area #{@c_area}]%C #{sdir} #{out}[%p] '+
       '(1-#{h_msg}): "'
     ) {|sel, mpointer, moved, out|
-      #puts "total_msg: #{h_msg}"
-      #puts "mpointer: #{mpointer}"
-      #puts "h_msg: #{h_msg}"
+      puts "total_msg: #{h_msg}"
+      puts "mpointer: #{mpointer}"
+      puts "h_msg: #{h_msg}"
       mpointer = h_msg if mpointer.nil?
       mpointer = h_msg if mpointer > h_msg
       #print "sel.integer: #{sel.integer?}"
@@ -553,7 +558,7 @@ end
 
       end
       case sel
-      when "E"; email
+      when "E"; emailmenu
       when "/"; showmessage(mpointer)
       when "PU"; page
       when "K"; killmessage(mpointer)
@@ -576,8 +581,8 @@ end
 
     if mpointer > 0 then
       area = fetch_area(@c_area)
-      abs = absolute_message(area.tbl,mpointer)
-      d_msg = fetch_msg(area.tbl, abs)
+      abs = absolute_message(area.number,mpointer) #modified for db change
+      d_msg = fetch_msg(abs) #modified for db change
 
       if d_msg.locked == true then
         print CRLF + "%RCannot Delete. Message Locked."
@@ -591,7 +596,7 @@ end
       end
 
       if h_msg > 0
-        delete_msg(area.tbl,abs)
+        delete_msg(abs)
         print "%RMessage ##{mpointer} [#{abs}] deleted."
       else
         print CRLF+"%RNo Messages"
@@ -617,7 +622,7 @@ end
          return
     end
 
-    first = absolute_message(area.tbl,start)
+    first = absolute_message(area.tbl,start)  #this need rewriting for the new db format
     last = absolute_message(area.tbl,stop)
     prompt = "%RDelete absolute messages #{first} to #{last} (Y,n)? "
     delete_msgs(area.tbl,first,last) if yes(prompt, true, false,true)
@@ -635,7 +640,7 @@ end
 
     area = fetch_area(@c_area)
     if (h_msg > 0) and (mpointer > 0) then
-      displaymessage(mpointer,area.tbl,false)
+      displaymessage(mpointer,area.number,false)
     else
       print "\r\n%YThis message area is empty. Why not %G[P]ost%Y a Message?" if h_msg == 0
       print "\r\n%RYou haven't read any messages yet." if mpointer == 0
@@ -662,8 +667,7 @@ end
 %CQWK/REP Net # %G#{out}
 %CFidoNet Area: %G#{area.fido_net}
 %CLast Modified: %G#{area.modify_date}
-%CTotal Messages: %G#{m_total(area.tbl)}
-%CSQL Table: %G#{area.tbl}
+%CTotal Messages: %G#{m_total(area.number)}
 %CGroup: %G#{area.group}
 here
 
@@ -785,28 +789,17 @@ here
         print "%RName too long. 40 Character Maximum"
       else break end
     end
-    while true
-      prompt = "Enter new area table: "
-      table = getinp(prompt) {|p| p != ""}
-      if table.length > 10 then
-        print "%RTable name too long. 10 Character Maximum"
-      else break end
-    end
-    if table =~ /[A-Za-z]/
-      commit = yes("Are you sure (Y,n)?",false,false,true)
+
+      commit = yes("Are you sure (Y,n)?",true,false,true)
       if commit then
-        add_area(name,table,"W","W")
-        create_msg_table(table)
+        add_area(name,"W","W")
         apointer = a_total - 1
       else
         print "%RCancelled."
         apointer = a_total - 1
         return
       end
-    else
-      print "%RTable names must be alpha characters with no space characters"
-      apointer = a_total - 1
-    end
+
   end
 
   def changeqwkrep(apointer)

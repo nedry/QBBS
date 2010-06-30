@@ -60,13 +60,12 @@ def find_qwk_area (number,name)  # name for future use.
   Area.first(:netnum => number)
 end
 
-def add_area(name, tbl, d_access,v_access)
+def add_area(name, d_access,v_access)
   number = a_total  #area's start with 0, so the total will be the next area
 
   Area.create(
     :number => number,
     :name => name,
-    :tbl => tbl,
     :d_access => d_access,
     :v_access => v_access,
     :modify_date => Time.now
