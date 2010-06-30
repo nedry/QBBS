@@ -9,31 +9,8 @@ def m_total(area)
 
   res = @db.exec("SELECT COUNT(*) FROM messages WHERE tbl = '#{area}'")
   result = single_result(res).to_i
-  puts "mtotal_res: #{result}"
   return result
 end
-
-#def create_msg_table(table)
-
- # puts "-DB: Creating Message Table #{table}"
-  #begin
- # @db.exec("CREATE TABLE #{table} (delete boolean DEFAULT false, \
-  #         locked boolean DEFAULT false, number bigserial PRIMARY KEY, \
-   #         m_to varchar(40), \
-    #       m_from varchar(40), msg_date timestamp, subject varchar(80),\
-   #        msg_text text, exported boolean DEFAULT false,\
-   #  network boolean DEFAULT false, f_network boolean DEFAULT false, orgnode int, destnode int,\
-   #  orgnet int, destnet int, attribute int, cost int, area varchar(80), \
-   #  msgid varchar(80), path varchar(80),\
-    # tzutc varchar(10), charset varchar(10), tid varchar(80), \
-    # pid varchar(80), intl varchar(80), topt int,\
-    # fmpt int, reply boolean, origin varchar(80),smtp boolean DEFAULT false )")
-
-
-     #rescue
-     # puts "-DB: Error Creating Message Table #{table}"
-     #end
-#end
 
 
 
@@ -42,10 +19,8 @@ def new_messages(area,ind)
 
   #puts "ind:#{ind}"
   ind = 0 if ind.nil?
-  puts "nm_ind: #{ind}"
   res = @db.exec("SELECT COUNT(*) FROM messages  WHERE number > #{ind} and tbl = '#{area}'")
   result = single_result(res).to_i
-  puts "nm_result: #{result}"
   return result
 end
 
@@ -81,9 +56,9 @@ def delete_msg(ind)
   @db.exec("DELETE FROM messages WHERE number = '#{ind}'")
 end
 
-def delete_msgs(table,first,last)
+def delete_msgs(area,first,last)
 
-  @db.exec("DELETE FROM messages WHERE number >= '#{first}' and number <= '#{last}'")
+  @db.exec("DELETE FROM messages WHERE number >= '#{first}' and number <= '#{last}' and tbl = '#{area}'")
 end
 
 def find_fido_area (area)
@@ -204,7 +179,10 @@ end
 
 def add_msg(m_to,m_from,msg_date,subject,msg_text,exported,network,reply,destnode,destnet,intl,topt,smtp,area)
 
+  #number = high_absolute(table) + 1  
 
+  #puts "number: #{number}"
+#p_msg
 
   msg_text.gsub!("'",QUOTE) if msg_text != nil
   m_to.gsub!("'",QUOTE) if m_to != nil
@@ -214,6 +192,11 @@ def add_msg(m_to,m_from,msg_date,subject,msg_text,exported,network,reply,destnod
   destnode = -1 if destnode.nil?
   destnet = -1 if destnet.nil?
 
+  #puts("INSERT INTO #{table} (m_to, m_from, \ 
+  #           msg_date, subject, msg_text, exported,network,reply,destnet,destnode,intl,topt,smtp) VALUES \ 
+  #         ('#{m_to}', '#{m_from}', '#{msg_date}', '#{subject}',\
+  #	  '#{msg_text}', '#{exported}','#{network}','#{reply}',\
+  #	  '#{destnet}','#{destnode}','#{intl}','#{topt}','#{smtp}')") 
 
 
   @db.exec("INSERT INTO messages (m_to, m_from, \ 
