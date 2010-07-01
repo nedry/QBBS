@@ -290,7 +290,7 @@ def add_fido_msg(fidomessage)
   if fidomessage.area == NETMAIL then
     if f_local(fidomessage.to) then 
       area = fetch_area(0)
-      table = area.tbl
+      table = area.number
       number = 0
     else
       table,number = find_fido_area(BADNETMAIL)
@@ -363,16 +363,16 @@ def add_fido_msg(fidomessage)
     #	  '#{charset}','#{tid}','#{pid}','#{intl}','#{topt}',\
     #	  '#{fmpt}','#{origin}','#{reply}')"
 
-    @db.exec("INSERT INTO #{table} (m_to, m_from, \ 
+    @db.exec("INSERT INTO messages (m_to, m_from, \ 
            msg_date, subject, msg_text, exported,network,f_network,orgnode,destnode,\
      orgnet,destnet,attribute,cost,area,msgid,path,tzutc,charset,\
-     tid,pid,intl,topt,fmpt,origin,reply) VALUES \ 
+     tid,pid,intl,topt,fmpt,origin,reply,tbl) VALUES \ 
           ('#{m_to}', '#{m_from}', '#{msg_date}', '#{subject}',\
     '#{msg_text}', '#{exported}','#{network}', '#{f_network}','#{orgnode}',\
              '#{destnode}','#{orgnet}', '#{destnet}','#{attribute}',\
              '#{cost}','#{area}','#{msgid}','#{path}','#{tzutc}',\
              '#{charset}','#{tid}','#{pid}','#{intl}','#{topt}',\
-             '#{fmpt}','#{origin}','#{reply}')") 
+             '#{fmpt}','#{origin}','#{reply}',#{table}')") 
 
              #Update pointers
              user = fetch_user(get_uid(FIDOUSER))

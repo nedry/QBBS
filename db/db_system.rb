@@ -1,12 +1,4 @@
-def create_system_table
 
-  puts "-DB: Creating System Table"
-  @db.exec("CREATE TABLE system (lastqwkrep timestamp, \
-           qwkrepsuccess boolean, qwkrepwake timestamp, rec int DEFAULT 1,\
-     f_msgid bigint)")
-
-     @db.exec("INSERT INTO system (lastqwkrep, qwkrepsuccess, qwkrepwake,f_msgid) VALUES ('01/01/80','F','01/01/80','9999999')")
-end
 
 def update_system(r)
 

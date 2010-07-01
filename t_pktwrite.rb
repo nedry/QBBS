@@ -46,21 +46,21 @@ def pkt_export_run
 
     pointer = user.lastread[xp.num] || 0
     #puts "-FIDO: Last [absolute] Exported Message...#{pointer}"
-    #puts "-FIDO: Highest [absolute] Message.........#{high_absolute(area.tbl)}"
-    #puts "-FIDO: Total Messages.....................#{m_total(area.tbl)}"
-    new = new_messages(area.tbl,pointer)
+    #puts "-FIDO: Highest [absolute] Message.........#{high_absolute(area.number)}"
+    #puts "-FIDO: Total Messages.....................#{m_total(area.number)}"
+    new = new_messages(area.number,pointer)
     puts "-FIDO: Messages to Export.................#{new}"
     puts 
 
     if new > 0
 
-      for i in pointer.succ..high_absolute(area.tbl) do
-        workingmessage = fetch_msg(area.tbl,i)
+      for i in pointer.succ..high_absolute(area.number) do
+        workingmessage = fetch_msg(i)
         if workingmessage
           if !workingmessage.f_network and !workingmessage.exported
-            pkt_writer.convert_a_message(area.tbl,area.fido_net,workingmessage)
+            pkt_writer.convert_a_message(area.number,area.fido_net,workingmessage)
             total += 1
-            exported(area.tbl,workingmessage.number)
+            exported(area.number,workingmessage.number)
           else
             error = workingmessage.network ?
               "Message has already been imported.":
@@ -72,7 +72,7 @@ def pkt_export_run
         end
         puts "-FIDO: Updating message pointer for board #{xp.table}"
         n = xp.num
-        user.lastread[n] = high_absolute(area.tbl)
+        user.lastread[n] = high_absolute(area.number)
         update_user(user,get_uid(FIDOUSER))
       end
     end

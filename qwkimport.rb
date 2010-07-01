@@ -218,7 +218,7 @@ def addmessage(message,area)
   title = message.subject.strip
   exported = true
   network = true
-  absolute = add_msg(area.tbl,to,m_from,msg_date,title,msg_text,exported,network,false,nil,nil,nil,nil,false)
+  absolute = add_msg(to,m_from,msg_date,title,msg_text,exported,network,false,nil,nil,nil,nil,false,area.number)
   
   user.posted = user.posted + 1
   user.lastread[area.number] = absolute

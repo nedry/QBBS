@@ -1,28 +1,23 @@
 require 'models/message'
 
-#def m_total(area)
- # Message.count
-#end
-
-
 def m_total(area)
-
-  res = @db.exec("SELECT COUNT(*) FROM messages WHERE tbl = '#{area}'")
-  result = single_result(res).to_i
-  return result
+  Message.count(:tbl.eql => area)
 end
-
-
 
 
 def new_messages(area,ind)
+   ind = 0 if ind.nil?
+  Message.count(:number.gt => ind, :tbl.eql => area)
+end
+
+#def new_messages(area,ind)
 
   #puts "ind:#{ind}"
-  ind = 0 if ind.nil?
-  res = @db.exec("SELECT COUNT(*) FROM messages  WHERE number > #{ind} and tbl = '#{area}'")
-  result = single_result(res).to_i
-  return result
-end
+  #ind = 0 if ind.nil?
+  #res = @db.exec("SELECT COUNT(*) FROM messages  WHERE number > #{ind} and tbl = '#{area}'")
+  #result = single_result(res).to_i
+  #return result
+#end
 
 def get_pointer(area,ind)
 
@@ -52,8 +47,8 @@ def high_absolute(table)
 end
 
 def delete_msg(ind)
-
-  @db.exec("DELETE FROM messages WHERE number = '#{ind}'")
+    message = Message.first(:number.eql => ind)
+    message.destroy!
 end
 
 def delete_msgs(area,first,last)

@@ -84,19 +84,25 @@ def create_table(table)
 
   case table
   when "areas"
-    puts "-- areas table not found  Run makedb.rb"
+    puts "DB (FATAL): areas table not found  Run makedb.rb"
+    exit
   when "bulletins"
-    create_bulletin_table
+    puts "DB (FATAL): bulletins table not found  Run makedb.rb"
+    exit
   when "doors"
-    create_door_table
+    puts "DB (FATAL): doors table not found  Run makedb.rb"
+    exit
   when "other"
     create_other_table
   when "system"
-    create_system_table
+    puts "DB (FATAL): system table not found  Run makedb.rb"
+    exit
   when "groups"
-    create_group_table
+     puts "DB (FATAL): groups table not found  Run makedb.rb"
+     exit
   when "users"
-    create_user_table
+     puts "DB (FATAL): groups table not found  Run makedb.rb"
+     exit
   when "who"
     create_who_table
   when "who_t"

@@ -6,25 +6,6 @@ def u_total
   User.count
 end
 
-def create_user_table
-  puts "-DB: Creating User Table"
-  @db.exec("CREATE TABLE users (deleted boolean DEFAULT false, \
-           locked boolean DEFAULT false, name varchar(40), \
-           alias varchar(40), number bigserial PRIMARY KEY, \
-           ip varchar(20), citystate varchar(40), address varchar(40),\
-           password varchar(20), length int, modify_date date, \
-           width int, ansi boolean, more boolean, level int, \
-	area_access text, lastread text, create_date date,\
-     laston date, logons int, posted int, rsts_pw varchar(40),\
-     rsts_acc int, fullscreen boolean, zipread text,\
-     signature text, fastlogon boolean DEFAULT false)")
-
-     puts "-DB: Adding Default Users"	   
-
-     add_user('SYSOP', '000.000.000.000','STUPID', 'Tempe, AZ','600 E. Solana Drive', 24, 80, true, true, 255,false)
-     add_user('QWKREP', '000.000.000.000','123456', 'NO STREET', 'NO ADDRESS',24, 80, false, true, 255,false)
-     add_user('FIDONET', '000.000.000.000','123456', 'NO STREET', 'NO ADDRESS',24, 80, false, true, 255,false)
-end
 
 def user_exists(uname)
   User.all(:conditions => ["upper(name) = ?", uname.upcase]).count > 0

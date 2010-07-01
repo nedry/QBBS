@@ -4,21 +4,6 @@ def a_total
   Area.count
 end
 
-def create_area_table
-  puts "-DB: Creating Area Table"
-  @db.exec("CREATE TABLE areas (area_key SERIAL PRIMARY KEY, name varchar(40), \
-           tbl varchar(10), delete boolean DEFAULT false, \
-           locked boolean DEFAULT false, number int NOT NULL, \
-           netnum int DEFAULT -1, d_access char(1), \
-           v_access char(1), modify_date date, \
-           network varchar(40), fido_net varchar(40),grp bigint DEFAULT 1)")
-
-           add_area("Email","email","I","I")
-           create_msg_table("email")
-           add_area("General Discussions","general","W","W")
-           create_msg_table("general")
-end
-
 def update_group(r)
   r.save
 end

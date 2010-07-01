@@ -360,7 +360,11 @@ class Session
         t = getcmd(prompt, ECHO, 0, chat,overwrite)
         t = t.strip # since we almost never want trailing whitespace
         unless (nonempty and t.empty?) # fail right away if this happens
+	 if block_given? then  #FIX... only yield if there is a block
           break if yield t
+	 else
+	  break
+	 end
         end
       end
       print

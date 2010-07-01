@@ -154,14 +154,14 @@ def repexport
     pointer = user.lastread[xp.num] || 0
     replogandputs "-REP: Last [absolute] Exported Message: #{pointer}"
     area = fetch_area(xp.num)
-    replogandputs "-REP: Highest [absolute] Message: #{high_absolute(area.tbl)}"
-    replogandputs "-REP: Total Messages       : #{m_total(area.tbl)}"
-    new = new_messages(area.tbl,pointer)
+    replogandputs "-REP: Highest [absolute] Message: #{high_absolute(area.number)}"
+    replogandputs "-REP: Total Messages       : #{m_total(area.number)}"
+    new = new_messages(area.number,pointer)
     replogandputs "-REP: Messages to Export   : #{new}"
     if new > 0 then
       #puts "-REP: Starting Export"
-      for i in pointer.succ..high_absolute(area.tbl) do
-        workingmessage = fetch_msg(area.tbl,i)
+      for i in pointer.succ..high_absolute(area.number) do
+        workingmessage = fetch_msg(i)
         if workingmessage != nil then
           if  !workingmessage.network then
             writemessage("rep/",workingmessage,xp.xnum)
@@ -177,7 +177,7 @@ def repexport
         end
         puts "-REP: Updating message pointer for board #{xp.name}"
         n = xp.num
-        user.lastread[n] = high_absolute(area.tbl)
+        user.lastread[n] = high_absolute(area.number)
         update_user(user,get_uid(QWKUSER))
       end
     end

@@ -50,6 +50,6 @@ YAML.load(IO.read('config/initusers.yml')).each {|u|
 }
 
 # initial area
-add_area("Email","email","I","I")
-add_area("General Discussions","general","W","W")
-add_area("The APC Net","apc","W","W")
+add_area("Email","I","I")
+add_area("General Discussions","W","W")
+add_area("The APC Net","W","W")
