@@ -104,9 +104,12 @@ def create_table(table)
      puts "DB (FATAL): groups table not found  Run makedb.rb"
      exit
   when "who"
-    create_who_table
+     puts "DB (FATAL): who table not found  Run makedb.rb"
+     exit
   when "who_t"
-    create_who_t_table
+     puts "DB (FATAL): who_t table not found  Run makedb.rb"
+     exit
+  #   create_who_t_table
   when "log"
     create_log_table
   when "subsys"

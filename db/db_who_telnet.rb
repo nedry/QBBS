@@ -1,3 +1,4 @@
+require 'models/who_t'
 
 def create_who_t_table
 
@@ -44,7 +45,7 @@ end
 
 
 def fetch_who_t_list
-  res = @db.exec("SELECT * from who_T ORDER BY name ") 
+  res = @db.exec("SELECT irc,node,location,wh,page,name from who_T ORDER BY name ") 
   result = result_as_array(res)
 
   return result

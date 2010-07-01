@@ -76,7 +76,8 @@ def who_list_delete (uid)
  
  def who_list_update(uid,loc)
 
-   update_who(uid,Time.now,loc)
+
+   update_who(uid,Time.now,loc)  if who_exists(uid) 
     who_list_check
     if !who_exists(uid) then
       add_who(uid,Time.now,loc)

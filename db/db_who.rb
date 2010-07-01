@@ -1,12 +1,5 @@
 require 'models/who'
 
-def create_who_table
-  puts "-DB: Creating Who Table"
-  @db.exec("CREATE TABLE who (number BigInt, lastactivity timestamp, \
-           place varchar(40))")
-
-end
-
 def delete_who(uid)
   x = Who.first(:number => uid)
   x.destroy! if x
@@ -36,7 +29,7 @@ def fetch_who_list
 end
 
 def who_exists(uid)
-  Who.count(:number => uid) > 0
+  Who.all(:number => uid).count >0  #I don't know why it has to be like this and not the other way..
 end
 
 def who_list_check
