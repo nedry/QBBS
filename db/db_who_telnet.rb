@@ -1,13 +1,5 @@
 require 'models/who_t'
 
-def create_who_t_table
-
-  puts "-DB: Creating Telnet Who_T Table"
-  @db.exec("CREATE TABLE who_t (irc Boolean, node Integer, location varchar(40), \
-      wh varchar(40), page text, name varchar(40))")
-
-end
-
 
 def who_delete_t(name)
   @db.exec("Delete from who_t where name = '#{name}'")

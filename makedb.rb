@@ -33,6 +33,17 @@ DataMapper.auto_migrate!
   Group.new(:groupname => g).save!
 }
 
+
+Subsys.new(:subsystem => 2, :name => 'FIDO').save!
+Subsys.new(:subsystem => 3, :name => 'EXPORT').save!
+Subsys.new(:subsystem => 4, :name => 'IMPORT').save!
+Subsys.new(:subsystem => 5, :name => 'USER').save!
+Subsys.new(:subsystem => 6, :name => 'CONNECT').save!
+Subsys.new(:subsystem => 7, :name => 'SECURITY').save!
+Subsys.new(:subsystem => 8, :name => 'ERROR').save!
+Subsys.new(:subsystem => 9, :name => 'MESSAGE').save!
+Subsys.new(:subsystem => 1, :name => 'SCHEDULE').save!
+
 # initial system
 s = System.new(
   :lastqwkrep => '01/01/80',

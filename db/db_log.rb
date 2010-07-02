@@ -1,30 +1,9 @@
-def create_subsystem_table
-  puts "-DB: Creating the Subsystem Log Table"
-  @db.exec("CREATE TABLE subsys (subsystem Integer, name varchar(80))")
-  @db.exec("INSERT INTO subsys (subsystem,name) VALUES ('1','SCHEDULE')") 
-  @db.exec("INSERT INTO subsys (subsystem,name) VALUES ('2','FIDO')") 
-  @db.exec("INSERT INTO subsys (subsystem,name) VALUES ('3','EXPORT')") 
-  @db.exec("INSERT INTO subsys (subsystem,name) VALUES ('4','IMPORT')") 
-  @db.exec("INSERT INTO subsys (subsystem,name) VALUES ('5','USER')") 
-  @db.exec("INSERT INTO subsys (subsystem,name) VALUES ('6','CONNECT')") 
-  @db.exec("INSERT INTO subsys (subsystem,name) VALUES ('7','SECURITY')") 
-  @db.exec("INSERT INTO subsys (subsystem,name) VALUES ('8','ERROR')") 
-  @db.exec("INSERT INTO subsys (subsystem,name) VALUES ('9','MESSAGE')") 
 
-
-end
-
-
-def create_log_table
-
-  puts "-DB: Creating the System Log Table"
-  @db.exec("CREATE TABLE log (subsystem Integer, ent_date timestamp, message varchar(80))")
-
-end
-
+require 'models/log'
+require 'models/subsystem'
 
 def clearlog
-  @db.exec("Delete from log")
+  Ulog.destroy!
 end
 
 
@@ -40,7 +19,8 @@ end
 def fetch_log(sys)
   res = @db.exec("SELECT subsys.name,ent_date,message from log INNER JOIN subsys ON subsys.subsystem = log.subsystem ORDER BY ent_date DESC ") 
   result = result_as_array(res)
-
+  t_log = Ulog.all(:order => [ :ent_date.desc ])
+  puts t_log.each {|x| puts x[:ent_date].class}
   return result
 end
 
