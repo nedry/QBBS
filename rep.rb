@@ -1,3 +1,6 @@
+require 'ftpclient'
+require 'db/db_log'
+
 module Rep
   class Exporter
     attr_accessor :file, :log
@@ -80,21 +83,8 @@ module Rep
     end
 
     def ftppacketup
-      begin
-        ftp = Net::FTP.new(FTPADDRESS)
-        ftp.debug_mode = true
-        ftp.passive = true
-        ftp.login(FTPACCOUNT, FTPPASSWORD)
-        ftp.putbinaryfile(REPPACKET, REPPACKETUP, 1024)
-        ftp.close
-        add_log_entry(3, Time.now, "FTP QWK upload success.")
-        puts "-REP: FTP QWK Upload Successful"
-        return true
-      rescue
-        puts "-ERROR!!!... In FTP Upload"
-        add_log_entry(8,Time.now," FTP QWK Upload Failure.")
-        return false
-      end
+      ftp = FtpClient.new(FTPADDRESS, FTPACCOUNT, FTPPASSWORD)
+      ftp.rep_packet_up
     end
 
     def clearoldrep
