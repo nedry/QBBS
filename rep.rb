@@ -1,3 +1,5 @@
+require 'tools'
+require 'log'
 require 'ftpclient'
 require 'db/db_log'
 
@@ -41,7 +43,7 @@ module Rep
     def message_blocks(message)
       outmessage = message.msg_text # .join('?)
       outmessage = outmessage << DLIM << "---" << DLIM
-      outmessage = outmessage<< QWKTAG << DLIM
+      outmessage = outmessage << QWKTAG << DLIM
       dec = outmessage.length / 128
       nblocks = (dec.succ)
       len = outmessage.length
