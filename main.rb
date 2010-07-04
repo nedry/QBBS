@@ -55,9 +55,10 @@ class Session
 
 			print header
 			print underscore
+			fetch_log(0)
   fetch_log(0).each {|x|
-   t= Time.parse(x[1]).strftime("%m/%d/%y %I:%M%p")
-  temp = cols.zip([t,x[0],x[2]]).map{|a,b| "#{a}#{b}"}.formatrow(widths) #fix for 1.9
+   t= Time.parse(x.ent_date.to_s).strftime("%m/%d/%y %I:%M%p")
+  temp = cols.zip([t,x.subsys.name,x.message]).map{|a,b| "#{a}#{b}"}.formatrow(widths) #fix for 1.9
   				j = j + 1
 				if j == (@c_user.length - 2) and @c_user.more then
 					cont = moreprompt

@@ -899,9 +899,9 @@ if !session[:name].nil? then
    arr = fetch_log(0)
    for i in last..stop
 	  x = arr[i]
-	  t= Time.parse(x[1]).strftime("%m/%d/%y %I:%M%p")
+	  t= Time.parse(x.ent_date.to_s).strftime("%m/%d/%y %I:%M%p")
 
-         l_out << "<tr><td>#{t} </td><td>#{x[0]} </td><td>#{x[2]}</td></tr>"
+         l_out << "<tr><td>#{t} </td><td>#{x.subsys.name} </td><td>#{x.message}</td></tr>"
 	   end
    l_out << "</table>"
  
