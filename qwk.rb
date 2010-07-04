@@ -1,5 +1,7 @@
 require 'tools'
 require 'log'
+require 'ftpclient'
+require 'db/db_log'
 
 module Qwk
   Area = Struct.new("Area", :area, :name)
@@ -297,19 +299,8 @@ module Qwk
     end
 
     def ftppacketdown
-      begin
-        ftp = Net::FTP.new(FTPADDRESS)
-        ftp.debug_mode = true
-        ftp.passive = true
-        ftp.login(FTPACCOUNT,FTPPASSWORD)
-        ftp.getbinaryfile(QWKPACKETDOWN,QWKPACKET,1024)
-        ftp.close
-        add_log_entry(4,Time.now,"QWK Packet Download Successfull")
-        puts "-QWK: Download Successful"
-      rescue
-        puts "-ERROR!!!... In FTP Download"
-        add_log_entry(4,Time.now,"QWK Packet Download Failure. No new msgs?")
-      end
+      ftp = FtpClient.new(FTPADDRESS, FTPACCOUNT, FTPPASSWORD)
+      ftp.qwk_packet_down
     end
 
     def unzippacket
