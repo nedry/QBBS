@@ -5,6 +5,5 @@ class Subsys
   property :subsystem, Integer
   property :name, String, :length => 40
   
-  belongs_to :ulog, :required => false   #this stops that stupid constraint.  fuck constraints.
+ has n, :ulogs,  :child_key => [:subsystem]
 end
-

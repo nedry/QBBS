@@ -6,6 +6,6 @@ class Ulog
   property :ent_date, Date
   property :message, String, :length => 40
   
-   has 1, :subsys, :child_key => [:subsystem]
+   belongs_to :subsys, :child_key => [:subsystem]
 end
 
