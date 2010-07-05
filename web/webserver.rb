@@ -815,8 +815,8 @@ if !session[:name].nil? then
   w_out <<  "<table cellspacing=5>"
   w_out <<  "<tr><td><b>User ID</b></td><td><b>Location</b></td><td><b>Last Activity</b></td><td><b>Where</b></td></tr>"
   fetch_who_list.each {|x| 
-	   w_out <<  "<tr><td><a href='show_user.rbx?uid=#{x[0]}'>#{x[1]}</a>"
-           w_out <<  "<td>#{x[2]} </td><td>#{x[3].to_s} </td><td>#{x[4]}</td></tr>"
+	   w_out <<  "<tr><td><a href='/showuser?uid=#{x.number}'>#{x.user.name}</a>"
+           w_out <<  "<td>#{x.user.citystate} </td><td>#{x.lastactivity.to_s} </td><td>#{x.place}</td></tr>"
 	   }
    w_out <<  "</table>"
    w_out <<   "<table cellspacing=5>"

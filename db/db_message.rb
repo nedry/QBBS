@@ -7,17 +7,10 @@ end
 
 def new_messages(area,ind)
    ind = 0 if ind.nil?
-  Message.count(:number.gt => ind, :tbl.eql => area)
+  #Message.count(:number.gt => ind, :tbl.eql => are
+  Message.count(:number.gt => ind, :tbl => area)
 end
 
-#def new_messages(area,ind)
-
-  #puts "ind:#{ind}"
-  #ind = 0 if ind.nil?
-  #res = @db.exec("SELECT COUNT(*) FROM messages  WHERE number > #{ind} and tbl = '#{area}'")
-  #result = single_result(res).to_i
-  #return result
-#end
 
 def get_pointer(area,ind)
 
@@ -47,7 +40,8 @@ def high_absolute(table)
 end
 
 def delete_msg(ind)
-    message = Message.first(:number.eql => ind)
+    #message = Message.first(:number.eql => ind)
+    message = Message.first(:number => ind)
     message.destroy!
 end
 

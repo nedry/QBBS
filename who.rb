@@ -49,7 +49,7 @@ class Session
 
   def displayweb
     i = 0
-    if @irc_who.len > 0 then
+    if w_total > 0 then
       cols = %w(Y G C M).map {|i| "%"+i}
       headings = %w(Node User Location Where)
       widths = [5,26,20,16]
@@ -57,7 +57,7 @@ class Session
       underscore = cols.zip(['-'*30]*5).map{|a,b| a+b}.formatrow(widths)
 
       fetch_who_list.each {|x|
-        print cols.zip(["W",x[1],x[4],x[2]]).map{|a,b| "#{a}#{b}"}.formatrow(widths)
+        print cols.zip(["W",x.user.name,x.place,x.user.citystate]).map{|a,b| "#{a}#{b}"}.formatrow(widths)
       }
 
     end

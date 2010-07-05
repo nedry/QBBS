@@ -93,7 +93,8 @@ def create_table(table)
     puts "DB (FATAL): doors table not found  Run makedb.rb"
     exit
   when "other"
-    create_other_table
+    puts "DB (FATAL): other table not found  Run makedb.rb"
+    exit
   when "system"
     puts "DB (FATAL): system table not found  Run makedb.rb"
     exit

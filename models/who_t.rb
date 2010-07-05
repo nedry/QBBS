@@ -9,4 +9,5 @@ class Who_t
   property :wh, String, :length => 40
   property :page, Text
   property :name, String, :length => 40
+  property :number, Integer, :min => 0, :max => 2**32
 end

@@ -5,6 +5,10 @@ def delete_who(uid)
   x.destroy! if x
 end
 
+def w_total
+  Who.count
+end
+
 def add_who(number,lastactivity,place)
   Who.create(
     :number => number,
@@ -21,10 +25,8 @@ def update_who(uid,lastactivity,place)
   )
 end
 
-# TODO: move to datamapper
 def fetch_who_list
-  res = @db.exec("SELECT users.number, users.name, users.citystate, who.lastactivity, who.place FROM who LEFT OUTER JOIN users ON who.number=users.number ORDER BY users.name ") 
-  result = result_as_array(res)
+  result = Who.all.sort_by { |x| x.user.name }
   return result
 end
 
@@ -34,5 +36,5 @@ end
 
 def who_list_check
   list = fetch_who_list
-  list.each {|x|  delete_who(x[0]) if (Time.now- Time.parse(x[3])) / 60> WEB_IDLE_MAX }
+  list.each {|x|  delete_who(x.number) if (Time.now- Time.parse(x.lastactivity.to_s)) / 60> WEB_IDLE_MAX }
 end

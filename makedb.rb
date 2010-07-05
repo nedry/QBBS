@@ -1,6 +1,7 @@
 # TODO: replace this with a rake task
 
 require 'datamapper'
+require "dm-validations"
 require 'yaml'
 require 'consts'
 require 'db/db_area'
@@ -25,6 +26,8 @@ cstr = "postgres://#{DATAIP}/#{DATABASE}"
 puts "connecting to #{cstr}"
 
 DataMapper.setup(:default, cstr)
+DataMapper::Logger.new('log/db', :debug)
+DataObjects::Postgres.logger = DataObjects::Logger.new(STDOUT,:debug) 
 
 DataMapper.auto_migrate!
 
@@ -57,7 +60,8 @@ t =
 
 # initial users
 YAML.load(IO.read('config/initusers.yml')).each {|u|
-  User.new(u).save!
+  h = User.new(u).save!
+
 }
 
 # initial area

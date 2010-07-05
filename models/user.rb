@@ -1,5 +1,6 @@
 class User
   include DataMapper::Resource
+    storage_names[:default] = 'users'
   property :number, Serial
   property :deleted, Boolean, :default => false
   property :locked, Boolean, :default => false
@@ -28,5 +29,5 @@ class User
   property :signature, Text
   property :fastlogon, Boolean
 
-  has 1, :who, :child_key => [:number]
+    has 1, :who, :child_key => [:number]
 end

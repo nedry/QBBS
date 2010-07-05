@@ -4,16 +4,6 @@ def o_total
   Other.count
 end
 
-def create_other_table
-
-  puts "-DB: Creating Other Table"
-  @db.exec("CREATE TABLE other (name varchar(40), \
-        locked boolean DEFAULT false, number int, \
-           modify_date timestamp, address varchar(40),\
-                  level int DEFAULT 0,  id serial PRIMARY KEY)")
-
-end
-
 def delete_other(ind)
   Other.delete_number(ind)
 end
