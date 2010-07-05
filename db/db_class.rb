@@ -1,17 +1,3 @@
-
-class DB_who
-
-  def initialize(number,lastactivity,place)
-
-    @number=number
-    @lastactivity=time.now
-    @place=place
-  end
-
-  attr_accessor :number,:lastactivity,:place
-end 
-
-
 class DB_who_T
   def initialize(irc,node,name,location,where,page)
 
@@ -27,9 +13,6 @@ class DB_who_T
 end
 
 class DB_user
-
-
-
   def initialize( deleted, locked, name, alais, ip, citystate, address, password,
                  length, modify_date, width, ansi,more, level, areaaccess, lastread,
                  createdate, laston, logons, posted,rsts_pw, rsts_acc, fullscreen, zipread,
@@ -84,26 +67,6 @@ class DB_area_list
   attr_accessor :name, :delete, :number, :group, :tbl
 end
 
-class DB_area
-
-  def initialize (name,tbl,delete,locked,number,netnum,d_access,v_access,modify_date,network,fido_net,group)
-    @name		 	= name
-    @tbl			= tbl
-    @delete		= delete
-    @locked	 	= locked
-    @number		= number
-    @netnum		= netnum
-    @d_access	 	= d_access
-    @v_access	 	= v_access
-    @modify_date		= modify_date
-    @network		= network
-    @fido_net		= fido_net
-    @group		= group
-
-  end
-
-  attr_accessor :name, :tbl, :delete, :locked, :number, :netnum, :d_access, :v_access, :modify_date, :network, :fido_net, :group
-end
 class DB_message
 
   def initialize (delete,locked,number,m_to,m_from,msg_date,subject,msg_text,exported,network,f_network,
@@ -160,15 +123,4 @@ class DB_system
   end
 
   attr_accessor :lastqwkrep, :qwkrepsuccess, :qwkrepwake, :f_msgid
-end
-
-class DB_group
-
-  def initialize (number,groupname)
-    @number		= number
-    @groupname		= groupname
-
-  end
-
-  attr_accessor :number, :groupname
 end
