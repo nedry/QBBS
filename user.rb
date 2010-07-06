@@ -7,7 +7,7 @@ class Session
   def displayuser(number)
     user = fetch_user(number)
     ldate = user.laston.strftime("%A %B %d, %Y / %I:%M%p (%Z)") 
-    write "%R#%W#{number-1} %G #{user.name}"
+    write "%R#%W#{number} %G #{user.name}"
     write "%R [DELETED]" if user.deleted 
     write "%R [LOCKED]" if user.locked
     print ""
@@ -35,10 +35,10 @@ class Session
 
   def usermenu 
     total = u_total
-    oprompt = '"%W#{sdir}User [%p] (0-#{u_total - 1}): "'
+    oprompt = '"%W#{sdir}User [%p] (1-#{u_total}): "'
     readmenu(
       :initval => 1,
-      :range => 0..(u_total - 1),
+      :range => 1..(u_total ),
       :prompt => oprompt
     ) {|sel, upointer, moved|
       if !sel.integer?
@@ -47,23 +47,23 @@ class Session
 
       displayuser(upointer+1) if moved
       case sel
-      when "/"; showuser(upointer+1)
+      when "/"; showuser(upointer)
       when "Q"; upointer = true
-      when "A"; changeaccess(upointer+1)
-      when "L"; changeuserlevel(upointer+1)
-      when "N"; changeusername(upointer+1)
-      when "AD"; changeuseremail(upointer+1)
-      when "RA" ; changersts_acc(upointer+1)
-      when "K"; deleteuser(upointer+1)
+      when "A"; changeaccess(upointer)
+      when "L"; changeuserlevel(upointer)
+      when "N"; changeusername(upointer)
+      when "AD"; changeuseremail(upointer)
+      when "RA" ; changersts_acc(upointer)
+      when "K"; deleteuser(upointer)
       when "W"; displaywho
       when "PU"; page    
-      when "S"; lockuser(upointer+1)
-      when "P"; changepass(upointer+1)
-      when "LO"; changelocation(upointer+1)
+      when "S"; lockuser(upointer)
+      when "P"; changepass(upointer)
+      when "LO"; changelocation(upointer)
       when "G"; leave
       when "?"; gfileout ("usermnu")
       end # of case
-      p_return = [upointer,u_total - 1]
+      p_return = [upointer,u_total ]
 
     }
   end
