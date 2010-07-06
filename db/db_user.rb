@@ -25,92 +25,20 @@ def get_uid(uname)
   u ? u.number : nil
 end
 
-def update_user(r,uid)
-
-  r.name.gsub!("'",BEL) if r.name != nil
-  r.alais.gsub!("'",BEL) if r.alais != nil
-  r.password.gsub!("'",BEL) if r.password != nil
-  r.signature.gsub!("'",BEL) if r.signature != nil
-  area_access = r.areaaccess.join('#') if r.areaaccess != nil 
-  lastread = r.lastread.join('#') if r.lastread != nil
-  zipread = r.zipread.join('#') if r.zipread != nil
-
-
-  @db.exec("UPDATE users SET deleted = '#{r.deleted}', \
-           locked = '#{r.locked}', name = '#{r.name}', \
-           alias = '#{r.alais}', ip = '#{r.ip}',\
-           citystate = '#{r.citystate}', address = '#{r.address}', \
-           password = '#{r.password}',length = '#{r.length}',\
-           modify_date = '#{r.modify_date}', width = '#{r.width}', \
-           ansi = '#{r.ansi}', more = '#{r.more}',\
-           level = '#{r.level}', area_access = '#{area_access}', \
-           lastread = '#{lastread}', create_date = '#{r.create_date}',\
-           laston = '#{r.laston}', logons = '#{r.logons}', \
-           posted = '#{r.posted}', rsts_pw = '#{r.rsts_pw}',\
-           rsts_acc = '#{r.rsts_acc}', fullscreen = '#{r.fullscreen}',\
-           zipread = '#{zipread}', signature = '#{r.signature}', fastlogon = '#{r.fastlogon}'\
-           WHERE number = #{uid}")
+def update_user(r)
+   r.save  
  end
 
 def fetch_user(record)
+  User.first(:number => record)
+end
 
-  res = @db.exec("SELECT deleted ,locked, name, alias, ip,\
-           citystate, address, password, length, modify_date,\
-     width, ansi, more, level, area_access, lastread,\
-     create_date, laston, logons, posted, rsts_pw,\
-     rsts_acc, fullscreen, zipread, signature, fastlogon \
-     FROM users WHERE number = #{record}") 
-
-     temp = result_as_array(res).flatten
-
-     t_deleted 	= db_true(temp[0])
-     t_locked		= db_true(temp[1])
-     t_name 		= temp[2]
-
-     t_alias 		= temp[3]
-     t_ip 		= temp[4]
-     t_citystate 	= temp[5]
-     t_address 	= temp[6]
-     t_password 	= temp[7]
-     t_length 		= temp[8].to_i
-     t_modify_date	= temp[9]
-     t_width 		= temp[10]
-     t_ansi 		= db_true(temp[11])
-     t_more 		= db_true(temp[12])
-     t_level 		= temp[13].to_i
-     t_area_access = temp[14].split('#') if !temp[14].nil? 
-
-     if !temp[15].nil? then
-       t_lastread = temp[15].split('#') 
-       t_lastread.each_with_index {|x,i| t_lastread[i]=x.to_i}
-     end
-
-     t_createdate 	= temp[16]
-     t_laston 		= temp[17]
-     t_logons 		= temp[18].to_i
-     t_posted 	= temp[19].to_i
-     t_rsts_pw 	= temp[20]
-     t_rsts_acc 	= temp[21].to_i
-     t_fullscreen 	= db_true(temp[22])
-     t_zipread 	= temp[23].split('#') if !temp[23].nil? 
-     t_signature 	= temp[24]
-      t_fastlogon 	= db_true(temp[25])
-
-     t_name.gsub!(BEL,"'") if t_name != nil
-     t_alias.gsub!(BEL,"'")if t_alias != nil
-     t_citystate.gsub!(BEL,"'")if t_citystate != nil
-     t_address.gsub!(BEL,"'")if t_address != nil
-     t_password.gsub!(BEL,"'")if t_password != nil
-     t_signature.gsub!(BEL,"'")if t_signature != nil
-
-     result = DB_user.new(t_deleted, t_locked, t_name, t_alias,
-                          t_ip, t_citystate, t_address, t_password,
-                          t_length, t_modify_date, t_width, t_ansi,
-                          t_more, t_level, t_area_access, t_lastread,
-                          t_createdate, t_laston, t_logons, t_posted,
-                          t_rsts_pw, t_rsts_acc, t_fullscreen, t_zipread,
-                          t_signature,t_fastlogon)
-     return result
+def add_pointer(record,access,p_value)
+ uid = record.number
+ puts uid
+ user = User.get(uid)
+ pointer = user.pointers.new(:lastread => p_value, :access => access)
+ pointer.save
 end
 
 def add_user(name,ip,password,citystate,address,length,width,ansi, more, level, fullscreen)

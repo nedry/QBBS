@@ -20,6 +20,7 @@ class Session
 
   def ptr_check
     area = fetch_area(0)
+    add_pointer(@c_user,"W",0)
     @c_user.lastread ||= []
     @c_user.lastread[0] ||= 0
     total = e_total(@c_user.name) # changed for new message format

@@ -16,18 +16,16 @@ class User
   property :ansi, Boolean
   property :more, Boolean
   property :level, Integer
-  property :area_access, Text
-  property :lastread, Text
   property :create_date, Date
-  property :laston, Date 
-  property :logons, Integer
-  property :posted, Integer
+  property :laston, Date, :default => Time.now
+  property :logons, Integer, :default => 0
+  property :posted, Integer, :default => 0
   property :rsts_pw, String, :length => 40
   property :rsts_acc, Integer 
   property :fullscreen, Boolean
-  property :zipread, Text
   property :signature, Text
   property :fastlogon, Boolean
 
     has 1, :who, :child_key => [:number]
+    has n, :pointers, :child_key => [:number]
 end

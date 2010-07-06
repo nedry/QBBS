@@ -1,15 +1,4 @@
 
-class DB_who
-
-  def initialize(number,lastactivity,place)
-
-    @number=number
-    @lastactivity=time.now
-    @place=place
-  end
-
-  attr_accessor :number,:lastactivity,:place
-end 
 
 
 class DB_who_T
@@ -26,50 +15,6 @@ class DB_who_T
   attr_accessor :date, :irc, :node, :name, :location, :where, :page
 end
 
-class DB_user
-
-
-
-  def initialize( deleted, locked, name, alais, ip, citystate, address, password,
-                 length, modify_date, width, ansi,more, level, areaaccess, lastread,
-                 createdate, laston, logons, posted,rsts_pw, rsts_acc, fullscreen, zipread,
-                 signature,fastlogon)
-    @deleted	= false 
-    @locked 	= false 
-    @name  	= name 
-    @alais	=  alais
-    @ip   	= ip
-    @citystate	= citystate 
-    @address 	= address 
-    @password = password 
-    @length 	= length
-    @width 	= 80 
-    @ansi 	= ansi
-    @more 	= more
-    @level	= level
-    @areaaccess = areaaccess
-    @lastread	= lastread
-    @newmsg	= []   #this is updated dynamically at area-change
-    @create_date	= Time.now
-    @modify_date	= Time.now
-    @laston	= Time.now
-    @logons	= 0
-    @posted	= 0
-    @page	= []
-    @channel	= 0
-    @rsts_pw	= ""
-    @rsts_acc	= 0
-    @fullscreen = fullscreen
-    @zipread       = zipread
-    @signature  = signature
-    @fastlogon = fastlogon
-
-  end
-  attr_accessor :create_date, :deleted, :alais, :ip, :locked, :name, :phone,
-    :citystate, :address, :password, :length, :width, :ansi, :more, :level,
-    :areaaccess, :modify_date, :laston, :lastread, :newmsg, :logons, :posted, :page,
-    :pageuser, :channel,:rsts_pw, :rsts_acc, :fullscreen, :zipread, :signature, :fastlogon
-end 
 
 class DB_area_list
 

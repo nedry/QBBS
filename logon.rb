@@ -223,6 +223,8 @@ class Session
 		puts "-SA: Logon - #{@c_user.name}"
                 node = addtowholist
 		print "%WGood #{timeofday} #{username} and welcome to node #{node}"
+		puts "#{@c_user.class}"
+		puts "@c_user.laston: #{@c_user.laston}"
 		ddate = @c_user.laston.strftime("%A %B %d, %Y")
 		dtime  = @c_user.laston.strftime("%I:%M%p (%Z)")
 		print "%GYou were last on %B#{ddate} %C #{dtime} %W"
@@ -247,10 +249,9 @@ class Session
 		end
 		@c_user.logons = @c_user.logons.succ
 		@c_user.laston = Time.now
-		@c_user.channel = 0
-		@c_user.phone = ip
-		@c_user.page.clear if @c_user.page != nil #yet another linux nil check
-                update_user(@c_user,get_uid(@c_user.name))
+		@c_user.ip = ip
+		#@c_user.page.clear if @c_user.page != nil #yet another linux nil check
+                update_user(@c_user)
 	end
 
 	def checkmaxpwdmiss(count)
