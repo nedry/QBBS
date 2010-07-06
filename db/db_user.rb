@@ -35,7 +35,6 @@ end
 
 def add_pointer(record,area,access,p_value)
  uid = record.number
- puts uid
  user = User.get(uid)
  pointer = user.pointers.new(:area => area, :lastread => p_value, :access => access)
  pointer.save
@@ -45,11 +44,6 @@ def get_pointer(record,area)
   uid = record.number
   user = User.get(uid)
   pointer = user.pointers.first(:conditions => {:area => area})
-  #if pointer.length > 0 then 
-  # return pointer
- # else
-  # return nil
- # end
 end
 
 def update_pointer(r)
