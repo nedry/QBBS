@@ -1,7 +1,7 @@
 class Session
   def usersettingsmenu
     existfileout('usersethdr',0,true)
-    print "%G[%YC%G]hat Alias: %Y#{@c_user.alais}"
+    print "%G[%YC%G]hat Alias: %Y#{@c_user.alias}"
     print "%GFull Screen [%YE%G]ditor: %Y#{@c_user.fullscreen ? "On" : "Off"}"
     print "%G[%YG%G]raphics (ANSI): %Y#{@c_user.ansi ? "On" : "Off"}"          
     print "%G[%YF%G]ast Logon: %Y#{@c_user.fastlogon ? "On" : "Off"}" 
@@ -61,7 +61,7 @@ def changelength
   print "Screen Length is %R#{@c_user.length}%G lines."
   prompt = "Screen length? (10-60) [default=40]: "
   @c_user.length = getnum(prompt,10,60) || 40
-  update_user(@c_user,get_uid(@c_user.name))
+  update_user(@c_user)
   usersettingsmenu
 end
 
@@ -69,7 +69,7 @@ def changewidth
   print "Screen Width is %R#{@c_user.width}%G characters."
   prompt = "Screen width? (22-80) [default=40]: "
   @c_user.width = getnum(prompt,22,80) || 40
-  update_user(@c_user,get_uid(@c_user.name))
+  update_user(@c_user)
   usersettingsmenu
 end
 
@@ -80,7 +80,7 @@ def changepwd
     if (pswd2 = getandconfirmpwd)
       print "Password Changed."
       @c_user.password = pswd2
-      update_user(@c_user,get_uid(@c_user.name))
+      update_user(@c_user)
       usersettingsmenu
     else
       print "Aborted - Password not changed"
@@ -93,7 +93,7 @@ end
 def changenick
   if @c_user.alais == '' then 
     @c_user.alais = defaultalias(@c_user.name)
-    update_user(@c_user,get_uid(@c_user.name))
+    update_user(@c_user)
   end
 
   print <<-here
@@ -114,7 +114,7 @@ def changenick
 
   if !alias_exists(newname) then 
     @c_user.alais = newname
-    update_user(@c_user,get_uid(@c_user.name))
+    update_user(@c_user)
     usersettingsmenu
   else 
     print "%RThat alias is in use by another user.%G" 
@@ -127,7 +127,7 @@ def togglegraphics
   else
     @c_user.ansi = TRUE
   end
-  update_user(@c_user,get_uid(@c_user.name))
+  update_user(@c_user)
   usersettingsmenu
 end
 
@@ -137,7 +137,7 @@ def togglefull
   else
     @c_user.fullscreen = TRUE
   end
-  update_user(@c_user,get_uid(@c_user.name))
+  update_user(@c_user)
   usersettingsmenu
 end
 
@@ -147,7 +147,7 @@ def togglefast
   else
     @c_user.fastlogon = TRUE
   end
-  update_user(@c_user,get_uid(@c_user.name))
+  update_user(@c_user)
   usersettingsmenu
 end
 
@@ -157,7 +157,7 @@ def togglemore
   else
     @c_user.more = TRUE
   end
-  update_user(@c_user,get_uid(@c_user.name))
+  update_user(@c_user)
   usersettingsmenu
 end
 
@@ -167,10 +167,7 @@ def displayzipheader
 end
 
 def zipfix
-  @c_user.zipread = [] if @c_user.zipread == nil 
-  for i in 0..(a_total - 1)
-    @c_user.zipread[i] = true if @c_user.zipread[i] == nil  
-  end
+  scanforaccess  #we don't do zip fixing anymore.
 end
 
 def displayziplist

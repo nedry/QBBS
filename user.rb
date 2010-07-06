@@ -23,9 +23,10 @@ class Session
     print "%YArea#:         012345678901234567890"
 
     write "%YAccess:%W        "
-    if user.areaaccess == nil then user.areaaccess = [] end
+
     for i in 0..20
-      if user.areaaccess[i] == nil then write "-" else write user.areaaccess[i] end
+      pointer = get_pointer(@c_user,i)
+      if pointer.nil? then write "-" else write pointer.access end
     end
     print 
     print 
@@ -68,6 +69,7 @@ class Session
   end
 
   def showuser(upointer)
+      u_scanforaccess(upointer)
     if u_total > -1 then
       displayuser(upointer)
     else 
@@ -75,9 +77,23 @@ class Session
       print "%RNo Users.  Something is really fucked up!"
     end
   end
+  
+    def u_scanforaccess(upointer)
+    user = fetch_user(upointer)
+    for i in 0..(a_total - 1) do
+      area = fetch_area(i)
+       pointer = get_pointer(user,i)
+       if pointer.nil? then 
+	add_pointer(user,i,area.d_access,0)
+      end
+    end
+  end
+
 
   def changeaccess(upointer)
+    u_scanforaccess(upointer)
     user = fetch_user(upointer)
+   
     prompt = "%WMessage Area to Change (0 - #{(a_total)})<?: list, Q: Quit>: "
     tempstr = ''
     getinp(prompt) {|inp|
@@ -86,16 +102,20 @@ class Session
       ((tempstr =~ /[0Q]/) or (tempstr.to_i > 0)) ? true : false
     }
     tempint2 = tempstr.to_i
-
+    puts user.number
+    puts tempint2
+     pointer = get_pointer(user,tempint2)
+    
+     
 
     if tempstr != "Q" then
       if (0..a_total).include?(tempint2)
-        prompt = "Enter new access level for area #{tempint2}: "
+        prompt = "%GEnter new access level for area #{tempint2}: "
         tempstr2 = getinp(prompt).upcase
         if tempstr2 =~ /[NIWRMC]/
-          user.areaaccess[tempint2] = tempstr2
+          pointer.access = tempstr2
           print "Area #{tempint2} access changed to #{tempstr2}"
-          update_user(user,upointer)
+	   update_pointer(pointer)
         else
           print "%ROut of Range"
         end

@@ -8,10 +8,9 @@ class Session
   def scanforaccess
     for i in 0..(a_total - 1) do
       area = fetch_area(i)
-      @c_user.areaaccess = [] if @c_user.areaaccess == nil
-      if @c_user.areaaccess[i] == nil then
-        @c_user.areaaccess[i] = area.d_access
-        update_user(@c_user,get_uid(@c_user.name))
+       pointer = get_pointer(@c_user,i)
+       if pointer.nil? then 
+	add_pointer(@c_user,i,area.d_access,0)
       end
     end
   end
@@ -34,17 +33,17 @@ class Session
     displayheader
 
     fetch_area_list(grp).each_with_index {|area,i|
-
+      pointer = get_pointer(@c_user,area.number)
       tempstr = (
-        case @c_user.areaaccess[area.number]
+        case pointer.access
         when "I"; "Inv"
         when "R"; "Read"
         when "W"; "Write"
         when "N"; "None"
         end)
-        if (user.areaaccess[area.number] != "I") or (user.level == 255) and (!area.delete) then
+        if (pointer.access != "I") or (user.level == 255) and (!area.delete) then
           more +=1
-          l_read = new_messages(area.number,user.lastread[area.number])
+          l_read = new_messages(area.number,pointer.lastread)
           print "%W#{area.number.to_s.ljust(5)} %G#{l_read.to_s.rjust(4)} %R#{tempstr.ljust(8)}%Y#{area.group.ljust(10)}%B#{area.name}"
         end
         if more > 19 then
@@ -134,12 +133,11 @@ class Session
 
     for i in start..(a_total - 1)
       #area = fetch_area(i)
-
-      @c_user.lastread[a_list[i].number] = 0 if @c_user.lastread[a_list[i].number] == nil
-      l_read = new_messages(a_list[i].number,@c_user.lastread[a_list[i].number])
-      t = @c_user.areaaccess[a_list[i].number]
+        pointer = get_pointer(@c_user,i)
+      l_read = new_messages(a_list[i].number,pointer.lastread)
+      t = pointer.access
       if l_read > 0 then
-        if @c_user.zipread[a_list[i].number] and (t !~ /[NI]/ or @c_user.level == 255) and (!a_list[i].delete) then
+        if pointer.zipread and (t !~ /[NI]/ or @c_user.level == 255) and (!a_list[i].delete) then
           @c_area = a_list[i].number
           print "%GChanging to the #{a_list[i].group}: #{a_list[i].name} sub-board"+CRLF
           mpointer = p_msg
@@ -320,7 +318,10 @@ class Session
   def post
     scanforaccess
     done = false
-    if @c_user.areaaccess[@c_area] =~ /[RN]/
+    area = fetch_area(@c_area)
+    pointer = get_pointer(@c_user,area.number)
+    
+    if pointer.access[@c_area] =~ /[RN]/
       print "%RYou do not have write access."
       return
     end
@@ -344,7 +345,7 @@ class Session
     if saveit then
       savecurmessage(@c_area, to, title,false,false,nil,nil,nil,nil)
       @c_user.posted += 1
-      update_user(@c_user,get_uid(@c_user.name))
+      update_user(@c_user)
     end
   end # of def post
 
@@ -426,8 +427,8 @@ class Session
 
    if mpointer != 0 then
     i = 0
-    @c_user.lastread = Array.new(2,0) if @c_user.lastread == 0
-    @c_user.lastread[@c_area] ||= 0
+    area = fetch_area(@c_area)
+    pointer = get_pointer(@c_user,area.number)
     u = @c_user
     if email then
      
@@ -436,11 +437,9 @@ class Session
       abs = absolute_message(table,mpointer)
     end
     curmessage = fetch_msg(abs)
-    puts " curmessage.number: #{curmessage.number}"
-    if @c_user.lastread[@c_area] < curmessage.number then
-      @c_user.lastread[@c_area] = curmessage.number
-      update_user(@c_user,get_uid(@c_user.name))
-      puts "updated"
+    if pointer.lastread < curmessage.number then
+      pointer.lastread = curmessage.number
+      update_pointer(pointer)
     end
 
     message = []
@@ -517,10 +516,11 @@ end
   def p_msg
     user = @c_user
     area = fetch_area(@c_area)
+    pointer = get_pointer(@c_user,area.number)
     puts  "mtotal: #{m_total(area.number)}"
-    puts  "new_mess: #{new_messages(area.number,user.lastread[@c_area])}"
-    puts "user.lastread[@c_area]): #{user.lastread[@c_area]}"
-    p_msg = m_total(area.number) - new_messages(area.number,user.lastread[@c_area]) # modified for db change
+    puts  "new_mess: #{new_messages(area.number,pointer.lastread)}"
+    puts "pointer.lastread: #{pointer.lastread}"
+    p_msg = m_total(area.number) - new_messages(area.number,pointer.lastread) # modified for db change
   end
 
   def messagemenu(zipread)

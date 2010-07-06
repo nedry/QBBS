@@ -6,7 +6,8 @@ class Session
     u = @c_user
     area = fetch_area(0)
     print; write "Scanning for New Email... "
-    new = new_email(u.lastread[0],u.name)
+    pointer = get_pointer(@c_user,0)
+    new = new_email(pointer.lastread,u.name)
 
     if new > 0 then
      m = "message"
@@ -20,11 +21,12 @@ class Session
 
   def ptr_check
     area = fetch_area(0)
-    add_pointer(@c_user,"W",0)
-    @c_user.lastread ||= []
-    @c_user.lastread[0] ||= 0
+    pointer = get_pointer(@c_user,0)
+    if pointer.nil? then 
+     add_pointer(@c_user,0,"I",0)
+    end
     total = e_total(@c_user.name) # changed for new message format
-    update_user(@c_user,get_uid(@c_user.name))
+    update_user(@c_user)
   end
 
   def readitnow
@@ -54,7 +56,8 @@ class Session
     u = @c_user
     p_area = @c_area
     @c_area = 0
-    epointer = e_total(u.name) - new_email(u.lastread[0],u.name)
+    pointer = get_pointer(@c_user,0)
+    epointer = e_total(u.name) - new_email(pointer.lastread,u.name)
 
     done = false
 
@@ -220,8 +223,8 @@ end
 def sendemail(feedback)
 
   to = nil;zone = nil;net = nil;node = nil;point = nil
-
-  if @c_user.areaaccess[@c_area] =~ /[RN]/
+  pointer = get_pointer(@c_user,0)
+  if pointer.access =~ /[RN]/
     print "%RYou do not have permission to send Email."
     return
   end

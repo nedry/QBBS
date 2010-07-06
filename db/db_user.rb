@@ -1,5 +1,5 @@
 require 'models/user'
-
+require 'models/pointer'
 BEL = 7.chr
 
 def u_total
@@ -33,12 +33,27 @@ def fetch_user(record)
   User.first(:number => record)
 end
 
-def add_pointer(record,access,p_value)
+def add_pointer(record,area,access,p_value)
  uid = record.number
  puts uid
  user = User.get(uid)
- pointer = user.pointers.new(:lastread => p_value, :access => access)
+ pointer = user.pointers.new(:area => area, :lastread => p_value, :access => access)
  pointer.save
+end
+
+def get_pointer(record,area)
+  uid = record.number
+  user = User.get(uid)
+  pointer = user.pointers.first(:conditions => {:area => area})
+  #if pointer.length > 0 then 
+  # return pointer
+ # else
+  # return nil
+ # end
+end
+
+def update_pointer(r)
+  r.save
 end
 
 def add_user(name,ip,password,citystate,address,length,width,ansi, more, level, fullscreen)
