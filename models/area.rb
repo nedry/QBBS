@@ -5,7 +5,7 @@ class Area
 
   property :area_key, Serial
   property :name, String, :length => 40
-  property :tbl, String, :length => 10
+  #property :tbl, String, :length => 10
   property :delete, Boolean, :default => false
   property :locked, Boolean, :default => false
   property :number, Integer, :required => true
@@ -16,9 +16,11 @@ class Area
   property :network, String, :length => 40
   property :fido_net, String, :length => 40
   property :grp, Integer, :default => 1, :min => 0, :max => 2**32
+  
+  belongs_to :group, :child_key => [:grp]
 
   # groupname, actually - will change to group object when we fix legacy code
-  def group
-    Group.first(:number => grp).groupname
-  end
+  #def group
+   # Group.first(:number => grp).groupname
+  #end
 end

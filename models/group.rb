@@ -1,6 +1,7 @@
 class Group
   include DataMapper::Resource
 
-  property :number, Serial
+  property :grp, Serial
   property :groupname, String, :length => 40
+   has n, :areas,  :child_key => [:grp]
 end

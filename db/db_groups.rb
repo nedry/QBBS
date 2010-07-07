@@ -7,5 +7,5 @@ def update_groups(number,name)
 end
 
 def fetch_groups
-  Group.all(:order => :number)
+  Group.all(:order => :grp)
 end

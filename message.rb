@@ -29,9 +29,10 @@ class Session
     tempint = getnum(prompt2,-1,groups.length - 1)
     print
     grp = nil
-    grp = groups[tempint].number if !tempint.nil?
+    grp = groups[tempint].grp if !tempint.nil?
     displayheader
-
+    temp = fetch_area_list(grp)
+    puts temp.length
     fetch_area_list(grp).each_with_index {|area,i|
       pointer = get_pointer(@c_user,area.number)
       tempstr = (
@@ -42,9 +43,9 @@ class Session
         when "N"; "None"
         end)
         if (pointer.access != "I") or (user.level == 255) and (!area.delete) then
-          more +=1
+          more +=1   # .ljust(5)
           l_read = new_messages(area.number,pointer.lastread)
-          print "%W#{area.number.to_s.ljust(5)} %G#{l_read.to_s.rjust(4)} %R#{tempstr.ljust(8)}%Y#{area.group.ljust(10)}%B#{area.name}"
+          print "%W#{area.number.to_s.ljust(5)} %G#{l_read.to_s.rjust(4)} %R#{tempstr.ljust(8)}%Y#{area.group.groupname.ljust(10)}%B#{area.name}"
         end
         if more > 19 then
           cont = yes_num(prompt,true,true)
@@ -94,7 +95,7 @@ class Session
 	area = fetch_area(tempint)
         if t !~ /[NI]/ or (@c_user.level == 255) and (!area.delete)
           @c_area = tempint
-          print "%GChanging to the #{area.group}: #{area.name} sub-board"+CRLF
+          print "%GChanging to #{area.group.groupname}: #{area.name} area"+CRLF
           break
         else
           if t == "N" then
@@ -668,7 +669,7 @@ end
 %CFidoNet Area: %G#{area.fido_net}
 %CLast Modified: %G#{area.modify_date}
 %CTotal Messages: %G#{m_total(area.number)}
-%CGroup: %G#{area.group}
+%CGroup: %G#{area.group.groupname}
 here
 
   end #displayarea
@@ -759,7 +760,7 @@ here
     groups.each_index {|j| print "#{j}: #{groups[j].groupname}"}
     prompt = "Enter new group number for board #{apointer}: "
     tempint = getnum(prompt,0,groups.length - 1)
-    area.grp = groups[tempint].number
+    area.grp = groups[tempint].grp
     update_group(area)
     print "Area Updated"
   end
