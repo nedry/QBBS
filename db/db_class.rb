@@ -14,20 +14,6 @@ class DB_who_T
 end
 
 
-
-class DB_area_list
-
-  def initialize (name,delete,number,group,tbl)
-    @name		= name
-    @delete		= delete
-    @number		= number
-    @group		= group
-    @tbl			= tbl
-  end
-
-  attr_accessor :name, :delete, :number, :group, :tbl
-end
-
 class DB_message
 
   def initialize (delete,locked,number,m_to,m_from,msg_date,subject,msg_text,exported,network,f_network,

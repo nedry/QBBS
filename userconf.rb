@@ -122,41 +122,25 @@ def changenick
 end
 
 def togglegraphics
-  if @c_user.ansi == TRUE 
-    @c_user.ansi = FALSE
-  else
-    @c_user.ansi = TRUE
-  end
+  @c_user.ansi = !@c_user.ansi
   update_user(@c_user)
   usersettingsmenu
 end
 
 def togglefull
-  if @c_user.fullscreen == TRUE 
-    @c_user.fullscreen = FALSE
-  else
-    @c_user.fullscreen = TRUE
-  end
+  @c_user.fullscreen = !@c_user.fullscreen
   update_user(@c_user)
   usersettingsmenu
 end
 
 def togglefast
-  if @c_user.fastlogon == TRUE 
-    @c_user.fastlogon = FALSE
-  else
-    @c_user.fastlogon = TRUE
-  end
+  @c_user.fastlogon = !@c_user.fastlogon
   update_user(@c_user)
   usersettingsmenu
 end
 
 def togglemore
-  if @c_user.more == TRUE 
-    @c_user.more = FALSE
-  else
-    @c_user.more = TRUE
-  end
+  @c_user.more = !@c_user.more
   update_user(@c_user)
   usersettingsmenu
 end
@@ -173,7 +157,7 @@ end
 def displayziplist
 
   displayzipheader
-  zipfix
+  scanforaccess
   more = 0
   cont = true
   for i in 1..(a_total - 1)
