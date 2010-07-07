@@ -20,13 +20,25 @@ class Session
     %CRSTS Password: %G#{user.rsts_pw}
     %CRSTS Account:  %G#{RSTS_BASE},#{user.rsts_acc}
     here
-    print "%YArea#:         012345678901234567890"
+    print "%Y                         1         2         3         4" 
+    print "%YArea#:         01234567890123456789012345678901234567890"
 
     write "%YAccess:%W        "
 
-    for i in 0..20
-      pointer = get_pointer(@c_user,i)
-      if pointer.nil? then write "-" else write pointer.access end
+    
+    for i in 0..40
+      pointers = get_all_pointers(user)
+      if i <  pointers.length then 
+	case pointers[i].access
+	  when "N"; write "%rN"	
+	  when "I"; write "%RI"
+	  when "R"; write "%YR"
+	  when "W"; write "%GW"
+	  when "C"; write "%MC"
+	  when "M"; write "%gM"
+	end
+      else write "%W-" 
+      end
     end
     print 
     print 
@@ -45,7 +57,7 @@ class Session
         sel.gsub!(/[-\d+]/,"")
       end
 
-      displayuser(upointer+1) if moved
+      displayuser(upointer) if moved
       case sel
       when "/"; showuser(upointer)
       when "Q"; upointer = true

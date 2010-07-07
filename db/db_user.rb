@@ -46,6 +46,12 @@ def get_pointer(record,area)
   pointer = user.pointers.first(:conditions => {:area => area})
 end
 
+def get_all_pointers(record)
+  uid = record.number
+  user = User.get(uid)
+  pointers = user.pointers.all(:order => [:area])
+end
+
 def update_pointer(r)
   r.save
 end
