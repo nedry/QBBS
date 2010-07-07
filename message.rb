@@ -89,8 +89,9 @@ class Session
         #else
       end
       if (0..(a_total - 1)).include?(tempint)
-        t = @c_user.areaaccess[tempint]
-        area = fetch_area(tempint)
+	pointer = get_pointer(@c_user,tempint)      
+        t = pointer.access
+	area = fetch_area(tempint)
         if t !~ /[NI]/ or (@c_user.level == 255) and (!area.delete)
           @c_area = tempint
           print "%GChanging to the #{area.group}: #{area.name} sub-board"+CRLF
