@@ -1,5 +1,16 @@
 require 'models/message'
 
+  def scanforaccess(user)
+    for i in 0..(a_total - 1) do
+      area = fetch_area(i)
+       pointer = get_pointer(user,i)
+       if pointer.nil? then 
+	add_pointer(user,i,area.d_access,0)
+      end
+    end
+  end
+
+
 def m_total(area)
   Message.count(:tbl.eql => area)
 end
@@ -12,11 +23,11 @@ def new_messages(area,ind)
 end
 
 
-def get_pointer(area,ind)
+#def get_pointer(area,ind)
 
-  pointer = m_total(area)
+  #pointer = m_total(area)
 
-end
+#end
 
 def absolute_message(area,ind)
   ind = 0 if ind.nil?
@@ -66,12 +77,12 @@ def exported(number)
 end
 
 def update_msg(r)
-
+#  r.save
 
   @db.exec("UPDATE messages SET delete = '#{r.delete}',\
-           locked = '#{r.locked}', \
+          locked = '#{r.locked}', \
            to = '#{r.m_to}', from = '#{r.m_from}',\
-           subject = '#{r.subject}', \
+          subject = '#{r.subject}', \
            msg_date = '#{r.msg_date}', \
            msg_text = '#{r.msg_text}', \
            exported = '#{r.exported}', \ 
@@ -92,11 +103,11 @@ def update_msg(r)
            pid = '#{r.pid}',\
            intl = '#{r.intl}',\
            topt = '#{r.topt}',\
-           fmpt = '#{r.fmtp}',\
+          fmpt = '#{r.fmtp}',\
            reply = '#{r.reply}',\
-           origin = '#{r.origin}',\
+          origin = '#{r.origin}',\
            smtp = '#{r.smtp}'\
-           WHERE number = #{r.number}")
+          WHERE number = #{r.number}")
 end
 
 

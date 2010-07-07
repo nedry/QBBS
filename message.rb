@@ -5,15 +5,6 @@ require 'doors.rb'
 
 class Session
 
-  def scanforaccess
-    for i in 0..(a_total - 1) do
-      area = fetch_area(i)
-       pointer = get_pointer(@c_user,i)
-       if pointer.nil? then 
-	add_pointer(@c_user,i,area.d_access,0)
-      end
-    end
-  end
 
   def displaylist
     cont = false
@@ -65,7 +56,7 @@ class Session
 
   def areachange(parameters)
     tempint = -1
-    scanforaccess
+    scanforaccess(@c_user)
 
     if (parameters[0] > -1) then
       tempint = parameters[0]
@@ -129,7 +120,7 @@ class Session
   def zipscan(start)
 
     zipfix
-    scanforaccess
+    scanforaccess(@c_user)
     a_list = fetch_area_list(nil)
     start = find_current_area(a_list,@c_area)
 
@@ -318,7 +309,7 @@ class Session
   end
 
   def post
-    scanforaccess
+    scanforaccess(@c_user)
     done = false
     area = fetch_area(@c_area)
     pointer = get_pointer(@c_user,area.number)

@@ -100,10 +100,11 @@ def who_list_delete (uid)
    return output
  end
 
-  def fix_pointer(user,m_area)
-   user.lastread = Array.new(2,0) if user.lastread == nil or user.lastread == 0
-   user.lastread[m_area] ||= 0 
-   return user
+  def fix_pointer #(user,m_area)
+   scanforaccess
+   #user.lastread = Array.new(2,0) if user.lastread == nil or user.lastread == 0
+   #user.lastread[m_area] ||= 0 
+   #return user
  end
  
  def qwk_kludge_search(msg_array)	#searches the message buffer for kludge lines and returns them
@@ -159,9 +160,11 @@ def side_menu_gubbins
  area = fetch_area(0)
  name = session[:name]
  uid = get_uid(name)
-   u = fetch_user(uid.to_i)
-  u = fix_pointer(u,0)
- new = new_email(u.lastread[0],u.name)
+ u = fetch_user(uid.to_i)
+ scanforaccess(u)
+ pointer = get_pointer(u,0)
+
+ new = new_email(pointer.lastread,u.name)
 
     if new > 0  then
     e_out = "<a href='/email'>Email (#{new} New!)</a><br>"
@@ -171,46 +174,32 @@ def side_menu_gubbins
    
    g_out = ""
      scanforaccess(u)
-      groups.each {|group| line = "<li><a href='/areas?m_grp=#{group.number}'>#{group.groupname}</a></li>"
+      groups.each {|group| line = "<li><a href='/areas?m_grp=#{group.grp}'>#{group.groupname}</a></li>"
               g_out << (line)}
  return [e_out,g_out]
 end
 
-  def scanforaccess(user)
-    user.lastread = [] if user.lastread == nil
-    user.areaaccess = [] if user.areaaccess == nil
-    
-  for i in 0..(a_total - 1) do
-   area = fetch_area(i)
-   user.lastread[i] = 0 if user.lastread[i] == nil 
-   user.areaaccess[i] = area.d_access if user.areaaccess[i] == nil 
-  end
-  update_user(user,get_uid(user.name))
-  return user
- end
- 
- 
 def area_list_gubbins(grp)
     o_area = ""
     group = fetch_groups
 
     o_name = group[grp.to_i - 1].groupname
     user = fetch_user(get_uid(session[:name]))
-    user = scanforaccess(user)
+     scanforaccess(user)
     o_area = '<table width = "80%" style="margin-left:10px">'
     o_area =  "&nbsp;&nbsp;&nbsp;Empty Message Group." if fetch_area_list(grp).length == 0 
     fetch_area_list(grp).each {|area|
-
   				  tempstr = (
-  				  case user.areaaccess[area.number] 
+				  pointer = get_pointer(user,area.number)
+  				  case pointer.access 
   				   when "I"; "Invisible"
 				   when "R"; "Read"
 				   when "W"; "Write"
   				   when "N"; "None"
   				  end)
   				  
-  				  if (user.areaaccess[area.number] != "I") or (user.level == 255) and (!area.delete) then
-  				   l_read = new_messages(area.number,user.lastread[area.number])
+  				  if (pointer.access != "I") or (user.level == 255) and (!area.delete) then
+  				   l_read = new_messages(area.number,pointer.lastread)
   				   o_area << "<tr><td><a href='/message?m_area=#{area.number}'>#{area.name}</a></td><td>#{l_read}</td><td>#{tempstr}</td></tr>"
   				   
   				  end
@@ -297,7 +286,8 @@ end
 
 def pntr(user,c_area)
    area = fetch_area(c_area)
-   p_msg = m_total(area.number) - new_messages(area.number,user.lastread[c_area])
+   pointer = get_pointer(user,c_area)
+   p_msg = m_total(area.number) - new_messages(area.number,pointer.lastread)
   # print"user lastread: #{user.lastread[c_area]}<br>"
   # print "p_msg: #{p_msg}<br>m_total: #{m_total(area.tbl)}<br>new_messages: #{new_messages(area.tbl,user.lastread[c_area])}"
    p_msg = 1 if p_msg < 1
@@ -401,11 +391,12 @@ if !session[:name].nil? then
   subject=params["subject"]
   
    user = fetch_user(get_uid(name))
+   pointer = get_pointer(user,m_area)
 
    area=fetch_area(m_area)
    
     post_out = ""
-     if (user.areaaccess[area.number] == "W") or (user.level == 255) and (!area.delete) then
+     if (pointer.access == "W") or (user.level == 255) and (!area.delete) then
        reply = ""
         if to !="" then 
 	       curmessage = fetch_msg(absolute_message(area.number,last))
@@ -573,8 +564,8 @@ if !session[:name].nil? then
   
     e_out,g_out = side_menu_gubbins    #make the side menu database inserts on the sinatra side, like the manual says
     
- if user.alais.nil? then
-   m_out << "<p>You do not have an chat alias set. To set one click on <a href='/chsettings'>User Settings</a>.</p>" 
+ if user.alias.nil? then
+   m_out << "<p>You do not have an chat alias set. To set one click on <a href='/usrsettings'>User Settings</a>.</p>" 
    haml :chat, :locals => {:email => e_out, :groups => g_out, :message => m_out}
  else
   m_out << '<p>Click chat to chat.  This will launch the our HTTP IRC client...</p>'
@@ -730,7 +721,7 @@ if !session[:name].nil? then
        chat_out <<'<td>'
        chat_out << '<FORM ACTION="/chatsave" METHOD="post"> '
        chat_out << ' <TR><TD>Chat Alias</td><td>'
-       chat_out << "<input name='chat_alias' value='#{user.alais}' id='chat_alias'>"
+       chat_out << "<input name='chat_alias' value='#{user.alias}' id='chat_alias'>"
        chat_out << '</td></tr>'
        chat_out << '<TR><TD>'
        chat_out << '<input type="submit" name="Submit" value="Save">'
@@ -1116,11 +1107,12 @@ if !session[:name].nil? then
   uid = get_uid(name)
   who_list_update(uid,"Reading Messages.")
    user = fetch_user(get_uid(name))
-   user = fix_pointer(user,m_area)
+   scanforaccess(user)
    area=fetch_area(m_area)
+      pointer = get_pointer(user,m_area)
    m_out = ""
 
-     if (user.areaaccess[area.number] != "I") or (user.level == 255) and (!area.delete) then
+     if (pointer.access != "I") or (user.level == 255) and (!area.delete) then
      if last == 0 then
       pointer = pntr(user,m_area) 
 

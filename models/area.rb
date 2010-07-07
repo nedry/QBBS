@@ -5,7 +5,6 @@ class Area
 
   property :area_key, Serial
   property :name, String, :length => 40
-  #property :tbl, String, :length => 10
   property :delete, Boolean, :default => false
   property :locked, Boolean, :default => false
   property :number, Integer, :required => true
@@ -19,8 +18,4 @@ class Area
   
   belongs_to :group, :child_key => [:grp]
 
-  # groupname, actually - will change to group object when we fix legacy code
-  #def group
-   # Group.first(:number => grp).groupname
-  #end
 end

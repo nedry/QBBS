@@ -150,10 +150,6 @@ def displayzipheader
   print "%W--     %B-----------------                    %W--------"
 end
 
-def zipfix
-  scanforaccess  #we don't do zip fixing anymore.
-end
-
 def displayziplist
 
   displayzipheader
