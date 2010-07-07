@@ -183,10 +183,11 @@ def displayziplist
     a_name = area.name
     prompt = "%WMore (Y,n) or Toggle #? "
     user = @c_user
-    if (user.areaaccess[i] != "I") or (user.level == 255)
+    pointer = get_pointer(@c_user,i)
+    if (pointer.access[i] != "I") or (user.level == 255)
       more += 1
       write "%W#{i.to_s.ljust(5)}  %B#{a_name.ljust(40)}"
-      if user.zipread[i] == true then print "%Wyes" else print "no" end
+      print "#{pointer.zipread ? "Yes" : "No"}"
       if more > 19 then
         cont = yes_num(prompt,true,true)
         more = 0
@@ -222,13 +223,14 @@ def changezip(parameters)
       #else 
     end
     if (1..(a_total - 1)).include?(tempint)
-      t = @c_user.areaaccess[tempint]
+         pointer = get_pointer(@c_user,tempint)
+      t = pointer.access
       if t !~ /[NI]/ or (@c_user.level == 255)
-        @c_user.zipread[tempint] = !@c_user.zipread[tempint]
-        update_user(@c_user,get_uid(@c_user.name))
+        pointer.zipread = !pointer.zipread
+	update_pointer(pointer)
         area = fetch_area(tempint)
         out = "will not"
-        out = "will" if @c_user.zipread[tempint]
+        out = "will" if pointer.zipread
         print
         print "%GArea #{area.name} %R#{out}%G be automatically read in Zipread."
         print
