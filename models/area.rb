@@ -1,4 +1,5 @@
 require 'models/group'
+require 'models/message'
 
 class Area
   include DataMapper::Resource
@@ -15,7 +16,7 @@ class Area
   property :network, String, :length => 40
   property :fido_net, String, :length => 40
   property :grp, Integer, :default => 1, :min => 0, :max => 2**32
-  
+  has n, :messages, :child_key => [:number]
   belongs_to :group, :child_key => [:grp]
 
 end

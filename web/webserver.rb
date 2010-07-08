@@ -228,6 +228,7 @@ end
 def w_display_message(mpointer,user,m_area,email,dir,total)
       area = fetch_area(m_area)
       table = area.number
+      pointer = get_pointer(user,m_area)
       if email then
 	 abs = email_absolute_message(mpointer,user.name)
       else
@@ -236,16 +237,15 @@ def w_display_message(mpointer,user,m_area,email,dir,total)
       m_out = ""
       curmessage = fetch_msg(abs)
       m_out << m_menu(m_area,mpointer,dir,curmessage.subject.strip,curmessage.m_from.strip,total,email)
-      if user.lastread[m_area] < curmessage.number then
-       user.lastread[m_area] = curmessage.number
-       update_user(user,get_uid(user.name))
+      if pointer.lastread < curmessage.number then
+       pointer.lastread = curmessage.number
+       update_pointer(pointer)
       end
        message = []
 
       if curmessage.network then
        message,q_msgid,q_via,q_tz,q_reply = qwk_kludge_search(message)
       end
-      #puts q_via
       m_out << "<div class='fixed' style='background-color:black;color:white'>"
       m_out << "##{mpointer} <span style='color:#54fc54'>[</span><span style='color:#54fcfc'>#{curmessage.number}</span><span style='color:#54fc54'>]</span> <span style='color:#5454fc'>#{curmessage.msg_date}</span>"
       m_out <<  " <span style='color:#54fc54'> [NETWORK MESSAGE]</span>" if curmessage.network
@@ -287,18 +287,22 @@ end
 def pntr(user,c_area)
    area = fetch_area(c_area)
    pointer = get_pointer(user,c_area)
+   puts "!!!!!!!!!!!!!!!!!!!!!! c_area: #{c_area}"
+   puts "user: #{user}"
+   puts "pointer: #{pointer.class}"
+   puts "area.number: #{area.number}"
    p_msg = m_total(area.number) - new_messages(area.number,pointer.lastread)
-  # print"user lastread: #{user.lastread[c_area]}<br>"
-  # print "p_msg: #{p_msg}<br>m_total: #{m_total(area.tbl)}<br>new_messages: #{new_messages(area.tbl,user.lastread[c_area])}"
+  puts "pointer lastread: #{pointer.lastread}"
+  puts "p_msg: #{p_msg} m_total: #{m_total(area.number)} new_messages: #{new_messages(area.number,pointer.lastread)}"
    p_msg = 1 if p_msg < 1
-  # print "p_msg: #{p_msg}<BR>"
+  puts "p_msg: #{p_msg}<BR>"
   return p_msg
  end
  
  def e_pntr(u)
     area = fetch_area(0)
-	    
-    epointer = e_total(u.name) - new_email(u.lastread[0],u.name)
+    pointer = get_pointer(u,0)
+    epointer = e_total(u.name) - new_email(pointer.lastread,u.name)
     epointer = 1 if epointer == 0
     return epointer
  end
@@ -351,7 +355,8 @@ if !session[:name].nil? then
   post_out = ""
     area=fetch_area(m_area)
     user = fetch_user(get_uid(name))
-  if (user.areaaccess[area.number] == "W") or (user.level == 255) and (!area.delete) then
+    pointer = get_pointer(user,m_area)
+  if (pointer.access == "W") or (user.level == 255) and (!area.delete) then
        msg_to = msg_to[0..39] if msg_to.length > 40
        msg_subject = msg_subject[0..39] if msg_subject.length > 40
        msg_text = WordWrapper.wrap(msg_text,79)
@@ -473,7 +478,6 @@ open_database
 	  if location.length > 5 then
 	  user_to_make = validate_user(username)
 	  if user_to_make == OKAY then
-	   puts "here I am"
 	   add_user(username,'000.000.000',new_password.upcase,location,email,24,80,true, true, DEFLEVEL, true) 
 	   haml :usersuccess
 	  else
@@ -638,7 +642,6 @@ if !session[:name].nil? then
        if new_password.upcase.strip == verify_password.upcase.strip then
         user.password = new_password.upcase.strip
 	update_user(user,get_uid(user.name))
-	puts "DUDE THIS IS THE SHIT"
 	close_database
 	haml :passsucc, :locals => {:email => e_out, :groups => g_out}
        else
@@ -649,7 +652,6 @@ end
 end
 
   else 
-	  puts "not logged"
    haml :notlogged
   end
  end
@@ -1004,22 +1006,20 @@ get "/email" do
 
 if !session[:name].nil? then
   open_database
- # grp = params["m_grp"]
   m_area = 0
- # m_area = m_area.to_i
   last = params["last"]
   last = last.to_i
   dir = params["dir"]
   name = session[:name]
   uid = get_uid(name)
   who_list_update(uid,"Reading Email.")
-   user = fetch_user(get_uid(name))
-   user = fix_pointer(user,m_area)
-     scanforaccess(user)
-   area=fetch_area(m_area)
+  user = fetch_user(get_uid(name))
+  scanforaccess(user)
+  area=fetch_area(m_area)
+  pointer = get_pointer(user,m_area)
    m_out = ""
 
-     if (user.areaaccess[area.number] != "N") or (user.level == 255) and (!area.delete) then
+     if (pointer.access != "N") or (user.level == 255) and (!area.delete) then
      if last == 0 then
       pointer = e_pntr(user) 
       if e_hmsg(user) > 0 then

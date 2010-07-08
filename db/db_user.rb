@@ -41,7 +41,6 @@ def add_pointer(record,area,access,p_value)
 end
 
 def get_pointer(record,area)
- puts "here i am"
   uid = record.number
   user = User.get(uid)
   pointer = user.pointers.first(:conditions => {:area => area})

@@ -1,8 +1,10 @@
+
+
 class Message
   include DataMapper::Resource
   storage_names[:default] = 'messages'
 
-  property :number, Serial
+  property :absolute, Serial
   property :delete, Boolean, :default => false
   property :locked, Boolean, :default => false 
   property :m_to, String, :length => 40
@@ -19,7 +21,7 @@ class Message
   property :destnet, Integer
   property :attribute, Integer
   property :cost, Integer
-  property :area, String, :length => 80
+ # property :area, String, :length => 80
   property :msgid, String, :length => 80 
   property :path, String, :length => 80
   property :tzutc, String, :length => 10
@@ -32,11 +34,6 @@ class Message
   property :reply, Boolean
   property :origin, String, :length => 80
   property :smtp, Boolean, :default => false 
-
-property :tbl, Integer,  :min => 0, :max => 2**32
-
-  # groupname, actually - will change to group object when we fix legacy code
-  def tbl
-    Area.first(:area_key => tbl).name
+  property :number, Integer,  :min => 0, :max => 2**32,  :key => true
+  belongs_to :area, :child_key => [:number]
   end
-end

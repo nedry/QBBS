@@ -1,4 +1,5 @@
 require 'models/area'
+require 'models/message'
 
 def a_total
   Area.count

@@ -119,7 +119,7 @@ class Session
 
   def zipscan(start)
 
-    zipfix
+    
     scanforaccess(@c_user)
     a_list = fetch_area_list(nil)
     start = find_current_area(a_list,@c_area)
@@ -423,6 +423,7 @@ class Session
     area = fetch_area(@c_area)
     pointer = get_pointer(@c_user,area.number)
     u = @c_user
+    
     if email then
      
       abs = email_absolute_message(mpointer,u.name)
@@ -430,8 +431,8 @@ class Session
       abs = absolute_message(table,mpointer)
     end
     curmessage = fetch_msg(abs)
-    if pointer.lastread < curmessage.number then
-      pointer.lastread = curmessage.number
+    if pointer.lastread < curmessage.absolute then
+      pointer.lastread = curmessage.absolute
       update_pointer(pointer)
     end
 
@@ -442,7 +443,7 @@ class Session
       message,q_msgid,q_via,q_tz,q_reply = qwk_kludge_search(message)
     end
     #puts q_via
-    write "%W##{mpointer} %G[%C#{curmessage.number}%G] %B#{curmessage.msg_date}"
+    write "%W##{mpointer} %G[%C#{curmessage.absolute}%G] %B#{curmessage.msg_date}"
     if !q_tz.nil? then
       tz = q_tz.upcase
       #puts "tz: #{tz}"

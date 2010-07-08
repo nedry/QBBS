@@ -1,4 +1,6 @@
 require 'models/message'
+require 'models/area'
+require 'dm-validations'
 
   def scanforaccess(user)
     for i in 0..(a_total - 1) do
@@ -12,34 +14,34 @@ require 'models/message'
 
 
 def m_total(area)
-  Message.count(:tbl.eql => area)
+  Message.all(:number => area).count
 end
 
 
 def new_messages(area,ind)
    ind = 0 if ind.nil?
-  #Message.count(:number.gt => ind, :tbl.eql => are
-  Message.count(:number.gt => ind, :tbl => area)
+   Message.all(:absolute.gt => ind, :number => area).count
+
 end
-
-
-#def get_pointer(area,ind)
-
-  #pointer = m_total(area)
-
-#end
 
 def absolute_message(area,ind)
   ind = 0 if ind.nil?
-  @db.exec("BEGIN")
-  @db.exec("DECLARE c CURSOR FOR SELECT number FROM messages WHERE tbl = '#{area}' ORDER BY number")
-  @db.exec("MOVE FORWARD #{ind+1} IN c")
-  res =  @db.query("FETCH BACKWARD 1 IN c")
-  result = single_result(res).to_i
-  @db.exec("CLOSE c")
-  @db.exec("END")
-  return result
+  lazy_list = Message.all(:number => area, :order => [ :absolute ])
+  result = lazy_list[ind-1].absolute
 end
+
+#def absolute_message(area,ind)
+#  ind = 0 if ind.nil?
+#  @db.exec("BEGIN")
+#  @db.exec("DECLARE c CURSOR FOR SELECT absolute FROM messages WHERE number = '#{area}' ORDER BY absolute")
+#  @db.exec("MOVE FORWARD #{ind+1} IN c")
+# res =  @db.query("FETCH BACKWARD 1 IN c")
+#  result = single_result(res).to_i
+#  @db.exec("CLOSE c")
+#  @db.exec("END")
+#  puts "result: #{result}"
+#  return result
+#end
 
 def high_absolute(table)
 
@@ -51,159 +53,72 @@ def high_absolute(table)
 end
 
 def delete_msg(ind)
-    #message = Message.first(:number.eql => ind)
-    message = Message.first(:number => ind)
+    message = Message.first(:absolute => ind)
     message.destroy!
 end
 
 def delete_msgs(area,first,last)
 
-  @db.exec("DELETE FROM messages WHERE number >= '#{first}' and number <= '#{last}' and tbl = '#{area}'")
+   message = Message.all(:absolute.gte => first, :absolute.lte => last, :number => area)
+   message.destroy!
+
+  #@db.exec("DELETE FROM messages WHERE number >= '#{first}' and number <= '#{last}' and tbl = '#{area}'")
 end
 
 def find_fido_area (area)
 
-  table = nil
-  area.strip! if !area.nil?
-  res = @db.exec("SELECT tbl,number FROM areas WHERE fido_net = '#{area}'")
-  temp = result_as_array(res).flatten
-  table = temp[0]
-  number = temp[1].to_i
-  return [table,number]
+  #table = nil
+  #area.strip! if !area.nil?
+  area = Area.first(:fido_net => area)
+  #res = @db.exec("SELECT tbl,number FROM areas WHERE fido_net = '#{area}'")
+  #temp = result_as_array(res).flatten
+  number = area.number
+  return number
 end
 
-def exported(number)
-  @db.exec("UPDATE messages SET exported = true WHERE number = #{number}")
+def exported(absolute)
+   message = Message.first(:absolute => absolute)
+   message.exported = true
+   message.save!
+  #@db.exec("UPDATE messages SET exported = true WHERE number = #{number}")
 end
 
 def update_msg(r)
-#  r.save
-
-  @db.exec("UPDATE messages SET delete = '#{r.delete}',\
-          locked = '#{r.locked}', \
-           to = '#{r.m_to}', from = '#{r.m_from}',\
-          subject = '#{r.subject}', \
-           msg_date = '#{r.msg_date}', \
-           msg_text = '#{r.msg_text}', \
-           exported = '#{r.exported}', \ 
-           network = '#{r.network}',\
-           f_network = '#{f_network}',\
-           orgnode = '#{r.orgnode}',\
-           destnode = '#{r.destnode}'\
-           orgnet = '#{r.orgnet}',\
-           destnet = '#{r.destnet}',\
-           attribute = '#{r.attribute}',\
-           cost = '#{r.cost}',\
-           area = '#{r.area}',\
-           msgid = '#{r.msgid}',\
-           path = '#{r.path}',\
-           tzutc = '#{r.tzutc}',\
-           charset = '#{r.charset}',\
-           tid = '#{r.tid}',\
-           pid = '#{r.pid}',\
-           intl = '#{r.intl}',\
-           topt = '#{r.topt}',\
-          fmpt = '#{r.fmtp}',\
-           reply = '#{r.reply}',\
-          origin = '#{r.origin}',\
-           smtp = '#{r.smtp}'\
-          WHERE number = #{r.number}")
+ r.save
 end
 
 
-def fetch_msg(record)
-
-  worked = false
-
-  res = @db.exec("SELECT * FROM messages WHERE number = #{record}") 
-  temp = result_as_array(res).flatten
-  t_number	= temp[0].to_i
-  t_delete		= db_true(temp[1])
-  t_locked	 	= db_true(temp[2])
-  t_m_to	 	= temp[3]
-  t_m_from	= temp[4]
-  t_msg_date	= temp[5]
-  t_subject	= temp[6]
-  t_msg_text	= temp[7]
-  t_exported	= db_true(temp[8])
-  t_network	= db_true(temp[9])
-  t_f_network	= db_true(temp[10])
-
-  t_orgnode 	= temp[11].to_i
-  t_destnode 	= temp[12].to_i
-  t_orgnet 	= temp[13].to_i
-  t_destnet 	= temp[14].to_i
-  t_attribute 	= temp[15].to_i
-  t_cost 		= temp[16].to_i
-  t_area 		= temp[17]
-  t_msgid 		= temp[18]
-  t_path 		= temp[19]
-  t_tzutc 		= temp[20]
-  t_charset 	= temp[21]
-  t_tid 		= temp[22]
-  t_pid 		= temp[23]
-  t_intl 		= temp[24]
-  t_topt 		= temp[25].to_i
-  t_fmpt 		= temp[26].to_i
-  t_reply		= db_true(temp[27])
-  t_origin		= temp[28]
-  t_smtp		= db_true(temp[29])
-
-  t_topt = nil if t_topt == -1
-  t_destnode = nil if t_destnode == -1
-  t_destnet = nil if t_destnet == -1
-
-  t_m_to.gsub!(QUOTE,"'") if t_m_to != nil
-  t_m_from.gsub!(QUOTE,"'") if t_m_from != nil
-  t_subject.gsub!(QUOTE,"'") if t_subject != nil
-  t_msg_text.gsub!(QUOTE,"'") if t_msg_text != nil
-
-  worked             = true
-
-
-  if worked then 
-    result = DB_message.new(t_delete, t_locked,t_number, t_m_to,t_m_from, 
-                            t_msg_date,t_subject, t_msg_text,t_exported,t_network,t_f_network,
-                            t_orgnode,t_destnode,t_orgnet,t_destnet,t_attribute,t_cost,
-                            t_area,t_msgid,t_path,t_tzutc,t_charset,t_tid,t_pid,t_intl,
-                            t_topt,t_fmpt,t_reply,t_origin,t_smtp) 	
-
-  else 
-    result = nil
-  end
-  return result
-end
+def fetch_msg(absolute)
+  message = Message.first(:absolute => absolute)
+ end
 
 
 
+def add_msg(m_to,m_from,msg_date,subject,msg_text,exported,network,reply,destnode,destnet,intl,topt,smtp,number)
 
-def add_msg(m_to,m_from,msg_date,subject,msg_text,exported,network,reply,destnode,destnet,intl,topt,smtp,area)
-
-  #number = high_absolute(table) + 1  
-
-  #puts "number: #{number}"
-#p_msg
-
-  msg_text.gsub!("'",QUOTE) if msg_text != nil
-  m_to.gsub!("'",QUOTE) if m_to != nil
-  m_from.gsub!("'",QUOTE) if m_from != nil
-  subject.gsub!("'",QUOTE) if subject != nil
   topt = -1 if topt.nil?
   destnode = -1 if destnode.nil?
   destnet = -1 if destnet.nil?
-
-  #puts("INSERT INTO #{table} (m_to, m_from, \ 
-  #           msg_date, subject, msg_text, exported,network,reply,destnet,destnode,intl,topt,smtp) VALUES \ 
-  #         ('#{m_to}', '#{m_from}', '#{msg_date}', '#{subject}',\
-  #	  '#{msg_text}', '#{exported}','#{network}','#{reply}',\
-  #	  '#{destnet}','#{destnode}','#{intl}','#{topt}','#{smtp}')") 
-
-
-  @db.exec("INSERT INTO messages (m_to, m_from, \ 
-           msg_date, subject, msg_text, exported,network,reply,destnet,destnode,intl,topt,smtp,tbl) VALUES \ 
-          ('#{m_to}', '#{m_from}', '#{msg_date}', '#{subject}',\
-    '#{msg_text}', '#{exported}','#{network}','#{reply}',\
-           '#{destnet}','#{destnode}','#{intl}','#{topt}','#{smtp}', '#{area}')") 
-
+   puts "number: #{number}"
+   area = Area.get(number)
+   puts "area: #{area}"
+   message = area.messages.new(
+    :m_to => m_to,
+    :m_from => m_from,
+    :msg_date => msg_date,
+    :subject => subject,
+    :msg_text => msg_text, 
+    :exported => exported,
+    :network => network,
+    :reply => reply,
+    :destnode => destnode,
+    :destnet => destnet,
+    :intl => intl,
+    :topt => topt,
+    :smtp => smtp
+  ) 
+ dude = message.save
+ message.errors.each{|x| puts x}
+ puts "worked: #{dude}"
            return high_absolute(area)
 end
