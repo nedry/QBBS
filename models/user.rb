@@ -16,8 +16,8 @@ class User
   property :ansi, Boolean
   property :more, Boolean
   property :level, Integer
-  property :create_date, Date
-  property :laston, Date, :default => Time.now
+  property :create_date, DateTime
+  property :laston, DateTime, :default => Time.now
   property :logons, Integer, :default => 0
   property :posted, Integer, :default => 0
   property :rsts_pw, String, :length => 40
@@ -28,4 +28,5 @@ class User
 
     has 1, :who, :child_key => [:number]
     has n, :pointers, :child_key => [:number]
+    has 1, :who, :child_key => [:number] 
 end

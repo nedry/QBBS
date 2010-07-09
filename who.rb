@@ -74,7 +74,6 @@ class Session
       widths = [5,26,20,16]
       header = cols.zip(headings).map {|a,b| a+b}.formatrow(widths)
       test= cols.zip(headings).map {|a,b| a+b}
-      puts test.class
       underscore = cols.zip(['-'*30]*5).map{|a,b| a+b}.formatrow(widths)
       print header
       print underscore

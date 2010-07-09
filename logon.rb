@@ -185,7 +185,7 @@ class Session
         def add_user_to_wall
 	  print "Last #{MAX_L_CALLERS} Callers."
 	  print ""
-	  add_wall(get_uid(@c_user.name),Time.now,"","Telnet")
+	  add_wall(@c_user.number,"","Telnet")
 	  wall_cull
        end
   
@@ -193,6 +193,7 @@ class Session
           i = 0
           j = 0
           cont = true
+	  
          if !wall_empty  then
             cols = %w(Y G R).map {|i| "%"+i}
             headings = %w(Name Time-On Connection)
@@ -202,8 +203,8 @@ class Session
 	    print header
 	    print underscore
             fetch_wall.each {|x|
-            t= Time.parse(x[1]).strftime("%m/%d/%y %I:%M%p")
-            temp = cols.zip([x[0],t,x[3]]).map{|a,b| "#{a}#{b}"}.formatrow(widths) #fix for 1.9
+            t= Time.parse(x.timeposted.to_s).strftime("%m/%d/%y %I:%M%p")
+            temp = cols.zip([x.user.name,t,x.l_type]).map{|a,b| "#{a}#{b}"}.formatrow(widths) #fix for 1.9
 	       j = j + 1
 	       if j == (@c_user.length - 2) and @c_user.more then
 		  cont = moreprompt
@@ -222,9 +223,7 @@ class Session
 		@logged_on = true
 		puts "-SA: Logon - #{@c_user.name}"
                 node = addtowholist
-		print "%WGood #{timeofday} #{username} and welcome to node #{node}"
-		puts "#{@c_user.class}"
-		puts "@c_user.laston: #{@c_user.laston}"
+		print "%WGood #{timeofday} #{username}.  You are logged into node #{node}"
 		ddate = @c_user.laston.strftime("%A %B %d, %Y")
 		dtime  = @c_user.laston.strftime("%I:%M%p (%Z)")
 		print "%GYou were last on %B#{ddate} %C #{dtime} %W"

@@ -1,9 +1,13 @@
 class Wall
   include DataMapper::Resource
   storage_names[:default] = 'wall'
-
-  property :number, Serial
-  property :uid, Integer
+  property :id, Serial
+  property :number, Integer, :key => true
+ # property :uid, Integer
+  property :message, Text
   property :l_type, String, :length => 40
-  property :timeposted, Date
+  property :timeposted, DateTime
+  belongs_to :user, :child_key => [:number]
+
+ 
 end
