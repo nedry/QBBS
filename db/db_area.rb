@@ -49,3 +49,19 @@ def add_area(name, d_access,v_access)
     :modify_date => Time.now
   )
 end
+
+def rep_table(network)
+
+  result = []
+  areas = Area.all(:order => [:number])
+  #res = @db.exec("SELECT netnum, name FROM areas ORDER BY number")
+  #temp = result_as_array(res)
+
+  areas.each_with_index{|x,i|
+        if x.netnum >= 0 then
+         result << Area_rep.new(x.netnum,x.name,i)
+    end
+  }
+
+  return result
+end
