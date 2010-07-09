@@ -48,17 +48,11 @@ def delete_msgs(area,first,last)
 
    message = Message.all(:absolute.gte => first, :absolute.lte => last, :number => area)
    message.destroy!
-
-  #@db.exec("DELETE FROM messages WHERE number >= '#{first}' and number <= '#{last}' and tbl = '#{area}'")
 end
 
 def find_fido_area (area)
 
-  #table = nil
-  #area.strip! if !area.nil?
   area = Area.first(:fido_net => area)
-  #res = @db.exec("SELECT tbl,number FROM areas WHERE fido_net = '#{area}'")
-  #temp = result_as_array(res).flatten
   number = area.number
   return number
 end
@@ -67,7 +61,6 @@ def exported(absolute)
    message = Message.first(:absolute => absolute)
    message.exported = true
    message.save!
-  #@db.exec("UPDATE messages SET exported = true WHERE number = #{number}")
 end
 
 def update_msg(r)
@@ -79,7 +72,23 @@ def fetch_msg(absolute)
   message = Message.first(:absolute => absolute)
  end
 
+def e_total(user)
+  Message.all(:number => 0,  :conditions => ["m_to ILIKE ?", user] ).count
+end
 
+
+def new_email(ind,user)
+
+  ind = 0 if ind.nil?
+  Message.all(:number => 0, :absolute.gt => ind,  :conditions => ["m_to ILIKE ?", user] ).count
+end
+
+
+def email_absolute_message(ind,m_to)
+  ind = 0 if ind.nil?
+  lazy_list = Message.all(:number => 0, :conditions => ["m_to ILIKE ?", m_to] , :order => [ :absolute ])
+  result = lazy_list[ind-1].absolute
+end
 
 def add_msg(m_to,m_from,msg_date,subject,msg_text,exported,network,reply,destnode,destnet,intl,topt,smtp,number)
 
@@ -88,10 +97,6 @@ def add_msg(m_to,m_from,msg_date,subject,msg_text,exported,network,reply,destnod
   destnet = -1 if destnet.nil?
    puts "number: #{number}"
   area = Area.first(:number => number)
-   #area = Area.get(number)
-   puts "area: #{area}"
-   puts "area.number: #{area.number}"
-   puts "area.name: #{area.name}"
    message = area.messages.new(
     :m_to => m_to,
     :m_from => m_from,
@@ -108,7 +113,7 @@ def add_msg(m_to,m_from,msg_date,subject,msg_text,exported,network,reply,destnod
     :smtp => smtp
   ) 
  dude = message.save
- message.errors.each{|x| puts x}
- puts "worked: #{dude}"
+ #message.errors.each{|x| puts x}
+ #puts "worked: #{dude}"
            return high_absolute(area)
 end

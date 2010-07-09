@@ -7,8 +7,7 @@ $stdout.flush
 
 DataMapper::Logger.new('log/db', :debug)
 DataMapper.setup(:default, "postgres://#{DATAIP}/#{DATABASE}")
-#Encoding.default_internal = 'utf-8'
-#Encoding.default_external = 'utf-8'
+
 who = Who_old.new
 message = []
 log = Log.new
