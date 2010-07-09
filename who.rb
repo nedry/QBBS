@@ -3,11 +3,11 @@ require "db/db_who_telnet.rb"
 class Session
 
   def addtowholist
-    #puts "-Adding #{@c_user} to Who is Online List"
+    puts "-Adding #{@c_user} to Who is Online List"
     u = @c_user
     node = find_node
     @who.append(Awho.create(u.name," ",node,u.citystate,Thread.current,u.level,"Logging On"))
-    add_who_t(DB_who_T.new(false,node,u.name,u.citystate,"Logging On",""))
+    add_who_t(false,node,u.citystate,"Logging On",u.name)
     return node
   end
 
@@ -42,8 +42,7 @@ class Session
 
     end
     print
-    print "   %Y*%R indicates an IRC user (who may also be logged in via telnet)"
-    print "   %YW%R indicates an Web user (who may also be logged in via telnet)"
+    print "   %Y*%R = IRC user (who may also be logged in via telnet).  %YW%R = Web user."
     print
   end
 

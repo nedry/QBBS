@@ -518,6 +518,7 @@ end
   end
 
   def messagemenu(zipread)
+    scanforaccess(@c_user)
     @who.user(@c_user.name).where="Message Menu"
     update_who_t(@c_user.name,"Reading Messages")
     out = "Read"

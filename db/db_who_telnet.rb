@@ -1,54 +1,41 @@
 require 'models/who_t'
 
-
 def who_delete_t(name)
-  @db.exec("Delete from who_t where name = '#{name}'")
+  x = Who_t.first(:name => name)
+  x.destroy! if x
 end
 
-
 def delete_irc_t
-  @db.exec("Delete from who_t where irc = 'True'")
+  x=Who_t.all(:irc => true)
+  x.destroy!
 end
 
 def clear_who_t
-  @db.exec("Delete from who_t")
+  x=Who_t.all
+  x.destroy!
 end
 
-def add_who_t(r)
-
-  @db.exec("INSERT INTO who_t (irc, node, location, wh, page, name) \
-  VALUES ('#{r.irc}', '#{r.node}', '#{r.location}', '#{r.where}', '#{r.page}','#{r.name}')") 
-
+def add_who_t(irc,node,location,where,name)
+  Who_t.create(
+    :irc => irc,
+    :node => node,
+    :location => location,
+    :where => where,
+    :name => name)
 end
-
-#def update_who_t(r)
-
-
-#@db.exec("UPDATE who_t SET irc = '#{r.irc}', \
-#         node = '#{r.node}', location = '#{r.location}', irc = '#{r.irc}', \
-#	      wh = '#{r.where}' name = '#{name}'")
-#     end
 
 def update_who_t(name,wh)
 
-
-  @db.exec("UPDATE who_t SET wh = '#{wh}' WHERE name = '#{name}'")
+  who = Who_t.first(:name => name)
+  who.name = name
+  who.wh = wh
+  who.save
 end
 
-
 def fetch_who_t_list
-  res = @db.exec("SELECT irc,node,location,wh,page,name from who_T ORDER BY name ") 
-  result = result_as_array(res)
-
-  return result
+  who = Who_t.all(:order => name)
 end
 
 def who_t_exists(name)
-
-  result = false
-
-  res = @db.exec("SELECT COUNT(*) FROM who_t WHERE name = '#{name}'")
-  temp = single_result(res).to_i
-  result = true if temp > 0 
-  return result
+ Who_t.all(:name => uid).count >0 
 end

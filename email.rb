@@ -41,7 +41,7 @@ class Session
     if (e_total(u.name) > 0) and (epointer > 0) then
       displaymessage(epointer,area.number,true)
     else
-      print "\r\n%YYou have no email.  You have to send it to get it." if e_total(u.name) == 0
+      print "\r\n%YYou have no email.  You have to send some to get some." if e_total(u.name) == 0
       print "\r\n%RYou haven't read any email yet." if epointer == 0
     end
   end
@@ -83,8 +83,9 @@ class Session
    
       when "K"; deletemessage(epointer)
       when "N"; gfileout ("emailsnd");sendemail(false)
+      when "S"; gfileout ("emailsnd");sendemail(false)
       when "Q"; break # exit input loop
-      when /\d+/; epointer = jumpemail(happy.to_i,epointer,e_total(area.tbl,u.name)+1)
+      when /\d+/; epointer = jumpemail(happy.to_i,epointer,e_total(u.name)+1)
     else; print "Out of Range."
     end #of case
     done
@@ -97,12 +98,12 @@ def jumpemail(inp,epointer,max) #revised
   ptr_check
   u = @c_user
   area = fetch_area(0)
-  total = e_total(area.tbl,u.name)
+  total = e_total(u.name)
 
   if inp > 0 and inp < max and total > 0 then
     epointer = inp
     puts "epointer: #{epointer}"
-    displaymessage(epointer,area.tbl,true)
+    displaymessage(epointer,area.number,true)
   else print "%ROut of Range" end
   epointer
 end
@@ -116,7 +117,7 @@ def nextmail(epointer) #revised
 
   if epointer < total and total > 0 then
     epointer +=1
-    displaymessage(epointer,area.tbl,true)
+    displaymessage(epointer,area.number,true)
   else
     print("%RNo More Email")
   end
@@ -287,13 +288,13 @@ def sendemail(feedback)
   if saveit then
     case m_type
     when LOCAL
-      savecurmessage(0, to, title, false,false,nil,nil,nil,nil)
+      savecurmessage(0,to, title, false,false,nil,nil,nil,nil)
       print "Sending Local e-mail..."
 
     when F_NETMAIL
       table,number = find_fido_area(NETMAIL)
       intl = "#{zone}:#{net}/#{node} #{FIDOZONE}:#{FIDONET}/#{FIDONODE}"
-      savecurmessage(number,to,title,false,false,node,net,intl,point)
+      savecurmessage(to,title,false,false,node,net,intl,point,number)
       print "Sending Netmail..."
 
     when Q_NETMAIL

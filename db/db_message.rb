@@ -30,19 +30,6 @@ def absolute_message(area,ind)
   result = lazy_list[ind-1].absolute
 end
 
-#def absolute_message(area,ind)
-#  ind = 0 if ind.nil?
-#  @db.exec("BEGIN")
-#  @db.exec("DECLARE c CURSOR FOR SELECT absolute FROM messages WHERE number = '#{area}' ORDER BY absolute")
-#  @db.exec("MOVE FORWARD #{ind+1} IN c")
-# res =  @db.query("FETCH BACKWARD 1 IN c")
-#  result = single_result(res).to_i
-#  @db.exec("CLOSE c")
-#  @db.exec("END")
-#  puts "result: #{result}"
-#  return result
-#end
-
 def high_absolute(table)
 
   if m_total(table) > 0 then
@@ -100,8 +87,11 @@ def add_msg(m_to,m_from,msg_date,subject,msg_text,exported,network,reply,destnod
   destnode = -1 if destnode.nil?
   destnet = -1 if destnet.nil?
    puts "number: #{number}"
-   area = Area.get(number)
+  area = Area.first(:number => number)
+   #area = Area.get(number)
    puts "area: #{area}"
+   puts "area.number: #{area.number}"
+   puts "area.name: #{area.name}"
    message = area.messages.new(
     :m_to => m_to,
     :m_from => m_from,

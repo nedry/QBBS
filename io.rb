@@ -32,12 +32,12 @@ class Session
         char = @socket.getc.ord  #this is a 1.9 hack... 1.8 behaviour returned the ascii value without the .ord
       else 
         if @c_user != nil 
-          page = @who.user(@c_user.name).page if @who.user(@c_user.name) != nil
-          unless (page.nil? || page.empty? )
-            print; page.each {|x| print x}; page.clear
-            prompt += whole if prompt != nil
-            write prompt
-          end
+        #  page = @who.user(@c_user.name).page if @who.user(@c_user.name) != nil
+        #  unless (page.nil? || page.empty? )
+          #  print; page.each {|x| print x}; page.clear
+         #   prompt += whole if prompt != nil
+          #  write prompt
+         # end
         end
 
         time = Time.now

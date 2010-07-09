@@ -69,11 +69,11 @@ class Session
     logon 
     if !@c_user.fastlogon then
       if scanformail == true  then 
-        emailmenu if yes("Would you like to read it now (Y,n): ",true,false,true)
+        emailmenu if yes("%GWould you like to read it now %W(%YY,%Rn%W): ",true,false,true)
       end
     end
     if !@c_user.fastlogon then
-     messagemenu (true) if yes("Would you like to perform a new message scan (ZIPread)? (Y,n): ",true,false,true)
+     messagemenu (true) if yes("%GWould you like to perform a new message scan %W(%GZIPread%W)? (%YY,%Rn%W): ",true,false,true)
     end
     commandLoop
   end
