@@ -11,7 +11,6 @@ require 'rmail'
 require "consts.rb"
 require "db/db_message.rb"
 require "db/db_area.rb"
-require "db/db_class.rb"
 require "db.rb"
 
 def part_type(part)
