@@ -10,7 +10,6 @@ require 'dm-validations'
 
 require "ansi.rb"
 require "../db.rb"
-require "../db/db_class.rb"
 require "../db/db_area.rb"
 require "../db/db_user.rb"
 require "../db/db_message.rb"
@@ -779,9 +778,9 @@ if !session[:name].nil? then
            u_out << "<tr>"
 	   for i in 0..1 do
 	          if i == 0 then 
-		   u_out << "<td><a href='/showuser?uid=#{x[2]}'>#{x[0]}</a>"
+		   u_out << "<td><a href='/showuser?uid=#{x.number}'>#{x.name}</a>"
 		  else
-		   u_out <<  "<td>#{x[i]} </td>"
+		   u_out <<  "<td>#{x.citystate} </td>"
 	   end
 	 
 	   end
@@ -815,8 +814,8 @@ if !session[:name].nil? then
    w_out <<  "<h3>Telnet Users:</h3>"
    w_out <<  "<tr><td><b>Node</b></td><td><b>User ID</b></td><td><b>Location</b></td><td><b>Where</b></td></tr>"
    fetch_who_t_list.each {|x| 
-	   w_out <<   "<tr><td>#{x[1]}"
-           w_out <<   "<td>#{x[5]} </td><td>#{x[2]} </td><td>#{x[3]}</td></tr>"
+	   w_out <<   "<tr><td>#{x.node}"
+           w_out <<   "<td>#{x.name} </td><td>#{x.location} </td><td>#{x.where}</td></tr>"
 	   }
   w_out <<   "</table>"
    e_out,g_out = side_menu_gubbins    #make the side menu database inserts on the sinatra side, like the manual says
@@ -840,8 +839,8 @@ if !session[:name].nil? then
   l_out <<  "<tr><td><b>User ID</b></td><td><b>Date</b></td><td><b>Connection</td></tr>"
   
    fetch_wall.each {|x|
-                               t= Time.parse(x[1]).strftime("%m/%d/%y %I:%M%p")
-                               l_out << "<tr><td>#{x[0]}</td><td>#{t}</td><td>#{x[3]}</td></tr>"}
+                               t= Time.parse(x.timeposted.to_s).strftime("%m/%d/%y %I:%M%p")
+                               l_out << "<tr><td>#{x.user.name}</td><td>#{t}</td><td>#{x.l_type}</td></tr>"}
    l_out << "</table>"
    e_out,g_out = side_menu_gubbins    #make the side menu database inserts on the sinatra side, like the manual says
    close_database
@@ -927,7 +926,7 @@ post '/clogon' do
      session[:name] = name
      uid = get_uid(name)
      who_list_add(uid) #add user to the list of web users online
-     add_wall(uid,Time.now,"","Web Interface")
+     add_wall(uid,"","Web Interface")
      close_database
      redirect "/welcome"
    else

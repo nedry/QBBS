@@ -74,5 +74,5 @@ def add_user(name,ip,password,citystate,address,length,width,ansi, more, level, 
 end
 
 def fetch_user_list
- User.all(:order => name)
+ User.all(:order =>[:name])
 end

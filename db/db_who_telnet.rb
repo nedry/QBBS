@@ -33,7 +33,7 @@ def update_who_t(name,wh)
 end
 
 def fetch_who_t_list
-  who = Who_t.all(:order => name)
+  who = Who_t.all(:order => [:name])
 end
 
 def who_t_exists(name)
