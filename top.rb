@@ -157,15 +157,15 @@ class QWKREPSchedulethread
   def ftptest
     begin
       ftp = Net::FTP.new(FTPADDRESS)
-      ftp.debug_mode = true
+      ftp.debug_mode = false
       ftp.passive = false
       ftp.login(FTPACCOUNT,FTPPASSWORD)
       ftp.close
-      add_log_entry(1,Time.now,"Successfull Connection to FTP Server. Starting QWK Export.")
+      add_log_entry(1,Time.now,"Connected via FTP. Starting QWK Export.")
       puts "-QWK/REP: Successfull Connection to FTP Server. Starting Export"
       return true
     rescue
-      puts "-QWK/REP: Cannot connect to FTP Server. Will try again at the next interval."
+      puts "-QWK/REP: Cannot connect to FTP Server. #{$!}"
       add_log_entry(1,Time.now,"Cannot connect to FTP Server.")
       return false
     end
