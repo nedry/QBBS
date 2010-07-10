@@ -3,7 +3,6 @@ $LOAD_PATH << ".."
 require 'rubygems'
 require 'sinatra'
 require 'haml'
-require "pg_ext"
 
 require 'dm-core'
 require 'dm-validations'
@@ -18,13 +17,10 @@ require "../db/db_wall.rb"
 require "../db/db_groups.rb"
 require "../db/db_bulletins.rb"
 require "../db/db_log.rb"
-require "../db/db_who.rb"
 require "../db/db_who_telnet.rb"
 require "../consts.rb"
 require "../wrap.rb"
 
-
- 
 
 TEXT_ROOT = "/home/mark/qbbs/text/"
 TITLE = "QUARKseven Web v.5"
@@ -144,14 +140,6 @@ def who_list_delete (uid)
 
  return [msg_array,msgid,via,tz,reply]
  end
-
-
-
-
-
-def close_database
-  @db.close
-end
 
 def side_menu_gubbins
  groups = fetch_groups 
@@ -335,7 +323,7 @@ end
 post "/postsave" do
 
 if !session[:name].nil? then
-  open_database
+
   name = session[:name]
   uid = get_uid(name)
   who_list_update(uid,"Writing a Message:")
@@ -369,7 +357,7 @@ if !session[:name].nil? then
       post_out << 'You do not have access.'
      end
   e_out,g_out = side_menu_gubbins    #make the side menu database inserts on the sinatra side, like the manual says
-   close_database
+  # #close_database
    haml :post, :locals => {:email => e_out, :groups => g_out, :post => post_out}
   else 
    haml :notlogged
@@ -379,7 +367,7 @@ if !session[:name].nil? then
 get '/post' do
 
 if !session[:name].nil? then
-  open_database
+
   name = session[:name]
   uid = get_uid(name)
   who_list_update(uid,"Information:")
@@ -450,7 +438,7 @@ if !session[:name].nil? then
   
   
    e_out,g_out = side_menu_gubbins    #make the side menu database inserts on the sinatra side, like the manual says
-   close_database
+ 
    haml :post, :locals => {:email => e_out, :groups => g_out, :post => post_out}
   else 
    haml :notlogged
@@ -468,7 +456,7 @@ new_password = params["new_password"]
 verify_password = params["verify_password"]
 email = params['email']
 location = params['location']
-open_database
+#open_database
 
     if (new_password.upcase.strip == verify_password.upcase.strip) and (new_password.length > 4) then
         happy = (/^(\S*)@(\S*)\.(\S*)/) =~ email
@@ -533,7 +521,7 @@ end
 get "/information" do
 
 if !session[:name].nil? then
-  open_database
+
   name = session[:name]
   uid = get_uid(name)
   who_list_update(uid,"Information:")
@@ -545,7 +533,7 @@ if !session[:name].nil? then
    end
    b_out << "</table>"
    e_out,g_out = side_menu_gubbins    #make the side menu database inserts on the sinatra side, like the manual says
-   close_database
+ 
    haml :information, :locals => {:email => e_out, :groups => g_out, :bulletin => b_out}
   else 
    haml :notlogged
@@ -557,7 +545,7 @@ if !session[:name].nil? then
  get "/chat" do
 
 if !session[:name].nil? then
-  open_database
+
   name = session[:name]
   uid = get_uid(name)
   who_list_update(uid,"IRC Chat:")
@@ -580,7 +568,7 @@ if !session[:name].nil? then
    m_out <<  "</form>"
 end
  
-   close_database
+ 
    haml :chat, :locals => {:email => e_out, :groups => g_out, :message => m_out}
   else 
    haml :notlogged
@@ -590,7 +578,7 @@ end
   get "/showuser" do
 
 if !session[:name].nil? then
-  open_database
+
   name = session[:name]
   uid = get_uid(name)
   who_list_update(uid,"User Details:")
@@ -609,7 +597,7 @@ if !session[:name].nil? then
   o_out <<  "<tr><td>chat alias:</td><td>#{o_user.alais}</td></tr>"
   o_out << '</table>'
    e_out,g_out = side_menu_gubbins    #make the side menu database inserts on the sinatra side, like the manual says
-   close_database
+ 
    haml :showuser, :locals => {:email => e_out, :groups => g_out, :output => o_out, :username => o_user.name }
   else 
    haml :notlogged
@@ -619,7 +607,7 @@ if !session[:name].nil? then
  post "/passwordsave" do
 
 if !session[:name].nil? then
-  open_database
+
   name = session[:name]
   
   old_password = params['old_password']
@@ -634,17 +622,17 @@ if !session[:name].nil? then
 
        if old_password.upcase.strip != user.password.strip then
          err_out = "You must enter your correct current password!"
-	 close_database
+	 #close_database
 	 haml :passerror, :locals => {:email => e_out, :groups => g_out, :err => err_out}
        else
        if new_password.upcase.strip == verify_password.upcase.strip then
         user.password = new_password.upcase.strip
 	update_user(user,get_uid(user.name))
-	close_database
+	#close_database
 	haml :passsucc, :locals => {:email => e_out, :groups => g_out}
        else
          err_out = "Passwords do not match.  Try again!"
-	 close_database
+	 #close_database
 	 haml :passerror, :locals => {:email => e_out, :groups => g_out, :err =>err_out}   	
 end
 end
@@ -658,7 +646,7 @@ end
   post "/chatsave" do
 
 if !session[:name].nil? then
-  open_database
+
   name = session[:name]
   new_alias=params["chat_alias"]
   uid = get_uid(name)
@@ -669,7 +657,7 @@ if !session[:name].nil? then
   newalias = new_alias.strip.to_s.slice(0..14)
 	if newalias == user.alais then
          err_out = "That is already your alias."
-	 close_database
+	 #close_database
 	 haml :aliaserror, :locals => {:email => e_out, :groups => g_out, :err => err_out}
        else
 	if !alias_exists(newalias) then 
@@ -691,7 +679,7 @@ if !session[:name].nil? then
 get "/usrsettings" do
 
 if !session[:name].nil? then
-  open_database
+
   name = session[:name]
   uid = get_uid(name)
   who_list_update(uid,"User Settings:")
@@ -728,7 +716,7 @@ if !session[:name].nil? then
        chat_out << '</form>'
        chat_out << '</table>'
    e_out,g_out = side_menu_gubbins    #make the side menu database inserts on the sinatra side, like the manual says
-   close_database
+ 
    haml :usrsettings, :locals => {:email => e_out, :groups => g_out, :password => pass_out, :chat => chat_out }
   else 
    haml :notlogged
@@ -738,7 +726,7 @@ if !session[:name].nil? then
  get "/showuser" do
 
 if !session[:name].nil? then
-  open_database
+
   name = session[:name]
   uid = get_uid(name)
   who_list_update(uid,"User Details:")
@@ -757,7 +745,7 @@ if !session[:name].nil? then
   o_out <<  "<tr><td>chat alias:</td><td>#{o_user.alais}</td></tr>"
   o_out << '</table>'
    e_out,g_out = side_menu_gubbins    #make the side menu database inserts on the sinatra side, like the manual says
-   close_database
+ 
    haml :showuser, :locals => {:email => e_out, :groups => g_out, :output => o_out, :username => o_user.name }
   else 
    haml :notlogged
@@ -767,7 +755,7 @@ if !session[:name].nil? then
  get "/users" do
 
 if !session[:name].nil? then
-  open_database
+
   name = session[:name]
   uid = get_uid(name)
   who_list_update(uid,"User List:")
@@ -787,7 +775,7 @@ if !session[:name].nil? then
 	   u_out << "</tr>"}
 	   u_out << "</table>"
    e_out,g_out = side_menu_gubbins    #make the side menu database inserts on the sinatra side, like the manual says
-   close_database
+ 
    haml :userlist, :locals => {:email => e_out, :groups => g_out, :users => u_out}
   else 
    haml :notlogged
@@ -797,7 +785,7 @@ if !session[:name].nil? then
 get "/who" do
 
 if !session[:name].nil? then
-  open_database
+
   name = session[:name]
   uid = get_uid(name)
   who_list_update(uid,"Who is Online:")
@@ -819,7 +807,7 @@ if !session[:name].nil? then
 	   }
   w_out <<   "</table>"
    e_out,g_out = side_menu_gubbins    #make the side menu database inserts on the sinatra side, like the manual says
-   close_database
+ 
    haml :who, :locals => {:email => e_out, :groups => g_out, :who => w_out}
   else 
    haml :notlogged
@@ -829,7 +817,7 @@ if !session[:name].nil? then
 get "/last" do
 
 if !session[:name].nil? then
-  open_database
+
   wall_cull
   name = session[:name]
   uid = get_uid(name)
@@ -843,7 +831,7 @@ if !session[:name].nil? then
                                l_out << "<tr><td>#{x.user.name}</td><td>#{t}</td><td>#{x.l_type}</td></tr>"}
    l_out << "</table>"
    e_out,g_out = side_menu_gubbins    #make the side menu database inserts on the sinatra side, like the manual says
-   close_database
+ 
    haml :last, :locals => {:email => e_out, :groups => g_out, :last => l_out}
   else 
    haml :notlogged
@@ -853,7 +841,7 @@ if !session[:name].nil? then
 get "/log" do
 
 if !session[:name].nil? then
-  open_database
+
   name = session[:name]
   uid = get_uid(name)
   who_list_update(uid,"System Log:")
@@ -906,7 +894,7 @@ end
  end
 
    e_out,g_out = side_menu_gubbins    #make the side menu database inserts on the sinatra side, like the manual says
-   close_database
+ 
    haml :log, :locals => {:email => e_out, :groups => g_out, :log => l_out}
   else 
    haml :notlogged
@@ -918,7 +906,7 @@ get '/about' do
 end
 
 post '/clogon' do
-  open_database
+
   happy =""
   name = params["acc_name"]
   passwd = params["password"].upcase
@@ -927,10 +915,10 @@ post '/clogon' do
      uid = get_uid(name)
      who_list_add(uid) #add user to the list of web users online
      add_wall(uid,"","Web Interface")
-     close_database
+   
      redirect "/welcome"
    else
-     close_database
+   
      haml :failure
 end
 end
@@ -958,7 +946,7 @@ get '/bulletin' do
 
 
  if !session[:name].nil? then
-  open_database
+
   name = session[:name]
   uid = get_uid(name)
   who_list_update(uid,"Reading Bulletins")
@@ -975,7 +963,7 @@ get '/bulletin' do
  test = File.exists?(t_file) ? graphfile : plainfile
 
   e_out,g_out = side_menu_gubbins    #make the side menu database inserts on the sinatra side, like the manual says
-  close_database
+
    haml :bulletin,  :locals => {:email => e_out, :groups => g_out,:display_text => text_to_html(test)}
  else
    haml :notlogged
@@ -985,14 +973,14 @@ end
 get "/areas" do
  
 if !session[:name].nil? then
-  open_database
+
   grp = params["m_grp"]
   name = session[:name]
   uid = get_uid(name)
   who_list_update(uid,"Area List.")
   a_out,n_out = area_list_gubbins(grp)
   e_out,g_out = side_menu_gubbins    #make the side menu database inserts on the sinatra side, like the manual says
-  close_database
+
   haml :areas, :locals => {:email => e_out, :groups => g_out, :areas => a_out, :g_name => n_out}
  else 
    haml :notlogged
@@ -1003,7 +991,7 @@ end
 get "/email" do
 
 if !session[:name].nil? then
-  open_database
+
   m_area = 0
   last = params["last"]
   last = last.to_i
@@ -1082,7 +1070,7 @@ if !session[:name].nil? then
 
  
   e_out,g_out = side_menu_gubbins    #make the side menu database inserts on the sinatra side, like the manual says
-  close_database
+
   haml :message, :locals => {:email => e_out, :groups => g_out, :message => m_out}
  else 
    haml :notlogged
@@ -1094,7 +1082,7 @@ end
 get "/message" do
 
 if !session[:name].nil? then
-  open_database
+
   grp = params["m_grp"]
   m_area = params['m_area']
   m_area = m_area.to_i
@@ -1165,7 +1153,7 @@ if !session[:name].nil? then
         m_out << m_menu(m_area,pointer,dir,subject,from,h_msg(m_area),false)
  
   e_out,g_out = side_menu_gubbins    #make the side menu database inserts on the sinatra side, like the manual says
-  close_database
+
   haml :message, :locals => {:email => e_out, :groups => g_out, :message => m_out}
  else 
    haml :notlogged
@@ -1176,12 +1164,12 @@ end
 get "/main" do
 
 if !session[:name].nil? then
-  open_database
+
   name = session[:name]
   uid = get_uid(name)
   who_list_update(uid,"Main Menu.")
   e_out,g_out = side_menu_gubbins    #make the side menu database inserts on the sinatra side, like the manual says
-  close_database
+
   haml :main, :locals => {:email => e_out, :groups => g_out, :name => name}
  else 
    haml :notlogged

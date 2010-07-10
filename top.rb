@@ -23,7 +23,6 @@ require "db/db_user"
 require "db.rb"
 #require "t_pktread"
 #require "t_pktwrite"
-require "pg_ext"
 
 class Session 
   def initialize(irc_who, who, log, message, socket)
@@ -44,7 +43,6 @@ class Session
     @log  = log
     @gd_game = false		#ok, just one more!
     @gd_mode = false 		#this time, I mean it.
-    open_database
   end 
 
   require "misc.rb"

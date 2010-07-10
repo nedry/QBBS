@@ -1,3 +1,5 @@
+require "pg_ext"
+
 TABLE_LIST = ["areas","bulletins","doors","other","system","groups","users","who","who_t","log","subsys","wall"]
 
 def current_date
@@ -7,7 +9,7 @@ end
 def open_database
 
   # begin
-  puts "-DB: Opening Database Connection"
+  puts "-DB: Checking Tables"
   @db = PGconn.connect(DATAIP,5432,nil,nil,DATABASE,nil,nil)
   # rescue
   #  puts "-FATAL: Database Connection Failed.  Halted."
