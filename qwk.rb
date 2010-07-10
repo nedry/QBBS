@@ -231,33 +231,6 @@ module Qwk
       end
     end #savemessage
 
-    def scanpacket (index,name)
-      print "-QWK: Scanning Message #" 
-
-      boom = false
-      x = 0
-      index.each {|happy| 
-        x = x + 1
-        message = getmessage("qwk",happy)
-        if message.error then
-          puts
-          puts "-QWK: ERROR detected in packet.  Aborting."
-          add_log_entry(8,Time.now,"Error in QWK packet. #{name} Packet skipped.")
-          boom = true
-          break
-        else
-          print x
-          $stdout.flush
-          x.to_s.length.times { print(BS.chr) }
-        end
-      }
-
-      puts 
-      puts "-QWK: Packet OK." if !boom
-
-      return boom		  
-    end
-
     def clearoldqwk
       puts "-QWK: Deleting old packets"
       happy = system("rm qwk/*")
@@ -277,6 +250,25 @@ module Qwk
     def unzippacket
       happy = system("unzip #{QWKPACKET} -d #{QWKDIR}")
       add_log_entry(8,Time.now,"Could not unzip QWK Packet.") if !happy
+    end
+
+    def read_messages(index)
+      n_read = 0
+      index.each_with_index do |msg_index, x|
+        n_read += 1
+        message = getmessage("qwk", msg_index)
+        if message.error then
+          puts
+          puts "-QWK: ERROR detected in packet.  Aborting."
+          break
+        else
+          print x
+          $stdout.flush
+          x.to_s.length.times { print(BS.chr) }
+          yield message
+        end
+      end
+      return n_read
     end
 
     def import
@@ -309,27 +301,13 @@ module Qwk
         area = (find == 0) ? 0 : find_qwk_area(find, nil) 
         if area
           @log.write "Found. Importing #{idx} to #{area.name}"
-	  puts "Found. Importing #{idx} to #{area.name}"
+          puts "Found. Importing #{idx} to #{area.name}"
           puts
           x = 0
-          boom = scanpacket(index, idx)
-          if !boom then 
-            print "-QWK: Processing Message #" 
+          print "-QWK: Processing Message #"
 
-            index.each_with_index {|happy, x| 
-              tmsgimport = tmsgimport.succ
-              message = getmessage("qwk",happy)
-              if message.error then
-                puts
-                puts "-QWK: ERROR detected in packet.  Aborting."
-                break
-              else
-                print x
-                $stdout.flush
-                x.to_s.length.times { print(BS.chr) }
-                add_qwk_message(message, area) # in db_message
-              end
-            }
+          read_messages(index) do |message|
+            add_qwk_message(message, area) # in db_message
           end
         else
           puts
