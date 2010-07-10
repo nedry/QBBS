@@ -162,10 +162,12 @@ module Qwk
       message.reference = message.reference.to_i
       message.blocks = message.blocks.to_i
       message.error = true if message.blocks == 0
-      message.tagline = (message.has_tagline == "*")
+
+      # convert tagline to a boolean (if there is a "*" we have a tagline)
+      message.tagline = (message.tagline == "*")
 
       # convert date and time to a DateTime object
-      message.set_datetime(tempdate, temptime)
+      message.set_datetime(msg[:tempdate], msg[:temptime])
 
       # read blocks
       happy.pos = (startrec + 1) * 128
