@@ -117,3 +117,21 @@ def add_msg(m_to,m_from,msg_date,subject,msg_text,exported,network,reply,destnod
  #puts "worked: #{dude}"
            return high_absolute(area)
 end
+
+def add_qwk_message(message, area)
+  user = fetch_user(get_uid(QWKUSER))
+  pointer = get_pointer(user,area.number)
+  msg_text = message.text
+  to = message.to.upcase.strip
+  m_from = message.from.upcase.strip
+  msg_date = message.date
+  title = message.subject.strip
+  exported = true
+  network = true
+  absolute = add_msg(to,m_from,msg_date,title,msg_text,exported,network,false,nil,nil,nil,nil,false,area.number)
+
+  user.posted = user.posted + 1
+  pointer.lastread = absolute
+  update_pointer(pointer)
+  update_user(user,get_uid(QWKUSER))
+end

@@ -231,26 +231,6 @@ module Qwk
       end
     end #savemessage
 
-    def addmessage(message,area)
-      user = fetch_user(get_uid(QWKUSER))
-      pointer = get_pointer(user,area.number)
-      # @lineeditor.msgtext << DLIM
-      #msg_text = message.text.join(DLIM)
-      msg_text = message.text
-      to = message.to.upcase.strip
-      m_from = message.from.upcase.strip
-      msg_date = message.date
-      title = message.subject.strip
-      exported = true
-      network = true
-      absolute = add_msg(to,m_from,msg_date,title,msg_text,exported,network,false,nil,nil,nil,nil,false,area.number)
-
-      user.posted = user.posted + 1
-      pointer.lastread = absolute
-      update_pointer(pointer)
-      update_user(user,get_uid(QWKUSER))
-    end
-
     def scanpacket (index,name)
       print "-QWK: Scanning Message #" 
 
@@ -347,7 +327,7 @@ module Qwk
                 print x
                 $stdout.flush
                 x.to_s.length.times { print(BS.chr) }
-                addmessage(message,area) 
+                add_qwk_message(message, area) # in db_message
               end
             }
           end
