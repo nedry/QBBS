@@ -145,10 +145,11 @@ module Qwk
         [:has_tagline, 1]
       ]
 
+      msg = {} # stores the raw message fields as we read them in
+
       File.open(filename, "rb") do |happy|
         @log.write ("SREC  : #{startrec}")
         happy.pos = (startrec) * 128
-        msg = {}
         msg_packet.each do |key, len|
           msg[key] = happy.read(len)
           @log.write("#{key.to_s.upcase} : #{msg[key]}")
