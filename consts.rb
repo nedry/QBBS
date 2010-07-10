@@ -1,6 +1,6 @@
 DEBUG = true
 LISTENPORT = 2323
-QWK  = false
+QWK  = true
 FIDO = false
 IRC_ON =  false
 
@@ -81,7 +81,7 @@ QWKTAG ="#{254.chr} retroCOMPUTING BBS - Home of QUARKware #{254.chr} telnet 81.
 QWKREPINTERVAL = 15
 
 FTPADDRESS ="vert.synchro.net"
-FTPACCOUNT ="QBBS"
+FTPACCOUNT ="QBBSTEST"
 FTPPASSWORD ="flatmo"
 
 

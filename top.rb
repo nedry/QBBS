@@ -123,7 +123,7 @@ class QWKREPSchedulethread
     @control = []
     @totalareas = 0
     @arealist = Arealist_qwk.new
-    open_database
+    
   end
 
 
@@ -143,7 +143,7 @@ class QWKREPSchedulethread
   require "smtp.rb"
 
 
-  def up_down_fido
+  def up_down_fido(idle)
     ddate = Time.now.strftime("%m/%d/%Y at %I:%M%p")
     puts "-SCHED: Starting a Fido mail run on #{ddate}... Idle: #{idle}"
     add_log_entry(1,Time.now,"Starting a fido run.")
@@ -157,16 +157,16 @@ class QWKREPSchedulethread
   def ftptest
     begin
       ftp = Net::FTP.new(FTPADDRESS)
-      ftp.debug_mode = false
+      ftp.debug_mode = true
       ftp.passive = false
       ftp.login(FTPACCOUNT,FTPPASSWORD)
       ftp.close
       add_log_entry(1,Time.now,"Successfull Connection to FTP Server. Starting QWK Export.")
-      puts "-Successfull Connection to FTP Server. Starting Export"
+      puts "-QWK/REP: Successfull Connection to FTP Server. Starting Export"
       return true
     rescue
-      puts "-Cannot connect to FTP Server. Will try again at the next interval."
-      add_log_entry(1,Time.now,"Cannot connect to FTP Server.  Will attempt again at next interval.")
+      puts "-QWK/REP: Cannot connect to FTP Server. Will try again at the next interval."
+      add_log_entry(1,Time.now,"Cannot connect to FTP Server.")
       return false
     end
   end
@@ -180,10 +180,10 @@ class QWKREPSchedulethread
   end
 
 
-  def doit
-    puts "-SCHED: Starting a QWK/REP message run on #{ddate}... Idle: #{idle}"
+  def doit(idle)
+    puts "-SCHED: Starting a QWK/REP message run on #{Time.now.strftime("%m/%d/%Y at %I:%M%p")}... Idle: #{idle}"
     add_log_entry(1,Time.now,"Starting a message transfer.")
-    up_down_fido
+    up_down_fido(idle) if FIDO
     do_smtp
     up_down
 
@@ -192,8 +192,8 @@ class QWKREPSchedulethread
   def run
     # begin
     puts "-SCHED: Starting QWK/REP Thread."
-    doit
     idle = 0
+    doit(idle)
     tick = Time.now.min.to_i
     # up_down
     ddate = Time.now.strftime("%m/%d/%Y at %I:%M%p")
@@ -208,7 +208,7 @@ class QWKREPSchedulethread
 
       #puts "Idle Time:  #{idle}"
       if idle >= QWKREPINTERVAL then
-        doit
+        doit(idle)
         idle = 0
       end
 
@@ -230,7 +230,6 @@ class Happythread
 
   def initialize (who,log,message)
     @who,  @log, @message= who, log, message
-    open_database
     clear_who_t
   end
 
@@ -281,7 +280,6 @@ class ServerSocket
 
   def run
     set_up_database
-    open_database
     puts "\n-#{VER} Server\n"; $stdout.flush
     add_log_entry(9,Time.now,"#{VER} Server Starting.")
     if DEBUG then

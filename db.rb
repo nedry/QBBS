@@ -60,6 +60,7 @@ def check_tables
   TABLE_LIST.each {|x|
     create_table(x) if t_list.index(x).nil?
   }
+    puts"-DB: Tables Verified"
 end
 
 def db_num(arr)
@@ -86,40 +87,41 @@ def create_table(table)
 
   case table
   when "areas"
-    puts "DB (FATAL): areas table not found  Run makedb.rb"
+    puts "-DB: (FATAL): areas table not found  Run makedb.rb"
     exit
   when "bulletins"
-    puts "DB (FATAL): bulletins table not found  Run makedb.rb"
+    puts "-DB: (FATAL): bulletins table not found  Run makedb.rb"
     exit
   when "doors"
-    puts "DB (FATAL): doors table not found  Run makedb.rb"
+    puts "-DB: (FATAL): doors table not found  Run makedb.rb"
     exit
   when "other"
-    puts "DB (FATAL): other table not found  Run makedb.rb"
+    puts "-DB: (FATAL): other table not found  Run makedb.rb"
     exit
   when "system"
-    puts "DB (FATAL): system table not found  Run makedb.rb"
+    puts "-DB: (FATAL): system table not found  Run makedb.rb"
     exit
   when "groups"
-     puts "DB (FATAL): groups table not found  Run makedb.rb"
+     puts "-DB: (FATAL): groups table not found  Run makedb.rb"
      exit
   when "users"
-     puts "DB (FATAL): groups table not found  Run makedb.rb"
+     puts "-DB: (FATAL): groups table not found  Run makedb.rb"
      exit
   when "who"
-     puts "DB (FATAL): who table not found  Run makedb.rb"
+     puts "-DB: (FATAL): who table not found  Run makedb.rb"
      exit
   when "who_t"
-     puts "DB (FATAL): who_t table not found  Run makedb.rb"
+     puts "-DB: (FATAL): who_t table not found  Run makedb.rb"
      exit
   when "log"
-     puts "DB (FATAL): log table not found  Run makedb.rb"
+     puts "-DB: (FATAL): log table not found  Run makedb.rb"
      exit
   when "subsys"
-     puts "DB (FATAL): subsys table not found  Run makedb.rb"
+     puts "-DB: (FATAL): subsys table not found  Run makedb.rb"
      exit
   when "wall"
-    create_wall_table
+     puts "-DB: (FATAL): wall table not found  Run makedb.rb"
+     exit
   end
 end
 
