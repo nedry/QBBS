@@ -74,3 +74,22 @@ REFERENCE : 68197
 BLOCKS : 7     
 TEMPCRAP : ·—  *
 HAS_TAGLINE :  
+228 areas in CONTROL.DAT
+1 areas found in QWK packet
+["2001"] DOVE-Net
+Now Processing Packet qwk/2001.NDX which contains 31 messages.
+
+Found. Importing qwk/2001.NDX to General
+SREC  : 1
+STATUSFLAG :  
+NUMBER : 68198  
+TEMPDATE : 07-03-10
+TEMPTIME : 15:45
+TO : Offline                  
+FROM : DOS                      
+SUBJECT : test                     
+PASSWORD :             
+REFERENCE : 68197   
+BLOCKS : 7     
+TEMPCRAP : ·—  *
+HAS_TAGLINE :  

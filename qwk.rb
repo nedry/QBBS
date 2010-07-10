@@ -142,7 +142,7 @@ module Qwk
         [:reference, 8],
         [:blocks, 6],
         [:tempcrap, 6],
-        [:tagline, 1]
+        [:has_tagline, 1]
       ]
 
       File.open(filename, "rb") do |happy|
