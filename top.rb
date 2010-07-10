@@ -24,6 +24,9 @@ require "db.rb"
 #require "t_pktread"
 #require "t_pktwrite"
 
+require "qwk.rb"
+require "rep.rb"
+
 class Session 
   def initialize(irc_who, who, log, message, socket)
     @socket  = socket 
@@ -115,10 +118,9 @@ class QWKREPSchedulethread
   require 'net/ftp'
 
 
-  def initialize (who,log,message)
+  def initialize (who,message)
     @who  = who
     @message = message
-    @log  = log
     @idxlist = []
     @control = []
     @totalareas = 0
@@ -174,8 +176,10 @@ class QWKREPSchedulethread
   def up_down
     if ftptest then
       #puts "I would have done it if you let me, you bastard!"
-      worked = repexport
-      qwkimport if worked
+      #worked = repexport
+      qwkimp =  Qwk::Importer.new(nil)
+      qwkimp.import
+      #qwkimport if worked
     end
   end
 
@@ -228,8 +232,8 @@ class Happythread
 
 
 
-  def initialize (who,log,message)
-    @who,  @log, @message= who, log, message
+  def initialize (who,message)
+    @who,  @message= who,  message
     clear_who_t
   end
 
@@ -246,7 +250,6 @@ class Happythread
     curthread = Array.new
     while true
       sleep (4)
-      writelog('userlog.txt')
       curthread = Thread.list
       #  puts Thread.list.each {|x| puts x.to_s}
       each_name_with_index {|name, i|
@@ -256,8 +259,6 @@ class Happythread
           add_log_entry(5,Time.now,"#{name} has disconnected from Telnet.")
           @who.delete(i)
           who_delete_t(name) if who_t_exists(name)
-          puts "name: #{name}"
-          puts "exists: #{who_t_exists(name)}"
           m = "%C#{name} %Ghas just disconnected from the system."
           @message.push("*** #{name} has just disconnected from the system.")
           each_who {|u| u.who.push(m)}
@@ -268,13 +269,13 @@ class Happythread
 end #of class happythread
 
 class ServerSocket
-  def initialize(irc_who,who,message,log)
+  def initialize(irc_who,who,message) #,log)
     @serverSocket = TCPServer.open(LISTENPORT)
 
     @who = who
     @message = message
     @irc_who = irc_who
-    @log = log
+  # @log = log
     @logged_on = false
   end
 
@@ -289,9 +290,9 @@ class ServerSocket
     add_log_entry(9,Time.now,"QWK Transfers disabled.") if !QWK
     add_log_entry(9,Time.now,"FIDO Transfers disabled.") if !FIDO
     add_log_entry(9,Time.now,"IRC Bot disabled.") if !IRC_ON
-    Thread.new {Happythread.new(@who,@log,@message).run}
-    Thread.new {Botthread.new(@irc_who,@who,@message,@log).run} if IRC_ON
-    Thread.new {QWKREPSchedulethread.new(@who,@log,@message).run} if QWK
+    Thread.new {Happythread.new(@who,@message).run}
+    Thread.new {Botthread.new(@irc_who,@who,@message).run} if IRC_ON
+    Thread.new {QWKREPSchedulethread.new(@who,@message).run} if QWK
     #Thread.new {Konsolethread.new(@who,@log).run}
 
     while true
@@ -300,7 +301,7 @@ class ServerSocket
       if socket = @serverSocket.accept then
         Thread.new {
           puts "-SA: New Incoming Connection"
-          Session.new(@irc_who,@who,@log,@message,socket).run
+          Session.new(@irc_who,@who,@message,socket).run
         }
       end
     end

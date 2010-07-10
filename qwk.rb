@@ -82,11 +82,11 @@ module Qwk
     end
 
     def putslog(output)
-      log.write(output)
+      @log.write(output)
       puts ("-QWK: #{output}")
     end
 
-    def read_index
+    def read_index(file)
       index = []
       unless File.exists?(file)
         puts "-QWK: NDX File not found!"
@@ -116,7 +116,7 @@ module Qwk
         return IO.readlines(filename)
       else 
         puts "-QWK: Invalid packet. Control.dat not found."
-        add_log_entry(8,Time.now,"Invalid QWK packet or Control.dat missing.")
+        add_log_entry(8,Time.now,"Invalid QWK packet or Control.dat.")
         return []
       end
     end
@@ -142,16 +142,16 @@ module Qwk
         [:reference, 8],
         [:blocks, 6],
         [:tempcrap, 6],
-        [:has_tagline, 1]
+        [:tagline, 1]
       ]
 
       File.open(filename, "rb") do |happy|
-        log.write ("SREC  : #{startrec}")
+        @log.write ("SREC  : #{startrec}")
         happy.pos = (startrec) * 128
         msg = {}
         msg_packet.each do |key, len|
           msg[key] = happy.read(len)
-          log.write("#{key.to_s.upcase} : #{msg[key]}")
+          @log.write("#{key.to_s.upcase} : #{msg[key]}")
           if message.members.include? key
             message[key] = msg[key]
           end
@@ -173,9 +173,9 @@ module Qwk
         message.text = happy.read((message.blocks - 1) *128)
       end
 
-      log.write("NSREC : #{startrec + message.blocks}")
-      log.write("")
-      log.write("ERROR: Corrupt packet detected.") if message.error
+      @log.write("NSREC : #{startrec + message.blocks}")
+      @log.write("")
+      @log.write("ERROR: Corrupt packet detected.") if message.error
 
       return message
     end
@@ -212,14 +212,14 @@ module Qwk
       end
     end
 
-    def displaypacketstats
+    def displaypacketstats(idxlist)
 
-      log.write ("#{@totalareas} areas in CONTROL.DAT")
-      log.write ("#{idxlist.length} areas found in QWK packet")
+      @log.write ("#{@totalareas} areas in CONTROL.DAT")
+      @log.write ("#{idxlist.length} areas found in QWK packet")
 
       for x in 0..idxlist.length - 1
         y = idxlist[x].scan(/\d\d\d\d/)
-        log.write ("#{y} #{@arealist.findarea(y[0].to_i).name}") if @arealist.findarea(y[0].to_i) != nil
+        @log.write ("#{y} #{@arealist.findarea(y[0].to_i).name}") if @arealist.findarea(y[0].to_i) != nil
       end
     end
 
@@ -229,21 +229,9 @@ module Qwk
       end
     end #savemessage
 
-    def setitup
-      user = fetch_user(get_uid(QWKUSER))
-
-      #on first run with database... the user might not have logged in...
-      user.lastread = [] if user.lastread == nil
-
-      for i in 0..a_total do
-        user.lastread[i] = 0 if user.lastread[i] == nil 
-      end
-      update_user(user,get_uid(QWKUSER))
-    end
-
     def addmessage(message,area)
-      area = fetch_area(area)
       user = fetch_user(get_uid(QWKUSER))
+      pointer = get_pointer(user,area.number)
       # @lineeditor.msgtext << DLIM
       #msg_text = message.text.join(DLIM)
       msg_text = message.text
@@ -253,10 +241,11 @@ module Qwk
       title = message.subject.strip
       exported = true
       network = true
-      absolute = add_msg(area.tbl,to,m_from,msg_date,title,msg_text,exported,network,false,nil,nil,nil,nil,false)
+      absolute = add_msg(to,m_from,msg_date,title,msg_text,exported,network,false,nil,nil,nil,nil,false,area.number)
 
       user.posted = user.posted + 1
-      user.lastread[area.number] = absolute
+      pointer.lastread = absolute
+      update_pointer(pointer)
       update_user(user,get_uid(QWKUSER))
     end
 
@@ -293,8 +282,8 @@ module Qwk
       if happy then 
         puts "-Success" 
       else 
-        add_log_entry(4,Time.now,"WARNING: Failed to delete old packets.  This could be normal.")
-        puts "QWK: -Failure" 
+        add_log_entry(4,Time.now,"No old packets to delete.")
+        puts "-QWK: No old packets to delete." 
       end
     end
 
@@ -309,7 +298,7 @@ module Qwk
     end
 
     def import
-      relog.write
+      #relog.write
       ddate = Time.now.strftime("%m/%d/%Y at %I:%M%p") 
       puts "-QWK: Starting import."
       add_log_entry(4,Time.now,"Starting QWK message import")
@@ -320,24 +309,25 @@ module Qwk
       idxlist = getindexlist("qwk/*.NDX")
       control = getcontrol("qwk")
       makearealist(control)
-      displaypacketstats
-      setitup
+      displaypacketstats(idxlist)
 
+      user = fetch_user(get_uid(QWKUSER))
+      scanforaccess(user)
       tmsgimport = 0
 
       idxlist.each do |idx|
 
         index = read_index(idx)
 
-        putslog ("Now Processing Packet #{idx} which contains #{index.length} messages.")
-        log.write ("")
+        @log.write ("Now Processing Packet #{idx} which contains #{index.length} messages.")
+        @log.write ("")
         tempstr = idx.scan(/\d\d\d\d/)
         find = tempstr[0].to_i
         puts "-QWK: Finding Import Area for packet# #{find}..."
-        destnum = (find == 0) ? 0 : find_qwk_area(find, nil) 
-        if destnum
-          area = fetch_area(destnum)
-          putslog "Found. Importing #{idx} to #{area.name}"
+        area = (find == 0) ? 0 : find_qwk_area(find, nil) 
+        if area
+          @log.write "Found. Importing #{idx} to #{area.name}"
+	  puts "Found. Importing #{idx} to #{area.name}"
           puts
           x = 0
           boom = scanpacket(index, idx)
@@ -355,7 +345,7 @@ module Qwk
                 print x
                 $stdout.flush
                 x.to_s.length.times { print(BS.chr) }
-                addmessage(message,destnum) 
+                addmessage(message,area) 
               end
             }
           end
@@ -369,7 +359,7 @@ module Qwk
 
       end
       add_log_entry(4,Time.now,"Import Complete. #{tmsgimport} message(s) imported.")
-      puts "-QWK: import complete."
+      puts "-QWK: Import complete."
     end #of def Qwkimport
 
   end

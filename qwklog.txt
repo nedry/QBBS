@@ -1,0 +1,76 @@
+0 areas in CONTROL.DAT
+0 areas found in QWK packet
+0 areas in CONTROL.DAT
+0 areas found in QWK packet
+0 areas in CONTROL.DAT
+0 areas found in QWK packet
+228 areas in CONTROL.DAT
+10 areas found in QWK packet
+["2010"] Sysops
+["2003"] Entertain
+["2012"] Sync-JS
+["2016"] Internet
+["2013"] SYNCDATA
+["2004"] Debate
+["2007"] Synchronet
+["2001"] DOVE-Net
+["2014"] Sync Prog
+["2002"] Ads
+Now Processing Packet qwk/2010.NDX which contains 1 messages.
+
+QWK: ERROR: No mapping found for area qwk/2010.NDX
+0 areas in CONTROL.DAT
+0 areas found in QWK packet
+228 areas in CONTROL.DAT
+1 areas found in QWK packet
+["2001"] DOVE-Net
+Now Processing Packet qwk/2001.NDX which contains 31 messages.
+
+228 areas in CONTROL.DAT
+1 areas found in QWK packet
+["2001"] DOVE-Net
+Now Processing Packet qwk/2001.NDX which contains 31 messages.
+
+228 areas in CONTROL.DAT
+1 areas found in QWK packet
+["2001"] DOVE-Net
+Now Processing Packet qwk/2001.NDX which contains 31 messages.
+
+228 areas in CONTROL.DAT
+1 areas found in QWK packet
+["2001"] DOVE-Net
+Now Processing Packet qwk/2001.NDX which contains 31 messages.
+
+Found. Importing qwk/2001.NDX to General
+SREC  : 1
+STATUSFLAG :  
+NUMBER : 68198  
+TEMPDATE : 07-03-10
+TEMPTIME : 15:45
+TO : Offline                  
+FROM : DOS                      
+SUBJECT : test                     
+PASSWORD :             
+REFERENCE : 68197   
+BLOCKS : 7     
+TEMPCRAP : ·—  *
+HAS_TAGLINE :  
+228 areas in CONTROL.DAT
+1 areas found in QWK packet
+["2001"] DOVE-Net
+Now Processing Packet qwk/2001.NDX which contains 31 messages.
+
+Found. Importing qwk/2001.NDX to General
+SREC  : 1
+STATUSFLAG :  
+NUMBER : 68198  
+TEMPDATE : 07-03-10
+TEMPTIME : 15:45
+TO : Offline                  
+FROM : DOS                      
+SUBJECT : test                     
+PASSWORD :             
+REFERENCE : 68197   
+BLOCKS : 7     
+TEMPCRAP : ·—  *
+HAS_TAGLINE :  

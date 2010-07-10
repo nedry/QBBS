@@ -13,7 +13,7 @@ class Log
   end
 
   def write(line)
-    File.new(filename, File::CREAT|File::APPEND|File::RDWR, 0644) do |lf|
+    File.open(filename, File::CREAT|File::APPEND|File::RDWR, 0644) do |lf|
       lf.puts line
     end
   end

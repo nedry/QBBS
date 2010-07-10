@@ -12,10 +12,10 @@ class FtpClient
 
   def connect
     begin
-      ftp = Net::FTP.new(address)
+      ftp = Net::FTP.new(@address)
       ftp.debug_mode = true
       ftp.passive = true
-      ftp.login(account, password)
+      ftp.login(@account, @passwd)
       yield ftp
     ensure
       ftp.close
@@ -27,11 +27,11 @@ class FtpClient
       connect do |ftp|
         ftp.getbinaryfile(QWKPACKETDOWN,QWKPACKET,1024)
       end
-      add_log_entry(4,Time.now,"QWK Packet Download Successfull"rep_)
+      add_log_entry(4,Time.now,"QWK Packet Download Successfull")
       puts "-QWK: Download Successful"
     rescue
-      puts "-ERROR!!!... In FTP Download"
-      add_log_entry(4,Time.now,"QWK Packet Download Failure. No new msgs?")
+      puts "-QWK: FTP Download Failure.  No new msgs?"
+      add_log_entry(4,Time.now,"QWK Download Failure. No new msgs?")
     end
   end
 
