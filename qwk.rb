@@ -147,33 +147,33 @@ module Qwk
 
       msg = {} # stores the raw message fields as we read them in
 
-      File.open(filename, "rb") do |happy|
+      File.open(filename, "rb") do |file|
         @log.write ("SREC  : #{startrec}")
-        happy.pos = (startrec) * 128
+        file.pos = (startrec) * 128
         msg_packet.each do |key, len|
-          msg[key] = happy.read(len)
+          msg[key] = file.read(len)
           @log.write("#{key.to_s.upcase} : #{msg[key]}")
           if message.members.include? key
             message[key] = msg[key]
           end
         end
-      end
 
-      # convert numeric fields to integer
-      message.reference = message.reference.to_i
-      message.blocks = message.blocks.to_i
-      message.error = true if message.blocks == 0
+        # convert numeric fields to integer
+        message.reference = message.reference.to_i
+        message.blocks = message.blocks.to_i
+        message.error = true if message.blocks == 0
 
-      # convert tagline to a boolean (if there is a "*" we have a tagline)
-      message.tagline = (message.tagline == "*")
+        # convert tagline to a boolean (if there is a "*" we have a tagline)
+        message.tagline = (message.tagline == "*")
 
-      # convert date and time to a DateTime object
-      message.set_datetime(msg[:tempdate], msg[:temptime])
+        # convert date and time to a DateTime object
+        message.set_datetime(msg[:tempdate], msg[:temptime])
 
-      # read blocks
-      happy.pos = (startrec + 1) * 128
-      if message.blocks > 1 then 
-        message.text = happy.read((message.blocks - 1) *128)
+        # read blocks
+        file.pos = (startrec + 1) * 128
+        if message.blocks > 1 then
+          message.text = file.read((message.blocks - 1) * 128)
+        end
       end
 
       @log.write("NSREC : #{startrec + message.blocks}")
