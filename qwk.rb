@@ -335,7 +335,7 @@ module Qwk
           puts
           putslog "QWK: ERROR: No mapping found for area #{idx}"
           puts
-          add_log_entry(8,Time.now,"No QWK mapping found for area #{idx}")
+          add_log_entry(8,Time.now,"No QWK mapping for area #{idx}")
         end
         puts
 

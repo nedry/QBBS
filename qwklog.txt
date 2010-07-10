@@ -93,3 +93,32 @@ REFERENCE : 68197
 BLOCKS : 7     
 TEMPCRAP : ·—  *
 HAS_TAGLINE :  
+0 areas in CONTROL.DAT
+0 areas found in QWK packet
+0 areas in CONTROL.DAT
+0 areas found in QWK packet
+0 areas in CONTROL.DAT
+0 areas found in QWK packet
+0 areas in CONTROL.DAT
+0 areas found in QWK packet
+0 areas in CONTROL.DAT
+0 areas found in QWK packet
+0 areas in CONTROL.DAT
+0 areas found in QWK packet
+0 areas in CONTROL.DAT
+0 areas found in QWK packet
+0 areas in CONTROL.DAT
+0 areas found in QWK packet
+0 areas in CONTROL.DAT
+0 areas found in QWK packet
+0 areas in CONTROL.DAT
+0 areas found in QWK packet
+228 areas in CONTROL.DAT
+4 areas found in QWK packet
+["2016"] Internet
+["2004"] Debate
+["2001"] DOVE-Net
+["2002"] Ads
+Now Processing Packet qwk/2016.NDX which contains 2 messages.
+
+QWK: ERROR: No mapping found for area qwk/2016.NDX
