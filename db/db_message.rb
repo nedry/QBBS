@@ -133,5 +133,5 @@ def add_qwk_message(message, area)
   user.posted = user.posted + 1
   pointer.lastread = absolute
   update_pointer(pointer)
-  update_user(user,get_uid(QWKUSER))
+  update_user(user)
 end

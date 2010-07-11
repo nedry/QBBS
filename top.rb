@@ -28,7 +28,7 @@ require "qwk.rb"
 require "rep.rb"
 
 class Session 
-  def initialize(irc_who, who, log, message, socket)
+  def initialize(irc_who, who, message, socket)
     @socket  = socket 
     @irc_who = irc_who
     @who  = who
@@ -43,7 +43,6 @@ class Session
     @irc_alias = nil			#irc alias (getting lazy here...)
     @irc_channel = nil		#I promise no more session vars!
     @message = message		
-    @log  = log
     @gd_game = false		#ok, just one more!
     @gd_mode = false 		#this time, I mean it.
   end 

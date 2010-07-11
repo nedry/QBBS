@@ -604,14 +604,14 @@ end
 
     area = fetch_area(@c_area)
     start,stop = parameters[0..1]
+    pointer = get_pointer(@c_user,@c_area)
 
     if (start < 1) or (start > h_msg) or (stop < 1) or (stop > h_msg) then
       print "%ROut of Range dude!"
       return
     end
 
-    if !((@c_user.areaaccess[@c_area] =~ /[CM]/) or
-         (@c_user.level == 255) ) then
+    if !((pointer.access =~ /[CM]/) or (@c_user.level == 255) ) then
          print CANNOTKILLMESSAGESERROR
          return
     end

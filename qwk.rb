@@ -121,6 +121,26 @@ module Qwk
       end
     end
 
+def convert_to_utf(new_value)
+  # Converting ASCII-8BIT to UTF-8 based domain-specific guesses
+  if new_value.is_a? String
+    begin
+      # Try it as UTF-8 directly
+      cleaned = new_value.dup.force_encoding('UTF-8')
+      unless cleaned.valid_encoding?
+        # Some of it might be old Windows code page
+      #  cleaned = new_value.encode( 'UTF-8', 'Windows-1252' )
+      cleaned = new_value.encode( 'UTF-8', 'US8PC437' )
+      end
+      new_value = cleaned
+    rescue EncodingError
+      # Force it to UTF-8, throwing out invalid bits
+      new_value.encode!( 'UTF-8', invalid: :replace, undef: :replace )
+    end
+  end
+  return new_value
+ end
+  
     def getmessage(path, startrec)
       message = Message.create
       filename = "#{path}/MESSAGES.DAT"
@@ -173,6 +193,14 @@ module Qwk
         file.pos = (startrec + 1) * 128
         if message.blocks > 1 then
           message.text = file.read((message.blocks - 1) * 128)
+	  message.text.gsub!(227.chr,"\r")
+	 #   message.text = message.text.encode( 'UTF-8', 'IBM437' )
+	 
+	  #  message.text = message.text.encode( 'UTF-8', 'Windows-1252' )
+	    message.text = message.text.encode( 'UTF-8', 'ISO-8859-1' )
+	# message.text = convert_to_utf(message.text)
+	 
+	 
         end
       end
 

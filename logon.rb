@@ -174,7 +174,7 @@ class Session
 	def checkmultiplelogon
 		for x in 0..(@who.len - 1)
 			if @who[x].name.upcase == @c_user.name.upcase then
-				add_log_entry(7,Time.now,"#{@c_user.name} tried to log on, but is already on-line")
+				add_log_entry(7,Time.now,"#{@c_user.name} multiple logon attempt.")
 				gfileout("already")
 				sleep(10)
 				hangup
