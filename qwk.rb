@@ -193,14 +193,21 @@ def convert_to_utf(new_value)
         file.pos = (startrec + 1) * 128
         if message.blocks > 1 then
           message.text = file.read((message.blocks - 1) * 128)
-	  message.text.gsub!(227.chr,"\r")
+	  temp = message.text.gsub(227.chr,"\r")
+	  temp2 = ""
+	  temp2.force_encoding("UTF-8")
+	  	  for i in 0..temp.length - 1 do
+		 temp2 << temp[i] if temp[i].ord <= 127 
+		 temp2 << "\u9632" if temp[i].ord == 254.chr 
+	 end
+	 message.text = temp2
 	 #   message.text = message.text.encode( 'UTF-8', 'IBM437' )
-	 
+
 	  #  message.text = message.text.encode( 'UTF-8', 'Windows-1252' )
-	    message.text = message.text.encode( 'UTF-8', 'ISO-8859-1' )
+	    #message.text = message.text.encode( 'UTF-8', 'ISO-8859-1' )
 	# message.text = convert_to_utf(message.text)
-	 
-	 
+
+
         end
       end
 
