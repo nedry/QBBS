@@ -143,7 +143,7 @@ module Qwk
         [:password, 12],
         [:reference, 8],
         [:blocks, 6],
-        [:tempcrap, 6],
+        [:tempcrap, 5],
         [:has_tagline, 1]
       ]
 
