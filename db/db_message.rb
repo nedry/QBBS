@@ -131,11 +131,11 @@ def convert_to_utf8(message)
   temp = message.gsub(227.chr,"\r") #replace qwk delimilter with cr
   temp2 = ""
   temp2.force_encoding("UTF-8")
-  for i in 0..temp.length - 1 do
-    if temp[i].ord <= 127 then
-      temp2 << temp[i]
+  temp.each_char do |c|
+    if c.ord <= 127 then
+      temp2 << c
     else
-      temp2 << Encodings::ASCII_UNICODE[temp[i]]
+      temp2 << Encodings::ASCII_UNICODE[c]
     end
   end
   return temp2
@@ -145,11 +145,11 @@ def convert_to_ascii(message)
   temp = ""
   temp.force_encoding("ASCII-8BIT")
 
-  for i in 0..message.length - 1 do
-    if message[i].ord <= 127 then
-      temp << message[i]
+  message.each_char do |c|
+    if c.ord <= 127 then
+      temp << c
     else
-      temp << Encodings::UNICODE_ASCII[message[i]]
+      temp << Encodings::UNICODE_ASCII[c]
     end
   end
   return temp
