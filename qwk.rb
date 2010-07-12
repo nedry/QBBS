@@ -122,7 +122,7 @@ module Qwk
         return []
       end
     end
-  
+
     def getmessage(path, startrec)
       message = Message.create
       filename = "#{path}/MESSAGES.DAT"
@@ -174,8 +174,10 @@ module Qwk
         # read blocks
         file.pos = (startrec + 1) * 128
         if message.blocks > 1 then
+
           temp = file.read((message.blocks - 1) * 128)
 	  message.text = convert_to_utf8(temp)
+
         end
       end
 
