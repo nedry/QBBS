@@ -1,6 +1,8 @@
 require 'models/message'
 require 'models/area'
 require 'dm-validations'
+require 'consts.rb'
+require 'encodings.rb'
 
   def scanforaccess(user)
     for i in 0..(a_total - 1) do
@@ -35,7 +37,6 @@ def high_absolute(table)
   if m_total(table) > 0 then
     result = absolute_message(table,m_total(table))
   else result = 0 end
-
   return result
 end
 
@@ -95,7 +96,6 @@ def add_msg(m_to,m_from,msg_date,subject,msg_text,exported,network,reply,destnod
   topt = -1 if topt.nil?
   destnode = -1 if destnode.nil?
   destnet = -1 if destnet.nil?
-   puts "number: #{number}"
   area = Area.first(:number => number)
    message = area.messages.new(
     :m_to => m_to,
@@ -115,10 +115,11 @@ def add_msg(m_to,m_from,msg_date,subject,msg_text,exported,network,reply,destnod
  dude = message.save
  #message.errors.each{|x| puts x}
  #puts "worked: #{dude}"
-           return high_absolute(area)
+           return high_absolute(area.number)
 end
 
 def add_qwk_message(message, area)
+
   user = fetch_user(get_uid(QWKUSER))
   pointer = get_pointer(user,area.number)
   msg_text = message.text
@@ -135,3 +136,36 @@ def add_qwk_message(message, area)
   update_pointer(pointer)
   update_user(user)
 end
+
+def convert_to_utf8(message)
+	    
+  	
+ temp = message.gsub(227.chr,"\r") #replace qwk delimilter with cr
+	  temp2 = ""
+	  temp2.force_encoding("UTF-8")
+		for i in 0..temp.length - 1 do
+		   if temp[i].ord <= 127 then
+		     temp2 << temp[i] 
+		   else 
+		     temp2 << Encodings::ASCII_UNICODE[temp[i]]
+		   end
+	      end
+ return temp2
+end
+
+  def convert_to_ascii(message)
+        temp = ""
+        temp.force_encoding("ASCII-8BIT")
+    
+    for i in 0..message.length - 1 do
+      		   if message[i].ord <= 127 then
+		     temp << message[i] 
+		   else 
+		     temp << Encodings::UNICODE_ASCII[message[i]]
+		   end
+	   end
+	   return temp
+  end
+  
+	
+

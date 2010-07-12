@@ -2,6 +2,8 @@ require 'tools'
 require 'log'
 require 'ftpclient'
 require 'db/db_log'
+require 'encodings.rb'
+
 
 module Qwk
   Area = Struct.new("Area", :area, :name)
@@ -75,12 +77,12 @@ module Qwk
 
   class Importer
     attr_accessor :file, :log
-
-    def initialize(path)
+    
+   def initialize(path)
       @file = path
       @log = Log.new("qwklog.txt")
     end
-
+    
     def putslog(output)
       @log.write(output)
       puts ("-QWK: #{output}")
@@ -120,26 +122,6 @@ module Qwk
         return []
       end
     end
-
-def convert_to_utf(new_value)
-  # Converting ASCII-8BIT to UTF-8 based domain-specific guesses
-  if new_value.is_a? String
-    begin
-      # Try it as UTF-8 directly
-      cleaned = new_value.dup.force_encoding('UTF-8')
-      unless cleaned.valid_encoding?
-        # Some of it might be old Windows code page
-      #  cleaned = new_value.encode( 'UTF-8', 'Windows-1252' )
-      cleaned = new_value.encode( 'UTF-8', 'US8PC437' )
-      end
-      new_value = cleaned
-    rescue EncodingError
-      # Force it to UTF-8, throwing out invalid bits
-      new_value.encode!( 'UTF-8', invalid: :replace, undef: :replace )
-    end
-  end
-  return new_value
- end
   
     def getmessage(path, startrec)
       message = Message.create
@@ -192,22 +174,8 @@ def convert_to_utf(new_value)
         # read blocks
         file.pos = (startrec + 1) * 128
         if message.blocks > 1 then
-          message.text = file.read((message.blocks - 1) * 128)
-	  temp = message.text.gsub(227.chr,"\r")
-	  temp2 = ""
-	  temp2.force_encoding("UTF-8")
-	  	  for i in 0..temp.length - 1 do
-		 temp2 << temp[i] if temp[i].ord <= 127 
-		 temp2 << "\u9632" if temp[i].ord == 254.chr 
-	 end
-	 message.text = temp2
-	 #   message.text = message.text.encode( 'UTF-8', 'IBM437' )
-
-	  #  message.text = message.text.encode( 'UTF-8', 'Windows-1252' )
-	    #message.text = message.text.encode( 'UTF-8', 'ISO-8859-1' )
-	# message.text = convert_to_utf(message.text)
-
-
+          temp = file.read((message.blocks - 1) * 128)
+	  message.text = convert_to_utf8(temp)
         end
       end
 
@@ -312,9 +280,11 @@ def convert_to_utf(new_value)
       ddate = Time.now.strftime("%m/%d/%Y at %I:%M%p") 
       puts "-QWK: Starting import."
       add_log_entry(4,Time.now,"Starting QWK message import")
-      clearoldqwk
-      ftppacketdown
-      unzippacket
+      if !QWK_DEBUG then
+       clearoldqwk
+       ftppacketdown
+       unzippacket
+      end
 
       idxlist = getindexlist("qwk/*.NDX")
       control = getcontrol("qwk")
@@ -333,7 +303,7 @@ def convert_to_utf(new_value)
         @log.write ("")
         tempstr = idx.scan(/\d\d\d\d/)
         find = tempstr[0].to_i
-        puts "-QWK: Finding Import Area for packet# #{find}..."
+        print "-QWK: Finding Import Area for packet# #{find}..."
         area = (find == 0) ? 0 : find_qwk_area(find, nil) 
         if area
           @log.write "Found. Importing #{idx} to #{area.name}"

@@ -2,6 +2,7 @@ require 'tools.rb'
 require 'messagestrings.rb'
 require 'menu.rb'
 require 'doors.rb'
+require 'encodings.rb'
 
 class Session
 
@@ -23,7 +24,6 @@ class Session
     grp = groups[tempint].grp if !tempint.nil?
     displayheader
     temp = fetch_area_list(grp)
-    puts temp.length
     fetch_area_list(grp).each_with_index {|area,i|
       pointer = get_pointer(@c_user,area.number)
       tempstr = (
@@ -416,6 +416,7 @@ class Session
     end
   end
 
+
   def displaymessage(mpointer,table,email)
 
    if mpointer != 0 then
@@ -437,7 +438,9 @@ class Session
     end
 
     message = []
-    curmessage.msg_text.each_line(DLIM) {|line| message.push(line.chop!)} #changed from .each for ruby 1.9
+    tempmsg=convert_to_ascii(curmessage.msg_text)
+
+     tempmsg.each_line(DLIM) {|line| message.push(line.chop!)} #changed from .each for ruby 1.9
 
     if curmessage.network then
       message,q_msgid,q_via,q_tz,q_reply = qwk_kludge_search(message)
@@ -511,9 +514,9 @@ end
     user = @c_user
     area = fetch_area(@c_area)
     pointer = get_pointer(@c_user,area.number)
-    puts  "mtotal: #{m_total(area.number)}"
-    puts  "new_mess: #{new_messages(area.number,pointer.lastread)}"
-    puts "pointer.lastread: #{pointer.lastread}"
+    #puts  "mtotal: #{m_total(area.number)}"
+    #puts  "new_mess: #{new_messages(area.number,pointer.lastread)}"
+    #puts "pointer.lastread: #{pointer.lastread}"
     p_msg = m_total(area.number) - new_messages(area.number,pointer.lastread) # modified for db change
   end
 
@@ -533,9 +536,9 @@ end
       :prompt => '"%M[Area #{@c_area}]%C #{sdir} #{out}[%p] '+
       '(1-#{h_msg}): "'
     ) {|sel, mpointer, moved, out|
-      puts "total_msg: #{h_msg}"
-      puts "mpointer: #{mpointer}"
-      puts "h_msg: #{h_msg}"
+      #puts "total_msg: #{h_msg}"
+      #puts "mpointer: #{mpointer}"
+      #puts "h_msg: #{h_msg}"
       mpointer = h_msg if mpointer.nil?
       mpointer = h_msg if mpointer > h_msg
       #print "sel.integer: #{sel.integer?}"

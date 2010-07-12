@@ -2,6 +2,7 @@ require 'tools'
 require 'log'
 require 'ftpclient'
 require 'db/db_log'
+require 'encodings.rb'
 
 module Rep
   class Exporter
@@ -19,7 +20,8 @@ module Rep
     end
 
     def reformat_date(datein)
-      temp = datein.split(' ')
+      temp = datein.to_s.split(' ')
+      puts "datetmp: #{temp}"
       date_arr = temp[0].split('-')
       year = date_arr[0]
       output = "#{date_arr[1]}-#{date_arr[2]}-#{year[2..3]}"
@@ -27,7 +29,8 @@ module Rep
     end
 
     def reformat_time(timein)
-      temp = timein.split(' ')
+      temp = timein.to_s.split(' ')
+      puts "timetmp: #{temp}"
       time = temp[1]
       output = time[0..4]
       return output
@@ -41,9 +44,10 @@ module Rep
     end
 
     def message_blocks(message)
-      outmessage = message.msg_text # .join('?)
-      outmessage = outmessage << DLIM << "---" << DLIM
-      outmessage = outmessage << QWKTAG << DLIM
+      outmessage = convert_to_ascii(message.msg_text) # .join('?)
+      outmessage.gsub!(DLIM,227.chr)
+      outmessage = outmessage << 227.chr << "---" <<227.chr
+      outmessage = outmessage << QWKTAG << 227.chr
       dec = outmessage.length / 128
       nblocks = (dec.succ)
       len = outmessage.length
@@ -60,7 +64,7 @@ module Rep
       nblocks, msg = message_blocks(message)
       log.write("BLOCKS: #{blocks}")
 
-      File.open(file, "a") do |f|
+      File.open(@file, "a") do |f|
         f.write " "                      # Status Flag (not used on this system)
         f.write conf.to_s.ljust(7)       #Message Number
         f.write outdate.ljust(8)         #Message Date
@@ -76,6 +80,11 @@ module Rep
         f.write msg
       end
     end
+
+ def replogandputs(m)
+   @log.write(m)
+   puts m
+ end
 
     def makeexportlist
       xport = rep_table("").sort_by {|a| a.xnum}
@@ -95,46 +104,38 @@ module Rep
       File.delete(REPPACKET) if File.exists?(REPPACKET)
     end
 
-    def loadmessage(filename)
-      puts "-Loading Message Number: #{filename}"
-      curmessage = Amessage.newblank
-      if File.exists?(filename)
-        File.open(filename) do |f|
-          curmessage = Marshal.load(f)
-        end
-      else
-        puts "-Message not found.  Please panic!"
-      end
-      return curmessage
-    end #loadmessage
-
-    def repexport(user)
+    def repexport(u)
       clearoldrep
       ddate = Time.now.strftime("%m/%d/%Y at %I:%M%p")
       puts "-REP: Starting export."
       add_log_entry(3,Time.now,"Starting QWK message export.")
-      log.rewrite!
+      @log.rewrite!
       writeheader
       total = 0
       makeexportlist.each {|xp|
-        replogandputs "-REP: Now Processing #{xp.name} message area."
+        puts "-REP: Now Processing #{xp.name} message area."
+	@log.write "-REP: Now Processing #{xp.name} message area."
 
         #on first run with database... the user might not have logged in...
-        user.lastread ||= []
-        pointer = user.lastread[xp.num] || 0
-        replogandputs "-REP: Last [absolute] Exported Message: #{pointer}"
-        area = fetch_area(xp.num)
-        replogandputs "-REP: Highest [absolute] Message: #{high_absolute(area.tbl)}"
-        replogandputs "-REP: Total Messages       : #{m_total(area.tbl)}"
-        new = new_messages(area.tbl,pointer)
-        replogandputs "-REP: Messages to Export   : #{new}"
+       user = fetch_user(get_uid(u))
+       scanforaccess(user)
+       area = fetch_area(xp.num)
+       pointer = get_pointer(user,xp.num)       
+       
+        replogandputs "-REP: Last [absolute] Exported Message: #{pointer.lastread}"
+
+        replogandputs "-REP: Highest [absolute] Message: #{high_absolute(area.number)}"
+        replogandputs "-REP: Total Messages            : #{m_total(area.number)}"
+        new = new_messages(area.number,pointer.lastread)
+        replogandputs "-REP: Messages to Export        : #{new}"
+	puts 
         if new > 0 then
           #puts "-REP: Starting Export"
-          for i in pointer.succ..high_absolute(area.tbl) do
-            workingmessage = fetch_msg(area.tbl,i)
+          for i in pointer.lastread.succ..high_absolute(area.number) do
+            workingmessage = fetch_msg(i)
             if workingmessage != nil then
               if  !workingmessage.network then
-                writemessage("rep/",workingmessage,xp.xnum)
+                writemessage(workingmessage,xp.xnum)
                 total = total.succ
               else
                 error = workingmessage.network ?
@@ -147,8 +148,8 @@ module Rep
             end
             puts "-REP: Updating message pointer for board #{xp.name}"
             n = xp.num
-            user.lastread[n] = high_absolute(area.tbl)
-            update_user(user,get_uid(QWKUSER))
+            pointer.lastread = high_absolute(area.number)
+            update_pointer(pointer)
           end
         end
       }

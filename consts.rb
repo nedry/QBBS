@@ -1,7 +1,9 @@
 DEBUG = true
 LISTENPORT = 2323
-QWK  = true
+QWK = true
+QWK_DEBUG = true
 FIDO = false
+SMTP = false
 IRC_ON =  false
 
 BS = 8
@@ -195,35 +197,8 @@ IRCCOLORTABLE = {
   "\co" =>  "\e[;1;37;40m"
 }
 
-GD_COMMANDS = ["TURN","NIFTY","STOCK","DEFENCE","DEFENSE",
-"STAT","TABLE","USE","PASS","INCOMING","SURRENDER"]
 
-GD_HELP_TABLE = {
-  "AUTHORS" => "gd_help_authors", "TALKING" => "gd_help_talk",
-  "COMMANDS" => "gd_help_commands", "JETS" => "gd_help_jets",
-  "ABMS" => "gd_help_abms", "MISSILES" => "gd_help_missles",
-  "WHISPER" => "gd_help_whisper", "STARTING" => "gd_help_start",
-  "DEATH" => "gd_help_death", "TURN" => "gd_help_turn",
-  "INTRO" => "gd_help_intro", "PERSUASION" => "gd_help_persuasion",
-  "BRAINWASHING" => "gd_help_persuasion", "MISINFORMATION" => "gd_help_persuasion",
-  "MISINFORMATION" =>  "gd_help_persuasion", "WARHEADS" =>  "gd_help_warheads",
-  "IMMIGRATION" =>  "gd_help_immigration", "SUPER" =>  "gd_help_immigration",
-  "SPECIAL" =>  "gd_help_special", "SPY" =>  "gd_help_spy",
-  "COUNTERSPY" =>  "gd_help_counterspy", "BOMBER" =>  "gd_help_bomber",
-  "JET" =>  "gd_help_counterspy", "JET" =>  "d_help_jet",
-  "12" =>  "gd_help_warheads", "20" =>  "gd_help_warheads",
-  "40" =>  "gd_help_warheads", "70" =>  "gd_help_warheads",
-  "100" =>  "gd_help_warheads", "150" =>  "gd_help_warheads",
-  "VIPER" =>  "gd_help_missile", "TRIDENT" =>  "gd_help_missile",
-  "ARES" =>  "gd_help_missile", "HELLBORE" =>  "gd_help_missile",
-  "THUNDERBOLT" =>  "gd_help_missile", "LIBERATOR" =>  "gd_help_abm",
-  "GUARDIAN" =>  "gd_help_abm", "PATRIOT" =>  "gd_help_abm",
-  "AVATAR" =>  "gd_help_abm", "NEXUS" =>  "gd_help_abm",
-  "AEGIS" =>  "gd_help_abm", "NEXUS" =>  "gd_help_abm",
-  "MIRV" =>  "gd_help_mirv", "ITEMS" =>  "gd_help_items",
-}
 
-GD_IRCUSER = "GD"
 
 TIME_TABLE = {
   "40F0"  => "Atlantic", "412C"  => "Eastern",
@@ -247,14 +222,29 @@ TIME_TABLE = {
   "11E0" => "Hong Kong","121C" => "Tokyo",
   "1258" => "Sydney","1294" => "Noumea",
 "12D0" => "Wellington"}
+
+
 #Mail Types
 
 Q_NETMAIL = 1
 F_NETMAIL = 2
-SMTP      = 3
+SMTP_MAIL = 3
 LOCAL     = 4
 
 SMTP_MOVE_ERROR = 1
 SMTP_SUCCESS    = 2
 NO_SMTP_TO_COPY = 3
+
+#Log Constants
+
+L_SCHEDULE = 1
+L_FIDO = 2
+L_EXPORT = 3
+L_IMPORT = 4
+L_USER = 5
+L_CONNECT = 6
+L_SECURITY = 7
+L_ERROR = 8
+L_MESSAGE = 9
+
 

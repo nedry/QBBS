@@ -44,8 +44,8 @@ class FtpClient
       puts "-REP: FTP QWK Upload Successful"
       return true
     rescue
-      puts "-ERROR!!!... In FTP Upload"
-      add_log_entry(8,Time.now," FTP QWK Upload Failure.")
+      puts "-REP: FTP REP Upload Failure"
+      add_log_entry(8,Time.now," FTP REP Upload Failure.")
       return false
     end
   end

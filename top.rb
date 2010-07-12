@@ -136,8 +136,7 @@ class QWKREPSchedulethread
     @who.each_index {|i| yield @who[i].name, i}
   end
 
-  require "qwkimport.rb"
-  require "repexport.rb"
+
   require "t_pktread.rb"
   require "t_pktwrite.rb"
   require "t_bundle.rb"
@@ -173,21 +172,22 @@ class QWKREPSchedulethread
   end
 
   def up_down
-    if ftptest then
-      #puts "I would have done it if you let me, you bastard!"
-      #worked = repexport
-      qwkimp =  Qwk::Importer.new(nil)
-      qwkimp.import
-      #qwkimport if worked
+    if ftptest or QWK_DEBUG then
+      worked = Rep::Exporter.new(REPDATA)
+      worked.repexport(QWKUSER)
+      if worked then 
+        qwkimp =  Qwk::Importer.new(nil)
+        qwkimp.import
+      end
     end
   end
 
 
   def doit(idle)
     puts "-SCHED: Starting a QWK/REP message run on #{Time.now.strftime("%m/%d/%Y at %I:%M%p")}... Idle: #{idle}"
-    add_log_entry(1,Time.now,"Starting a message transfer.")
+    add_log_entry(L_SCHEDULE,Time.now,"Starting a message transfer.")
     up_down_fido(idle) if FIDO
-    do_smtp
+    do_smtp if SMTP
     up_down
 
   end
@@ -274,7 +274,6 @@ class ServerSocket
     @who = who
     @message = message
     @irc_who = irc_who
-  # @log = log
     @logged_on = false
   end
 
@@ -307,7 +306,7 @@ class ServerSocket
   end
 end #class ServerSocket
 
-def replogandputs(m)
-  writereplog m
-  puts m
-end
+#def replogandputs(m)
+ # writereplog m
+ # puts m
+#end
