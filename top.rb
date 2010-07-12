@@ -173,13 +173,13 @@ class QWKREPSchedulethread
 
   def up_down
     if ftptest or QWK_DEBUG then
-     # worked = Rep::Exporter.new(REPDATA)
-  #    worked.repexport(QWKUSER)
-   #   if worked then 
+      worked = Rep::Exporter.new(REPDATA)
+       worked.repexport(QWKUSER)
+      if worked then 
         qwkimp =  Qwk::Importer.new(nil)
         qwkimp.import
       end
-   # end
+    end
   end
 
 

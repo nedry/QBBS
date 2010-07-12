@@ -19,22 +19,6 @@ module Rep
       end
     end
 
-    def reformat_date(datein)
-      temp = datein.to_s.split(' ')
-      puts "datetmp: #{temp}"
-      date_arr = temp[0].split('-')
-      year = date_arr[0]
-      output = "#{date_arr[1]}-#{date_arr[2]}-#{year[2..3]}"
-      return output
-    end
-
-    def reformat_time(timein)
-      temp = timein.to_s.split(' ')
-      puts "timetmp: #{temp}"
-      time = temp[1]
-      output = time[0..4]
-      return output
-    end
 
     def log_message(message)
       log.write("DATE  : #{message.msg_date}")
@@ -59,10 +43,10 @@ module Rep
 
     def writemessage(message, conf)
       log_message(message)
-      outdate = reformat_date(message.msg_date)
-      outtime = reformat_time(message.msg_date)
+      outdate = message.msg_date.strftime("%m-%d-%y")
+      outtime = message.msg_date.strftime("%H:%M")
       nblocks, msg = message_blocks(message)
-      log.write("BLOCKS: #{blocks}")
+      log.write("BLOCKS: #{nblocks}")
 
       File.open(@file, "a") do |f|
         f.write " "                      # Status Flag (not used on this system)

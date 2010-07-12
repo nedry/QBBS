@@ -193,8 +193,9 @@ class Session
     print
     user = @c_user
     area = fetch_area(@c_area)
+    pointer = get_pointer(@c_user,@c_area)
 
-    if user.areaaccess[@c_area] !~ /[RN]/
+    if pointer.access !~ /[RN]/
       abs = absolute_message(area.number,mpointer)
       r_message = fetch_msg(abs)
       to = r_message.m_from
@@ -249,7 +250,7 @@ class Session
     m_from = @c_user.name
     msg_date = Time.now.strftime("%Y-%m-%d %I:%M%p")
     absolute = add_msg(to,m_from,msg_date,title,msg_text,exported,false,reply,destnode,destnet,intl,point,false,area.number)
-    add_log_entry(5,Time.now,"#{@c_user.name} posted message absolute # #{absolute}")
+    add_log_entry(5,Time.now,"#{@c_user.name} posted msg # #{absolute}")
   end
 
   def get_or_cr(prompt, crvalue)
