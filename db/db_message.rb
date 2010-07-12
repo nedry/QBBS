@@ -4,26 +4,23 @@ require 'dm-validations'
 require 'consts.rb'
 require 'encodings.rb'
 
-  def scanforaccess(user)
-    for i in 0..(a_total - 1) do
-      area = fetch_area(i)
-       pointer = get_pointer(user,i)
-       if pointer.nil? then 
-	add_pointer(user,i,area.d_access,0)
-      end
+def scanforaccess(user)
+  for i in 0..(a_total - 1) do
+    area = fetch_area(i)
+    pointer = get_pointer(user,i)
+    if pointer.nil? then
+      add_pointer(user,i,area.d_access,0)
     end
   end
-
+end
 
 def m_total(area)
   Message.all(:number => area).count
 end
 
-
 def new_messages(area,ind)
-   ind = 0 if ind.nil?
-   Message.all(:absolute.gt => ind, :number => area).count
-
+  ind = 0 if ind.nil?
+  Message.all(:absolute.gt => ind, :number => area).count
 end
 
 def absolute_message(area,ind)
@@ -33,7 +30,6 @@ def absolute_message(area,ind)
 end
 
 def high_absolute(table)
-
   if m_total(table) > 0 then
     result = absolute_message(table,m_total(table))
   else result = 0 end
@@ -41,53 +37,48 @@ def high_absolute(table)
 end
 
 def delete_msg(ind)
-    message = Message.first(:absolute => ind)
-    message.destroy!
+  message = Message.first(:absolute => ind)
+  message.destroy!
 end
 
 def delete_msgs(area,first,last)
-
-   message = Message.all(:absolute.gte => first, :absolute.lte => last, :number => area)
-   message.destroy!
+  message = Message.all(:absolute.gte => first, :absolute.lte => last, :number => area)
+  message.destroy!
 end
 
-def find_fido_area (area)
-
+def find_fido_area(area)
   area = Area.first(:fido_net => area)
   number = area.number
   return number
 end
 
 def exported(absolute)
-   message = Message.first(:absolute => absolute)
-   message.exported = true
-   message.save!
+  message = Message.first(:absolute => absolute)
+  message.exported = true
+  message.save!
 end
 
 def update_msg(r)
- r.save
+  r.save
 end
-
 
 def fetch_msg(absolute)
   message = Message.first(:absolute => absolute)
- end
+end
 
 def e_total(user)
   Message.all(:number => 0,  :conditions => ["m_to ILIKE ?", user] ).count
 end
 
-
 def new_email(ind,user)
-
   ind = 0 if ind.nil?
-  Message.all(:number => 0, :absolute.gt => ind,  :conditions => ["m_to ILIKE ?", user] ).count
+  Message.all(:number => 0, :absolute.gt => ind, :conditions => ["m_to ILIKE ?", user]).count
 end
 
 
 def email_absolute_message(ind,m_to)
   ind = 0 if ind.nil?
-  lazy_list = Message.all(:number => 0, :conditions => ["m_to ILIKE ?", m_to] , :order => [ :absolute ])
+  lazy_list = Message.all(:number => 0, :conditions => ["m_to ILIKE ?", m_to], :order => [:absolute ])
   result = lazy_list[ind-1].absolute
 end
 
@@ -97,7 +88,7 @@ def add_msg(m_to,m_from,msg_date,subject,msg_text,exported,network,reply,destnod
   destnode = -1 if destnode.nil?
   destnet = -1 if destnet.nil?
   area = Area.first(:number => number)
-   message = area.messages.new(
+  message = area.messages.new(
     :m_to => m_to,
     :m_from => m_from,
     :msg_date => msg_date,
@@ -112,14 +103,13 @@ def add_msg(m_to,m_from,msg_date,subject,msg_text,exported,network,reply,destnod
     :topt => topt,
     :smtp => smtp
   ) 
- dude = message.save
- #message.errors.each{|x| puts x}
- #puts "worked: #{dude}"
-           return high_absolute(area.number)
+  dude = message.save
+  #message.errors.each{|x| puts x}
+  #puts "worked: #{dude}"
+  return high_absolute(area.number)
 end
 
 def add_qwk_message(message, area)
-
   user = fetch_user(get_uid(QWKUSER))
   pointer = get_pointer(user,area.number)
   msg_text = message.text
@@ -138,34 +128,29 @@ def add_qwk_message(message, area)
 end
 
 def convert_to_utf8(message)
-	    
-  	
- temp = message.gsub(227.chr,"\r") #replace qwk delimilter with cr
-	  temp2 = ""
-	  temp2.force_encoding("UTF-8")
-		for i in 0..temp.length - 1 do
-		   if temp[i].ord <= 127 then
-		     temp2 << temp[i] 
-		   else 
-		     temp2 << Encodings::ASCII_UNICODE[temp[i]]
-		   end
-	      end
- return temp2
+  temp = message.gsub(227.chr,"\r") #replace qwk delimilter with cr
+  temp2 = ""
+  temp2.force_encoding("UTF-8")
+  temp.each_char do |c|
+    if c.ord <= 127 then
+      temp2 << c
+    else
+      temp2 << Encodings::ASCII_UNICODE[c]
+    end
+  end
+  return temp2
 end
 
-  def convert_to_ascii(message)
-        temp = ""
-        temp.force_encoding("ASCII-8BIT")
-    
-    for i in 0..message.length - 1 do
-      		   if message[i].ord <= 127 then
-		     temp << message[i] 
-		   else 
-		     temp << Encodings::UNICODE_ASCII[message[i]]
-		   end
-	   end
-	   return temp
-  end
-  
-	
+def convert_to_ascii(message)
+  temp = ""
+  temp.force_encoding("ASCII-8BIT")
 
+  message.each_char do |c|
+    if c.ord <= 127 then
+      temp << c
+    else
+      temp << Encodings::UNICODE_ASCII[c]
+    end
+  end
+  return temp
+end
