@@ -127,7 +127,14 @@ def add_qwk_message(message, area)
   update_user(user)
 end
 
-def convert_to_utf8(message)
+def convert_to_utf8(message, unixterm=false)
+  # this makes messages display properly on a unix terminal
+  if unixterm
+    temp = message.gsub(227.chr,"\n") #replace qwk delimilter with crlf
+    return temp.force_encoding("ibm437").encode("utf-8")
+  end
+
+  # this works with syncterm
   temp = message.gsub(227.chr,"\r") #replace qwk delimilter with cr
   temp2 = ""
   temp2.force_encoding("UTF-8")
