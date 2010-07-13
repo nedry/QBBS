@@ -39847,3 +39847,15 @@ QWK: ERROR: No mapping found for area qwk/2002.NDX
 Now Processing Packet qwk/2007.NDX which contains 1 messages.
 
 QWK: ERROR: No mapping found for area qwk/2007.NDX
+0 areas in CONTROL.DAT
+0 areas found in QWK packet
+0 areas in CONTROL.DAT
+0 areas found in QWK packet
+0 areas in CONTROL.DAT
+0 areas found in QWK packet
+0 areas in CONTROL.DAT
+0 areas found in QWK packet
+0 areas in CONTROL.DAT
+0 areas found in QWK packet
+0 areas in CONTROL.DAT
+0 areas found in QWK packet

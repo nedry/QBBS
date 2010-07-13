@@ -357,12 +357,8 @@ class Session
   def display_fido_header(mpointer)
     area = fetch_area(@c_area)
     if (h_msg > 0) and (mpointer > 0) then
-      table = area.tbl
-      @c_user.lastread = Array.new(2,0) if @c_user.lastread == 0
-      @c_user.lastread[@c_area] ||= 0
       u = @c_user
-      abs = absolute_message(table,mpointer)
-      fidomessage = fetch_msg(table, abs)
+      fidomessage = fetch_msg(absolute_message(@c_area,mpointer))
       print "Org: #{fidomessage.orgnet}/#{fidomessage.orgnode}"
       print "Dest: #{fidomessage.destnet}/#{fidomessage.destnode}"
       print "Attribute: #{fidomessage.attribute}"

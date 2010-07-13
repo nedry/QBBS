@@ -59,14 +59,16 @@ def kludge_search(buffer)	#searches the message buffer for kludge lines and retu
       origin = $3.gsub("(","")
       origin.gsub!(")","")
     end }
-    msg_array.each_with_index {|x,i|
+    test = msg_array.dup
+    test.each_with_index {|x,i|
 
         match = (/^(\S*)(.*)/) =~ x
-      #  puts "$1:#{$1} $2:#{$2}"
+        puts "$1:#{$1} $2:#{$2}"
         if !match.nil? then 
-	 # test = $1
-	  #test.slice!(0)
-          case $1.slice!(0)
+	  test = $1
+	  test.slice!(0)
+	  puts test
+          case test #$1.slice!(0)
           when "MSGID:"
             msgid = $2.strip
             msg_array[i] = nil
