@@ -78,8 +78,12 @@ end
 end # of class A_fidonet_message
 
 class Kludge
+ attr_accessor :area, :msgid, :path, :tzutc, :charset, :tid, :pid, :intl, :topt,
+		 :fmpt, :reply, :origin
 
- def initialize (area,msgid,path,tzutc,charset,tid,pid,intl,topt,fmtp,reply,origin)
+ def initialize (area=nil,msgid=nil,path=nil,tzutc=nil,
+                 charset=nil,tid=nil,pid=nil,intl=nil,
+                 topt=nil,fmtp=nil,reply=nil,origin=nil)
   @area 	= area
   @msgid	= msgid
   @path		= path
@@ -94,6 +98,9 @@ class Kludge
   @origin		= origin
  end
 
- attr_accessor :area, :msgid, :path, :tzutc, :charset, :tid, :pid, :intl, :topt,
-		 :fmpt, :reply, :origin
+ def []=(field, value)
+   field = field.downcase
+   self.send("#{field}=", value)
+ end
+
 end #of class Kludge

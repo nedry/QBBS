@@ -29,88 +29,54 @@ end
 
 
 def kludge_search(buffer)	#searches the message buffer for kludge lines and returns them
-
-  area 	= nil
-  msgid	= nil
-  path	= nil
-  tzutc	= nil
-  charset	= nil
-  tid		= nil
-  pid		= nil
-  intl		= nil
-  topt	= nil
-  fmpt	= nil
-  reply 	= nil
-  origin	= nil
+  kludge = Kludge.new
 
   msg_array = buffer.split("\r")  #split the message into an array so we can deal with it.
 
   match = (/^(AREA:)(.*)/) =~ msg_array[0] # detect the area, if there is one.
-  if !match.nil? then 
-    area = $2
+
+  if match then
+    kludge.area = $2
     msg_array.delete_at(0) # We found it, so delete it from the message.
-  else 
+  else
     puts "No Area: Netmail Message"
-    area = NETMAIL   #we need to check that the message is really for us?  add this?
+    kludge.area = NETMAIL  # We need to check that the message is really for us?  add this?
   end
-  msg_array.each {|x|  match = (/(^\s\*\sOrigin:)(.+)(\(.+\))/) =~ x
+
+  msg_array.each {|x|
+    match = (/(^\s\*\sOrigin:)(.+)(\(.+\))/) =~ x
     puts x
-    if !match.nil? then
-      origin = $3.gsub("(","")
-      origin.gsub!(")","")
-    end }
-    test = msg_array.dup
-    test.each_with_index {|x,i|
+    if match then
+      kludge.origin = $3.gsub(/[()]/,"")
+    end
+  }
 
-        match = (/^(\S*)(.*)/) =~ x
-        puts "$1:#{$1} $2:#{$2}"
-        if !match.nil? then 
-	  test = $1
-	  test.slice!(0)
-	  puts test
-          case test #$1.slice!(0)
-          when "MSGID:"
-            msgid = $2.strip
-            msg_array[i] = nil
-          when "PATH:"
-            path = $2.strip
-            msg_array[i] = nil
-          when "TZUTC:"
-            tzutc = $2.strip
-            msg_array[i] = nil
-          when "CHARSET:"
-            charset = $2.strip
-            msg_array[i] = nil
-          when "TID:"
-            tid = $2.strip
-            msg_array[i] = nil
-          when "PID"
-            pid = $2.strip
-            msg_array[i] = nil
-          when "INTL"
-            intl = $2.strip
-            msg_array[i] = nil
-          when "TOPT"
-            topt = $2.strip
-            msg_array[i] = nil
-          when "FMPT"
-            fmpt = $2.strip
-            msg_array[i] = nil
-          when "REPLY:"
-            reply = $2.strip
-            msg_array[i] = nil
+  # if we find any of these, reject the message
+  invalid = [
+    "MSGID:", "PATH:", "TZUTC:", "CHARSET:", "TID:",
+    "PID", "INTL", "TOPT", "FMPT", "REPLY:"
+  ]
 
-       #   end
-        end
-      end }
+  valid_messages = []
+  msg_array.each do |x|
+    match = (/^(\S*)(.*)/) =~ x
+    #puts "$1:#{$1} $2:#{$2}"
+    if match then
+      header = $1
+      header.slice!(0)
+      value = $2
+      if invalid.include? header
+        field = header.gsub(/:/, '')
+        kludge[field] = value
+      else
+        valid_messages << x
+      end
+    end
+  end
 
-
-      msg_array.compact!	#Delete every line we marked with a nil, cause it had a kludge we caught!
-      puts
-      puts "----"
-      kludges = Kludge.new(area,msgid,path,tzutc,charset,tid,pid,intl,topt,fmpt,reply,origin)
-      return [msg_array,kludges]
-
+  puts
+  puts "----"
+  return [valid_messages, kludge]
 end
 
 def read_a_message(path,offset)
