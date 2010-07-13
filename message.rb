@@ -359,26 +359,27 @@ class Session
     if (h_msg > 0) and (mpointer > 0) then
       u = @c_user
       fidomessage = fetch_msg(absolute_message(@c_area,mpointer))
-      print "Org: #{fidomessage.orgnet}/#{fidomessage.orgnode}"
-      print "Dest: #{fidomessage.destnet}/#{fidomessage.destnode}"
-      print "Attribute: #{fidomessage.attribute}"
-      print "Cost: #{fidomessage.cost}"
-      print "Date Time: #{fidomessage.msg_date}"
-      print "To: #{fidomessage.m_to}"
-      print "From: #{fidomessage.m_from}"
-      print "Subject: #{fidomessage.subject}"
-      print "Area: #{fidomessage.area}" if !fidomessage.area.nil?
-      print "Msgid: #{fidomessage.msgid}" if !fidomessage.msgid.nil?
-      print "Path: #{fidomessage.path}" if !fidomessage.path.nil?
-      print "TzUTZ: #{fidomessage.tzutc}" if !fidomessage.tzutc.nil?
-      print "CharSet: #{fidomessage.charset}" if !fidomessage.charset.nil?
-      print "Tosser ID: #{fidomessage.tid}" if !fidomessage.tid.nil?
-      print "Proc ID: #{fidomessage.pid}" if !fidomessage.pid.nil?
-      print "Intl: #{fidomessage.intl}" if !fidomessage.intl.nil?
-      print "Topt: #{fidomessage.topt}" if !fidomessage.topt.nil?
-      print "Fmpt: #{fidomessage.fmpt}" if !fidomessage.fmpt.nil?
-      print "Reply: #{fidomessage.reply}" if !fidomessage.reply.nil?
-      print "Origin: #{fidomessage.origin}" if !fidomessage.origin.nil?
+      print
+      print "%COrg:%G #{fidomessage.orgnet}/#{fidomessage.orgnode}"
+      print "%CDest:%G #{fidomessage.destnet}/#{fidomessage.destnode}"
+      print "%CAttribute:%G #{fidomessage.attribute}"
+      print "%CCost:%G #{fidomessage.cost}"
+      print "%CDate Time:%G #{fidomessage.msg_date}"
+      print "%CTo:%G #{fidomessage.m_to}"
+      print "%CFrom:%G #{fidomessage.m_from}"
+      print "%CSubject:%G #{fidomessage.subject}"
+      print "%CArea:%G #{fidomessage.area}" if !fidomessage.area.nil?
+      print "%CMsgid:%G #{fidomessage.msgid}" if !fidomessage.msgid.nil?
+      print "%CPath:%G #{fidomessage.path}" if !fidomessage.path.nil?
+      print "%CTzUTZ:%G #{fidomessage.tzutc}" if !fidomessage.tzutc.nil?
+      print "%CCharSet:%G #{fidomessage.charset}" if !fidomessage.charset.nil?
+      print "%CTosser ID:%G #{fidomessage.tid}" if !fidomessage.tid.nil?
+      print "%CProc ID:%G #{fidomessage.pid}" if !fidomessage.pid.nil?
+      print "%CIntl:%G #{fidomessage.intl}" if !fidomessage.intl.nil?
+      print "%CTopt:%G #{fidomessage.topt}" if !fidomessage.topt.nil?
+      print "%CFmpt:%G #{fidomessage.fmpt}" if !fidomessage.fmpt.nil?
+      print "%CReply:%G #{fidomessage.reply}" if !fidomessage.reply.nil?
+      print "%COrigin:%G #{fidomessage.origin}" if !fidomessage.origin.nil?
       print
     else
       print "\r\n%YThis message area is empty. Why not %G[P]ost%Y a Message?" if h_msg == 0
@@ -537,13 +538,10 @@ end
       :prompt => '"%M[Area #{@c_area}]%C #{sdir} #{out}[%p] '+
       '(1-#{h_msg}): "'
     ) {|sel, mpointer, moved, out|
-      #puts "total_msg: #{h_msg}"
-      #puts "mpointer: #{mpointer}"
-      #puts "h_msg: #{h_msg}"
+
       mpointer = h_msg if mpointer.nil?
       mpointer = h_msg if mpointer > h_msg
-      #print "sel.integer: #{sel.integer?}"
-      #print "sel: #{sel}"
+
       if !sel.integer?
         parameters = Parse.parse(sel)
         sel.gsub!(/[-\d]/,"")

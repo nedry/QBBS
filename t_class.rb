@@ -7,25 +7,25 @@ class Packet_header_two  		# Fidonet Packet Header
   @orgnode	= orgnode	#Origination Node of Packet 
   @destnode	= destnode	#Destination Node of Packet
   @year		= year		#Year of Packet Creation e.g. 1995
-  @month	= month		#Month of Packet Creation 0-11
+  @month		= month		#Month of Packet Creation 0-11
   @day		= day		#Day of Packet Creation 1-31 
-  @hour 	= hour		#Hour of Packet Creation 0-23 
+  @hour 		= hour		#Hour of Packet Creation 0-23 
   @min		= min		#Minute of Packet Creation 0-59
   @sec		= sec		#Second of Packet Creation 0-59 
   @baud		= baud		#Max Baud Rate of Orig & Dest 
-  @pkttype	= pkttype	#Packet Type (-1 is obsolete)
-  @orgnet	= orgnet	#Origination Net of Packet 
+  @pkttype	= pkttype		#Packet Type (-1 is obsolete)
+  @orgnet	= orgnet		#Origination Net of Packet 
   @destnet	= destnet	#Destination Net of Packet 
   @prodcode	= prodcode	#Product Code (00h is Fido)
-  @sernum	= sernum	#Binary Serial Number or nil
+  @sernum	= sernum		#Binary Serial Number or nil
   @password	= password	#Session Password or nil (8 characters)
   @orgzone	= orgzone	#Origination Zone of Packet or nil
   @destzone	= destzone	#Destination Zone of Packet or NULL 
 
-  @auxnet	= auxnet	#Orig Net if Origin is a Point 
-  @cwcopy	= cwcopy	#Must be Equal to cword
+  @auxnet	= auxnet		#Orig Net if Origin is a Point 
+  @cwcopy	= cwcopy		#Must be Equal to cword
   @revision	= revision	#Revision
-  @cword	= cword		#Compatibility Word 
+  @cword		= cword		#Compatibility Word 
   @orgpoint	= orgpoint	#Origination Point
   @destpoint	= destpoint	#Destination Point
  end

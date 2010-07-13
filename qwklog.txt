@@ -39861,3 +39861,25 @@ QWK: ERROR: No mapping found for area qwk/2007.NDX
 0 areas found in QWK packet
 0 areas in CONTROL.DAT
 0 areas found in QWK packet
+228 areas in CONTROL.DAT
+4 areas found in QWK packet
+["2009"] Unix
+["2004"] Debate
+["2001"] DOVE-Net
+["2019"] Sports
+Now Processing Packet qwk/2009.NDX which contains 1 messages.
+
+QWK: ERROR: No mapping found for area qwk/2009.NDX
+Now Processing Packet qwk/2004.NDX which contains 1 messages.
+
+QWK: ERROR: No mapping found for area qwk/2004.NDX
+Now Processing Packet qwk/2001.NDX which contains 1 messages.
+
+QWK: ERROR: No mapping found for area qwk/2001.NDX
+Now Processing Packet qwk/2019.NDX which contains 1 messages.
+
+QWK: ERROR: No mapping found for area qwk/2019.NDX
+0 areas in CONTROL.DAT
+0 areas found in QWK packet
+0 areas in CONTROL.DAT
+0 areas found in QWK packet

@@ -9,7 +9,7 @@
       %W[%YA%W]%Grea Change          %W[%YE%W]%G-Mail               %W[%YK%W]%Gill Message%W(%Gs%W)     
       %W[%YP%W]%Gost a Message       %W[%YPU%W]%GPage User          %W[%YR%W]%Geply     
       %W[%YQ%W]%Guit to Main Menu    %W[%YW%W]%Gho is Online        %W[%Y+%W]%GForward Read     
-      %W[%Y-%W]%GBackward Read       %W[%Y/%W]%GRe-Read Message     %W[%Y?%W]%GThis Menu
-
+      %W[%Y-%W]%GBackward Read       %W[%Y/%W]%GRe-Read Message     %W[%YFH%W]%GFull Header
+      %W[%Y?%W]%GThis Menu
              %CEnter a %W<%CRETURN%W> %Cto read the Next%W/%CPrevious Msg.
            %R; %CBetween Commands Stacks then %W(%CI.E., %Rpu;sysop;hi%W)

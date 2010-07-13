@@ -89,11 +89,11 @@ def read_a_message(path,offset)
   end
   happy.read(offset) #move the record pointer to the next record
 
-  buffer	= happy.read(0xb2) # read the maximum possible header, although this may not all be used.
-  orgnode	= (buffer[0x03].ord << 8) + buffer[0x02].ord
+  buffer		= happy.read(0xb2) # read the maximum possible header, although this may not all be used.
+  orgnode		= (buffer[0x03].ord << 8) + buffer[0x02].ord
   destnode	= (buffer[0x05].ord << 8) + buffer[0x04].ord
-  orgnet	= (buffer[0x07].ord << 8) + buffer[0x06].ord
-  destnet	= (buffer[0x09].ord << 8) + buffer[0x08].ord
+  orgnet		= (buffer[0x07].ord << 8) + buffer[0x06].ord
+  destnet		= (buffer[0x09].ord << 8) + buffer[0x08].ord
   attribute	= (buffer[0x0b].ord << 8) + buffer[0x0a].ord
   cost		= (buffer[0x0d].ord << 8) + buffer[0x0c].ord
 
@@ -106,13 +106,11 @@ def read_a_message(path,offset)
   to,pointer = nul_delimited(buffer,pointer,36)
   from,pointer = nul_delimited(buffer,pointer,36)
   subject,pointer = nul_delimited(buffer,pointer,72)
-  #puts "offset: #{offset.to_s(16)}"
-  #puts "pointer: #{pointer.to_s(16)}"
-
+  
   r_loc = offset + pointer + 1	#start of the message text will be a total of the offset and where we stopped
   #reading the header, which varies in size.  
   message = ""
-  # puts "r_loc: #{r_loc.to_s(16)}"
+ 
   happy.rewind			#rewind to the beginning of the file
   happy.read(r_loc)		#move the file pointer to the end of the header,
 
@@ -155,7 +153,7 @@ def read_a_message(path,offset)
   puts "Reply:     #{fidomessage.reply}" if !fidomessage.reply.nil?
   puts "Origin:    #{fidomessage.origin}" if !fidomessage.origin.nil?
   puts
-  #fidomessage.message.each {|x| puts x}
+  
   r_loc = happy.pos 		#this is the next offset.
   test = happy.read(5)		#lets read a head and see if we hit eof.  beyond eof, you read nil
   if test.nil? then isnext = false else
@@ -188,11 +186,11 @@ def read_pkt_header(path)
     return INVALID_PACKET;
   end
 
-  orgnode	= (buffer[0x01].ord << 8) + buffer[0x00].ord
+  orgnode		= (buffer[0x01].ord << 8) + buffer[0x00].ord
   destnode  	= (buffer[0x03].ord << 8) + buffer[0x02].ord
-  orgnet	= (buffer[0x15].ord << 8) + buffer[0x14].ord
-  destnet	= (buffer[0x17].ord << 8) + buffer[0x16].ord
-  orgzone	= (buffer[0x23].ord << 8) + buffer[0x22].ord
+  orgnet		= (buffer[0x15].ord << 8) + buffer[0x14].ord
+  destnet		= (buffer[0x17].ord << 8) + buffer[0x16].ord
+  orgzone		= (buffer[0x23].ord << 8) + buffer[0x22].ord
   destzone	= (buffer[0x25].ord << 8) + buffer[0x24].ord
 
   year		= (buffer[0x05].ord << 8) + buffer[0x04].ord
@@ -202,7 +200,7 @@ def read_pkt_header(path)
   min		= (buffer[0x0d].ord << 8) + buffer[0x0c].ord
   sec		= (buffer[0x0f].ord << 8) + buffer[0x0e].ord
 
-  prodx   	=  buffer[0x18].ord
+  prodx   		=  buffer[0x18].ord
   major		=  buffer[0x19].ord
 
   capword 	= (buffer[0x2d].ord << 8) + buffer[0x2c].ord
@@ -211,8 +209,8 @@ def read_pkt_header(path)
 
   if (capword & 0x0001) then       # FSC-0039 packet type 2+
     puts "Type 2+ Packet"
-    prodx		= prodx + (buffer[0x2a].ord << 8)
-    minor		= buffer[0x2b].ord
+    prodx			= prodx + (buffer[0x2a].ord << 8)
+    minor			= buffer[0x2b].ord
     orgzone		= buffer[0x2e].ord + (buffer[0x2f].ord << 8)
     destzone		= buffer[0x30].ord + (buffer[0x31].ord << 8)
     orgpoint		= buffer[0x32].ord + (buffer[0x33].ord << 8)
@@ -224,13 +222,6 @@ def read_pkt_header(path)
     pktpwd << buffer[0x1a + i].ord
   end
   # pktpwd[8]='\0'
-
-  #puts "Orig:    #{orgzone}:#{orgnet}/#{orgnode}"
-  #puts "Dest:    #{destzone}:#{destnet}/#{destnode}"
-  #puts "product: #{prodx.to_s(16)}"
-  #puts "rev:     #{major}.#{minor}"
-  #puts "pwd:     #{pktpwd.to_s}"
-  #puts
   happy.close
   return SUCCESS
 end
@@ -245,7 +236,7 @@ def add_fido_msg(fidomessage)
     else
       number = find_fido_area(BADNETMAIL)
       puts "-FIDO: Bad netmail detected."
-      #generate a bounce message
+      #generate a bounce message  <---- ADD THIS!
     end
   else
     number = find_fido_area(fidomessage.area)
@@ -351,7 +342,3 @@ def process_packet(path) 		#this is a shell for what will be the inbound packet 
 
 end #process_packet
 
-
-
-#setitup
-#process_packet ("happy.pkt")
