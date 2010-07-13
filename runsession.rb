@@ -1,8 +1,8 @@
 require 'top.rb'
+require 'consts.rb'
 
 #  ------------------ MAIN ------------------
 
-#puts "hello world"
 $stdout.flush
 
 DataMapper::Logger.new('log/db', :debug)
@@ -14,5 +14,8 @@ irc_who =Irc_who.new
 
 ssock = ServerSocket.new(irc_who, who, message)
 
+puts "\n-#{VER} Server\n"; $stdout.flush
+puts
 puts "-Starting Up."; $stdout.flush
+puts
 ssock.run

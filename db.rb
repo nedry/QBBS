@@ -61,6 +61,7 @@ def check_tables
     create_table(x) if t_list.index(x).nil?
   }
     puts"-DB: Tables Verified"
+    puts
 end
 
 def db_num(arr)

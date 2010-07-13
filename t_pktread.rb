@@ -6,13 +6,11 @@
 ############################################## 
 
 include Logger
-require "pg_ext"
 require "consts.rb"
 require "t_class.rb"
 require "t_const.rb"
 require "db/db_area"
 require "db/db_message"
-require "db"
 
 def nul_delimited(buffer,pointer,max) #reads in a field delimited by nulls with a maximum length
 
@@ -123,12 +121,12 @@ def read_a_message(path,offset)
   happy.read(offset) #move the record pointer to the next record
 
   buffer	= happy.read(0xb2) # read the maximum possible header, although this may not all be used.
-  orgnode	= (buffer[0x03] << 8) + buffer[0x02]
-  destnode	= (buffer[0x05] << 8) + buffer[0x04]
-  orgnet	= (buffer[0x07] << 8) + buffer[0x06]
-  destnet	= (buffer[0x09] << 8) + buffer[0x08]
-  attribute	= (buffer[0x0b] << 8) + buffer[0x0a]
-  cost		= (buffer[0x0d] << 8) + buffer[0x0c]
+  orgnode	= (buffer[0x03].ord << 8) + buffer[0x02].ord
+  destnode	= (buffer[0x05].ord << 8) + buffer[0x04].ord
+  orgnet	= (buffer[0x07].ord << 8) + buffer[0x06].ord
+  destnet	= (buffer[0x09].ord << 8) + buffer[0x08].ord
+  attribute	= (buffer[0x0b].ord << 8) + buffer[0x0a].ord
+  cost		= (buffer[0x0d].ord << 8) + buffer[0x0c].ord
 
   datetime = ""
   for i in 0..19 do 
@@ -151,7 +149,7 @@ def read_a_message(path,offset)
 
   while true
     char = happy.read(1)			#read a character at a time
-    if char[0] == 0 or char.nil? then 	#if the character is a null (end of message marker) or nil, then stop
+    if char.ord == 0 or char.nil? then 	#if the character is a null (end of message marker) or nil, then stop
       break
     else
       message << char 				#add the character 
@@ -205,53 +203,57 @@ end
 def read_pkt_header(path)
 
   if File.exists?(path) then
-    happy = File.open(path,"rb")
+    happy = File.open(path,"rb:BINARY")
+     puts "Inherited from environment:  #{happy.external_encoding.name}"
+
   else
     return PACKET_NOT_FOUND
   end
 
 
   buffer   = happy.read(0x3a)
-
-  if ((buffer[0x12] + (buffer[0x13] << 8)) != 2) then
-    puts("Not a type 2 packet {#path}")
+ 
+  puts "buffer: #{buffer}"
+      puts "read: #{(buffer[0x12].ord) + (buffer[0x13].ord << 8)}"
+  if ((buffer[0x12].ord + (buffer[0x13].ord << 8)) != 2) then
+    puts("Not a type 2 packet #{path}")
     return INVALID_PACKET;
   end
 
-  orgnode	= (buffer[0x01] << 8) + buffer[0x00]
-  destnode  	= (buffer[0x03] << 8) + buffer[0x02]
-  orgnet	= (buffer[0x15] << 8) + buffer[0x14]
-  destnet	= (buffer[0x17] << 8) + buffer[0x16]
-  orgzone	= (buffer[0x23] << 8) + buffer[0x22]
-  destzone	= (buffer[0x25] << 8) + buffer[0x24]
+  orgnode	= (buffer[0x01].ord << 8) + buffer[0x00].ord
+  destnode  	= (buffer[0x03].ord << 8) + buffer[0x02].ord
+  orgnet	= (buffer[0x15].ord << 8) + buffer[0x14].ord
+  destnet	= (buffer[0x17].ord << 8) + buffer[0x16].ord
+  orgzone	= (buffer[0x23].ord << 8) + buffer[0x22].ord
+  destzone	= (buffer[0x25].ord << 8) + buffer[0x24].ord
 
-  year		= (buffer[0x05] << 8) + buffer[0x04]
-  month		= (buffer[0x07] << 8) + buffer[0x06] + 1
-  day		= (buffer[0x09] << 8) + buffer[0x08]
-  hour		= (buffer[0x0b] << 8) + buffer[0x0a]
-  min		= (buffer[0x0d] << 8) + buffer[0x0c]
-  sec		= (buffer[0x0f] << 8) + buffer[0x0e]
+  year		= (buffer[0x05].ord << 8) + buffer[0x04].ord
+  month		= (buffer[0x07].ord << 8) + buffer[0x06].ord + 1
+  day		= (buffer[0x09].ord << 8) + buffer[0x08].ord
+  hour		= (buffer[0x0b].ord << 8) + buffer[0x0a].ord
+  min		= (buffer[0x0d].ord << 8) + buffer[0x0c].ord
+  sec		= (buffer[0x0f].ord << 8) + buffer[0x0e].ord
 
-  prodx   	=  buffer[0x18]
-  major		=  buffer[0x19]
+  prodx   	=  buffer[0x18].ord
+  major		=  buffer[0x19].ord
 
-  capword 	= (buffer[0x2d] << 8) + buffer[0x2c]
+  capword 	= (buffer[0x2d].ord << 8) + buffer[0x2c].ord
 
-  capword = 0 if (capword != ((buffer[0x28] << 8) + buffer[0x29]))
+  capword = 0 if (capword != ((buffer[0x28].ord << 8) + buffer[0x29].ord))
 
   if (capword & 0x0001) then       # FSC-0039 packet type 2+
     puts "Type 2+ Packet"
-    prodx		= prodx + (buffer[0x2a] << 8)
-    minor		= buffer[0x2b]
-    orgzone		= buffer[0x2e] + (buffer[0x2f] << 8)
-    destzone		= buffer[0x30] + (buffer[0x31] << 8)
-    orgpoint		= buffer[0x32] + (buffer[0x33] << 8)
-    destpoint		= buffer[0x34] + (buffer[0x35] << 8)
+    prodx		= prodx + (buffer[0x2a].ord << 8)
+    minor		= buffer[0x2b].ord
+    orgzone		= buffer[0x2e].ord + (buffer[0x2f].ord << 8)
+    destzone		= buffer[0x30].ord + (buffer[0x31].ord << 8)
+    orgpoint		= buffer[0x32].ord + (buffer[0x33].ord << 8)
+    destpoint		= buffer[0x34].ord + (buffer[0x35].ord << 8)
   end
 
   pktpwd = ""
   for i in 0..7 do 
-    pktpwd << buffer[0x1a + i]
+    pktpwd << buffer[0x1a + i].ord
   end
   # pktpwd[8]='\0'
 
@@ -275,20 +277,11 @@ def setitup
   update_user(user,get_uid(FIDOUSER))
 end
 
-def f_local(user)
-  if !user_exists(user) then 
-    puts "not found"
-    return false
-  else 
-    puts "found"
-    return true
-  end
-end
 
 def add_fido_msg(fidomessage)
 
   if fidomessage.area == NETMAIL then
-    if f_local(fidomessage.to) then 
+    if user_exists(fidomessage.to) then 
       area = fetch_area(0)
       table = area.number
       number = 0
@@ -331,47 +324,26 @@ def add_fido_msg(fidomessage)
   reply = false
 
   if !table.nil? then 
-    msg_text.gsub!("'",BEL) if msg_text != nil
-    if pid != nil
-      pid.gsub!("'",BEL)
+
+    if !pid.nil? then
       pid = pid[0..79] if pid.length > 80
     end
 
-    if msgid != nil
-      msgid.gsub!("'",BEL)
+    if !msgid.nil?
       msgid = msgid[0..79] if msgid.length > 80
     end
 
-    tid.gsub!("'",BEL) if tid != nil
-
-    if m_to != nil then
-      m_to.gsub!("'",BEL) 
-      m_to.upcase!
-    end
-    m_from.gsub!("'",BEL) if m_from != nil
-    subject.gsub!("'",BEL) if subject != nil
     puts "----"
-    puts "FIDO: importing message to: #{table}"
-    # puts "INSERT INTO #{table} (m_to, m_from, \ 
-    #          msg_date, subject, msg_text, exported,network,f_network,orgnode,destnode,\
-    #	   orgnet,destnet,attribute,cost,area,msgid,path,tzutc,charset,\
-    #	   tid,pid,intl,topt,fmpt,origin,reply) VALUES \ 
-    #          ('#{m_to}', '#{m_from}', '#{msg_date}', '#{subject}',\
-    #	  '#{msg_text}', '#{exported}','#{network}', '#{f_network}','#{orgnode}',\
-    #	  '#{destnode}','#{orgnet}', '#{destnet}','#{attribute}',\
-    #	  '#{cost}','#{area}','#{msgid}','#{path}','#{tzutc}',\
-    #	  '#{charset}','#{tid}','#{pid}','#{intl}','#{topt}',\
-    #	  '#{fmpt}','#{origin}','#{reply}')"
+    area = fetch_area(table)
+    puts "FIDO: importing message to: #{area.name}"
 
-    @db.exec("INSERT INTO messages (m_to, m_from, \ 
-           msg_date, subject, msg_text, exported,network,f_network,orgnode,destnode,\
-     orgnet,destnet,attribute,cost,area,msgid,path,tzutc,charset,\
-     tid,pid,intl,topt,fmpt,origin,reply,tbl) VALUES \ 
-          ('#{m_to}', '#{m_from}', '#{msg_date}', '#{subject}',\
-    '#{msg_text}', '#{exported}','#{network}', '#{f_network}','#{orgnode}',\
-             '#{destnode}','#{orgnet}', '#{destnet}','#{attribute}',\
+add_msg(m_to,m_from,msg_date,subject,msg_text,exported,network,reply,destnode,destnet,intl,topt,smtp,number)
+
+
+ '#{f_network}','#{orgnode}'
+,'#{orgnet}',,'#{attribute}'
              '#{cost}','#{area}','#{msgid}','#{path}','#{tzutc}',\
-             '#{charset}','#{tid}','#{pid}','#{intl}','#{topt}',\
+             '#{charset}','#{tid}','#{pid}',
              '#{fmpt}','#{origin}','#{reply}',#{table}')") 
 
              #Update pointers
@@ -397,16 +369,16 @@ def process_packet(path) 		#this is a shell for what will be the inbound packet 
   ddate = Time.now.strftime("%m/%d/%Y at %I:%M%p") 
   case condition
   when PACKET_NOT_FOUND
-    add_log_entry(8,Time.now,"Fido Import Error: No Packet Found.")
+    add_log_entry(L_ERROR,Time.now,"Fido Import Error: No Packet Found.")
     puts "!No Packet Found"
     #Log Stuff
   when PACKET_IO_ERROR
     puts "!Bad Packet Detected"
-    add_log_entry(8,Time.now,"Fido Import Error:Bad Packet Detected.")
+    add_log_entry(L_ERROR,Time.now,"Fido Import Error:Bad Packet Detected.")
     #Log Stuff
   when INVALID_PACKET
     puts "!Header Invalid or Not Type 2 or 2+"
-    add_log_entry(8,Time.now,"Fido Import Error:Header Invalid or not Type 2 or 2+")
+    add_log_entry(L_ERROR,Time.now,"Fido Import Error:Header Invalid")
     #Log Stuff
   else
     ok = true

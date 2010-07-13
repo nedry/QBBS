@@ -5,3 +5,9 @@ For now, it is a place for notes.
 Requires:
 
 gem install dm-aggregates
+
+
+
+TODO:
+
+FIDO: somehow require NETMAIL and BADNETMAIL areas, or at least warn if they don't exist and prevent crash.

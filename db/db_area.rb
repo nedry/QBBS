@@ -50,18 +50,11 @@ def add_area(name, d_access,v_access)
   )
 end
 
-def rep_table(network)
 
-  result = []
-  areas = Area.all(:order => [:number])
-  #res = @db.exec("SELECT netnum, name FROM areas ORDER BY number")
-  #temp = result_as_array(res)
+def fido_export_lst
+    areas = Area.all(:fido_net.not => "", :fido_net.not => BADNETMAIL, :order => [:number])
+end
 
-  areas.each_with_index{|x,i|
-        if x.netnum >= 0 then
-         result << Area_rep.new(x.netnum,x.name,i)
-    end
-  }
-
-  return result
+def qwk_export_list
+    areas = Area.all(:netnum.gt => - 1, :order => [:number])
 end

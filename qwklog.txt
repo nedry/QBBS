@@ -39168,3 +39168,634 @@ NSREC : 6
 
 0 areas in CONTROL.DAT
 0 areas found in QWK packet
+0 areas in CONTROL.DAT
+0 areas found in QWK packet
+0 areas in CONTROL.DAT
+0 areas found in QWK packet
+0 areas in CONTROL.DAT
+0 areas found in QWK packet
+228 areas in CONTROL.DAT
+2 areas found in QWK packet
+["2001"] DOVE-Net
+["2002"] Ads
+Now Processing Packet qwk/2001.NDX which contains 31 messages.
+
+Found. Importing qwk/2001.NDX to general
+SREC  : 1
+STATUSFLAG :  
+NUMBER : 68198  
+TEMPDATE : 07-03-10
+TEMPTIME : 15:45
+TO : Offline                  
+FROM : DOS                      
+SUBJECT : test                     
+PASSWORD :             
+REFERENCE : 68197   
+BLOCKS : 7     
+TEMPCRAP : ·—  
+HAS_TAGLINE : *
+NSREC : 8
+
+SREC  : 8
+STATUSFLAG :  
+NUMBER : 68199  
+TEMPDATE : 07-03-10
+TEMPTIME : 21:19
+TO : Offline                  
+FROM : Nightfox                 
+SUBJECT : test                     
+PASSWORD :             
+REFERENCE : 68197   
+BLOCKS : 3     
+TEMPCRAP : ·—  
+HAS_TAGLINE : *
+NSREC : 11
+
+SREC  : 11
+STATUSFLAG :  
+NUMBER : 68200  
+TEMPDATE : 07-04-10
+TEMPTIME : 09:16
+TO : All                      
+FROM : Mike                     
+SUBJECT : I see it                 
+PASSWORD :             
+REFERENCE : 0       
+BLOCKS : 3     
+TEMPCRAP : ·—  
+HAS_TAGLINE : *
+NSREC : 14
+
+SREC  : 14
+STATUSFLAG :  
+NUMBER : 68201  
+TEMPDATE : 07-04-10
+TEMPTIME : 09:02
+TO : Offline                  
+FROM : Lord Time                
+SUBJECT : test                     
+PASSWORD :             
+REFERENCE : 68197   
+BLOCKS : 6     
+TEMPCRAP : ·—  
+HAS_TAGLINE : *
+NSREC : 20
+
+SREC  : 20
+STATUSFLAG :  
+NUMBER : 68202  
+TEMPDATE : 07-05-10
+TEMPTIME : 00:54
+TO : Offline                  
+FROM : Soulburner               
+SUBJECT : Re: test                 
+PASSWORD :             
+REFERENCE : 68197   
+BLOCKS : 3     
+TEMPCRAP : ·—  
+HAS_TAGLINE : *
+NSREC : 23
+
+SREC  : 23
+STATUSFLAG :  
+NUMBER : 68203  
+TEMPDATE : 07-06-10
+TEMPTIME : 11:47
+TO : Nightfox                 
+FROM : Robert_D                 
+SUBJECT : Telnet client            
+PASSWORD :             
+REFERENCE : 67723   
+BLOCKS : 14    
+TEMPCRAP : ·—  
+HAS_TAGLINE : *
+NSREC : 37
+
+SREC  : 37
+STATUSFLAG :  
+NUMBER : 68204  
+TEMPDATE : 07-06-10
+TEMPTIME : 21:10
+TO : Phantomrage              
+FROM : Jon Justvig              
+SUBJECT : Hello to all.            
+PASSWORD :             
+REFERENCE : 68194   
+BLOCKS : 4     
+TEMPCRAP : ·—  
+HAS_TAGLINE : *
+NSREC : 41
+
+SREC  : 41
+STATUSFLAG :  
+NUMBER : 68205  
+TEMPDATE : 07-06-10
+TEMPTIME : 21:12
+TO : Nightfox                 
+FROM : Jon Justvig              
+SUBJECT : test                     
+PASSWORD :             
+REFERENCE : 68199   
+BLOCKS : 4     
+TEMPCRAP : ·—  
+HAS_TAGLINE : *
+NSREC : 45
+
+SREC  : 45
+STATUSFLAG :  
+NUMBER : 68206  
+TEMPDATE : 07-06-10
+TEMPTIME : 21:13
+TO : Robert_D                 
+FROM : Jon Justvig              
+SUBJECT : Telnet client            
+PASSWORD :             
+REFERENCE : 68203   
+BLOCKS : 5     
+TEMPCRAP : ·—  
+HAS_TAGLINE : *
+NSREC : 50
+
+SREC  : 50
+STATUSFLAG :  
+NUMBER : 68207  
+TEMPDATE : 07-07-10
+TEMPTIME : 00:37
+TO : Wood                     
+FROM : Jon Justvig              
+SUBJECT : Re: Prueba               
+PASSWORD :             
+REFERENCE : 68146   
+BLOCKS : 5     
+TEMPCRAP : ·—  
+HAS_TAGLINE : *
+NSREC : 55
+
+SREC  : 55
+STATUSFLAG :  
+NUMBER : 68208  
+TEMPDATE : 07-07-10
+TEMPTIME : 00:38
+TO : Samos                    
+FROM : Jon Justvig              
+SUBJECT : Re: Prueba               
+PASSWORD :             
+REFERENCE : 68151   
+BLOCKS : 4     
+TEMPCRAP : ·—  
+HAS_TAGLINE : *
+NSREC : 59
+
+SREC  : 59
+STATUSFLAG :  
+NUMBER : 68209  
+TEMPDATE : 07-07-10
+TEMPTIME : 00:39
+TO : Wood                     
+FROM : Jon Justvig              
+SUBJECT : Re: Tagline              
+PASSWORD :             
+REFERENCE : 68159   
+BLOCKS : 5     
+TEMPCRAP : ·—  
+HAS_TAGLINE : *
+NSREC : 64
+
+SREC  : 64
+STATUSFLAG :  
+NUMBER : 68210  
+TEMPDATE : 07-07-10
+TEMPTIME : 11:28
+TO : Jon Justvig              
+FROM : thinktank                
+SUBJECT : Telnet client            
+PASSWORD :             
+REFERENCE : 68206   
+BLOCKS : 4     
+TEMPCRAP : ·—  
+HAS_TAGLINE : *
+NSREC : 68
+
+SREC  : 68
+STATUSFLAG :  
+NUMBER : 68211  
+TEMPDATE : 07-07-10
+TEMPTIME : 20:17
+TO : thinktank                
+FROM : Jon Justvig              
+SUBJECT : Re: Telnet client        
+PASSWORD :             
+REFERENCE : 68210   
+BLOCKS : 4     
+TEMPCRAP : ·—  
+HAS_TAGLINE : *
+NSREC : 72
+
+SREC  : 72
+STATUSFLAG :  
+NUMBER : 68212  
+TEMPDATE : 07-07-10
+TEMPTIME : 21:21
+TO : Jon Justvig              
+FROM : Tracker1                 
+SUBJECT : Re: Telnet client        
+PASSWORD :             
+REFERENCE : 68206   
+BLOCKS : 7     
+TEMPCRAP : ·—  
+HAS_TAGLINE : *
+NSREC : 79
+
+SREC  : 79
+STATUSFLAG :  
+NUMBER : 68213  
+TEMPDATE : 07-08-10
+TEMPTIME : 11:44
+TO : Mike                     
+FROM : Deanz                    
+SUBJECT : Re: I see it             
+PASSWORD :             
+REFERENCE : 68200   
+BLOCKS : 4     
+TEMPCRAP : ·—  
+HAS_TAGLINE : *
+NSREC : 83
+
+SREC  : 83
+STATUSFLAG :  
+NUMBER : 68214  
+TEMPDATE : 07-08-10
+TEMPTIME : 20:50
+TO : Tracker1                 
+FROM : Jon Justvig              
+SUBJECT : Re: Telnet client        
+PASSWORD :             
+REFERENCE : 68212   
+BLOCKS : 7     
+TEMPCRAP : ·—  
+HAS_TAGLINE : *
+NSREC : 90
+
+SREC  : 90
+STATUSFLAG :  
+NUMBER : 68215  
+TEMPDATE : 07-09-10
+TEMPTIME : 06:32
+TO : MARK FIRESTONE           
+FROM : Ruben Figueroa           
+SUBJECT : Re: televideos?          
+PASSWORD :             
+REFERENCE : 4318600 
+BLOCKS : 6     
+TEMPCRAP : ·—  
+HAS_TAGLINE : *
+NSREC : 96
+
+SREC  : 96
+STATUSFLAG :  
+NUMBER : 68216  
+TEMPDATE : 07-09-10
+TEMPTIME : 06:33
+TO : JON JUSTVIG              
+FROM : Ruben Figueroa           
+SUBJECT : Re: Hello to all.        
+PASSWORD :             
+REFERENCE : 4396144 
+BLOCKS : 10    
+TEMPCRAP : ·—  
+HAS_TAGLINE : *
+NSREC : 106
+
+SREC  : 106
+STATUSFLAG :  
+NUMBER : 68217  
+TEMPDATE : 07-09-10
+TEMPTIME : 07:25
+TO : Ruben Figueroa           
+FROM : John Guillory            
+SUBJECT : Re: televideos?          
+PASSWORD :             
+REFERENCE : 0       
+BLOCKS : 6     
+TEMPCRAP : ·—  
+HAS_TAGLINE : *
+NSREC : 112
+
+SREC  : 112
+STATUSFLAG :  
+NUMBER : 68218  
+TEMPDATE : 07-09-10
+TEMPTIME : 07:34
+TO : Ruben Figueroa           
+FROM : Jon Justvig              
+SUBJECT : Re: Hello to all.        
+PASSWORD :             
+REFERENCE : 0       
+BLOCKS : 4     
+TEMPCRAP : ·—  
+HAS_TAGLINE : *
+NSREC : 116
+
+SREC  : 116
+STATUSFLAG :  
+NUMBER : 68219  
+TEMPDATE : 07-09-10
+TEMPTIME : 11:31
+TO : All                      
+FROM : Deafguy                  
+SUBJECT : testing...               
+PASSWORD :             
+REFERENCE : 0       
+BLOCKS : 2     
+TEMPCRAP : ·—  
+HAS_TAGLINE : *
+NSREC : 118
+
+SREC  : 118
+STATUSFLAG : -
+NUMBER : 68220  
+TEMPDATE : 07-09-10
+TEMPTIME : 16:10
+TO : Deafguy                  
+FROM : Mit                      
+SUBJECT : testing...               
+PASSWORD :             
+REFERENCE : 68219   
+BLOCKS : 3     
+TEMPCRAP : ·—  
+HAS_TAGLINE : *
+NSREC : 121
+
+SREC  : 121
+STATUSFLAG :  
+NUMBER : 68221  
+TEMPDATE : 07-09-10
+TEMPTIME : 16:16
+TO : Mit                      
+FROM : Deafguy                  
+SUBJECT : testing...               
+PASSWORD :             
+REFERENCE : 68220   
+BLOCKS : 7     
+TEMPCRAP : ·—  
+HAS_TAGLINE : *
+NSREC : 128
+
+SREC  : 128
+STATUSFLAG : -
+NUMBER : 68222  
+TEMPDATE : 07-09-10
+TEMPTIME : 12:58
+TO : Deafguy                  
+FROM : Lord Time                
+SUBJECT : testing...               
+PASSWORD :             
+REFERENCE : 68219   
+BLOCKS : 6     
+TEMPCRAP : ·—  
+HAS_TAGLINE : *
+NSREC : 134
+
+SREC  : 134
+STATUSFLAG : -
+NUMBER : 68223  
+TEMPDATE : 07-09-10
+TEMPTIME : 15:32
+TO : Deafguy                  
+FROM : John Guillory            
+SUBJECT : testing...               
+PASSWORD :             
+REFERENCE : 68219   
+BLOCKS : 4     
+TEMPCRAP : ·—  
+HAS_TAGLINE : *
+NSREC : 138
+
+SREC  : 138
+STATUSFLAG : -
+NUMBER : 68224  
+TEMPDATE : 07-09-10
+TEMPTIME : 16:07
+TO : Deafguy                  
+FROM : The Curmudgeon           
+SUBJECT : testing...               
+PASSWORD :             
+REFERENCE : 0       
+BLOCKS : 9     
+TEMPCRAP : ·—  
+HAS_TAGLINE : *
+NSREC : 147
+
+SREC  : 147
+STATUSFLAG :  
+NUMBER : 68225  
+TEMPDATE : 07-09-10
+TEMPTIME : 16:28
+TO : thinktank                
+FROM : Digital Man              
+SUBJECT : Telnet client            
+PASSWORD :             
+REFERENCE : 68210   
+BLOCKS : 6     
+TEMPCRAP : ·—  
+HAS_TAGLINE : *
+NSREC : 153
+
+SREC  : 153
+STATUSFLAG : -
+NUMBER : 68226  
+TEMPDATE : 07-09-10
+TEMPTIME : 16:50
+TO : Deafguy                  
+FROM : Jon Justvig              
+SUBJECT : Re: testing...           
+PASSWORD :             
+REFERENCE : 68219   
+BLOCKS : 3     
+TEMPCRAP : ·—  
+HAS_TAGLINE : *
+NSREC : 156
+
+SREC  : 156
+STATUSFLAG :  
+NUMBER : 68227  
+TEMPDATE : 07-09-10
+TEMPTIME : 18:57
+TO : The Curmudgeon           
+FROM : Deafguy                  
+SUBJECT : testing...               
+PASSWORD :             
+REFERENCE : 68224   
+BLOCKS : 10    
+TEMPCRAP : ·—  
+HAS_TAGLINE : *
+NSREC : 166
+
+SREC  : 166
+STATUSFLAG :  
+NUMBER : 68228  
+TEMPDATE : 07-10-10
+TEMPTIME : 16:13
+TO : Deafguy                  
+FROM : Mit                      
+SUBJECT : testing...               
+PASSWORD :             
+REFERENCE : 68221   
+BLOCKS : 6     
+TEMPCRAP : ·—  
+HAS_TAGLINE : *
+NSREC : 172
+
+Now Processing Packet qwk/2002.NDX which contains 10 messages.
+
+Found. Importing qwk/2002.NDX to ads
+SREC  : 172
+STATUSFLAG :  
+NUMBER : 12211  
+TEMPDATE : 07-02-10
+TEMPTIME : 20:40
+TO : All                      
+FROM : DOS                      
+SUBJECT : 4th                      
+PASSWORD :             
+REFERENCE : 0       
+BLOCKS : 7     
+TEMPCRAP : ·“  
+HAS_TAGLINE : *
+NSREC : 179
+
+SREC  : 179
+STATUSFLAG :  
+NUMBER : 12212  
+TEMPDATE : 07-05-10
+TEMPTIME : 15:49
+TO : All                      
+FROM : Thumper                  
+SUBJECT : The Wastelands BBS       
+PASSWORD :             
+REFERENCE : 0       
+BLOCKS : 5     
+TEMPCRAP : ·“  
+HAS_TAGLINE : *
+NSREC : 184
+
+SREC  : 184
+STATUSFLAG :  
+NUMBER : 12213  
+TEMPDATE : 07-06-10
+TEMPTIME : 16:47
+TO : All                      
+FROM : Jon Justvig              
+SUBJECT : Stepping Stone BBS -- tel
+PASSWORD :             
+REFERENCE : 0       
+BLOCKS : 5     
+TEMPCRAP : ·“  
+HAS_TAGLINE : *
+NSREC : 189
+
+SREC  : 189
+STATUSFLAG :  
+NUMBER : 12214  
+TEMPDATE : 07-06-10
+TEMPTIME : 21:14
+TO : DOS                      
+FROM : Jon Justvig              
+SUBJECT : 4th                      
+PASSWORD :             
+REFERENCE : 12211   
+BLOCKS : 4     
+TEMPCRAP : ·“  
+HAS_TAGLINE : *
+NSREC : 193
+
+SREC  : 193
+STATUSFLAG :  
+NUMBER : 12215  
+TEMPDATE : 07-08-10
+TEMPTIME : 11:46
+TO : Jon Justvig              
+FROM : Deanz                    
+SUBJECT : Re: 4th                  
+PASSWORD :             
+REFERENCE : 12214   
+BLOCKS : 7     
+TEMPCRAP : ·“  
+HAS_TAGLINE : *
+NSREC : 200
+
+SREC  : 200
+STATUSFLAG :  
+NUMBER : 12216  
+TEMPDATE : 07-08-10
+TEMPTIME : 08:09
+TO : THUMPER                  
+FROM : Ruben Figueroa           
+SUBJECT : The Prison Board BBS     
+PASSWORD :             
+REFERENCE : 4395784 
+BLOCKS : 4     
+TEMPCRAP : ·“  
+HAS_TAGLINE : *
+NSREC : 204
+
+SREC  : 204
+STATUSFLAG :  
+NUMBER : 12217  
+TEMPDATE : 07-08-10
+TEMPTIME : 08:12
+TO : JON JUSTVIG              
+FROM : Ruben Figueroa           
+SUBJECT : Re: Stepping Stone BBS --
+PASSWORD :             
+REFERENCE : 4396000 
+BLOCKS : 7     
+TEMPCRAP : ·“  
+HAS_TAGLINE : *
+NSREC : 211
+
+SREC  : 211
+STATUSFLAG :  
+NUMBER : 12218  
+TEMPDATE : 07-08-10
+TEMPTIME : 08:12
+TO : DIRTYSANCHEZ             
+FROM : Ruben Figueroa           
+SUBJECT : Re: Trying my shot at mus
+PASSWORD :             
+REFERENCE : 4387360 
+BLOCKS : 7     
+TEMPCRAP : ·“  
+HAS_TAGLINE : *
+NSREC : 218
+
+SREC  : 218
+STATUSFLAG :  
+NUMBER : 12219  
+TEMPDATE : 07-08-10
+TEMPTIME : 22:02
+TO : Ruben Figueroa           
+FROM : Jon Justvig              
+SUBJECT : Re: Stepping Stone BBS --
+PASSWORD :             
+REFERENCE : 0       
+BLOCKS : 4     
+TEMPCRAP : ·“  
+HAS_TAGLINE : *
+NSREC : 222
+
+SREC  : 222
+STATUSFLAG :  
+NUMBER : 12220  
+TEMPDATE : 07-09-10
+TEMPTIME : 16:33
+TO : All                      
+FROM : Roby718                  
+SUBJECT : hi                       
+PASSWORD :             
+REFERENCE : 0       
+BLOCKS : 2     
+TEMPCRAP : ·“  
+HAS_TAGLINE : *
+NSREC : 224
+

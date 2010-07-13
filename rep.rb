@@ -71,9 +71,9 @@ module Rep
  end
 
     def makeexportlist
-      xport = rep_table("").sort_by {|a| a.xnum}
+      xport =qwk_export_list
       puts "-REP: The following areas have export mappings..."
-      xport.each {|x| puts "     #{x.xnum} #{x.name}" }
+      xport.each {|x| puts "     #{x.netnum} #{x.name}" }
       return xport
     end
 
@@ -100,44 +100,43 @@ module Rep
         puts "-REP: Now Processing #{xp.name} message area."
 	@log.write "-REP: Now Processing #{xp.name} message area."
 
-        #on first run with database... the user might not have logged in...
        user = fetch_user(get_uid(u))
        scanforaccess(user)
-       area = fetch_area(xp.num)
-       pointer = get_pointer(user,xp.num)       
+       pointer = get_pointer(user,xp.number)       
        
         replogandputs "-REP: Last [absolute] Exported Message: #{pointer.lastread}"
 
-        replogandputs "-REP: Highest [absolute] Message: #{high_absolute(area.number)}"
-        replogandputs "-REP: Total Messages            : #{m_total(area.number)}"
-        new = new_messages(area.number,pointer.lastread)
+        replogandputs "-REP: Highest [absolute] Message: #{high_absolute(xp.number)}"
+        replogandputs "-REP: Total Messages            : #{m_total(xp.number)}"
+        new = new_messages(xp.number,pointer.lastread)
         replogandputs "-REP: Messages to Export        : #{new}"
 	puts 
         if new > 0 then
           #puts "-REP: Starting Export"
-          for i in pointer.lastread.succ..high_absolute(area.number) do
-            workingmessage = fetch_msg(i)
-            if workingmessage != nil then
-              if  !workingmessage.network then
-                writemessage(workingmessage,xp.xnum)
-                total = total.succ
+	  export_messages(xp.number,pointer.lastread).each {|msg|
+
+              if  !msg.network   then
+                writemessage(msg,xp.netnum)
+		total += 1
+		msg.exported = true
+	        update_msg(msg)
               else
-                error = workingmessage.network ?
+                error = msg.network ?
                   "Message has already been imported.":
-                  "Message [#{i}] doesn't exist."
-                m = "Message #{i} not exported.  #{error}"
+                  "Message [#{msg.absolute}] doesn't exist."
+                m = "Message #{msg.absolute} not exported.  #{error}"
                 replogandputs "-#{m}"
-                add_log_entry(3,Time.now,"REP Export Complete.")
-              end
+                add_log_entry(L_EXPORT,Time.now,"REP Export Complete.")
+	end
+	}
             end
             puts "-REP: Updating message pointer for board #{xp.name}"
-            n = xp.num
-            pointer.lastread = high_absolute(area.number)
+            pointer.lastread = high_absolute(xp.number)
             update_pointer(pointer)
-          end
-        end
+         # end
+
       }
-      add_log_entry(3,Time.now,"Export Complete. #{total} message(s) exported.")
+      add_log_entry(L_EXPORT,Time.now,"Export Complete. #{total} message(s) exported.")
       puts "-REP: Export Complete. #{total} message(s) exported."
       puts
       puts "-REP: Compressing Packet"

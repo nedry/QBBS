@@ -47,14 +47,7 @@ Subsys.new(:subsystem => 8, :name => 'ERROR').save!
 Subsys.new(:subsystem => 9, :name => 'MESSAGE').save!
 Subsys.new(:subsystem => 1, :name => 'SCHEDULE').save!
 
-# initial system
-s = System.new(
-  :lastqwkrep => '01/01/80',
-  :qwkrepsuccess => false,
-  :qwkrepwake => '01/01/80',
-  :f_msgid => 9999999
-)
-s.save!
+
 t = 
 
 
@@ -68,3 +61,15 @@ YAML.load(IO.read('config/initusers.yml')).each {|u|
 add_area("Email","I","I")
 add_area("General Discussions","W","W")
 add_area("The APC Net","W","W")
+
+# initial system
+s = System.new(
+  :lastqwkrep => Time.now,
+  :qwkrepsuccess => false,
+  :qwkrepwake => Time.now,
+  :f_msgid => 9999999
+)
+happy = s.save
+puts "errors:"
+s.errors{|error| puts error}
+puts happy

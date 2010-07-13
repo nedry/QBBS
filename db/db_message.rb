@@ -46,6 +46,15 @@ def delete_msgs(area,first,last)
   message.destroy!
 end
 
+def fido_export_messages(area,first)
+  messages = Message.all(:absolute.gte => first,  :exported => false, :number => area)
+end
+
+
+def export_messages(area,first)
+  messages = Message.all(:absolute.gte => first,  :exported => false, :number => area)
+end
+
 def find_fido_area(area)
   area = Area.first(:fido_net => area)
   number = area.number

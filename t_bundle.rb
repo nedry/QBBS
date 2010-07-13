@@ -12,7 +12,7 @@ require "t_const.rb"
 require "t_pktread.rb"
 require "db/db_area"
 require "db/db_message"
-require "db"
+
 
 def folder_by_date
   folder = Time.now.strftime("%d%m%y")
@@ -151,7 +151,7 @@ def process_incoming
         end
         puts "-BUNDLE: Processing Bundle: #{entry}"
         process_packets 
-        system("rm #{entry}")
+        #system("rm #{entry}")
       }
 
     else
@@ -163,8 +163,8 @@ def process_incoming
 end
 
 def unbundle
-  #open_database
+
   process_incoming_pkt
   process_incoming
-  #@db.close
+
 end

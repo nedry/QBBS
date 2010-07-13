@@ -77,41 +77,8 @@ class Session
   end
 end
 
-class Konsolethread
-  include Enumerable, Logger
-  require 'net/ftp'
 
-  def initialize (who,log)
-    @who  = who
-
-  end
-
-
-  require "t_pktread.rb"
-  require "t_pktwrite.rb"
-  require "t_bundle.rb"
-
-  def run
-    puts "-Starting Console Thread"
-    while true
-      sleep(4)
-      #puts "-Console Crappy Mode Working"
-      happy = IO.select([$stdin],nil,nil,0.1)
-      if happy != nil then
-        happy = STDIN.getc
-        puts happy
-        case happy
-        when 105
-          unbundle
-        when 101
-          pkt_export_run
-        end
-      end
-    end
-  end
-end #of class Konsolethread
-
-class QWKREPSchedulethread
+class MailSchedulethread
 
   include Enumerable, Logger
   require 'net/ftp'
@@ -145,8 +112,8 @@ class QWKREPSchedulethread
 
   def up_down_fido(idle)
     ddate = Time.now.strftime("%m/%d/%Y at %I:%M%p")
-    puts "-SCHED: Starting a Fido mail run on #{ddate}... Idle: #{idle}"
-    add_log_entry(1,Time.now,"Starting a fido run.")
+    puts "-SCHED: Starting a Fido mail transfer #{ddate}... Idle: #{idle}"
+    add_log_entry(L_SCHEDULE,Time.now,"Starting a fido transfer session.")
     total = pkt_export_run
     if total == 0 then
       write_a_ilo
@@ -161,17 +128,20 @@ class QWKREPSchedulethread
       ftp.passive = false
       ftp.login(FTPACCOUNT,FTPPASSWORD)
       ftp.close
-      add_log_entry(1,Time.now,"Connected via FTP. Starting QWK Export.")
+      add_log_entry(L_SCHEDULE,Time.now,"Connected via FTP. Starting QWK Export.")
       puts "-QWK/REP: Successfull Connection to FTP Server. Starting Export"
       return true
     rescue
       puts "-QWK/REP: Cannot connect to FTP Server. #{$!}"
-      add_log_entry(1,Time.now,"Cannot connect to FTP Server.")
+      add_log_entry(L_SCHEDULE,Time.now,"Cannot connect to FTP Server.")
       return false
     end
   end
 
-  def up_down
+  def up_down(idle)
+    puts "-SCHED: Starting a QWK/REP message transfer #{Time.now.strftime("%m/%d/%Y at %I:%M%p")}... Idle: #{idle}"
+    add_log_entry(L_SCHEDULE,Time.now,"Starting a QWK/REPmessage transfer.")
+    
     if ftptest or QWK_DEBUG then
       worked = Rep::Exporter.new(REPDATA)
        worked.repexport(QWKUSER)
@@ -184,17 +154,15 @@ class QWKREPSchedulethread
 
 
   def doit(idle)
-    puts "-SCHED: Starting a QWK/REP message run on #{Time.now.strftime("%m/%d/%Y at %I:%M%p")}... Idle: #{idle}"
-    add_log_entry(L_SCHEDULE,Time.now,"Starting a message transfer.")
     up_down_fido(idle) if FIDO
     do_smtp if SMTP
-    up_down
+    up_down(idle)
 
   end
 
   def run
     # begin
-    puts "-SCHED: Starting QWK/REP Thread."
+    puts "-SCHED: Starting Message Transfer Thread."
     idle = 0
     doit(idle)
     tick = Time.now.min.to_i
@@ -279,22 +247,21 @@ class ServerSocket
 
   def run
     set_up_database
-    puts "\n-#{VER} Server\n"; $stdout.flush
-    add_log_entry(9,Time.now,"#{VER} Server Starting.")
+    
+    add_log_entry(L_MESSAGE,Time.now,"#{VER} Server Starting.")
     if DEBUG then
       Thread.abort_on_exception = true 
-      add_log_entry(9,Time.now,"System running in Debug mode.")
+      add_log_entry(L_MESSAGE,Time.now,"System running in Debug mode.")
     end
-    add_log_entry(9,Time.now,"QWK Transfers disabled.") if !QWK
-    add_log_entry(9,Time.now,"FIDO Transfers disabled.") if !FIDO
-    add_log_entry(9,Time.now,"IRC Bot disabled.") if !IRC_ON
+    add_log_entry(L_MESSAGE,Time.now,"QWK Transfers disabled.") if !QWK
+    add_log_entry(L_MESSAGE,Time.now,"FIDO Transfers disabled.") if !FIDO
+    add_log_entry(L_MESSAGE,Time.now,"IRC Bot disabled.") if !IRC_ON
     Thread.new {Happythread.new(@who,@message).run}
     Thread.new {Botthread.new(@irc_who,@who,@message).run} if IRC_ON
-    Thread.new {QWKREPSchedulethread.new(@who,@message).run} if QWK
-    #Thread.new {Konsolethread.new(@who,@log).run}
+    Thread.new {MailSchedulethread.new(@who,@message).run} 
 
     while true
-      #puts "-Starting Server Accept Thread";
+      puts "-SA: Starting Server Accept Thread";
       $stdout.flush
       if socket = @serverSocket.accept then
         Thread.new {
