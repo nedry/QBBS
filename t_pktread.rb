@@ -18,7 +18,7 @@ def nul_delimited(buffer,pointer,max) #reads in a field delimited by nulls with 
   max.times {
     pointer += 1
     char = buffer[pointer]
-    if  char == 0 then 
+    if  char.ord == 0 then 
       return [result,pointer]
     else
       result << char    
@@ -32,19 +32,19 @@ def kludge_search(buffer)	#searches the message buffer for kludge lines and retu
 
   area 	= nil
   msgid	= nil
-  path		= nil
+  path	= nil
   tzutc	= nil
   charset	= nil
   tid		= nil
   pid		= nil
   intl		= nil
-  topt		= nil
-  fmpt		= nil
+  topt	= nil
+  fmpt	= nil
   reply 	= nil
   origin	= nil
 
   msg_array = buffer.split("\r")  #split the message into an array so we can deal with it.
-  puts "kludge array:"
+
   match = (/^(AREA:)(.*)/) =~ msg_array[0] # detect the area, if there is one.
   if !match.nil? then 
     area = $2
@@ -60,12 +60,13 @@ def kludge_search(buffer)	#searches the message buffer for kludge lines and retu
       origin.gsub!(")","")
     end }
     msg_array.each_with_index {|x,i|
-      if x.slice(0) == 1 then
-        x.slice!(0)
+
         match = (/^(\S*)(.*)/) =~ x
-        #puts "$1:#{$1} $2:#{$2}"
+      #  puts "$1:#{$1} $2:#{$2}"
         if !match.nil? then 
-          case $1
+	 # test = $1
+	  #test.slice!(0)
+          case $1.slice!(0)
           when "MSGID:"
             msgid = $2.strip
             msg_array[i] = nil
@@ -81,7 +82,7 @@ def kludge_search(buffer)	#searches the message buffer for kludge lines and retu
           when "TID:"
             tid = $2.strip
             msg_array[i] = nil
-          when "PID:"
+          when "PID"
             pid = $2.strip
             msg_array[i] = nil
           when "INTL"
@@ -97,7 +98,7 @@ def kludge_search(buffer)	#searches the message buffer for kludge lines and retu
             reply = $2.strip
             msg_array[i] = nil
 
-          end
+       #   end
         end
       end }
 
@@ -203,8 +204,7 @@ end
 def read_pkt_header(path)
 
   if File.exists?(path) then
-    happy = File.open(path,"rb:BINARY")
-     puts "Inherited from environment:  #{happy.external_encoding.name}"
+    happy = File.open(path,"rb")
 
   else
     return PACKET_NOT_FOUND
@@ -214,7 +214,7 @@ def read_pkt_header(path)
   buffer   = happy.read(0x3a)
  
   puts "buffer: #{buffer}"
-      puts "read: #{(buffer[0x12].ord) + (buffer[0x13].ord << 8)}"
+
   if ((buffer[0x12].ord + (buffer[0x13].ord << 8)) != 2) then
     puts("Not a type 2 packet #{path}")
     return INVALID_PACKET;
@@ -267,31 +267,20 @@ def read_pkt_header(path)
   return SUCCESS
 end
 
-
-
-def setitup
-  user = fetch_user(get_uid(FIDOUSER))
-  for i in 0..a_total do
-    user.lastread[i] = 0 if user.lastread[i] == nil 
-  end
-  update_user(user,get_uid(FIDOUSER))
-end
-
-
 def add_fido_msg(fidomessage)
 
   if fidomessage.area == NETMAIL then
     if user_exists(fidomessage.to) then 
       area = fetch_area(0)
-      table = area.number
+     # table = area.number
       number = 0
     else
-      table,number = find_fido_area(BADNETMAIL)
+      number = find_fido_area(BADNETMAIL)
       puts "-FIDO: Bad netmail detected."
       #generate a bounce message
     end
   else
-    table,number = find_fido_area(fidomessage.area)
+    number = find_fido_area(fidomessage.area)
   end
   msg_text = fidomessage.message.join(DLIM)
   msg_date = fidomessage.datetime.strip
@@ -323,7 +312,7 @@ def add_fido_msg(fidomessage)
   network = false
   reply = false
 
-  if !table.nil? then 
+  if !number.nil? then 
 
     if !pid.nil? then
       pid = pid[0..79] if pid.length > 80
@@ -334,27 +323,20 @@ def add_fido_msg(fidomessage)
     end
 
     puts "----"
-    area = fetch_area(table)
-    puts "FIDO: importing message to: #{area.name}"
+    a = fetch_area(number)
+    puts "FIDO: importing message to: #{a.name}"
 
-add_msg(m_to,m_from,msg_date,subject,msg_text,exported,network,reply,destnode,destnet,intl,topt,smtp,number)
-
-
- '#{f_network}','#{orgnode}'
-,'#{orgnet}',,'#{attribute}'
-             '#{cost}','#{area}','#{msgid}','#{path}','#{tzutc}',\
-             '#{charset}','#{tid}','#{pid}',
-             '#{fmpt}','#{origin}','#{reply}',#{table}')") 
+add_msg(m_to,m_from,msg_date,subject,msg_text,exported,network,destnode,destnet,intl,topt,false, f_network,orgnode,orgnet,
+               attribute,cost,area,msgid,path,tzutc,charset, tid,pid,fmpt,origin,reply,number)
 
              #Update pointers
              user = fetch_user(get_uid(FIDOUSER))
-
-             #on first run with database... the user might not have logged in...
-             user.lastread = [] if user.lastread == nil
-
+             pointer = get_pointer(user,number)
+	     scanforaccess(user)
              user.posted = user.posted + 1
-             user.lastread[number] = high_absolute(table)
-             update_user(user,get_uid(FIDOUSER))
+             pointer.lastread = high_absolute(number)
+             update_user(user)
+	     update_pointer(pointer)
              return 
   else
     puts "Error: No mapping found for #{fidomessage.area}.  Not Importing"

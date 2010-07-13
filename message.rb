@@ -249,7 +249,9 @@ class Session
     msg_text = @lineeditor.msgtext.join(DLIM)
     m_from = @c_user.name
     msg_date = Time.now.strftime("%Y-%m-%d %I:%M%p")
-    absolute = add_msg(to,m_from,msg_date,title,msg_text,exported,false,reply,destnode,destnet,intl,point,false,area.number)
+    absolute = add_msg(to,m_from,msg_date,title,msg_text,exported,false,destnode,destnet,intl,point,false, nil,nil,nil,
+                                      nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,reply,area.number)
+   # absolute = add_msg(to,m_from,msg_date,title,msg_text,exported,false,reply,destnode,destnet,intl,point,false,area.number)
     add_log_entry(5,Time.now,"#{@c_user.name} posted msg # #{absolute}")
   end
 
@@ -345,8 +347,10 @@ class Session
 
   def get_orig_address(msgid)
     orig = nil
-    match = (/^(\S*)(\S*)/) =~ msgid.strip
-    orig = $1 if !match.nil?
+    if !msgid.nil? then
+     match = (/^(\S*)(\S*)/) =~ msgid.strip
+     orig = $1 if !match.nil?
+    end
     return orig
   end
 
@@ -466,7 +470,7 @@ class Session
     write "%CFrom: %G#{curmessage.m_from.strip}"
     if curmessage.f_network then
       out = "UNKNOWN"
-      if curmessage.intl != "" then
+      if !curmessage.intl.nil? then
         if curmessage.intl.length > 1 then
           o_adr = curmessage.intl.split[1]
           zone,net,node,point = parse_intl(o_adr)

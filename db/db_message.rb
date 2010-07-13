@@ -91,7 +91,9 @@ def email_absolute_message(ind,m_to)
   result = lazy_list[ind-1].absolute
 end
 
-def add_msg(m_to,m_from,msg_date,subject,msg_text,exported,network,reply,destnode,destnet,intl,topt,smtp,number)
+def add_msg(m_to,m_from,msg_date,subject,msg_text,exported,network,destnode,destnet,intl,topt,smtp, f_network,orgnode,orgnet,attribute,cost,area,msgid,path,tzutc,charset, tid,pid,fmpt,origin,reply,number)
+
+puts "number: #{number}"
 
   topt = -1 if topt.nil?
   destnode = -1 if destnode.nil?
@@ -110,8 +112,24 @@ def add_msg(m_to,m_from,msg_date,subject,msg_text,exported,network,reply,destnod
     :destnet => destnet,
     :intl => intl,
     :topt => topt,
-    :smtp => smtp
+    :smtp => smtp,
+    :f_network  => f_network,
+    :orgnode  => orgnode, 
+    :orgnet  => orgnet, 
+    :attribute  => attribute, 
+    :cost  => cost,
+    :area  => area,  
+    :msgid  => msgid, 
+    :path  => path, 
+    :tzutc  => tzutc,  
+    :charset  => charset,
+    :tid  => tid,  
+    :pid  => pid,
+    :fmpt  => fmpt,  
+    :origin  => origin,
+    :reply  => reply
   ) 
+  
   dude = message.save
   #message.errors.each{|x| puts x}
   #puts "worked: #{dude}"
@@ -128,7 +146,9 @@ def add_qwk_message(message, area)
   title = message.subject.strip
   exported = true
   network = true
-  absolute = add_msg(to,m_from,msg_date,title,msg_text,exported,network,false,nil,nil,nil,nil,false,area.number)
+  #absolute = add_msg(to,m_from,msg_date,title,msg_text,exported,network,false,nil,nil,nil,nil,false,area.number)
+                    add_msg(to,m_from,msg_date,title,msg_text,exported,network,false,nil,nil,nil,nil, false,
+		                   nil,nil,nil,nil,nil,nil,nil,nil,nil, nil,nil,nil,nil,nil,area.number)
 
   user.posted = user.posted + 1
   pointer.lastread = absolute

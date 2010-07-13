@@ -39799,3 +39799,51 @@ TEMPCRAP : св
 HAS_TAGLINE : *
 NSREC : 224
 
+228 areas in CONTROL.DAT
+6 areas found in QWK packet
+["2003"] Entertain
+["2015"] HAM
+["2004"] Debate
+["2007"] Synchronet
+["2001"] DOVE-Net
+["2002"] Ads
+Now Processing Packet qwk/2003.NDX which contains 1 messages.
+
+QWK: ERROR: No mapping found for area qwk/2003.NDX
+Now Processing Packet qwk/2015.NDX which contains 7 messages.
+
+QWK: ERROR: No mapping found for area qwk/2015.NDX
+Now Processing Packet qwk/2004.NDX which contains 2 messages.
+
+QWK: ERROR: No mapping found for area qwk/2004.NDX
+Now Processing Packet qwk/2007.NDX which contains 6 messages.
+
+QWK: ERROR: No mapping found for area qwk/2007.NDX
+Now Processing Packet qwk/2001.NDX which contains 3 messages.
+
+QWK: ERROR: No mapping found for area qwk/2001.NDX
+Now Processing Packet qwk/2002.NDX which contains 1 messages.
+
+QWK: ERROR: No mapping found for area qwk/2002.NDX
+0 areas in CONTROL.DAT
+0 areas found in QWK packet
+0 areas in CONTROL.DAT
+0 areas found in QWK packet
+0 areas in CONTROL.DAT
+0 areas found in QWK packet
+0 areas in CONTROL.DAT
+0 areas found in QWK packet
+0 areas in CONTROL.DAT
+0 areas found in QWK packet
+0 areas in CONTROL.DAT
+0 areas found in QWK packet
+0 areas in CONTROL.DAT
+0 areas found in QWK packet
+0 areas in CONTROL.DAT
+0 areas found in QWK packet
+228 areas in CONTROL.DAT
+1 areas found in QWK packet
+["2007"] Synchronet
+Now Processing Packet qwk/2007.NDX which contains 1 messages.
+
+QWK: ERROR: No mapping found for area qwk/2007.NDX
