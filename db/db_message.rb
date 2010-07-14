@@ -130,9 +130,10 @@ puts "number: #{number}"
     :reply  => reply
   ) 
   
-  dude = message.save
-  #message.errors.each{|x| puts x}
-  #puts "worked: #{dude}"
+  worked = message.save
+  if !worked then
+   message.errors.each{|x| puts x}
+  end
   return high_absolute(area.number)
 end
 
@@ -147,8 +148,9 @@ def add_qwk_message(message, area)
   exported = true
   network = true
   #absolute = add_msg(to,m_from,msg_date,title,msg_text,exported,network,false,nil,nil,nil,nil,false,area.number)
-                    add_msg(to,m_from,msg_date,title,msg_text,exported,network,false,nil,nil,nil,nil, false,
-		                   nil,nil,nil,nil,nil,nil,nil,nil,nil, nil,nil,nil,nil,nil,area.number)
+  absolute = add_msg(to,m_from,msg_date,title,msg_text,exported,network,nil,nil,nil,nil,false,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,false,area.number)
+
+
 
   user.posted = user.posted + 1
   pointer.lastread = absolute

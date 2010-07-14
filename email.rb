@@ -30,7 +30,7 @@ class Session
   end
 
   def readitnow
-    reademail(true) if yes(CRLF+"Read them now (Y,n)? ", true, false,true)
+    reademail(true) if yes(CRLF+"Read them now #{YESNO}", true, false,true)
   end
 
 
@@ -278,7 +278,7 @@ def sendemail(feedback)
     msg_file = write_quote_msg("")
     launch_editor(msg_file)
     suck_in_text(msg_file)
-    prompt = "Send email (Y,n)? "
+    prompt = "Send email #{YESNO}"
     saveit = yes(prompt, true, false,true)
   else
     saveit = lineedit(1,reply_text)
@@ -371,7 +371,7 @@ def replyemail(epointer,carea)
     launch_editor(msg_file)
     suck_in_text(msg_file)
     print (CLS)
-    prompt = "Send message (Y,n)? "
+    prompt = "Send message #{YESNO}"
     saveit = yes(prompt, true, false,true)
   else
     saveit = lineedit(1,msg_text)

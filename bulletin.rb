@@ -43,7 +43,7 @@ class Session
 
     name = getinp("Enter new bulletin name: ",:nonempty) 
     path = getinp("Enter new bulletin path: ",:nonempty)
-    if yes("Are you sure (Y,n)? ", false, false,true)
+    if yes("Are you sure #{YESNO}", false, false,true)
       add_bulletin(name, path)
     else
       print "%RAborted."

@@ -3,7 +3,7 @@ class Session
 def version
 
  print	
- print "%C#{VER} (C) Copyright 1993 - 2010 by Fly-By-Night Software"
+ print "%C#{VER} (C) Copyright 1985 - 2010 by Fly-By-Night Software"
  print
  print "%GProgrammers:"
  print
@@ -11,14 +11,15 @@ def version
  print 			     
  print "%GThanks to:"
  print		
- print "     %MWayne Conrad     %YNick Bensema      %RRob Swindell"
+ print "           %MWayne Conrad          %RRob Swindell"
  print			
  print "%CFor all their help and encouragement."
  print			
  print "%GAPIs by:"
  print		       
- print "     %WJohnathan Perkins - Natter (IRC) "
- print "     Matt Armstrong - RubyMail (SMTP Email)"
+ print "      %MDatamapper (Database)...........%WThe Datamapper Team"
+ print "      %MNatter (IRC)....................%WJohnathan Perkins "
+ print "      %MRubyMail (SMTP Email)...........%WMatt Armstrong      "
  print
 end
 

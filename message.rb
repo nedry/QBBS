@@ -12,7 +12,7 @@ class Session
     user = @c_user
     more = 0
     groups = fetch_groups
-    prompt = "%WMore (Y,n) or Area #? "
+    prompt = "%WMore #{YESNO} or Area #? "
     prompt2 = "Which, or %Y<--^ for all: "
     print
     print "%GMessage Groups:"
@@ -228,7 +228,7 @@ class Session
         msg_file = write_quote_msg(reply_text)
         launch_editor(msg_file)
         suck_in_text(msg_file)
-        prompt = "Post message (Y,n)? "
+        prompt = "Post message #{YESNO}"
         saveit = yes(prompt, true, false,true)
       else
         saveit = lineedit(1,reply_text)
@@ -333,7 +333,7 @@ class Session
       msg_file = write_quote_msg(nil)
       launch_editor(msg_file)
       suck_in_text(msg_file)
-      prompt = "Post message (Y,n)? "
+      prompt = "Post message #{YESNO}"
       saveit = yes(prompt, true, false,true)
     else
       saveit = lineedit(1,reply_text)
@@ -620,7 +620,7 @@ end
 
     first = absolute_message(area.number,start)  #this need rewriting for the new db format
     last = absolute_message(area.number,stop)
-    prompt = "%RDelete messages #{start} to #{stop} (Y,n)? "
+    prompt = "%RDelete messages #{start} to #{stop} #{YESNO}"
     delete_msgs(area.number,first,last) if yes(prompt, true, false,true)
   end
 
@@ -786,9 +786,9 @@ here
       else break end
     end
 
-      commit = yes("Are you sure (Y,n)?",true,false,true)
+      commit = yes("Are you sure #{YESNO}",true,false,true)
       if commit then
-        add_area(name,"W","W")
+        add_area(name,"W","W",nil,nil,nil)
         apointer = a_total - 1
       else
         print "%RCancelled."
@@ -855,7 +855,7 @@ here
   def clearfidoarea(apointer)
 
     area = fetch_area(apointer)
-    commit = yes("Clear Fidonet Area Mapping. Are you sure (Y,n)? ",false,false,true)
+    commit = yes("Clear Fidonet Area Mapping. Are you sure #{YESNO}",false,false,true)
 
     if commit then
       area.fido_net = nil

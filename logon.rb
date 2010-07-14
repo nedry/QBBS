@@ -20,7 +20,8 @@ class Session
    print "\e[99B_"		#locate Cursor as far down as possible
    print "\e[6n"		#Get Cursor Position
    print "\e[u"			#Restore Cursor Position
-   print "\e[0m_"		#Set Normal Colours
+   #print "\e[0m_"		#Set Normal Colours
+   print "\e[;1;37;40m"
    print "\e[2J"		#Clear Screen
    print "\e[H"			#Home Cursor
 

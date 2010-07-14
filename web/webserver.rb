@@ -8,7 +8,6 @@ require 'dm-core'
 require 'dm-validations'
 
 require "ansi.rb"
-require "../db.rb"
 require "../db/db_area.rb"
 require "../db/db_user.rb"
 require "../db/db_message.rb"
@@ -22,8 +21,9 @@ require "../consts.rb"
 require "../wrap.rb"
 
 
+
 TEXT_ROOT = "/home/mark/qbbs/text/"
-TITLE = "QUARKseven Web v.5"
+TITLE = "QUARKseven Web v.75"
 EXISTS = 1
 INVALID = 2
 OKAY = 3
@@ -110,7 +110,7 @@ def who_list_delete (uid)
 
 
 
-
+puts "#{msg_array.class}"
  msg_array.each_with_index {|x,i|
  	if x.slice(0) == 64 then
    x.slice!(0)
@@ -264,7 +264,7 @@ def w_display_message(mpointer,user,m_area,email,dir,total)
       m_out << "</td></tr>"
       m_out << "<tr><td><span style='color:#54fcfc'>Title: </span></td><td>#{curmessage.subject}</td></tr></table><br>"
       m_out << "<div id='msg'>"
-      m_out << "#{parse_webcolor(curmessage.msg_text)}"
+      m_out << "#{parse_webcolor(convert_to_ascii(curmessage.msg_text))}"
       m_out << "</div></div>"
      m_out << "<BR>"
  return [curmessage.m_from.strip,curmessage.subject.strip,m_out]
@@ -347,7 +347,7 @@ if !session[:name].nil? then
        msg_subject = msg_subject[0..39] if msg_subject.length > 40
        msg_text = WordWrapper.wrap(msg_text,79)
        msg_text.gsub!(10.chr,"")
-       msg_text.gsub!(CR.chr,DLIM)
+       #msg_text.gsub!(CR.chr,DLIM)
 
       msg_date = Time.now.strftime("%m/%d/%Y %I:%M%p")
       absolute = add_msg(msg_to,name,msg_date,msg_subject,msg_text,false,false,false,nil,nil,nil,nil,false,area.number)
@@ -391,8 +391,8 @@ if !session[:name].nil? then
        reply = ""
         if to !="" then 
 	       curmessage = fetch_msg(absolute_message(area.number,last))
-	       curmessage.msg_text.gsub!(10.chr,'')
-	       reply = curmessage.msg_text.split(227.chr)
+	       #curmessage.msg_text.gsub!(10.chr,'')
+	       reply = convert_to_ascii(curmessage.msg_text)
 	        if curmessage.network then
 	         reply,q_msgid,q_via,q_tz,q_reply = qwk_kludge_search(reply)
           end

@@ -1,8 +1,8 @@
 DEBUG = true
 LISTENPORT = 2323
-QWK = false
-QWK_DEBUG = false
-FIDO = true
+QWK = true
+QWK_DEBUG = true
+FIDO = false
 SMTP = false
 IRC_ON =  false
 
@@ -23,7 +23,8 @@ LOW = 0..31
 PRINTABLE = 32..126
 TELNETCMD = 250..255
 SPACE = " "
-
+YESNO ="%W(%YY,%Rn%W): "
+NOYES ="%W(%Ry,%YN%W): "
 
 
 ECHO = true

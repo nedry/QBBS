@@ -67,11 +67,11 @@ class Session
     logon 
     if !@c_user.fastlogon then
       if scanformail == true  then 
-        emailmenu if yes("%GWould you like to read it now %W(%YY,%Rn%W): ",true,false,true)
+        emailmenu if yes("%GWould you like to read it now #{YESNO}",true,false,true)
       end
     end
     if !@c_user.fastlogon then
-     messagemenu (true) if yes("%GWould you like to perform a new message scan %W(%GZIPread%W)? (%YY,%Rn%W): ",true,false,true)
+     messagemenu (true) if yes("%GWould you like to perform a new message scan %W(%GZIPread%W)? #{YESNO}",true,false,true)
     end
     commandLoop
   end
@@ -156,7 +156,7 @@ class MailSchedulethread
   def doit(idle)
     up_down_fido(idle) if FIDO
     do_smtp if SMTP
-    up_down(idle)
+    up_down(idle) if QWK
 
   end
 
