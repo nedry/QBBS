@@ -418,6 +418,17 @@ class Session
     end
   end
 
+ def time_thingie(time)
+	 
+    out = "th"
+    case time.strftime("%d")
+       when "1"; out = "st"
+       when "2"; out = "nd"
+       when "3"; out = "rd"
+    end
+    return out
+ end
+   
 
   def displaymessage(mpointer,table,email)
 
@@ -448,7 +459,8 @@ class Session
       message,q_msgid,q_via,q_tz,q_reply = qwk_kludge_search(message)
     end
     #puts q_via
-    write "%W##{mpointer} %G[%C#{curmessage.absolute}%G] %B#{curmessage.msg_date}"
+    
+    write "%W##{mpointer} %G[%C#{curmessage.absolute}%G] %B#{curmessage.msg_date.strftime("%A the %d#{time_thingie(curmessage.msg_date)} of %B, %Y  %I:%M%p")}"
     if !q_tz.nil? then
       tz = q_tz.upcase
       #puts "tz: #{tz}"

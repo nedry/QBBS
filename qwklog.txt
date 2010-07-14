@@ -43064,3 +43064,15 @@ TEMPCRAP : св
 HAS_TAGLINE : *
 NSREC : 224
 
+0 areas in CONTROL.DAT
+0 areas found in QWK packet
+0 areas in CONTROL.DAT
+0 areas found in QWK packet
+0 areas in CONTROL.DAT
+0 areas found in QWK packet
+0 areas in CONTROL.DAT
+0 areas found in QWK packet
+0 areas in CONTROL.DAT
+0 areas found in QWK packet
+0 areas in CONTROL.DAT
+0 areas found in QWK packet

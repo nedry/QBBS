@@ -211,6 +211,27 @@ def m_menu(m_area,pointer,dir,subject,from,total,email)
   return m_out
 end
 
+  def get_orig_address(msgid)
+    orig = nil
+    if !msgid.nil? then
+     match = (/^(\S*)(\S*)/) =~ msgid.strip
+     orig = $1 if !match.nil?
+    end
+    return orig
+  end
+  
+   def time_thingie(time)
+	 
+    out = "th"
+    case time.strftime("%d")
+       when "1"; out = "st"
+       when "2"; out = "nd"
+       when "3"; out = "rd"
+    end
+    return out
+ end
+   
+   
 def w_display_message(mpointer,user,m_area,email,dir,total)
       area = fetch_area(m_area)
       table = area.number
@@ -233,7 +254,10 @@ def w_display_message(mpointer,user,m_area,email,dir,total)
        message,q_msgid,q_via,q_tz,q_reply = qwk_kludge_search(message)
       end
       m_out << "<div class='fixed' style='background-color:black;color:white'>"
-      m_out << "##{mpointer} <span style='color:#54fc54'>[</span><span style='color:#54fcfc'>#{curmessage.number}</span><span style='color:#54fc54'>]</span> <span style='color:#5454fc'>#{curmessage.msg_date}</span>"
+      m_out << "##{mpointer} <span style='color:#54fc54'>[</span><span style='color:#54fcfc'>#{curmessage.absolute}</span><span style='color:#54fc54'>]</span> <span style='color:#5454fc'>"
+      m_out << "#{curmessage.msg_date.strftime('%A the %d')}"
+      m_out << "#{time_thingie(curmessage.msg_date)}"
+      m_out << " of #{curmessage.msg_date.strftime('%B, %Y  %I:%M%p')}</span>"
       m_out <<  " <span style='color:#54fc54'> [NETWORK MESSAGE]</span>" if curmessage.network
       m_out << " [SMTP]" if curmessage.smtp
       m_out << "<span style='color:#54fc54'> [FIDONET MESSAGE]</span>" if curmessage.f_network
@@ -246,7 +270,7 @@ def w_display_message(mpointer,user,m_area,email,dir,total)
        out = ""
       if curmessage.f_network then 
        out = "UNKNOWN"
-       if curmessage.intl != "" then
+       if !curmessage.intl.nil? then
         if curmessage.intl.length > 1 then
          o_adr = curmessage.intl.split[1]
  	zone,net,node,point = parse_intl(o_adr)
@@ -262,7 +286,7 @@ def w_display_message(mpointer,user,m_area,email,dir,total)
        m_out << " <span style='color:#54fc54'>(</span><span style='color:#54fcfc'>#{out}</span><span style='color:#54fc54'>)</span>"
       end
       m_out << "</td></tr>"
-      m_out << "<tr><td><span style='color:#54fcfc'>Title: </span></td><td>#{curmessage.subject}</td></tr></table><br>"
+      m_out << "<tr><td><span style='color:#54fcfc'>Title: </span></td><td><span style='color:#54fc54'>#{curmessage.subject}</span></td></tr></table><br>"
       m_out << "<div id='msg'>"
       m_out << "#{parse_webcolor(convert_to_ascii(curmessage.msg_text))}"
       m_out << "</div></div>"
@@ -343,14 +367,21 @@ if !session[:name].nil? then
     user = fetch_user(get_uid(name))
     pointer = get_pointer(user,m_area)
   if (pointer.access == "W") or (user.level == 255) and (!area.delete) then
+    if !msg_to.nil? then
        msg_to = msg_to[0..39] if msg_to.length > 40
+    end
+    if !msg_subject.nil? then
        msg_subject = msg_subject[0..39] if msg_subject.length > 40
+   end
        msg_text = WordWrapper.wrap(msg_text,79)
        msg_text.gsub!(10.chr,"")
+      # msg_text = convert_to_utf8(msg_text)  Do we need this?  I dunno...
        #msg_text.gsub!(CR.chr,DLIM)
 
       msg_date = Time.now.strftime("%m/%d/%Y %I:%M%p")
-      absolute = add_msg(msg_to,name,msg_date,msg_subject,msg_text,false,false,false,nil,nil,nil,nil,false,area.number)
+   #   absolute = add_msg(msg_to,name,msg_date,msg_subject,msg_text,false,false,false,nil,nil,nil,nil,false,area.number)
+      absolute = add_msg(msg_to,name,msg_date,msg_subject,msg_text,false,false,nil,nil,nil,nil,false, nil,nil,nil,
+                                      nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,false,area.number)
       post_out << "Posted Absolute Message ##{absolute}<BR>"
       post_out << ("<a href='/message?m_area=#{m_area}&last=#{last}&dir=#{dir}'>Return</a>&nbsp;&nbsp;")
      else
@@ -389,7 +420,7 @@ if !session[:name].nil? then
     post_out = ""
      if (pointer.access == "W") or (user.level == 255) and (!area.delete) then
        reply = ""
-        if to !="" then 
+        if !to.nil? then 
 	       curmessage = fetch_msg(absolute_message(area.number,last))
 	       #curmessage.msg_text.gsub!(10.chr,'')
 	       reply = convert_to_ascii(curmessage.msg_text)
@@ -403,7 +434,7 @@ if !session[:name].nil? then
           post_out <<  "<input name='last' type='hidden' value='#{last}'>" 
           post_out <<  "<input name='m_area' type='hidden' value='#{m_area}'>"
           
-	     if to != "" then
+	     if !to.nil? then
 	      post_out <<  "<input name='msg_to' type='hidden' value='#{to}'>"
 	     end
           post_out <<  "<tr><td>From: </td> <td>#{name}</td></tr>" 
@@ -418,8 +449,8 @@ if !session[:name].nil? then
           post_out <<  "#{CRLF}"
           post_out <<  "<tr><td colspan=2><textarea style='font-size:12px' name='msg_text' cols='79' rows='25'  id='msg_text'>#{CRLF}"
           if to != "" then 
-           post_out <<  ("--- #{to} wrote --- #{CRLF}")
-           reply.each {|line| post_out << "&gt; #{line[0..75].strip}#{CRLF}"}
+           post_out <<  ("--- #{to} wrote --- #{CRLF}") if !to.nil?
+           reply.each_line {|line| post_out << "&gt; #{line[0..75].strip}#{CRLF}"}
           end
     
                
