@@ -1,5 +1,6 @@
 # Load the API.
 require 'chat/irc'
+require "db/db_class.rb"
 
 class IrcBot < IRC::Client
   def initialize(server, port)
@@ -61,8 +62,8 @@ end
 class Botthread
   attr_reader :irc_bot
 
-  def initialize (irc_who,who,message,log)
-    @irc_who,@who, @message, @log = irc_who,who, message, log
+  def initialize (irc_who,who,message)
+    @irc_who,@who, @message = irc_who,who, message
     @irc_bot = nil
   end
 
@@ -121,7 +122,7 @@ class Botthread
               delete_irc_t
               user_arr.each {|x|
                 @irc_who.append(Airc_who.create("*#{x}",channel))
-                add_who_t(DB_who_T.new(true,0,"*#{x}",channel,"Chat (IRC)",""))
+                add_who_t(true,0,channel,"Chat (IRC)","*#{x}")
               }
             end
           end
