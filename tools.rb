@@ -1,3 +1,16 @@
+
+ def time_thingie(time)
+	 
+    out = "th"
+    case time.strftime("%d")
+       when "1"; out = "st"
+       when "2"; out = "nd"
+       when "3"; out = "rd"
+    end
+    return out
+ end
+   
+
 def default(inp, d)
   (yield inp) ? inp : d
 end

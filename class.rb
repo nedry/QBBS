@@ -191,9 +191,10 @@ class Irc_who < Listing
   sync_reader '@mutex', :date, :name, :where, :page
 
 
-  def user(key) 
-    findkey(key.upcase) {|who| who.name.upcase}
-  end 
+ 
+ def user(key) 
+   findkey(key.upcase) {|who| who.name.upcase}
+ end 
 end   #of Class Who
 
 class Parse
@@ -241,83 +242,101 @@ end
 
 
 
-Message_qwk = Struct.new('Message_qwk',:error, :statusflag, :number, :date,
-                         :to, :from, :subject, :password, :reference, :blocks, :deleted, :logicalnum,
-                         :tagline, :text)
-class Message_qwk
-  private :initialize
-  class << self
-    def create
-      a = self.new
-      a.error = false
-      a.statusflag = ''
-      a.number = 0
-      a.date = Time.new
-      a.to = ''
-      a.from = ''
-      a.subject = ''
-      a.password = ''
-      a.reference = 0
-      a.blocks = 0
-      a.deleted = false
-      a.logicalnum = 0
-      a.tagline = false
-      a.text = []
-      return a
-    end
-  end
-end #of message
+#Message_qwk = Struct.new('Message_qwk',:error, :statusflag, :number, :date,
+  #                       :to, :from, :subject, :password, :reference, :blocks, :deleted, :logicalnum,
+   #                      :tagline, :text)
+#class Message_qwk
+#  private :initialize
+#  class << self
+ #   def create
+  #    a = self.new
+  #    a.error = false
+  #    a.statusflag = ''
+  #    a.number = 0
+  #    a.date = Time.new
+  #    a.to = ''
+  #    a.from = ''
+  #    a.subject = ''
+  #    a.password = ''
+   #   a.reference = 0
+  #    a.blocks = 0
+ #     a.deleted = false
+ #     a.logicalnum = 0
+ #     a.tagline = false
+  #    a.text = []
+ #     return a
+ #   end
+#  end
+#end #of message
 
-class Area_qwk
-  def initialize (area,name)
-    @area = area
-    @name = name
-  end
+#class Area_qwk
+#  def initialize (area,name)
+ #   @area = area
+  #  @name = name
+ # end
 
-  attr_accessor :area, :name
-end
+ # attr_accessor :area, :name
+#end
 
-class Area_rep
-  def initialize (xnum,name,num)
-    @xnum = xnum
-    @name = name
-    @num = num
-  end
+#class Area_rep
+#  def initialize (xnum,name,num)
+ #   @xnum = xnum
+ #   @name = name
+  #  @num = num
+ # end
 
-  attr_accessor :xnum, :name, :num
-end
+ # attr_accessor :xnum, :name, :num
+#end
 
-class F_export
-  def initialize (num,table)
-    @table = table
-    @num = num
-  end
+#class F_export
+#  def initialize (num,table)
+ #   @table = table
+  #  @num = num
+ # end
 
-  attr_accessor :table, :num
-end
+ # attr_accessor :table, :num
+#end
 
 
-class Arealist_qwk 
-  def initialize
-    @arealist_qwk = Array.new
-  end
+#class Arealist_qwk 
+#  def initialize
+ #   @arealist_qwk = Array.new
+#  end
 
-  attr_reader :area, :name
+ # attr_reader :area, :name
 
-  def append(aArea) 
-    @arealist_qwk.push(aArea) 
-  end 
+  #def append(aArea) 
+  #  @arealist_qwk.push(aArea) 
+ # end 
 
-  def [](key) 
-    key.kind_of?(Integer) ? @arealist_qwk[key] :
-      @arealist_qwk.find {|arealist| key == arealist.name} 
-  end 
+ # def [](key) 
+  #  key.kind_of?(Integer) ? @arealist_qwk[key] :
+   #   @arealist_qwk.find {|arealist| key == arealist.name} 
+ # end 
 
-  def findarea(key) 
-    @arealist_qwk.find { |arealist| key == arealist.area } 
-  end
+ # def findarea(key) 
+  #  @arealist_qwk.find { |arealist| key == arealist.area } 
+ # end
 
-  def len
-    @arealist_qwk.length 
-  end
-end #of Class Arealist
+  #def len
+  #  @arealist_qwk.length 
+ # end
+#end #of Class Arealist
+
+
+class Q_Kludge
+ attr_accessor  :msgid, :tz, :via, :reply
+
+ def initialize (msgid=nil,tz=nil,via=nil,reply=nil)
+  @msgid	= msgid
+  @tz   	= tz
+  @via	= via
+  @reply	= reply
+ end
+
+ def []=(field, value)
+   field = field.downcase
+   self.send("#{field}=", value)
+ end
+
+end #of class Kludge

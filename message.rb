@@ -145,49 +145,7 @@ class Session
   end
 
   #-----------------Message Section-------------------
-  def qwk_kludge_search(msg_array) #searches the message buffer for kludge lines and returns them
-
-    tz = nil
-    msgid = nil
-    via = nil
-    reply = nil
-
-
-
-
-    msg_array.each_with_index {|x,i|
-      if x.slice(0) == 64 then
-        x.slice!(0)
-        match = (/^(\S*)(.*)/) =~ x
-        #puts "$1:#{$1} $2:#{$2}"
-        if !match.nil? then
-          case $1
-          when "MSGID:"
-            msgid = $2.strip
-            msg_array[i] = nil
-          when "VIA:"
-            via = $2.strip
-            msg_array[i] = nil
-          when "TZ:"
-            tz = $2.strip
-            msg_array[i] = nil
-          when "REPLY:"
-            reply = $2.strip
-            msg_array[i] = nil
-
-          end
-        end
-        #else
-        # break
-      end}
-
-
-      msg_array.compact! #Delete every line we marked with a nil, cause it had a kludge we caught!
-
-
-      return [msg_array,msgid,via,tz,reply]
-  end
-
+  
   def reply(mpointer)
     private = false
     print
@@ -345,14 +303,7 @@ class Session
     end
   end # of def post
 
-  def get_orig_address(msgid)
-    orig = nil
-    if !msgid.nil? then
-     match = (/^(\S*)(\S*)/) =~ msgid.strip
-     orig = $1 if !match.nil?
-    end
-    return orig
-  end
+
 
   def display_fido_header(mpointer)
     area = fetch_area(@c_area)
@@ -418,17 +369,7 @@ class Session
     end
   end
 
- def time_thingie(time)
-	 
-    out = "th"
-    case time.strftime("%d")
-       when "1"; out = "st"
-       when "2"; out = "nd"
-       when "3"; out = "rd"
-    end
-    return out
- end
-   
+
 
   def displaymessage(mpointer,table,email)
 
@@ -453,18 +394,18 @@ class Session
     message = []
     tempmsg=convert_to_ascii(curmessage.msg_text)
 
-     tempmsg.each_line(DLIM) {|line| message.push(line.chop!)} #changed from .each for ruby 1.9
 
     if curmessage.network then
-      message,q_msgid,q_via,q_tz,q_reply = qwk_kludge_search(message)
+      tempmsg,kludge= qwk_kludge_search(tempmsg)
     end
-    #puts q_via
+     tempmsg.each_line(DLIM) {|line| message.push(line.chop!)} #changed from .each for ruby 1.9
+
     
-    write "%W##{mpointer} %G[%C#{curmessage.absolute}%G] %B#{curmessage.msg_date.strftime("%A the %d#{time_thingie(curmessage.msg_date)} of %B, %Y  %I:%M%p")}"
-    if !q_tz.nil? then
-      tz = q_tz.upcase
+    write "%W##{mpointer} %G[%C#{curmessage.absolute}%G] %M#{curmessage.msg_date.strftime("%A the %d#{time_thingie(curmessage.msg_date)} of %B, %Y  %I:%M%p")}"
+    if !kludge.tz.nil? then
+      tz = kludge.tz.upcase
       #puts "tz: #{tz}"
-      out = TIME_TABLE[tz]
+      out = TIME_TABLE[kludge.tz]
       #puts out
       out = non_standard_zone(tz) if out.nil?
       write " %W(%G#{out}%W)"
@@ -491,7 +432,7 @@ class Session
     end
     if curmessage.network then
       out = BBSID
-      out = q_via if !q_via.nil?
+      out = kludge.via if !kludge.via.nil?
       write " %G(%C#{out}%G)"
     end
     print

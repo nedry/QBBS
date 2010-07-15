@@ -192,3 +192,39 @@ def convert_to_ascii(message)
   end
   return temp
 end
+
+ def qwk_kludge_search(buffer)	#searches the message buffer for kludge lines and returns them
+  kludge = Q_Kludge.new
+
+  msg_array = buffer.split("\r")  #split the message into an array so we can deal with it.
+
+  
+  # if we find any of these, reject the message
+  invalid = ["MSGID:", "VIA:", "TZ:", "REPLY:"]
+
+  valid_messages = []
+  msg_array.each do |x|
+    match = (/^(\S*)(.*)/) =~ x
+    if match then
+      header = $1
+      value = $2
+      if invalid.include? header
+        field = header.gsub(/:/, '')
+        kludge[field] = value.strip!
+      else
+        valid_messages << x
+      end
+    end
+  end
+
+  return [valid_messages.join("\r") , kludge]
+end
+
+  def get_orig_address(msgid)
+    orig = nil
+    if !msgid.nil? then
+     match = (/^(\S*)(\S*)/) =~ msgid.strip
+     orig = $1 if !match.nil?
+    end
+    return orig
+  end

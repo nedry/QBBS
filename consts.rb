@@ -4,7 +4,7 @@ QWK = true
 QWK_DEBUG = false
 FIDO = true
 SMTP = false
-IRC_ON =  true
+IRC_ON =  false
 
 BS = 8
 ESC = 27

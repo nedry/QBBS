@@ -90,7 +90,7 @@ class MailSchedulethread
     @idxlist = []
     @control = []
     @totalareas = 0
-    @arealist = Arealist_qwk.new
+    #@arealist = Arealist_qwk.new
     
   end
 

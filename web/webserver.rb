@@ -8,6 +8,7 @@ require 'dm-core'
 require 'dm-validations'
 
 require "ansi.rb"
+
 require "../db/db_area.rb"
 require "../db/db_user.rb"
 require "../db/db_message.rb"
@@ -17,7 +18,9 @@ require "../db/db_groups.rb"
 require "../db/db_bulletins.rb"
 require "../db/db_log.rb"
 require "../db/db_who_telnet.rb"
+require "../tools.rb"
 require "../consts.rb"
+require "../class.rb"
 require "../wrap.rb"
 
 
@@ -94,52 +97,6 @@ def who_list_delete (uid)
    return output
  end
 
-  def fix_pointer #(user,m_area)
-   scanforaccess
-   #user.lastread = Array.new(2,0) if user.lastread == nil or user.lastread == 0
-   #user.lastread[m_area] ||= 0 
-   #return user
- end
- 
- def qwk_kludge_search(msg_array)	#searches the message buffer for kludge lines and returns them
-
- tz		= nil
- msgid		= nil
- via		= nil
- reply		= nil
-
-
-
-puts "#{msg_array.class}"
- msg_array.each_with_index {|x,i|
- 	if x.slice(0) == 64 then
-   x.slice!(0)
- 	 match = (/^(\S*)(.*)/) =~ x
- 
-  	 if !match.nil? then 
-  	  case $1
-  	   when "MSGID:"
-         msgid = $2.strip
-         msg_array[i] = nil
-       when "VIA:"
-         via = $2.strip
-         msg_array[i] = nil
-       when "TZ:"
-         tz = $2.strip
-         msg_array[i] = nil
-       when "REPLY:"
-         reply = $2.strip
-         msg_array[i] = nil
-		  end
-		 end
-	end}
-
-
-   msg_array.compact!	#Delete every line we marked with a nil, cause it had a kludge we caught!
-
-
- return [msg_array,msgid,via,tz,reply]
- end
 
 def side_menu_gubbins
  groups = fetch_groups 
@@ -210,27 +167,6 @@ def m_menu(m_area,pointer,dir,subject,from,total,email)
   m_out <<  "</form><BR><BR>"
   return m_out
 end
-
-  def get_orig_address(msgid)
-    orig = nil
-    if !msgid.nil? then
-     match = (/^(\S*)(\S*)/) =~ msgid.strip
-     orig = $1 if !match.nil?
-    end
-    return orig
-  end
-  
-   def time_thingie(time)
-	 
-    out = "th"
-    case time.strftime("%d")
-       when "1"; out = "st"
-       when "2"; out = "nd"
-       when "3"; out = "rd"
-    end
-    return out
- end
-   
    
 def w_display_message(mpointer,user,m_area,email,dir,total)
       area = fetch_area(m_area)
@@ -251,10 +187,13 @@ def w_display_message(mpointer,user,m_area,email,dir,total)
        message = []
 
       if curmessage.network then
-       message,q_msgid,q_via,q_tz,q_reply = qwk_kludge_search(message)
+       message,kludge = qwk_kludge_search(curmessage.msg_text)
+      else
+        message = Curmessage.msg_text
       end
+        message.gsub!(13.chr,"<br/>")
       m_out << "<div class='fixed' style='background-color:black;color:white'>"
-      m_out << "##{mpointer} <span style='color:#54fc54'>[</span><span style='color:#54fcfc'>#{curmessage.absolute}</span><span style='color:#54fc54'>]</span> <span style='color:#5454fc'>"
+      m_out << "##{mpointer} <span style='color:#54fc54'>[</span><span style='color:#54fcfc'>#{curmessage.absolute}</span><span style='color:#54fc54'>]</span> <span style='color:#fc54fc'>"
       m_out << "#{curmessage.msg_date.strftime('%A the %d')}"
       m_out << "#{time_thingie(curmessage.msg_date)}"
       m_out << " of #{curmessage.msg_date.strftime('%B, %Y  %I:%M%p')}</span>"
@@ -264,7 +203,7 @@ def w_display_message(mpointer,user,m_area,email,dir,total)
       m_out << "<span style='color: #fcfc54'> [EXPORTED]</span>" if curmessage.exported and !curmessage.f_network and !curmessage.network
       m_out << " [REPLY]" if curmessage.reply
       m_out << "<br>"
-      m_out << "<table>"
+      m_out << "<table cellspacing=0>"
       m_out << "<tr><td> <span style='color:#54fcfc'>To:</span></td><td><span style='color:#54fc54'>#{curmessage.m_to}</span></td></tr>"
       m_out << "<tr><td><span style='color:#54fcfc'>From:</span></td><td><span style='color:#54fc54'>#{curmessage.m_from.strip}</span>"
        out = ""
@@ -282,13 +221,13 @@ def w_display_message(mpointer,user,m_area,email,dir,total)
       end
       if curmessage.network then
        out = BBSID
-       out = q_via if !q_via.nil?
+       out = kludge.via if !kludge.via.nil?
        m_out << " <span style='color:#54fc54'>(</span><span style='color:#54fcfc'>#{out}</span><span style='color:#54fc54'>)</span>"
       end
       m_out << "</td></tr>"
       m_out << "<tr><td><span style='color:#54fcfc'>Title: </span></td><td><span style='color:#54fc54'>#{curmessage.subject}</span></td></tr></table><br>"
       m_out << "<div id='msg'>"
-      m_out << "#{parse_webcolor(convert_to_ascii(curmessage.msg_text))}"
+      m_out << "#{parse_webcolor(convert_to_ascii(message))}"
       m_out << "</div></div>"
      m_out << "<BR>"
  return [curmessage.m_from.strip,curmessage.subject.strip,m_out]
@@ -297,15 +236,8 @@ end
 def pntr(user,c_area)
    area = fetch_area(c_area)
    pointer = get_pointer(user,c_area)
-   puts "!!!!!!!!!!!!!!!!!!!!!! c_area: #{c_area}"
-   puts "user: #{user}"
-   puts "pointer: #{pointer.class}"
-   puts "area.number: #{area.number}"
    p_msg = m_total(area.number) - new_messages(area.number,pointer.lastread)
-  puts "pointer lastread: #{pointer.lastread}"
-  puts "p_msg: #{p_msg} m_total: #{m_total(area.number)} new_messages: #{new_messages(area.number,pointer.lastread)}"
    p_msg = 1 if p_msg < 1
-  puts "p_msg: #{p_msg}<BR>"
   return p_msg
  end
  
@@ -487,12 +419,18 @@ new_password = params["new_password"]
 verify_password = params["verify_password"]
 email = params['email']
 location = params['location']
-#open_database
+
+frm_out = ""
+frm_out << "<form name='main' method='post' action='/newuser'>" 
+frm_out << "<input name='username' type='hidden'  value='#{username}'>" 
+frm_out <<  "<input name='email' type='hidden' value='#{email}'>" 
+frm_out <<  "<input name='location' type='hidden' value='#{location}'>"
+frm_out << "<input name = 'Try Again' type = 'submit' value = 'Try Again'>"
 
     if (new_password.upcase.strip == verify_password.upcase.strip) and (new_password.length > 4) then
         happy = (/^(\S*)@(\S*)\.(\S*)/) =~ email
 	 if !happy.nil? then 
-	  if location.length > 5 then
+	  if location.length > 2 then
 	  user_to_make = validate_user(username)
 	  if user_to_make == OKAY then
 	   add_user(username,'000.000.000',new_password.upcase,location,email,24,80,true, true, DEFLEVEL, true) 
@@ -500,29 +438,43 @@ location = params['location']
 	  else
 	    case user_to_make
 		    when 1
-		       haml :userfailure, :locals => {:error => "Username Already Exists..."}
+		       haml :userfailure, :locals => {:error => "Username Already Exists...", :frm_out => frm_out}
 		     when 2
-		       haml :userfailure, :locals => {:error => "User IDs must be between 3 and 25 characters, and may not contain...<br>the characters : * @ , ' "}
+		       haml :userfailure, :locals => {:error => "User IDs must be between 3 and 25 characters, and may not contain...<br>the characters : * @ , ' ", :frm_out => frm_out}
 		end
 	    end
 	  else
-	    haml :userfailure, :locals => {:error => "Invalid location."}
+	    haml :userfailure, :locals => {:error => "Invalid location.", :frm_out => frm_out}
 	  end
 	 else 
-	  haml :userfailure, :locals => {:error => "Invalid E-mail address."}
+	  haml :userfailure, :locals => {:error => "Invalid E-mail address.", :frm_out => frm_out}
 	 end
        else
         if new_password.length < 5 then
-	 haml :userfailure, :locals => {:error =>"Passwords must be at least 5 characters."}
+	 haml :userfailure, :locals => {:error =>"Passwords must be at least 5 characters.", :frm_out => frm_out}
 	else
-	  haml :userfailure, :locals => {:error => "Passwords do not match."}
+	  haml :userfailure, :locals => {:error => "Passwords do not match.", :frm_out => frm_out}
 	end
    end
 end
 
-get '/newuser' do
-	
-  haml :newuser
+post '/newuser' do
+  
+  username= params['username']
+  email = params['email']
+  location = params['location']
+  
+  n_out = ""
+  n_out << "<table border = 0>"
+  n_out << "<form action = '/usersave' method = 'post'">
+  n_out << "<tr><td>Account Name<td><input name = 'username' value = '#{username}' id = 'username' type = 'text' maxlength = 50></td></tr>"
+  n_out << "<tr><td>Password<td><input name = 'new_password' id = 'new_password' type = 'password' maxlength = 50></td></tr>"
+  n_out <<  "<tr><td>Verify Password<td><input name = 'verify_password' id = 'verify_password' type = 'password' maxlength = 50></td></tr>"
+  n_out <<  "<tr><td>Email<td><input name = 'email' id = 'email' value = '#{email}' type = 'text' maxlength = 50></td></tr>"
+  n_out <<  "<tr><td>Location<td><input name = 'location' id = 'location' value = '#{location}' type = 'text' maxlength = 50></td></tr>"
+  n_out << "<tr><td colspan = 2><input name = 'login' type = 'submit' value = 'create'></td></tr></table>"
+	     
+  haml :newuser,  :locals => {:n_out => n_out}
 end
 
 get '/' do
