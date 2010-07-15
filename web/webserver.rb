@@ -1,6 +1,7 @@
 $LOAD_PATH << ".."
 
 require 'rubygems'
+require 'socket'
 require 'sinatra'
 require 'haml'
 
@@ -34,6 +35,7 @@ OKAY = 3
 configure do
 	enable :sessions
 	set :static, true
+	BasicSocket.do_not_reverse_lookup = true
 	DataMapper::Logger.new('log/db', :debug)
         DataMapper.setup(:default, "postgres://#{DATAIP}/#{DATABASE}")
 end
