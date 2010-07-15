@@ -552,7 +552,7 @@ if !session[:name].nil? then
   m_out << '<p>Click chat to chat.  This will launch the our HTTP IRC client...</p>'
    m_out <<  "<form name='cgiirclogin' method='post' onsubmit='return openCgiIrc(this, 0)' action='chat/irc.cgi'>"
    m_out <<  "<input type='hidden' name='interface' value='nonjs'>"
-   m_out <<  "<input type='hidden' name='Nickname' value='#{user.alais}'>"
+   m_out <<  "<input type='hidden' name='Nickname' value='#{user.alias}'>"
    m_out <<  "<input type='hidden' name='Server' value='irc.larryniven.org'>"
    m_out <<  "<input type='hidden' name='Channel' value='#knownspace'>"
    m_out <<  "<input type='submit' value='Login'>"
@@ -646,14 +646,13 @@ if !session[:name].nil? then
   e_out,g_out = side_menu_gubbins
   who_list_update(uid,"Saving Chat Alias:")
   newalias = new_alias.strip.to_s.slice(0..14)
-	if newalias == user.alais then
+	if newalias == user.alias then
          err_out = "That is already your alias."
-	 #close_database
 	 haml :aliaserror, :locals => {:email => e_out, :groups => g_out, :err => err_out}
        else
 	if !alias_exists(newalias) then 
-	  user.alais = newalias
-	  update_user(user,get_uid(user.name))
+	  user.alias = newalias
+	  update_user(user)
 	  haml :aliassucc, :locals => {:email => e_out, :groups => g_out}
 	else
 	   err_out << "That alias is in use by another user."
