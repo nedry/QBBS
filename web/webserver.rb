@@ -58,6 +58,13 @@ helpers do
   end
 end
 
+
+
+def get_or_post(path, opts={}, &block)
+  get(path, opts, &block)
+  post(path, opts, &block)
+end
+
 def who_list_add (uid)
   if !who_exists(uid) then
      add_who(uid,Time.now,"Logging in...")
@@ -177,7 +184,6 @@ def w_display_message(mpointer,user,m_area,email,dir,total)
 	 abs = email_absolute_message(mpointer,user.name)
       else
          abs = absolute_message(area.number,mpointer)
-	 puts "!!!!!!!!!!!!!!!!!!!!!!!!!ABSOLUTE MESSAGE: #{abs} !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
       end
       m_out = ""
       curmessage = fetch_msg(abs)
@@ -460,7 +466,7 @@ frm_out << "<input name = 'Try Again' type = 'submit' value = 'Try Again'>"
    end
 end
 
-post '/newuser' do
+get_or_post '/newuser' do
   
   username= params['username']
   email = params['email']
@@ -1064,7 +1070,7 @@ if !session[:name].nil? then
 end
 
 
-get "/message" do
+get_or_post "/message" do
 
 if !session[:name].nil? then
 
@@ -1097,7 +1103,7 @@ if !session[:name].nil? then
     else      
     if m_total(area.number) > 0 then
      if dir == "j" then
-      if last <= h_msg(m_area) and last > 0 and m_total(area.tbl) > 0 then
+      if last <= h_msg(m_area) and last > 0 and m_total(area.number) > 0 then
        from,subject,tempstr = w_display_message(last,user,m_area,false,dir,h_msg(m_area))
        m_out << tempstr
       else
