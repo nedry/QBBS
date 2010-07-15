@@ -313,24 +313,19 @@ class Session
       print
       print "%COrg:%G #{fidomessage.orgnet}/#{fidomessage.orgnode}"
       print "%CDest:%G #{fidomessage.destnet}/#{fidomessage.destnode}"
-      print "%CAttribute:%G #{fidomessage.attribute}"
-      print "%CCost:%G #{fidomessage.cost}"
-      print "%CDate Time:%G #{fidomessage.msg_date}"
-      print "%CTo:%G #{fidomessage.m_to}"
-      print "%CFrom:%G #{fidomessage.m_from}"
-      print "%CSubject:%G #{fidomessage.subject}"
-      print "%CArea:%G #{fidomessage.area}" if !fidomessage.area.nil?
-      print "%CMsgid:%G #{fidomessage.msgid}" if !fidomessage.msgid.nil?
-      print "%CPath:%G #{fidomessage.path}" if !fidomessage.path.nil?
-      print "%CTzUTZ:%G #{fidomessage.tzutc}" if !fidomessage.tzutc.nil?
-      print "%CCharSet:%G #{fidomessage.charset}" if !fidomessage.charset.nil?
-      print "%CTosser ID:%G #{fidomessage.tid}" if !fidomessage.tid.nil?
-      print "%CProc ID:%G #{fidomessage.pid}" if !fidomessage.pid.nil?
-      print "%CIntl:%G #{fidomessage.intl}" if !fidomessage.intl.nil?
-      print "%CTopt:%G #{fidomessage.topt}" if !fidomessage.topt.nil?
-      print "%CFmpt:%G #{fidomessage.fmpt}" if !fidomessage.fmpt.nil?
-      print "%CReply:%G #{fidomessage.reply}" if !fidomessage.reply.nil?
-      print "%COrigin:%G #{fidomessage.origin}" if !fidomessage.origin.nil?
+
+      # [[field, attr], ....]. if attr is missing, it is field.downcase 
+      fields = [ "Attribute", "Cost", ["Date Time", :msg_date], ["To", :m_to],
+        ["From", :m_from], "Subject", "Area", "Msgid", "Path", ["TzUTZ", :tzutc],
+        "CharSet", ["Tosser ID", :tid], ["Proc ID", :pid], "Intl", "Topt", "Fmpt",
+        "Reply", "Origin"]
+
+      fields.each do |f|
+        field, attr = (f.is_a? Array) ? f : [f, f.downcase]
+        val = fidomessage.send(attr)
+        print "%C#{field}:%G #{val}" if val
+      end
+
       print
     else
       print "\r\n%YThis message area is empty. Why not %G[P]ost%Y a Message?" if h_msg == 0
