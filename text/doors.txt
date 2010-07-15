@@ -4,6 +4,6 @@
 / /_/ / /_/ / / / / / /  __(__  ) 
 \____/\__,_/_/ /_/ /_/\___/____/  
 
-
-      %W[%Y1%W] %GAdventure/Dungeon/Zork                 %W[%Y2%W] %GGlobal Destruction                  
-      %W[%Y3%W] %GTradewars 2002
+    %W[%Y1%W] %GGlobal Destruction 
+    %W[%Y2%W] %GAdventure/Dungeon/Zork                                  
+    %W[%Y3%W] %GTradewars 2002

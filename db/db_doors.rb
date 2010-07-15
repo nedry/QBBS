@@ -27,6 +27,6 @@ def add_door(name, path)
     :number => number,
     :name => name,
     :path => path,
-    :date => Time.now
+    :modify_date => Time.now
   )
 end
