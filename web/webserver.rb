@@ -172,18 +172,18 @@ end
    
 def w_display_message(mpointer,user,m_area,email,dir,total)
       area = fetch_area(m_area)
-      table = area.number
       pointer = get_pointer(user,m_area)
       if email then
 	 abs = email_absolute_message(mpointer,user.name)
       else
-         abs = absolute_message(table,mpointer)
+         abs = absolute_message(area.number,mpointer)
+	 puts "!!!!!!!!!!!!!!!!!!!!!!!!!ABSOLUTE MESSAGE: #{abs} !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
       end
       m_out = ""
       curmessage = fetch_msg(abs)
       m_out << m_menu(m_area,mpointer,dir,curmessage.subject.strip,curmessage.m_from.strip,total,email)
-      if pointer.lastread < curmessage.number then
-       pointer.lastread = curmessage.number
+      if pointer.lastread < curmessage.absolute then
+       pointer.lastread = curmessage.absolute
        update_pointer(pointer)
       end
        message = []
@@ -191,7 +191,7 @@ def w_display_message(mpointer,user,m_area,email,dir,total)
       if curmessage.network then
        message,kludge = qwk_kludge_search(curmessage.msg_text)
       else
-        message = Curmessage.msg_text
+        message = curmessage.msg_text
       end
         message.gsub!(13.chr,"<br/>")
       m_out << "<div class='fixed' style='background-color:black;color:white'>"
@@ -312,7 +312,7 @@ if !session[:name].nil? then
       # msg_text = convert_to_utf8(msg_text)  Do we need this?  I dunno...
        #msg_text.gsub!(CR.chr,DLIM)
 
-      msg_date = Time.now.strftime("%m/%d/%Y %I:%M%p")
+      msg_date = Time.now
    #   absolute = add_msg(msg_to,name,msg_date,msg_subject,msg_text,false,false,false,nil,nil,nil,nil,false,area.number)
       absolute = add_msg(msg_to,name,msg_date,msg_subject,msg_text,false,false,nil,nil,nil,nil,false, nil,nil,nil,
                                       nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,false,area.number)
