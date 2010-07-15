@@ -555,7 +555,7 @@ if !session[:name].nil? then
    m_out <<  "<input type='hidden' name='Nickname' value='#{user.alias}'>"
    m_out <<  "<input type='hidden' name='Server' value='irc.larryniven.org'>"
    m_out <<  "<input type='hidden' name='Channel' value='#knownspace'>"
-   m_out <<  "<input type='submit' value='Login'>"
+   m_out <<  "<input type='submit' value='Chat'>"
    m_out <<  "</form>"
 end
  
