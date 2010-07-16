@@ -25,13 +25,12 @@ def add_area(group,area)
 end
 
 def fetch_area_list(grp)
- 
- if !grp.nil? then
-  areas = Area.all(:grp => grp,:order => [:number])
-else
-   areas = Area.all(:order => [:number])
-end
-return areas
+  if grp then
+    areas = Area.all(:grp => grp,:order => [:number])
+  else
+    areas = Area.all(:order => [:number])
+  end
+  return areas
 end
 
 def find_qwk_area (number,name)  # name for future use.

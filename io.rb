@@ -317,16 +317,6 @@ class Session
     return t
   end
 
-  def getnum(prompt, low, high, default, width, chat)
-    errmsg = "Must be between #{low} and #{high}."
-    t = getcmdandtest(prompt, ECHO, width, chat, errmsg ) {|cmd|
-      (low..high).include?(cmd.to_i)
-      #puts "t: #{t}"
-    }
-    #puts "t: #{t}"
-    return t.to_i
-  end
-
   def _getinputlen(prompt, echo, size, chat)
     getcmdandtest(prompt, echo, size, chat, '',false) {|cmd|
       cmd.length >= size

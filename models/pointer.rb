@@ -10,4 +10,12 @@ class Pointer
   property :zipread, Boolean, :default => true
   belongs_to :user, :child_key => [:number]
 
+  def access_display
+    case self.access
+    when "I"; "Inv"
+    when "R"; "Read"
+    when "W"; "Write"
+    when "N"; "None"
+    end
+  end
 end

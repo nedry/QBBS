@@ -28,6 +28,8 @@ require "qwk.rb"
 require "rep.rb"
 
 class Session 
+  attr_accessor :c_user, :c_area, :lineeditor, :who
+
   def initialize(irc_who, who, message, socket)
     @socket  = socket 
     @irc_who = irc_who
