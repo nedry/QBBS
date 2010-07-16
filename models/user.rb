@@ -28,5 +28,6 @@ class User
 
     has 1, :who, :child_key => [:number]
     has n, :pointers, :child_key => [:number]
+    has n, :pages, :child_key => [:number]
     has 1, :who, :child_key => [:number] 
 end

@@ -115,6 +115,7 @@ def side_menu_gubbins
  u = fetch_user(uid.to_i)
  scanforaccess(u)
  pointer = get_pointer(u,0)
+      
 
  new = new_email(pointer.lastread,u.name)
 
@@ -122,6 +123,12 @@ def side_menu_gubbins
     e_out = "<a href='/email'>Email (#{new} New!)</a><br>"
    else
      e_out = '<a href="/email">Email</a><br>'
+   end
+   
+   if new_pages(u) then
+    e_out << "<a href='/page'>Page (#{new_pages(u)} New!)</a><br>"
+  else
+     e_out <<'<a href="/page">Page</a><br>'
    end
    
    g_out = ""
@@ -164,7 +171,7 @@ def m_menu(m_area,pointer,dir,subject,from,total,email)
   m_out = ""
   t_out = "/message" 
   t_out = "/email" if email
-  m_out << "<table><tr><td><B>Messages 1 - #{total} [</b>#{pointer}<b>]:</b></td> "
+  m_out << "<span style='background:white'><table><tr><td><B>Messages 1 - #{total} [</b>#{pointer}<b>]:</b></td> "
   m_out << "<td><a href='#{t_out}?m_area=#{m_area}&last=#{pointer}&dir=b'>Previous</a>&nbsp;&nbsp;"
   m_out << "<a href='#{t_out}?m_area=#{m_area}&last=#{pointer}&dir=f'>Next</a>&nbsp;&nbsp;"
   m_out << "<a href='/post?m_area=#{m_area}&subject=#{subject}&to=#{from}&last=#{pointer}&dir=f'>Reply</a>&nbsp;&nbsp;"
@@ -173,7 +180,7 @@ def m_menu(m_area,pointer,dir,subject,from,total,email)
   m_out <<  "<input type='hidden' name='m_area' value='#{m_area}'>"
   m_out <<  "<input type='hidden' name='dir' value='j'>"
   m_out <<  "Jump: <input type='text' name = 'last' size='4' value=''></td></td></table>"
-  m_out <<  "</form><BR><BR>"
+  m_out <<  "</form></span><BR><BR>"
   return m_out
 end
    
@@ -359,14 +366,15 @@ if !session[:name].nil? then
    
     post_out = ""
      if (pointer.access == "W") or (user.level == 255) and (!area.delete) then
-       reply = ""
+       reply = []
         if !to.nil? then 
 	       curmessage = fetch_msg(absolute_message(area.number,last))
 	       #curmessage.msg_text.gsub!(10.chr,'')
-	       reply = convert_to_ascii(curmessage.msg_text)
+	       reply =  convert_to_ascii(curmessage.msg_text)
+               
 	        if curmessage.network then
-	         reply,q_msgid,q_via,q_tz,q_reply = qwk_kludge_search(reply)
-          end
+	         reply,kludge = qwk_kludge_search(reply)
+               end
         end
           post_out <<  "<table>"
           post_out << "<form name='main' method='post' action='/postsave'>" 
@@ -388,9 +396,12 @@ if !session[:name].nil? then
           post_out <<  "<tr><td>Subject:</td><td><input name='msg_subject' type='text' id='msg_subject' value='#{subject}'></td></tr>"
           post_out <<  "#{CRLF}"
           post_out <<  "<tr><td colspan=2><textarea style='font-size:12px' name='msg_text' cols='79' rows='25'  id='msg_text'>#{CRLF}"
-          if to != "" then 
-           post_out <<  ("--- #{to} wrote --- #{CRLF}") if !to.nil?
-           reply.each_line {|line| post_out << "&gt; #{line[0..75].strip}#{CRLF}"}
+          
+         
+          if !to.nil? and !reply.nil? then 
+           reply = reply.split(13.chr)
+           post_out <<  ("--- #{to} wrote --- #{CRLF}") 
+           reply.each {|line| post_out << "&gt; #{line[0..75].strip}#{CRLF}"}
           end
     
                
@@ -416,10 +427,6 @@ if !session[:name].nil? then
   end
  end
  
-
-
-
-
 post '/usersave' do
 
 username= params['username']
@@ -585,11 +592,38 @@ if !session[:name].nil? then
   o_out <<  "<tr><td>location:</td><td>#{o_user.citystate}</td></tr>"
   o_out <<  "<tr><td>last on:</td><td>#{o_user.laston}</td></tr>"
   o_out <<  "<tr><td>access level:</td><td>#{o_user.level}</td></tr>"
-  o_out <<  "<tr><td>chat alias:</td><td>#{o_user.alais}</td></tr>"
+  o_out <<  "<tr><td>chat alias:</td><td>#{o_user.alias}</td></tr>"
   o_out << '</table>'
    e_out,g_out = side_menu_gubbins    #make the side menu database inserts on the sinatra side, like the manual says
  
    haml :showuser, :locals => {:email => e_out, :groups => g_out, :output => o_out, :username => o_user.name }
+  else 
+   haml :notlogged
+  end
+end
+
+  get "/page" do
+
+if !session[:name].nil? then
+
+  name = session[:name]
+  uid = get_uid(name)
+  who_list_update(uid,"User Details:")
+
+  user = fetch_user(uid)
+  o_out = ""
+  
+  if  new_pages(user) then
+    pages = get_all_pages(user)
+    o_out << "<table cellspacing='5'>"
+    o_out <<  '<table>'
+    pages.each{|x| o_out << "<tr><td><a href='/pagesend?uid=#{x.from}'>#{fetch_user(x.from).name}</a></td><td>#{x.message}</td></tr>"}
+
+    o_out << '</table>'
+  end
+e_out,g_out = side_menu_gubbins    #make the side menu database inserts on the sinatra side, like the manual says
+ 
+   haml :page, :locals => {:email => e_out, :groups => g_out, :output => o_out}
   else 
    haml :notlogged
   end
@@ -613,17 +647,14 @@ if !session[:name].nil? then
 
        if old_password.upcase.strip != user.password.strip then
          err_out = "You must enter your correct current password!"
-	 #close_database
 	 haml :passerror, :locals => {:email => e_out, :groups => g_out, :err => err_out}
        else
        if new_password.upcase.strip == verify_password.upcase.strip then
         user.password = new_password.upcase.strip
 	update_user(user,get_uid(user.name))
-	#close_database
 	haml :passsucc, :locals => {:email => e_out, :groups => g_out}
        else
          err_out = "Passwords do not match.  Try again!"
-	 #close_database
 	 haml :passerror, :locals => {:email => e_out, :groups => g_out, :err =>err_out}   	
 end
 end

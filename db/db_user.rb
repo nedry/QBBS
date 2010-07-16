@@ -1,6 +1,6 @@
 require 'models/user'
 require 'models/pointer'
-BEL = 7.chr
+require 'models/page'
 
 def u_total
   User.count
@@ -31,6 +31,28 @@ def update_user(r)
 
 def fetch_user(record)
   User.first(:number => record)
+end
+
+def add_page(uid_from,to,message,system)
+ uid =uid_from
+ user = User.get(get_uid(to))
+ page = user.pages.new(:message => message, :system => system, :from => uid)
+ page.save
+end
+
+def new_pages(user)
+  
+  user.pages.all.count   #I don't know why it has to be like this and not the other way..
+end
+
+def clear_pages(user)
+   kill = user.pages.all
+   kill.destroy! if kill
+ end
+ 
+def get_all_pages(user)
+  
+  pages = user.pages.all(:order => [:left_at])
 end
 
 def add_pointer(record,area,access,p_value)
