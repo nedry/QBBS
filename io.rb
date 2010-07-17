@@ -31,14 +31,14 @@ class Session
       if select([@socket],nil,nil,0.1) != nil then 
         char = @socket.getc.ord  #this is a 1.9 hack... 1.8 behaviour returned the ascii value without the .ord
       else 
-        if !@c_user.nil? and new_pages(@c_user) then
+        if !@c_user.nil? and new_pages(@c_user) > 0 then
           pages = get_all_pages(@c_user)
           print; pages.each {|x| print "%GPAGE %W(%C#{fetch_user(x.from).name}%W): %Y#{x.message}"}
           prompt += whole if !prompt.nil? 
            write prompt
            clear_pages(@c_user)
         end
-     # end
+
 
         time = Time.now
         tick = 0 if time.min.to_i == 0 
