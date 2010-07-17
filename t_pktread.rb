@@ -241,7 +241,7 @@ def add_fido_msg(fidomessage)
   else
     number = find_fido_area(fidomessage.area)
   end
-  msg_text = fidomessage.message.join(DLIM)
+  msg_text = convert_to_utf8(fidomessage.message.join(DLIM))
   msg_date = fidomessage.datetime.strip
   m_to = fidomessage.to
   m_from = fidomessage.from

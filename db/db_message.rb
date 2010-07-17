@@ -138,7 +138,6 @@ end
 def add_qwk_message(message, area)
   user = fetch_user(get_uid(QWKUSER))
   pointer = get_pointer(user,area.number)
-  msg_text = convert_to_utf8(message.text)
   to = message.to.upcase.strip
   m_from = message.from.upcase.strip
   msg_date = message.date
