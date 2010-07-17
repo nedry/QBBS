@@ -46,6 +46,10 @@ module Rep
       outdate = message.msg_date.strftime("%m-%d-%y")
       outtime = message.msg_date.strftime("%H:%M")
       nblocks, msg = message_blocks(message)
+      m_to = message.m_to
+      m_to = "ALL" if message.m_to.nil? or message.m_to.empty?
+      m_subj = message.subject
+      m_subj = "No Subject" if message.subject.nil? or message.subject.empty?
       log.write("BLOCKS: #{nblocks}")
 
       File.open(@file, "a") do |f|
@@ -53,9 +57,9 @@ module Rep
         f.write conf.to_s.ljust(7)       #Message Number
         f.write outdate.ljust(8)         #Message Date
         f.write outtime.ljust(5)         #Message Time
-        f.write message.m_to.fit(25)     #Message To
+        f.write m_to.fit(25)     #Message To
         f.write message.m_from.fit(25)   #Message From
-        f.write message.subject.fit(25)  #Message Subject
+        f.write m_subj.fit(25)  #Message Subject
         f.write "".ljust(12)             #Message Password (not used on this system)
         f.write "".ljust(8)              #Message Reference (not used on this system)
         f.write nblocks.to_s.ljust(6)    #Message 128 byte blocks

@@ -140,6 +140,7 @@ def add_qwk_message(message, area)
   pointer = get_pointer(user,area.number)
   to = message.to.upcase.strip
   m_from = message.from.upcase.strip
+  msg_text = message.text
   msg_date = message.date
   title = message.subject.strip
   exported = true
@@ -197,7 +198,7 @@ end
 
   
   # if we find any of these, reject the message
-  invalid = ["MSGID:", "VIA:", "TZ:", "REPLY:"]
+  invalid = ["@MSGID:", "@VIA:", "@TZ:", "@REPLY:"]
 
   valid_messages = []
   msg_array.each do |x|
@@ -206,7 +207,8 @@ end
       header = $1
       value = $2
       if invalid.include? header
-        field = header.gsub(/:/, '')
+        temp = header.gsub(/:/, '')
+	field = temp.gsub(/@/,'')
         kludge[field] = value.strip!
       else
         valid_messages << x
