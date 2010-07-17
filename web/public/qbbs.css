@@ -406,4 +406,35 @@ li#panel{
 
 }
 
+.green_table  {
+	margin:0px 5px;
+	width:90%;
+	background-color:#ddf;
+	border-top:1px solid #aaa;
+	border-left:1px solid #aaa;
+	empty-cells:show;
+}
+
+.green_table th {
+	padding:5px;
+	background-color:#1E673C;
+	border-right:1px solid #aaa;
+	border-bottom:1px solid #aaa;
+}
+
+.green_table  th, #container table th a {
+	color:#fff;
+	font-size:10pt;
+	text-decoration:none;
+}
+
+.green_table td {
+	border-right:1px solid #aaa;
+	border-bottom:1px solid #aaa;
+	padding:5px;
+	font-size:11pt;
+	vertical-align:top;
+	empty-cells:show;
+
+}
 

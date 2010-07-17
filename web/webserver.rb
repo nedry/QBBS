@@ -125,7 +125,7 @@ def side_menu_gubbins
      e_out = '<a href="/email">Email</a><br>'
    end
    
-   if new_pages(u) then
+   if new_pages(u) > 0 then
     e_out << "<a href='/page'>Page (#{new_pages(u)} New!)</a><br>"
   else
      e_out <<'<a href="/page">Page</a><br>'
@@ -171,7 +171,7 @@ def m_menu(m_area,pointer,dir,subject,from,total,email)
   m_out = ""
   t_out = "/message" 
   t_out = "/email" if email
-  m_out << "<span style='background:white'><table><tr><td><B>Messages 1 - #{total} [</b>#{pointer}<b>]:</b></td> "
+  m_out << "<span style='background:white;color:black'><table><tr><td><B>Messages 1 - #{total} [</b>#{pointer}<b>]:</b></td> "
   m_out << "<td><a href='#{t_out}?m_area=#{m_area}&last=#{pointer}&dir=b'>Previous</a>&nbsp;&nbsp;"
   m_out << "<a href='#{t_out}?m_area=#{m_area}&last=#{pointer}&dir=f'>Next</a>&nbsp;&nbsp;"
   m_out << "<a href='/post?m_area=#{m_area}&subject=#{subject}&to=#{from}&last=#{pointer}&dir=f'>Reply</a>&nbsp;&nbsp;"
@@ -573,34 +573,7 @@ end
   end
  end
  
-  get "/showuser" do
 
-if !session[:name].nil? then
-
-  name = session[:name]
-  uid = get_uid(name)
-  who_list_update(uid,"User Details:")
-  
-  o_uid=params['uid'].to_i
-  o_user = fetch_user(o_uid)
-  
-  
-  o_out = ""
-  o_out << "<table cellspacing='5'>"
-  o_out <<  '<table>'
-  o_out <<  "<tr><td>email:</td><td>#{o_user.address}</td></tr>"
-  o_out <<  "<tr><td>location:</td><td>#{o_user.citystate}</td></tr>"
-  o_out <<  "<tr><td>last on:</td><td>#{o_user.laston}</td></tr>"
-  o_out <<  "<tr><td>access level:</td><td>#{o_user.level}</td></tr>"
-  o_out <<  "<tr><td>chat alias:</td><td>#{o_user.alias}</td></tr>"
-  o_out << '</table>'
-   e_out,g_out = side_menu_gubbins    #make the side menu database inserts on the sinatra side, like the manual says
- 
-   haml :showuser, :locals => {:email => e_out, :groups => g_out, :output => o_out, :username => o_user.name }
-  else 
-   haml :notlogged
-  end
-end
 
   get "/page" do
 
@@ -615,12 +588,54 @@ if !session[:name].nil? then
   
   if  new_pages(user) then
     pages = get_all_pages(user)
-    o_out << "<table cellspacing='5'>"
-    o_out <<  '<table>'
+    o_out <<  '<table class="green_table" width="100%">'
+    o_out << '<th>From</th><th>Message</th>'
     pages.each{|x| o_out << "<tr><td><a href='/pagesend?uid=#{x.from}'>#{fetch_user(x.from).name}</a></td><td>#{x.message}</td></tr>"}
 
     o_out << '</table>'
+    o_out << 'Click on an existing page to reply, or <a href="/pagesend">page</a> another user.'
   end
+e_out,g_out = side_menu_gubbins    #make the side menu database inserts on the sinatra side, like the manual says
+ 
+   haml :page, :locals => {:email => e_out, :groups => g_out, :output => o_out}
+  else 
+   haml :notlogged
+  end
+ end
+
+  get "/pagesend" do
+
+if !session[:name].nil? then
+
+  name = session[:name]
+  uid = get_uid(name)
+  who_list_update(uid,"Page")
+
+  user = fetch_user(uid)
+  o_out = ""
+       o_out << "<form name='main' method='post' action='/pagesave'>" 
+          o_out <<  "<input name='m_area' type='hidden' value= >"
+          
+          o_out << "<tr><td>To:</td>"
+           o_out << "<td><select name='user' size='1' style='width:200px;'>"
+	    fetch_user_list.each {|x| 
+
+		   o_out << "<option value=#{x.number}'>#{x.name}</option>"
+         }
+         o_out << "</select>"
+          o_out << "</td></tr>" 
+          
+          o_out <<  "<tr><td colspan=2><textarea style='font-size:12px' name='msg_text' cols='50' rows='5'  id='msg_text'>"
+          
+         o_out << "</textarea></td>" 
+         o_out << "</tr>"
+          o_out << "<tr>" 
+          o_out << "<td>&nbsp;</td>" 
+          o_out << "<td><input type='submit' name='Submit' value='Post'>" 
+          o_out << "<input type='reset' name='Reset' value='Reset Form'> </td>" 
+          o_out << "</tr>" 
+          o_out << "</form>" 
+
 e_out,g_out = side_menu_gubbins    #make the side menu database inserts on the sinatra side, like the manual says
  
    haml :page, :locals => {:email => e_out, :groups => g_out, :output => o_out}
@@ -757,13 +772,12 @@ if !session[:name].nil? then
   
   
   o_out = ""
-  o_out << "<table cellspacing='5'>"
-  o_out <<  '<table>'
-  o_out <<  "<tr><td>email:</td><td>#{o_user.address}</td></tr>"
-  o_out <<  "<tr><td>location:</td><td>#{o_user.citystate}</td></tr>"
-  o_out <<  "<tr><td>last on:</td><td>#{o_user.laston}</td></tr>"
-  o_out <<  "<tr><td>access level:</td><td>#{o_user.level}</td></tr>"
-  o_out <<  "<tr><td>chat alias:</td><td>#{o_user.alais}</td></tr>"
+  o_out <<  '<table class="green_table">'
+  o_out <<  "<tr><td>Email:</td><td>#{o_user.address}</td></tr>"
+  o_out <<  "<tr><td>Location:</td><td>#{o_user.citystate}</td></tr>"
+  o_out <<  "<tr><td>Last on:</td><td>#{o_user.laston}</td></tr>"
+  o_out <<  "<tr><td>Access level:</td><td>#{o_user.level}</td></tr>"
+  o_out <<  "<tr><td>Chat alias:</td><td>#{o_user.alias}</td></tr>"
   o_out << '</table>'
    e_out,g_out = side_menu_gubbins    #make the side menu database inserts on the sinatra side, like the manual says
  
@@ -781,8 +795,8 @@ if !session[:name].nil? then
   uid = get_uid(name)
   who_list_update(uid,"User List:")
   u_out = ""
-  u_out << "<table cellspacing='5'>"
-  u_out << "<tr><td><b>User ID</b></td><td><b>Location</b></td></tr>"
+  u_out << "<table class = 'green_table'>"
+  u_out << "<th>User ID</th><th>Location</th>"
   fetch_user_list.each {|x| 
            u_out << "<tr>"
 	   for i in 0..1 do
@@ -812,14 +826,15 @@ if !session[:name].nil? then
   who_list_update(uid,"Who is Online:")
   w_out = ""
   w_out << "<h3>Web Users:</h3>"
-  w_out <<  "<table cellspacing=5>"
+  w_out <<  "<table class='green_table'>"
   w_out <<  "<tr><td><b>User ID</b></td><td><b>Location</b></td><td><b>Last Activity</b></td><td><b>Where</b></td></tr>"
   fetch_who_list.each {|x| 
 	   w_out <<  "<tr><td><a href='/showuser?uid=#{x.number}'>#{x.user.name}</a>"
-           w_out <<  "<td>#{x.user.citystate} </td><td>#{x.lastactivity.to_s} </td><td>#{x.place}</td></tr>"
+	   time = x.lastactivity.strftime('%Y-%m-%d %I:%M%p')
+           w_out <<  "<td>#{x.user.citystate} </td><td>#{time} </td><td>#{x.place}</td></tr>"
 	   }
    w_out <<  "</table>"
-   w_out <<   "<table cellspacing=5>"
+   w_out <<   "<table class='green_table'>"
    w_out <<  "<h3>Telnet Users:</h3>"
    w_out <<  "<tr><td><b>Node</b></td><td><b>User ID</b></td><td><b>Location</b></td><td><b>Where</b></td></tr>"
    fetch_who_t_list.each {|x| 
@@ -844,8 +859,8 @@ if !session[:name].nil? then
   uid = get_uid(name)
   who_list_update(uid,"Last Callers:")
   l_out = ""
-  l_out << "<table cellspacing='5'>"
-  l_out <<  "<tr><td><b>User ID</b></td><td><b>Date</b></td><td><b>Connection</td></tr>"
+  l_out << "<table class='green_table'>"
+  l_out <<  "<th>User ID</tn><th>Date</th><th>Connection</th>"
   
    fetch_wall.each {|x|
                                t= Time.parse(x.timeposted.to_s).strftime("%m/%d/%y %I:%M%p")
@@ -895,7 +910,7 @@ if !session[:name].nil? then
    l_out << "<a href='/log?last=#{stop}&dir=f'>Next</a>"
   end
  
- l_out << "<table><tr><td><b>Date</b></td><td><b>Sub-system</b></td><td><b>Entry</b></td></tr>"
+ l_out << "<table class='green_table'><th>Date</th><th>Sub-system</th><th>Entry</th>"
    arr = fetch_log(0)
    for i in last..stop
 	  x = arr[i]
@@ -1019,7 +1034,7 @@ if !session[:name].nil? then
   dir = params["dir"]
   name = session[:name]
   uid = get_uid(name)
-  who_list_update(uid,"Reading Email.")
+  who_list_update(uid,"Reading Email")
   user = fetch_user(get_uid(name))
   scanforaccess(user)
   area=fetch_area(m_area)
