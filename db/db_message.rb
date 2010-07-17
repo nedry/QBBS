@@ -93,8 +93,6 @@ end
 
 def add_msg(m_to,m_from,msg_date,subject,msg_text,exported,network,destnode,destnet,intl,topt,smtp, f_network,orgnode,orgnet,attribute,cost,area,msgid,path,tzutc,charset, tid,pid,fmpt,origin,reply,number)
 
-puts "number: #{number}"
-
   topt = -1 if topt.nil?
   destnode = -1 if destnode.nil?
   destnet = -1 if destnet.nil?
@@ -140,7 +138,7 @@ end
 def add_qwk_message(message, area)
   user = fetch_user(get_uid(QWKUSER))
   pointer = get_pointer(user,area.number)
-  msg_text = message.text
+  msg_text = convert_to_utf8(message.text)
   to = message.to.upcase.strip
   m_from = message.from.upcase.strip
   msg_date = message.date
