@@ -12,7 +12,6 @@ class Session
   end
 
   def header
-
     print ""
     print "%GWelcome to QUARKirc v1.0 You are in the %C#{@irc_channel} %Gchannel."
     print "%GType %Y? %Gfor Help  %Y/QUIT %Gto Quit\r\n"
@@ -20,39 +19,36 @@ class Session
 
 
   def teleconference(channel)
-
     print ""
     quit = false
     count = 0
     game = false
 
     @who.user(@c_user.name).where="IRC (Chat)"
-    #channel = IRCCHANNEL
     @irc_client = IRC::Client::new(IRCSERVER, IRCPORT)
     IRC::Event::Ping.new(@irc_client)
-    #IRC::Event::Debug.new(@irc_client)
     @chatbuff.clear
-    checkuseralias
+    check_user_alias
     puts "@c_user.alais.class: #{@c_user.alais.class}"
     @irc_alias = @c_user.alais[0]  #1.9 fix?  Why has this turned into an array?
     puts "@irc_alias; #{@irc_alias}"
-    if !channel.nil? then 
-      ircchannel = channel 
+    if channel then
+      ircchannel = channel
       game = true
-    else ircchannel = IRCCHANNEL end   
+    else
+      ircchannel = IRCCHANNEL
+    end
     @irc_channel = ircchannel
     puts " @irc_channel: #{ @irc_channel}"
     puts "attemping to log in"
     @irc_client.login(@c_user.alais, @c_user.alais, "8", "*", "Telnet User")
     loop do
       count +=1
-      # puts "looping"
       return if count > 30 
-      m = nil
 
-      m = @irc_client.getline if @irc_client.isdata
-      if !m.nil? then
-        puts "i've reached the server noteice get"
+      m = @irc_client.isdata ? @irc_client.getline : nil
+      if m then
+        puts "i've reached the server notice get"
         if m.kind_of? IRC::Message::ServerNotice then
           print "%Y#{m.params}"
 
@@ -104,11 +100,9 @@ class Session
         line = l.strip
         puts line
         if game
-          if !line.nil? then
-            if line.upcase == "HIGH" then
-              ogfileout("gd_score",1,true)
-              line = nil
-            end
+          if line and line.upcase == "HIGH" then
+            ogfileout("gd_score",1,true)
+            line = nil
           end
           help = line.to_s.upcase.split
 
@@ -126,74 +120,53 @@ class Session
           end
         end
         test = (/^\/(.*)/) =~ line
-        if !test.nil? then
-          out = $1
+        if test then
+          out = $1.to_s.upcase
           happy = (/^\/(\S*)\s(.*)/) =~ line
-          if !happy.nil? then out = $1 end
-          case out.to_s.upcase
-
-          when "PAGE"
-            page
-          when "U"
-            displaywho
-          when "NICK"
-            @irc_client.nick($2)
-          when "JOIN"
-            @irc_client.join($2)
-          when "MOTD"
-            @irc_client.motd($2)
-          when "VERSION"
-            @irc_client.version($2)
-          when "TIME"
-            @irc_client.time($2)
-          when "NAMES"
-            @irc_client.names($2)
-          when "LIST"
-            @irc_client.list($2)
-          when "TOPIC"
-            @irc_client.topic(channel,$2)
-          when "WHOIS"
-            @irc_client.whois($2)
-          when "ME"
-            @irc_client.me(channel,$2)
-          when "MSG"
-            doit = (/^\/(\S*)\s(\S*)\s(.*)/) =~ line
-            @irc_client.privmsg($2,$3) if doit
-          when "QUIT"
-            @irc_client.quit($2)
-            @irc_client.shutdown
-            @irc_cleint = nil
-            return
-          end      
+          if happy then out = $1.to_s.upcase end
+          if ["NICK" "JOIN", "MOTD", "VERSION", "TIME", "NAMES", "LIST", "WHOIS"].include? out
+            @irc_client.send(out.downcase, $2)
+          elsif ["TOPIC", "ME"].include? out
+            @irc_client.send(out.downcase, channel, $2)
+          else
+            case out.upcase
+            when "PAGE"
+              page
+            when "U"
+              displaywho
+            when "MSG"
+              doit = (/^\/(\S*)\s(\S*)\s(.*)/) =~ line
+              @irc_client.privmsg($2,$3) if doit
+            when "QUIT"
+              @irc_client.quit($2)
+              @irc_client.shutdown
+              @irc_cleint = nil
+              return
+            end
+          end
         else
           if line =="?" then
             gfileout("chatmnu")
           else
             g_test = (/(\S*)(.*)/) =~ line
-            if !g_test.nil? then cmd = $1.upcase else cmd = "" end
-            #puts "cmd:#{cmd}"
-            #puts "@gd_game:#{@gd_game}"
-            #puts "@gd_mode:#{@gd_mode}"
-            if (GD_COMMANDS.index("#{cmd}") != nil or @gd_mode) and @gd_game then
-              @irc_client.privmsg(GD_IRCUSER,line) if !line.nil?
-            else 
-              @irc_client.privmsg(@irc_channel,line) if !line.nil?
+            cmd = g_test ? $1.upcase : ""
+            if line
+              if (GD_COMMANDS.index("#{cmd}") != nil or @gd_mode) and @gd_game then
+                @irc_client.privmsg(GD_IRCUSER,line)
+              else
+                @irc_client.privmsg(@irc_channel,line)
+              end
             end
           end
-
         end
 
-        @chatbuff.each {|x| 
-
-          print parse_ircc(x, @c_user.ansi, @logged_on)}
-          @chatbuff.clear
+        @chatbuff.each {|x| print parse_ircc(x, @c_user.ansi, @logged_on) }
+        @chatbuff.clear
       }
     end
   end
 
-
-
-  def checkuseralias 
+  def check_user_alias
     if @c_user.alais == '' then 
       @c_user.alais = defaultalias(@c_user.name)
       update_user(@c_user,get_uid(@c_user.name))
