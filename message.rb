@@ -397,13 +397,15 @@ class Session
 
     
     write "%W##{mpointer} %G[%C#{curmessage.absolute}%G] %M#{curmessage.msg_date.strftime("%A the %d#{time_thingie(curmessage.msg_date)} of %B, %Y  %I:%M%p")}"
-    if !kludge.tz.nil? then
+    if !kludge.nil?
+     if !kludge.tz.nil? then
       tz = kludge.tz.upcase
       #puts "tz: #{tz}"
       out = TIME_TABLE[kludge.tz]
       #puts out
       out = non_standard_zone(tz) if out.nil?
       write " %W(%G#{out}%W)"
+     end
     end
     write "%G [QWK]" if curmessage.network
     write "%G [SMTP]" if curmessage.smtp
@@ -427,7 +429,9 @@ class Session
     end
     if curmessage.network then
       out = BBSID
-      out = kludge.via if !kludge.via.nil?
+      if !kludge.nil? then
+       out = kludge.via if !kludge.via.nil?
+      end
       write " %G(%C#{out}%G)"
     end
     print

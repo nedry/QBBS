@@ -322,7 +322,7 @@ if !session[:name].nil? then
    end
        msg_text = WordWrapper.wrap(msg_text,79)
        msg_text.gsub!(10.chr,"")
-      # msg_text = convert_to_utf8(msg_text)  Do we need this?  I dunno...
+       msg_text = convert_to_utf8(msg_text)  Do we need this?  I dunno...
        #msg_text.gsub!(CR.chr,DLIM)
 
       msg_date = Time.now
