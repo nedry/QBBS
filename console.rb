@@ -2,8 +2,6 @@
 # provides a session, i/o and a menu
 
 class Console
-  include BBSIO
-
   def initialize(session)
     @session = session
   end
@@ -21,7 +19,7 @@ class Console
 
     while true
       prmpt = o_prompt.gsub("%p","#{ptr}")
-      inp = getinp(eval(prmpt))
+      inp = @session.getinp(eval(prmpt))
       oldptr = ptr
       sel = inp.upcase
 
@@ -51,7 +49,7 @@ class Console
         stop = zipscan(@session.c_area)
         if stop.nil? then return else ptr = stop end
       else
-        print("%RCan't go higher")
+        @session.print("%RCan't go higher")
       end
     end
     ptr
@@ -61,7 +59,7 @@ class Console
     if ptr > low then
       ptr = ptr - 1
     else
-      print("%GCan't go lower")
+      @session.print("%GCan't go lower")
     end
     ptr
   end
@@ -70,7 +68,7 @@ class Console
     if (newptr >= low) and (newptr <= high) then 
       newptr
     else
-      print "Out of Range."
+      @session.print "Out of Range."
       ptr
     end
   end
