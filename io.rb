@@ -3,8 +3,166 @@ require 'tools.rb'
 require "wrap.rb"
 require 'chat/irc'
 
+module IOUtils
+  # I/O utils. Depends on:
+  # - @session
+  # - getcmd
+  # - print
+  # - write
+
+  def telnetsetup
+    # put the remote telnet client into "character at a time mode"
+    # TELNET protocol sucks!
+    [255,251,1,255,251,3].each {|i| write i.chr}
+  end
+
+  def yes(prompt, default, chat, overwrite)
+    validanswers = {"Y" => true, "N" => false, ""=> default}
+    t = getcmd(prompt, ECHO, 0, chat, overwrite)
+    ans = t.upcase.strip
+    validanswers[ans]
+  end
+
+  def moreprompt
+    moreprompt = yes("*** More [Y,n]? ", true, false,true)
+  end
+
+  def yes_num(prompt,default,overwrite)
+    validanswers = {"Y" => true, "N" => false, ""=> default}
+    while true
+      t = getcmd(prompt, ECHO, 0, false, overwrite)
+      ans = t.upcase.strip
+      result = validanswers[ans]
+
+      if result.nil? then
+        number = (/(\d+)/) =~ ans
+        result = $1.to_i
+        break if number
+      else
+        break
+      end
+    end
+    return result
+  end
+
+  def apply_color(colortable, text, ansi)
+    colortable.each_pair {|color, result|
+      text = text.gsub(color) {ansi ? result : ''}
+    }
+    return text
+  end
+  
+  def getcmdandtest(prompt, echo, size, chat, errmsg,ovrwrite)
+    while true do
+      t = getcmd(prompt, echo, size, chat,ovrwrite)
+      break if yield t
+      print errmsg
+    end
+    print
+    return t
+  end
+
+  # pass in arguments as symbols, e.g.
+  #   getinp(prompt, :chat, :nonempty)
+  def getinp(prompt, *args)
+    chat = args.include?(:chat)
+    overwrite = args.include?(:overwrite)
+    nonempty = args.include?(:nonempty)
+    if block_given? or nonempty
+      while true do
+        t = getcmd(prompt, ECHO, 0, chat,overwrite)
+        t = t.strip # since we almost never want trailing whitespace
+        unless (nonempty and t.empty?) # fail right away if this happens
+          break unless block_given?
+          break if yield t
+        end
+      end
+      print
+      return t
+    else
+      getcmd(prompt, ECHO, 0, chat, false)
+    end
+  end
+
+  def _getinputlen(prompt, echo, size, chat)
+    getcmdandtest(prompt, echo, size, chat, '',false) {|cmd|
+      cmd.length >= size
+    }
+  end
+
+  def getinputlen(prompt, echo, size, chat, errmsg = nil)
+    if block_given?
+      while true do
+        t = _getinputlen(prompt, echo, size, chat)
+        break if yield t
+        print errmsg
+      end
+      print
+      return t
+    else
+      _getinputlen(prompt, echo, size, chat)
+    end
+  end
+
+  def _getnum(prompt, low = nil, high = nil)
+    while true
+      a = getinp(prompt)
+      if a == ""
+        return nil
+      elsif !a.integer?
+        print "Input must be a number"
+      else
+        a = a.to_i
+        if (low && (a < low)) or (high && (a > high))
+          print "Must be between #{low} and #{high}"
+        else
+          return a
+        end
+      end
+    end
+  end
+
+  def getnum(prompt, low = nil, high = nil, errmsg = "")
+    if block_given?
+      while true
+        t = _getnum(prompt, low, high)
+        return t if yield t
+        print errmsg
+      end
+    else
+      return _getnum(prompt, low, high)
+    end
+  end
+
+  def getpwd(prompt, &block)
+    getinputlen(prompt, NOECHO, 3, false, &block).strip.upcase
+  end
+
+  def getandconfirmpwd
+    while true
+      p1 = getpwd("Enter new password: ")
+      break if p1 == ""
+      p2 = getpwd("Enter again to confirm: ")
+      break if p1 == p2
+      print "Passwords don't match - try again"
+    end
+    p1 == "" ? nil : p1
+  end
+
+  def get_max_length(prompt,len,msg)
+    while true
+      temp = getinp(prompt).strip
+      if temp.length > len then
+        print "%R#{msg} too long.  40 Character Maximum"
+      else break end
+    end
+    return temp
+  end
+end
+
 class Session
   include Logger
+  include IOUtils
 
   # Input a line a character at a time. 
   def getstr(echo, wrapon, width, prompt, chat, overwrite) 
@@ -94,18 +252,7 @@ class Session
   def parse_ircc(line, ansi, logged_on)
     line = line.to_s.gsub("\t",'')
     if logged_on then
-      IRCCOLORTABLE.each_pair {|color, result|
-        line.gsub!(color) {ansi ? result : ''}
-      }
-    end
-    return line
-  end
-
-  def c_strip(line)
-    if !line.nil?
-      COLORTABLE.each_pair {|color, result|
-        line.gsub!(color,"")
-      }
+      line = apply_color(IRCCOLORTABLE, line, ansi)
     end
     return line
   end
@@ -291,152 +438,6 @@ class Session
     nilv(@cmdstack.cmd.shift, "")
   end
 
-  def getcmdandtest(prompt, echo, size, chat, errmsg,ovrwrite)
-    while true do
-      t = getcmd(prompt, echo, size, chat,ovrwrite)
-      break if yield t
-      print errmsg
-    end
-    print
-    return t
-  end
-
-  def _getinputlen(prompt, echo, size, chat)
-    getcmdandtest(prompt, echo, size, chat, '',false) {|cmd|
-      cmd.length >= size
-    }
-  end
-
-  def getinputlen(prompt, echo, size, chat, errmsg = nil)
-    if block_given?
-      while true do
-        t = _getinputlen(prompt, echo, size, chat)
-        break if yield t
-        print errmsg
-      end
-      print
-      return t
-    else
-      _getinputlen(prompt, echo, size, chat)
-    end
-  end
-
-  # pass in arguments as symbols, e.g.
-  #   getinp(prompt, :chat, :nonempty)
-  def getinp(prompt, *args)
-    chat = args.include?(:chat)
-    overwrite = args.include?(:overwrite)
-    nonempty = args.include?(:nonempty)
-    # print "in getinp"
-    if block_given? or nonempty
-      # print "block given"
-      while true do
-        t = getcmd(prompt, ECHO, 0, chat,overwrite)
-        t = t.strip # since we almost never want trailing whitespace
-        unless (nonempty and t.empty?) # fail right away if this happens
-	 if block_given? then  #FIX... only yield if there is a block
-          break if yield t
-	 else
-	  break
-	 end
-        end
-      end
-      print
-      return t
-    else
-      getcmd(prompt, ECHO, 0, chat, false)
-    end
-  end
-
-  def _getnum(prompt, low = nil, high = nil)
-    while true
-      a = getinp(prompt)
-      if a == ""
-        return nil
-      elsif !a.integer?
-        print "Input must be a number"
-      else
-        a = a.to_i
-        if (low && (a < low)) or (high && (a > high))
-          print "Must be between #{low} and #{high}"
-        else
-          return a
-        end
-      end
-    end
-  end
-
-  def getnum(prompt, low = nil, high = nil, errmsg = "")
-    if block_given?
-      while true
-        t = _getnum(prompt, low, high)
-        return t if yield t
-        print errmsg
-      end
-    else
-      return _getnum(prompt, low, high)
-    end
-  end
-
-  def getpwd(prompt, &block)
-    getinputlen(prompt, NOECHO, 3, false, &block).strip.upcase
-  end
-
-  def getandconfirmpwd
-    while true
-      p1 = getpwd("Enter new password: ")
-      break if p1 == ""
-      p2 = getpwd("Enter again to confirm: ")
-      break if p1 == p2
-      print "Passwords don't match - try again"
-    end
-    p1 == "" ? nil : p1
-  end
-
-  def get_max_length(prompt,len,msg)
-
-    while true
-      temp = getinp(prompt).strip
-      if temp.length > len then
-        print "%R#{msg} too long.  40 Character Maximum"
-      else break end
-    end
-    return temp
-  end
-
-
-  def yes_num(prompt,default,overwrite)
-    validanswers = {"Y" => true, "N" => false, ""=> default}
-    ans = ''
-    while true
-      t = getcmd(prompt, ECHO, 0, false,overwrite)
-      ans = t.upcase.strip
-      validanswers.has_key?(ans)
-      result = validanswers[ans]
-
-      if result.nil? then
-        number = (/(\d+)/) =~ ans
-        result = $1.to_i
-        break if number
-      else
-        break 
-      end
-    end
-    return result
-  end
-
-  def yes(prompt,default,chat, overwrite)
-    validanswers = {"Y" => true, "N" => false, ""=> default}
-    ans = ''
-
-    t = getcmd(prompt, ECHO, 0, chat,overwrite)
-    ans = t.upcase.strip
-    validanswers.has_key?(ans)
-    result = validanswers[ans]
-
-    return result
-  end
-
   def hangup 
     @socket.flush 
     @socket.close 
@@ -475,77 +476,19 @@ class Session
     @socket.write(parse_celerity(line) + CRLF)
   end
 
-  def moreprompt
-    moreprompt = yes("*** More [Y,n]? ", true, false,true)
-  end
-
-  def telnetsetup
-    # put the remote telnet client into "character at a time mode"
-    # TELNET protocol sucks!
-    [255,251,1,255,251,3].each {|i| write i.chr}
-  end
-
   def existfileout (filename,offset,override)
-    graphfile = TEXTPATH + filename + ".gra"
-    plainfile = TEXTPATH + filename + ".txt"
-    test = filename
-    if override then
-      test = File.exists?(graphfile) ? graphfile : plainfile
-    end 
-    if File.exists?(test) then 
-      ogfileout(filename,offset,override)
-      return true
-    else
-      return false
-    end
+    GraphFile.new(self, filename, override).existfileout(offset)
   end
 
   def ogfileout (filename,offset,override)
-
-    graphfile = TEXTPATH + filename + ".gra"
-    plainfile   = TEXTPATH + filename + ".txt"
-
-    outfile = filename
-
-    if override then
-      outfile = File.exists?(graphfile) ? graphfile : plainfile 
-    end
-
-    j = offset
-    cont = true
-    if File.exists?(outfile) 
-      IO.foreach(outfile) { |line| 
-        j = j + 1
-        if j == @c_user.length and @c_user.more then
-          cont = moreprompt
-          j = 1
-        end
-        break if !cont 
-        write line + "\r" 
-      } 
-    else
-      print "\n#{outfile} has run away...please tell sysop!\n"
-    end
-    print; print
+    GraphFile.new(self, filename, override).ogfileout(offset)
   end
 
   def fileout (filename)
-    if File.exists?(filename) 
-      IO.foreach(filename) { |line| write line + "\r" } 
-    else
-      print "\n#{filename} has run away...please tell sysop!\n"
-    end
-    print; print
+    GraphFile.new(self, filename).fileout
   end
 
-  def gfileout (filename)
-    graphfile = TEXTPATH + filename + ".gra"
-    plainfile = TEXTPATH + filename + ".txt"
-    if @c_user.ansi == TRUE
-      fileout(File.exists?(graphfile) ? graphfile : plainfile)
-    else
-      fileout(plainfile)
-    end
+  def gfileout(filename)
+    GraphFile.new(self, filename).gfileout
   end
-
 end # class Session

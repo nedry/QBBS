@@ -506,12 +506,8 @@ class MessageConsole < Console
   end # of def
 
   def find_current_area(a_list,num)
-    result = nil
-    a_list.each_with_index {|list,i|
-      if list.number == num then
-        result = i
-        break
-      end
+    result, _ = a_list.each_with_index.find {|list, i|
+      list.number == num
     }
     return result
   end
