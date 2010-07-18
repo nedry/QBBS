@@ -185,7 +185,7 @@ while true
 
     @chatbuff.each {|x| 
    
-    print parse_ircc(x)}
+    print parse_ircc(x, @c_user.ansi, @logged_on)}
     @chatbuff.clear
    }
  end
