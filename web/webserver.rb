@@ -202,9 +202,9 @@ def w_display_message(mpointer,user,m_area,email,dir,total)
        message = []
 
       if curmessage.network then
-       message,kludge = qwk_kludge_search(curmessage.msg_text)
+       message,kludge = qwk_kludge_search(curmessage.msg_text.strip)
       else
-        message = curmessage.msg_text
+        message = curmessage.msg_text.strip
       end
         message.gsub!(13.chr,"<br/>")
       m_out << "<div class='fixed' style='background-color:black;color:white'>"
@@ -212,9 +212,9 @@ def w_display_message(mpointer,user,m_area,email,dir,total)
       m_out << "#{curmessage.msg_date.strftime('%A the %d')}"
       m_out << "#{time_thingie(curmessage.msg_date)}"
       m_out << " of #{curmessage.msg_date.strftime('%B, %Y  %I:%M%p')}</span>"
-      m_out <<  " <span style='color:#54fc54'> [NETWORK MESSAGE]</span>" if curmessage.network
+      m_out <<  " <span style='color:#54fc54'> [QWK]</span>" if curmessage.network
       m_out << " [SMTP]" if curmessage.smtp
-      m_out << "<span style='color:#54fc54'> [FIDONET MESSAGE]</span>" if curmessage.f_network
+      m_out << "<span style='color:#54fc54'> [FIDONET]</span>" if curmessage.f_network
       m_out << "<span style='color: #fcfc54'> [EXPORTED]</span>" if curmessage.exported and !curmessage.f_network and !curmessage.network
       m_out << " [REPLY]" if curmessage.reply
       m_out << "<br>"
@@ -581,7 +581,7 @@ if !session[:name].nil? then
 
   name = session[:name]
   uid = get_uid(name)
-  who_list_update(uid,"User Details:")
+  who_list_update(uid,"Page")
 
   user = fetch_user(uid)
   o_out = ""
@@ -589,11 +589,13 @@ if !session[:name].nil? then
   if  new_pages(user) then
     pages = get_all_pages(user)
     o_out <<  '<table class="green_table" width="100%">'
-    o_out << '<th>From</th><th>Message</th>'
-    pages.each{|x| o_out << "<tr><td><a href='/pagesend?uid=#{x.from}'>#{fetch_user(x.from).name}</a></td><td>#{x.message}</td></tr>"}
+    o_out << "<form name='delete' method='post' action='/pagedelete'>"
+    o_out << '<th>Del<th>From</th><th>Message</th>'
+    pages.each{|x| o_out << "<tr><td><input type='checkbox' name='del_box[]' value = '#{x.id}'></td><td><a href='/pagesend?uid=#{x.from}'>#{fetch_user(x.from).name}</a></td><td>#{x.message}</td></tr>"}
 
     o_out << '</table>'
-    o_out << 'Click on an existing page to reply, or <a href="/pagesend">page</a> another user.'
+    o_out << 'Click on an existing page to reply, or <a href="/pagesend">page</a> another user.<br>'
+    o_out  <<  "To delete a message(s) tick and <input type='submit' value='Delete'>"
   end
 e_out,g_out = side_menu_gubbins    #make the side menu database inserts on the sinatra side, like the manual says
  
@@ -603,42 +605,94 @@ e_out,g_out = side_menu_gubbins    #make the side menu database inserts on the s
   end
  end
 
+ post "/pagedelete" do
+
+if !session[:name].nil? then
+ 
+  del_box = params["del_box"]
+  name = session[:name]
+  uid = get_uid(name)
+  user = fetch_user(uid)
+   if del_box.nil? then
+     redirect '/page'
+   else
+    del_box.each{|x| delete_page(x)}
+    redirect '/page'
+   end
+  else 
+   haml :notlogged
+  end
+ end
+
+
   get "/pagesend" do
 
 if !session[:name].nil? then
 
+  p_uid = params[:uid]
   name = session[:name]
   uid = get_uid(name)
   who_list_update(uid,"Page")
-
   user = fetch_user(uid)
+    if !p_uid.nil? then
+      p_user = fetch_user(p_uid)
+    end
   o_out = ""
-       o_out << "<form name='main' method='post' action='/pagesave'>" 
-          o_out <<  "<input name='m_area' type='hidden' value= >"
-          
-          o_out << "<tr><td>To:</td>"
-           o_out << "<td><select name='user' size='1' style='width:200px;'>"
-	    fetch_user_list.each {|x| 
-
-		   o_out << "<option value=#{x.number}'>#{x.name}</option>"
+  o_out = "<table>"
+  o_out << "<form name='main' method='post' action='/pagesave'>" 
+  o_out <<  "<input name='m_area' type='hidden' value= >"
+    if p_uid.nil? then  
+      o_out << "<tr><td>To:</td>"
+      o_out << "<td><select name='p_uid' size='1' style='width:200px;'>"
+      fetch_user_list.each {|x| 
+      o_out << "<option value=#{x.number}'>#{x.name}</option>"
          }
-         o_out << "</select>"
-          o_out << "</td></tr>" 
-          
-          o_out <<  "<tr><td colspan=2><textarea style='font-size:12px' name='msg_text' cols='50' rows='5'  id='msg_text'>"
-          
-         o_out << "</textarea></td>" 
-         o_out << "</tr>"
-          o_out << "<tr>" 
-          o_out << "<td>&nbsp;</td>" 
-          o_out << "<td><input type='submit' name='Submit' value='Post'>" 
-          o_out << "<input type='reset' name='Reset' value='Reset Form'> </td>" 
-          o_out << "</tr>" 
-          o_out << "</form>" 
-
-e_out,g_out = side_menu_gubbins    #make the side menu database inserts on the sinatra side, like the manual says
+      o_out << "</select>"
+    else
+      o_out << "<tr><td>To: #{p_user.name}"
+      o_out <<  "<input name='p_uid' type='hidden' value='#{p_uid}' >"
+    end
+   o_out << "</td></tr>" 
+   o_out <<  "<tr><td colspan=2><textarea style='font-size:12px' name='msg_text' cols='50' rows='5'  id='msg_text'>"
+   o_out << "</textarea></td>" 
+   o_out << "</tr>"
+   o_out << "<tr>" 
+   o_out << "<td>&nbsp;</td>" 
+   o_out << "<td><input type='submit' name='Submit' value='Post'>" 
+   o_out << "</td></tr></form></table>" 
+      
+   e_out,g_out = side_menu_gubbins    #make the side menu database inserts on the sinatra side, like the manual says
  
    haml :page, :locals => {:email => e_out, :groups => g_out, :output => o_out}
+  else 
+   haml :notlogged
+  end
+ end
+
+ post "/pagesave" do
+
+if !session[:name].nil? then
+  p_uid = params["p_uid"]
+  msg_text = params["msg_text"]
+  name = session[:name]
+  p_user = fetch_user(p_uid.to_i)
+  
+  uid = get_uid(name)
+  user = fetch_user(uid)
+
+  e_out,g_out = side_menu_gubbins
+  who_list_update(uid,"Page")
+
+       if p_user.nil? then 
+         err_out = "Invalid User ID! #{p_uid}"
+	 haml :pageerror, :locals => {:email => e_out, :groups => g_out, :err => err_out}
+       else
+         err_out = "Page Sent."
+	  add_page(uid.to_i,p_user.name,msg_text,false)
+	haml :pagesucc, :locals => {:email => e_out, :groups => g_out}	
+      end
+
+
   else 
    haml :notlogged
   end

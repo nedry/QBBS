@@ -405,9 +405,9 @@ class Session
       out = non_standard_zone(tz) if out.nil?
       write " %W(%G#{out}%W)"
     end
-    write "%G [NETWORK MESSAGE]" if curmessage.network
+    write "%G [QWK]" if curmessage.network
     write "%G [SMTP]" if curmessage.smtp
-    write "%G [FIDONET MESSAGE]" if curmessage.f_network
+    write "%G [FIDONET]" if curmessage.f_network
     write "%Y [EXPORTED]" if curmessage.exported and !curmessage.f_network and !curmessage.network
     write "%B [REPLY]" if curmessage.reply
     print ""

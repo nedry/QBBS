@@ -37,7 +37,14 @@ def add_page(uid_from,to,message,system)
  uid =uid_from
  user = User.get(get_uid(to))
  page = user.pages.new(:message => message, :system => system, :from => uid)
+ 
  page.save
+end
+
+def delete_page(id)
+
+page = Page.first(:id => id)
+page.destroy!
 end
 
 def new_pages(user)
