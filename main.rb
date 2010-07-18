@@ -42,6 +42,25 @@ class Session
 	end
 	
 	
+	def page
+		to = getinp("%GUser to Page: ")
+                exists = get_uid(to)
+                if exists.nil? then
+                  print "%RThat user does not exist."
+                  print
+                  return
+                end
+		return if to.empty?
+		if @who.user(to).nil? and  !who_exists(exists) then
+			print "%R#{to} is not online... %Gthey will get the message when they log in."
+			print 
+		end
+		message = getinp("%CMessage: ")
+		return if message.empty?
+                add_page(@c_user.number,to,message,false)
+		print "%GMessage Sent."
+	end
+	
  def displaylog
   i = 0
   j = 0
