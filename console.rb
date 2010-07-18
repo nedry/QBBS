@@ -2,9 +2,13 @@
 # provides a session, i/o and a menu
 
 class Console
+  extend Forwardable
+
   def initialize(session)
     @session = session
   end
+
+  def_delegators :@session, :print, :write, :getinp
 
   def readmenu(args)
     dir = +1
@@ -19,7 +23,7 @@ class Console
 
     while true
       prmpt = o_prompt.gsub("%p","#{ptr}")
-      inp = @session.getinp(eval(prmpt))
+      inp = getinp(eval(prmpt))
       oldptr = ptr
       sel = inp.upcase
 
@@ -49,7 +53,7 @@ class Console
         stop = zipscan(@session.c_area)
         if stop.nil? then return else ptr = stop end
       else
-        @session.print("%RCan't go higher")
+        print("%RCan't go higher")
       end
     end
     ptr
@@ -59,7 +63,7 @@ class Console
     if ptr > low then
       ptr = ptr - 1
     else
-      @session.print("%GCan't go lower")
+      print("%GCan't go lower")
     end
     ptr
   end
@@ -68,7 +72,7 @@ class Console
     if (newptr >= low) and (newptr <= high) then 
       newptr
     else
-      @session.print "Out of Range."
+      print "Out of Range."
       ptr
     end
   end
