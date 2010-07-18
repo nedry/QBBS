@@ -61,7 +61,6 @@ class Session
   require "line.rb"
   require "email.rb"
   require "teleconference.rb"
-  require "page.rb"
   require "main.rb"
 
   def run
