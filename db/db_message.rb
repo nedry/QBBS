@@ -227,3 +227,48 @@ end
     end
     return orig
   end
+  
+  def qwkmailadr(address)
+
+  to = nil;route = nil
+  if !address.index(".") then
+    happy = (/^(.+)@([a-z,A-Z]+)/) =~ address
+    if happy then
+      to = $1;route = $2
+    end
+  end
+  return [to,route]
+end
+
+def stmpmailadr(address)
+  happy = (/^(.+)@(.+)\.(.+)/) =~ address
+  if happy then return true else return false end
+end
+
+def netmailadr(address)
+
+  to = nil;zone = nil;net = nil;node = nil;point = nil
+  happy = (/^(.*)@(\d?):(\d{1,4})\/(.*)/) =~ address
+  if happy then
+    to = $1;zone = $2;net = $3;node = $4
+    grumpy = (/(\d{1,4})\.(\d{1,4})/) =~ node
+    if grumpy then
+      node = $1;point = $2
+    end
+
+  end
+  return [to,zone,net,node,point]
+end
+
+def parse_intl(address)
+
+  happy = (/^(\d?):(\d{1,4})\/(.*)/) =~ address
+  if happy then
+    zone = $1;net = $2;node = $3
+    grumpy = (/(\d{1,4})\.(\d{1,4})/) =~ node
+    if grumpy then
+      node = $1;point = $2
+    end
+  end
+  return [zone,net,node,point]
+end

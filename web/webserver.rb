@@ -79,7 +79,23 @@ def who_list_delete (uid)
  end
  end
 
- 
+ def determine_email_type(imp)  
+
+      to,zone,net,node,point = netmailadr(inp)
+      if !to.nil? then
+        return F_NETMAIL
+      end
+      to,route = qwkmailadr(inp)
+      if !to.nil? then
+       return Q_NETMAIL
+      end
+      smtp = stmpmailadr(inp)
+      if smtp then
+        return SMTP
+      end
+  return nil
+end
+
  def who_list_update(uid,loc)
 
 
@@ -167,15 +183,18 @@ def area_list_gubbins(grp)
   return o_area,o_name
 end
 
-def m_menu(m_area,pointer,dir,subject,from,total,email)
+def m_menu(m_area,pntr,dir,subject,from,total,email)
   m_out = ""
+
+  abs =absolute_message(m_area,pntr)
   t_out = "/message" 
   t_out = "/email" if email
-  m_out << "<span style='background:white;color:black'><table><tr><td><B>Messages 1 - #{total} [</b>#{pointer}<b>]:</b></td> "
-  m_out << "<td><a href='#{t_out}?m_area=#{m_area}&last=#{pointer}&dir=b'>Previous</a>&nbsp;&nbsp;"
-  m_out << "<a href='#{t_out}?m_area=#{m_area}&last=#{pointer}&dir=f'>Next</a>&nbsp;&nbsp;"
-  m_out << "<a href='/post?m_area=#{m_area}&subject=#{subject}&to=#{from}&last=#{pointer}&dir=f'>Reply</a>&nbsp;&nbsp;"
-  m_out << "<a href='/post?m_area=#{m_area}&last=#{pointer}&dir=f'>Post</a>&nbsp;&nbsp;"
+  m_out << "<span style='background:white;color:black'><table><tr><td><B>Messages 1 - #{total} [</b>#{pntr}<b>]:</b></td> "
+  m_out << "<td><a href='#{t_out}?m_area=#{m_area}&last=#{pntr}&dir=b'>Previous</a>&nbsp;&nbsp;"
+  m_out << "<a href='#{t_out}?m_area=#{m_area}&last=#{pntr}&dir=f'>Next</a>&nbsp;&nbsp;"
+  m_out << "<a href='/post?m_area=#{m_area}&subject=#{subject}&to=#{from}&last=#{pntr}&dir=f'>Reply</a>&nbsp;&nbsp;"
+  m_out << "<a href='/delete?abs=#{abs}&area=#{m_area}'>Delete</a>&nbsp;&nbsp;" 
+  m_out << "<a href='/post?m_area=#{m_area}&last=#{pntr}&dir=f'>Post</a>&nbsp;&nbsp;"
   m_out <<  "</td><td><form action='#{t_out}' method='post'>"
   m_out <<  "<input type='hidden' name='m_area' value='#{m_area}'>"
   m_out <<  "<input type='hidden' name='dir' value='j'>"
@@ -183,6 +202,7 @@ def m_menu(m_area,pointer,dir,subject,from,total,email)
   m_out <<  "</form></span><BR><BR>"
   return m_out
 end
+
    
 def w_display_message(mpointer,user,m_area,email,dir,total)
       area = fetch_area(m_area)
@@ -308,34 +328,45 @@ if !session[:name].nil? then
   msg_to = params["msg_to"]
   msg_subject=params["msg_subject"]
   msg_text=params['msg_text']
-
+  e_uid = params['e_uid']
+  
   post_out = ""
     area=fetch_area(m_area)
     user = fetch_user(get_uid(name))
     pointer = get_pointer(user,m_area)
   if (pointer.access == "W") or (user.level == 255) and (!area.delete) then
-    if !msg_to.nil? then
+    if !msg_to.nil? and !msg_to.empty? then
+       case determine_email_type(msg_to)
+         when F_NETMAIL
+         when Q_NETMAIL
+         when SMTP
+       end
+       
        msg_to = msg_to[0..39] if msg_to.length > 40
+    else
+       if !e_uid.nil? then   #we've gotten a local email recp. 
+         msg_to = fetch_user(e_uid.to_i).name
+       end
     end
     if !msg_subject.nil? then
        msg_subject = msg_subject[0..39] if msg_subject.length > 40
    end
        msg_text = WordWrapper.wrap(msg_text,79)
        msg_text.gsub!(10.chr,"")
-       msg_text = convert_to_utf8(msg_text)  Do we need this?  I dunno...
-       #msg_text.gsub!(CR.chr,DLIM)
+       msg_text = convert_to_utf8(msg_text)
 
       msg_date = Time.now
    #   absolute = add_msg(msg_to,name,msg_date,msg_subject,msg_text,false,false,false,nil,nil,nil,nil,false,area.number)
       absolute = add_msg(msg_to,name,msg_date,msg_subject,msg_text,false,false,nil,nil,nil,nil,false, nil,nil,nil,
                                       nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,false,area.number)
       post_out << "Posted Absolute Message ##{absolute}<BR>"
-      post_out << ("<a href='/message?m_area=#{m_area}&last=#{last}&dir=#{dir}'>Return</a>&nbsp;&nbsp;")
+      out = "/message?m_area=#{m_area}&"
+      out = "/email?" if m_area == 0
+      post_out << ("<a href='#{out}last=#{last}&dir=#{dir}'>Return</a>&nbsp;&nbsp;")
      else
       post_out << 'You do not have access.'
      end
   e_out,g_out = side_menu_gubbins    #make the side menu database inserts on the sinatra side, like the manual says
-  # #close_database
    haml :post, :locals => {:email => e_out, :groups => g_out, :post => post_out}
   else 
    haml :notlogged
@@ -381,18 +412,30 @@ if !session[:name].nil? then
           post_out << "<input name='dir' type='hidden'  value='#{dir}'>" 
           post_out <<  "<input name='last' type='hidden' value='#{last}'>" 
           post_out <<  "<input name='m_area' type='hidden' value='#{m_area}'>"
-          
-	     if !to.nil? then
-	      post_out <<  "<input name='msg_to' type='hidden' value='#{to}'>"
-	     end
           post_out <<  "<tr><td>From: </td> <td>#{name}</td></tr>" 
-          post_out << "<tr><td>To:</td>"
-          if to == "" then 
-           post_out << "<td><input name='msg_to' type='text' id='msg_to'>" 
-          else 
-           post_out << "<td>#{to}"
+          if m_area == 0 then
+            if to.nil? then
+            
+              post_out << "<tr><td>To (local):</td>"
+              post_out << "<td><select name='e_uid' size='1' style='width:200px;'>"
+              fetch_user_list.each {|x| 
+                  post_out << "<option value='#{x.number}'>#{x.name}</option>"
+                }
+               post_out << "</select>"
+            else
+             post_out <<  "<input name='msg_to' type='hidden' value='#{to}'>"
+             post_out << "<tr><td>To: #{to}"
+            end
+          else
+   
+
           end
-          post_out << "</td></tr>" 
+          if to.nil? then 
+           post_out << "<tr><td>To: (remote)</td>"
+           post_out << "<td><input name='msg_to' type='text' id='msg_to'></td>" 
+          else 
+           post_out << "<td>#{to}</td></tr>"
+          end
           post_out <<  "<tr><td>Subject:</td><td><input name='msg_subject' type='text' id='msg_subject' value='#{subject}'></td></tr>"
           post_out <<  "#{CRLF}"
           post_out <<  "<tr><td colspan=2><textarea style='font-size:12px' name='msg_text' cols='79' rows='25'  id='msg_text'>#{CRLF}"
@@ -409,8 +452,7 @@ if !session[:name].nil? then
          post_out << "</tr>"
           post_out << "<tr>" 
           post_out << "<td>&nbsp;</td>" 
-          post_out << "<td><input type='submit' name='Submit' value='Post'>" 
-          post_out << "<input type='reset' name='Reset' value='Reset Form'> </td>" 
+          post_out << "<td><input type='submit' name='Submit' value='Post'> </td>" 
           post_out << "</tr>" 
           post_out << "</form>" 
 	  post_out << "</table>"
@@ -624,7 +666,51 @@ if !session[:name].nil? then
   end
  end
 
+get_or_post "/delete" do
 
+if !session[:name].nil? then
+ 
+  abs = params[:abs]
+  area = params[:area]
+  name = session[:name]
+  doit = params[:doit]
+  uid = get_uid(name)
+  user = fetch_user(uid)
+  e_out,g_out = side_menu_gubbins    #make the side menu database inserts on the sinatra side, like the manual says
+
+   if !abs.nil? then
+      message = fetch_msg(abs)
+       abs = nil if message.nil? 
+     end
+     
+  out = "/message?m_area=#{area}"
+  out = "/email" if area == 0 
+      
+   if !abs.nil? then
+
+        if (user.level == 255) or (message.m_from.downcase == user.name.downcase) or (message.number == 0 and m_to.downcase == user.name.downcase) then
+          if doit == "Y" then
+            delete_msg(abs)
+            o_out = "Message (#{abs}) Deleted. <a href='#{out}'>Back</a>"
+            haml :delete, :locals => {:email => e_out, :groups => g_out, :output => o_out}
+         else
+            err_out = "Delete Message, are you sure? <a href='/delete?abs=#{abs}&area=#{area}&doit=Y'>Yes</a>."
+            haml :deleteerror, :locals => {:email => e_out, :groups => g_out, :err =>err_out}   
+         end
+       else
+         err_out = "You may only delete your own messages.  <a href='#{out}'>Back</a>"
+         haml :deleteerror, :locals => {:email => e_out, :groups => g_out, :err =>err_out}     
+       end         
+       else
+     err_out = "Message Not Found.  <a href='#{out}'>Back</a>"
+     haml :deleteerror, :locals => {:email => e_out, :groups => g_out, :err =>err_out}   
+  end
+  else 
+   haml :notlogged
+  end
+ end
+
+  
   get "/pagesend" do
 
 if !session[:name].nil? then
@@ -640,12 +726,12 @@ if !session[:name].nil? then
   o_out = ""
   o_out = "<table>"
   o_out << "<form name='main' method='post' action='/pagesave'>" 
-  o_out <<  "<input name='m_area' type='hidden' value= >"
+ # o_out <<  "<input name='m_area' type='hidden' value= >"
     if p_uid.nil? then  
       o_out << "<tr><td>To:</td>"
       o_out << "<td><select name='p_uid' size='1' style='width:200px;'>"
       fetch_user_list.each {|x| 
-      o_out << "<option value=#{x.number}'>#{x.name}</option>"
+      o_out << "<option value='#{x.number}'>#{x.name}</option>"
          }
       o_out << "</select>"
     else
@@ -658,9 +744,10 @@ if !session[:name].nil? then
    o_out << "</tr>"
    o_out << "<tr>" 
    o_out << "<td>&nbsp;</td>" 
-   o_out << "<td><input type='submit' name='Submit' value='Post'>" 
-   o_out << "</td></tr></form></table>" 
-      
+   o_out << "<td><input type='submit' name='Submit' value='Send'>" 
+   
+   o_out << "&nbsp;&nbsp;Pages are limited to 240 characters."
+     o_out << "</td></tr></form></table>"  
    e_out,g_out = side_menu_gubbins    #make the side menu database inserts on the sinatra side, like the manual says
  
    haml :page, :locals => {:email => e_out, :groups => g_out, :output => o_out}
@@ -687,11 +774,15 @@ if !session[:name].nil? then
          err_out = "Invalid User ID! #{p_uid}"
 	 haml :pageerror, :locals => {:email => e_out, :groups => g_out, :err => err_out}
        else
+       if msg_text.length > 240 then 
+         err_out = "Page Too Long!  Pages are limited to 240 Characters."
+	 haml :pageerror, :locals => {:email => e_out, :groups => g_out, :err => err_out}
+       else
          err_out = "Page Sent."
 	  add_page(uid.to_i,p_user.name,msg_text,false)
 	haml :pagesucc, :locals => {:email => e_out, :groups => g_out}	
       end
-
+   end
 
   else 
    haml :notlogged
@@ -1081,7 +1172,7 @@ end
 get "/email" do
 
 if !session[:name].nil? then
-
+  e_uid = params[:uid]
   m_area = 0
   last = params["last"]
   last = last.to_i
@@ -1104,7 +1195,7 @@ if !session[:name].nil? then
        m_out << tempstr
        m_out << "<BR>"
        m_out << m_menu(m_area,pointer,dir,subject,from,e_hmsg(user),true)
-      else m_out << "No Email." end
+      else m_out << "No Messages.  Send an <a href='/post?m_area=0'>Email." end
 
       
     else      
@@ -1240,7 +1331,7 @@ if !session[:name].nil? then
 
 
 	m_out << "<BR>"
-        m_out << m_menu(m_area,pointer,dir,subject,from,h_msg(m_area),false)
+        m_out << m_menu(m_area, pntr(user,m_area) ,dir,subject,from,h_msg(m_area),false)
  
   e_out,g_out = side_menu_gubbins    #make the side menu database inserts on the sinatra side, like the manual says
 

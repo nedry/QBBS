@@ -59,7 +59,7 @@ YAML.load(IO.read('config/initusers.yml')).each {|u|
 
 # initial area
 #(name, d_access,v_access,netnum,fido_net,group)
-add_area("Email","I","I",nil,nil,1)
+add_area("Email","I","I",0,nil,1)
 add_area("General Discussions","W","W",nil,nil,1)
 add_area("The APC Net","W","W",nil,nil,1)
 
