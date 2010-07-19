@@ -79,7 +79,7 @@ def who_list_delete (uid)
  end
  end
 
- def determine_email_type(imp)  
+ def determine_email_type(inp)  
 
       to,zone,net,node,point = netmailadr(inp)
       if !to.nil? then
@@ -185,8 +185,8 @@ end
 
 def m_menu(m_area,pntr,dir,subject,from,total,email)
   m_out = ""
-
-  abs =absolute_message(m_area,pntr)
+  abs = 0
+  abs =absolute_message(m_area,pntr) if pntr > 0
   t_out = "/message" 
   t_out = "/email" if email
   m_out << "<span style='background:white;color:black'><table><tr><td><B>Messages 1 - #{total} [</b>#{pntr}<b>]:</b></td> "
@@ -334,12 +334,26 @@ if !session[:name].nil? then
     area=fetch_area(m_area)
     user = fetch_user(get_uid(name))
     pointer = get_pointer(user,m_area)
-  if (pointer.access == "W") or (user.level == 255) and (!area.delete) then
+     if (pointer.access == "W") or (pointer.access == "C") or (pointer.access == "M") or (area.number == 0) or (user.level == 255) and (!area.delete) and (pointer.access !="N") then
     if !msg_to.nil? and !msg_to.empty? then
        case determine_email_type(msg_to)
          when F_NETMAIL
+          puts "fidonet detected"
          when Q_NETMAIL
+           to,route = qwkmailadr(msg_to)
+           puts "route.upcase #{route.upcase}"
+           puts "BBSID: #{BBSID}"
+            if route.upcase != BBSID then
+              puts "im here"
+             msg_text.insert(0,"#{msg_to}\r")
+             msg_to = "NETMAIL"
+            end
+          puts "qwk mail detected"
+          
+          puts "to: #{to}"
+          puts "route: #{route}"
          when SMTP
+          puts "smtp detected"
        end
        
        msg_to = msg_to[0..39] if msg_to.length > 40
@@ -354,7 +368,7 @@ if !session[:name].nil? then
        msg_text = WordWrapper.wrap(msg_text,79)
        msg_text.gsub!(10.chr,"")
        msg_text = convert_to_utf8(msg_text)
-
+   
       msg_date = Time.now
    #   absolute = add_msg(msg_to,name,msg_date,msg_subject,msg_text,false,false,false,nil,nil,nil,nil,false,area.number)
       absolute = add_msg(msg_to,name,msg_date,msg_subject,msg_text,false,false,nil,nil,nil,nil,false, nil,nil,nil,
@@ -396,7 +410,7 @@ if !session[:name].nil? then
    area=fetch_area(m_area)
    
     post_out = ""
-     if (pointer.access == "W") or (user.level == 255) and (!area.delete) then
+     if (pointer.access == "W") or (pointer.access == "C") or (pointer.access == "M") or (area.number == 0) or (user.level == 255) and (!area.delete) and (pointer.access !="N") then
        reply = []
         if !to.nil? then 
 	       curmessage = fetch_msg(absolute_message(area.number,last))

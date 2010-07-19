@@ -202,6 +202,7 @@ class Session
   end
 
   def savecurmessage(x, to, title,exported,reply,destnode,destnet,intl,point)
+    puts x
     area = fetch_area(x)
     @lineeditor.msgtext << DLIM
     msg_text = @lineeditor.msgtext.join(DLIM)
@@ -229,7 +230,7 @@ class Session
     path = "#{FULLSCREENDIR}/#{outfile}"
     quotefile = File.new(path, File::CREAT|File::APPEND|File::RDWR, 0666)
     quotefile.puts "#{CRLF}"
-    reply_text.each {|line| quotefile.puts "#{line.chop![0..75]}#{CRLF}"} if reply_text != nil
+    reply_text.each_line {|line| quotefile.puts "#{line.chop![0..75]}#{CRLF}"} if reply_text != nil
     quotefile.close
     return outfile
   end

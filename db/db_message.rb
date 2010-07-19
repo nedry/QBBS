@@ -26,7 +26,8 @@ end
 def absolute_message(area,ind)
   ind = 0 if ind.nil?
   lazy_list = Message.all(:number => area, :order => [ :absolute ])
-  result = lazy_list[ind-1].absolute
+  result = 0
+  result = lazy_list[ind-1].absolute if !lazy_list[ind-1].nil?
 end
 
 def high_absolute(table)

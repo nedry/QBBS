@@ -307,7 +307,11 @@ module Qwk
         tempstr = idx.scan(/\d\d\d\d/)
         find = tempstr[0].to_i
         print "-QWK: Finding Import Area for packet# #{find}..."
-        area = (find == 0) ? 0 : find_qwk_area(find, nil) 
+        if find > 0 then
+         area =  find_qwk_area(find, nil) 
+        else
+          area = fetch_area(0)  #we want to import all email into email.  QWK/REP email is always 000
+        end
         if area
           @log.write "Found. Importing #{idx} to #{area.name}"
           puts "Found. Importing #{idx} to #{area.name}"

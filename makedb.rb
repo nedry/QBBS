@@ -59,7 +59,7 @@ YAML.load(IO.read('config/initusers.yml')).each {|u|
 
 # initial area
 #(name, d_access,v_access,netnum,fido_net,group)
-add_area("Email","I","I",0,nil,1)
+add_area("Email","I","I",nil,nil,1)
 add_area("General Discussions","W","W",nil,nil,1)
 add_area("The APC Net","W","W",nil,nil,1)
 
@@ -91,6 +91,7 @@ add_area("Synchronet Prog. (c/c++/cvs)","W","W",2010,nil,2)
 add_area("Sysop712","I","I",nil,"SYSOP712",3)
 add_area("Netmail","I","I",nil,"NETMAIL",3)
 add_area("BadNetMail","I","I",nil,"BADNETMAIL",3)
+add_area("QWKmail","I","I",0,nil,1)
 add_area("Weather","W","W",nil,"WEATHER",3)
 # initial system
 s = System.new(
