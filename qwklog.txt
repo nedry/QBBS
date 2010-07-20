@@ -52451,3 +52451,4151 @@ TEMPCRAP : ·“
 HAS_TAGLINE : *
 NSREC : 224
 
+228 areas in CONTROL.DAT
+15 areas found in QWK packet
+["2010"] Sysops
+["2003"] Entertain
+["2012"] Sync-JS
+["2015"] HAM
+["2016"] Internet
+["2009"] Unix
+["2013"] SYNCDATA
+["2004"] Debate
+["2005"] Technical
+["2007"] Synchronet
+["2001"] DOVE-Net
+["2014"] Sync Prog
+["2002"] Ads
+["2019"] Sports
+Now Processing Packet qwk/2010.NDX which contains 11 messages.
+
+Found. Importing qwk/2010.NDX to Synchronet Prog. (c/c++/cvs)
+SREC  : 744
+STATUSFLAG :  
+NUMBER : 12170  
+TEMPDATE : 07-14-10
+TEMPTIME : 00:01
+TO : All                      
+FROM : Crazy Giant              
+SUBJECT : Testing                  
+PASSWORD :             
+REFERENCE : 0       
+BLOCKS : 3     
+TEMPCRAP : ·⁄  
+HAS_TAGLINE : *
+NSREC : 747
+
+SREC  : 747
+STATUSFLAG :  
+NUMBER : 12171  
+TEMPDATE : 07-13-10
+TEMPTIME : 23:16
+TO : All                      
+FROM : esc                      
+SUBJECT : test message             
+PASSWORD :             
+REFERENCE : 0       
+BLOCKS : 2     
+TEMPCRAP : ·⁄  
+HAS_TAGLINE : *
+NSREC : 749
+
+SREC  : 749
+STATUSFLAG :  
+NUMBER : 12172  
+TEMPDATE : 07-14-10
+TEMPTIME : 06:22
+TO : Crazy Giant              
+FROM : Crazy Giant              
+SUBJECT : Re: Testing              
+PASSWORD :             
+REFERENCE : 12170   
+BLOCKS : 4     
+TEMPCRAP : ·⁄  
+HAS_TAGLINE : *
+NSREC : 753
+
+SREC  : 753
+STATUSFLAG :  
+NUMBER : 12173  
+TEMPDATE : 07-14-10
+TEMPTIME : 09:11
+TO : Crazy Giant              
+FROM : Lord Time                
+SUBJECT : Testing                  
+PASSWORD :             
+REFERENCE : 12170   
+BLOCKS : 6     
+TEMPCRAP : ·⁄  
+HAS_TAGLINE : *
+NSREC : 759
+
+SREC  : 759
+STATUSFLAG :  
+NUMBER : 12174  
+TEMPDATE : 07-14-10
+TEMPTIME : 09:12
+TO : esc                      
+FROM : Lord Time                
+SUBJECT : test message             
+PASSWORD :             
+REFERENCE : 12171   
+BLOCKS : 5     
+TEMPCRAP : ·⁄  
+HAS_TAGLINE : *
+NSREC : 764
+
+SREC  : 764
+STATUSFLAG :  
+NUMBER : 12175  
+TEMPDATE : 07-14-10
+TEMPTIME : 19:27
+TO : esc                      
+FROM : Jon Justvig              
+SUBJECT : Re: test message         
+PASSWORD :             
+REFERENCE : 12171   
+BLOCKS : 4     
+TEMPCRAP : ·⁄  
+HAS_TAGLINE : *
+NSREC : 768
+
+SREC  : 768
+STATUSFLAG :  
+NUMBER : 12176  
+TEMPDATE : 07-16-10
+TEMPTIME : 22:04
+TO : All                      
+FROM : Beowulf                  
+SUBJECT : Hybrid setup             
+PASSWORD :             
+REFERENCE : 0       
+BLOCKS : 7     
+TEMPCRAP : ·⁄  
+HAS_TAGLINE : *
+NSREC : 775
+
+SREC  : 775
+STATUSFLAG :  
+NUMBER : 12177  
+TEMPDATE : 07-18-10
+TEMPTIME : 12:28
+TO : All                      
+FROM : TEK1                     
+SUBJECT : message base restore     
+PASSWORD :             
+REFERENCE : 0       
+BLOCKS : 3     
+TEMPCRAP : ·⁄  
+HAS_TAGLINE : *
+NSREC : 778
+
+SREC  : 778
+STATUSFLAG :  
+NUMBER : 12178  
+TEMPDATE : 07-19-10
+TEMPTIME : 16:47
+TO : Beowulf                  
+FROM : Digital Man              
+SUBJECT : Hybrid setup             
+PASSWORD :             
+REFERENCE : 12176   
+BLOCKS : 12    
+TEMPCRAP : ·⁄  
+HAS_TAGLINE : *
+NSREC : 790
+
+SREC  : 790
+STATUSFLAG : -
+NUMBER : 12179  
+TEMPDATE : 07-19-10
+TEMPTIME : 16:47
+TO : TEK1                     
+FROM : Digital Man              
+SUBJECT : message base restore     
+PASSWORD :             
+REFERENCE : 12177   
+BLOCKS : 5     
+TEMPCRAP : ·⁄  
+HAS_TAGLINE : *
+NSREC : 795
+
+SREC  : 795
+STATUSFLAG :  
+NUMBER : 12180  
+TEMPDATE : 07-20-10
+TEMPTIME : 09:13
+TO : Digital Man              
+FROM : TEK1                     
+SUBJECT : Re: message base restore 
+PASSWORD :             
+REFERENCE : 12179   
+BLOCKS : 6     
+TEMPCRAP : ·⁄  
+HAS_TAGLINE : *
+NSREC : 801
+
+Now Processing Packet qwk/2003.NDX which contains 6 messages.
+
+Found. Importing qwk/2003.NDX to Entertainment
+SREC  : 309
+STATUSFLAG :  
+NUMBER : 13056  
+TEMPDATE : 07-13-10
+TEMPTIME : 18:00
+TO : Crash_Override           
+FROM : Razor                    
+SUBJECT : Real American            
+PASSWORD :             
+REFERENCE : 13055   
+BLOCKS : 4     
+TEMPCRAP : ·”  
+HAS_TAGLINE : *
+NSREC : 313
+
+SREC  : 313
+STATUSFLAG :  
+NUMBER : 13057  
+TEMPDATE : 07-14-10
+TEMPTIME : 15:40
+TO : Razor                    
+FROM : Crash_Override           
+SUBJECT : Re: Real American        
+PASSWORD :             
+REFERENCE : 13056   
+BLOCKS : 5     
+TEMPCRAP : ·”  
+HAS_TAGLINE : *
+NSREC : 318
+
+SREC  : 318
+STATUSFLAG :  
+NUMBER : 13058  
+TEMPDATE : 07-17-10
+TEMPTIME : 12:17
+TO : Crash_Override           
+FROM : Ryedawg                  
+SUBJECT : Real American            
+PASSWORD :             
+REFERENCE : 13055   
+BLOCKS : 6     
+TEMPCRAP : ·”  
+HAS_TAGLINE : *
+NSREC : 324
+
+SREC  : 324
+STATUSFLAG : -
+NUMBER : 13059  
+TEMPDATE : 07-17-10
+TEMPTIME : 14:27
+TO : Ryedawg                  
+FROM : Corey                    
+SUBJECT : Real American            
+PASSWORD :             
+REFERENCE : 13058   
+BLOCKS : 8     
+TEMPCRAP : ·”  
+HAS_TAGLINE : *
+NSREC : 332
+
+SREC  : 332
+STATUSFLAG :  
+NUMBER : 13060  
+TEMPDATE : 07-18-10
+TEMPTIME : 08:05
+TO : Corey                    
+FROM : Access Denied            
+SUBJECT : Real American            
+PASSWORD :             
+REFERENCE : 13059   
+BLOCKS : 4     
+TEMPCRAP : ·”  
+HAS_TAGLINE : *
+NSREC : 336
+
+SREC  : 336
+STATUSFLAG :  
+NUMBER : 13061  
+TEMPDATE : 07-19-10
+TEMPTIME : 23:54
+TO : North*star               
+FROM : Whitedistortion          
+SUBJECT : Anyone "make their own?" 
+PASSWORD :             
+REFERENCE : 12856   
+BLOCKS : 3     
+TEMPCRAP : ·”  
+HAS_TAGLINE : *
+NSREC : 339
+
+Now Processing Packet qwk/2012.NDX which contains 4 messages.
+
+Found. Importing qwk/2012.NDX to Synchronet Prog. (Javascript)
+SREC  : 673
+STATUSFLAG :  
+NUMBER : 1064   
+TEMPDATE : 07-15-10
+TEMPTIME : 23:05
+TO : DOVE-Net.Programming_(Jav
+FROM : Mindless Automaton       
+SUBJECT : bbs.replace_text         
+PASSWORD :             
+REFERENCE : 0       
+BLOCKS : 4     
+TEMPCRAP : ·‹  
+HAS_TAGLINE : *
+NSREC : 677
+
+SREC  : 677
+STATUSFLAG :  
+NUMBER : 1065   
+TEMPDATE : 07-19-10
+TEMPTIME : 09:41
+TO : Mindless Automaton       
+FROM : Mindless Automaton       
+SUBJECT : Re: bbs.replace_text     
+PASSWORD :             
+REFERENCE : 1064    
+BLOCKS : 5     
+TEMPCRAP : ·‹  
+HAS_TAGLINE : *
+NSREC : 682
+
+SREC  : 682
+STATUSFLAG :  
+NUMBER : 1066   
+TEMPDATE : 07-19-10
+TEMPTIME : 16:44
+TO : Mindless Automaton       
+FROM : Digital Man              
+SUBJECT : bbs.replace_text         
+PASSWORD :             
+REFERENCE : 1064    
+BLOCKS : 7     
+TEMPCRAP : ·‹  
+HAS_TAGLINE : *
+NSREC : 689
+
+SREC  : 689
+STATUSFLAG :  
+NUMBER : 1067   
+TEMPDATE : 07-19-10
+TEMPTIME : 16:44
+TO : Mindless Automaton       
+FROM : Digital Man              
+SUBJECT : Re: bbs.replace_text     
+PASSWORD :             
+REFERENCE : 1065    
+BLOCKS : 7     
+TEMPCRAP : ·‹  
+HAS_TAGLINE : *
+NSREC : 696
+
+Now Processing Packet qwk/2015.NDX which contains 1 messages.
+
+Found. Importing qwk/2015.NDX to Ham Radio
+SREC  : 535
+STATUSFLAG :  
+NUMBER : 4029   
+TEMPDATE : 07-13-10
+TEMPTIME : 21:14
+TO : Crash_Override           
+FROM : John Guillory            
+SUBJECT : Re: any radio talk?      
+PASSWORD :             
+REFERENCE : 4027    
+BLOCKS : 9     
+TEMPCRAP : ·ﬂ  
+HAS_TAGLINE : *
+NSREC : 544
+
+Now Processing Packet qwk/2016.NDX which contains 3 messages.
+
+Found. Importing qwk/2016.NDX to Internet
+SREC  : 544
+STATUSFLAG :  
+NUMBER : 4066   
+TEMPDATE : 07-15-10
+TEMPTIME : 20:50
+TO : All                      
+FROM : Diamond Dave             
+SUBJECT : DoS attacks              
+PASSWORD :             
+REFERENCE : 0       
+BLOCKS : 8     
+TEMPCRAP : ·‡  
+HAS_TAGLINE : *
+NSREC : 552
+
+SREC  : 552
+STATUSFLAG :  
+NUMBER : 4067   
+TEMPDATE : 07-15-10
+TEMPTIME : 23:03
+TO : All                      
+FROM : Matt Munson              
+SUBJECT : quick question           
+PASSWORD :             
+REFERENCE : 0       
+BLOCKS : 3     
+TEMPCRAP : ·‡  
+HAS_TAGLINE : *
+NSREC : 555
+
+SREC  : 555
+STATUSFLAG :  
+NUMBER : 4068   
+TEMPDATE : 07-16-10
+TEMPTIME : 05:54
+TO : Garrett00                
+FROM : Gennss                   
+SUBJECT : Re: Freenet Anyone?      
+PASSWORD :             
+REFERENCE : 4057    
+BLOCKS : 18    
+TEMPCRAP : ·‡  
+HAS_TAGLINE : *
+NSREC : 573
+
+Now Processing Packet qwk/000.NDX which contains 5 messages.
+
+Found. Importing qwk/000.NDX to Email
+SREC  : 1
+STATUSFLAG :  
+NUMBER : 547399 
+TEMPDATE : 07-19-10
+TEMPTIME : 20:01
+TO : mark                     
+FROM : joe test                 
+SUBJECT : BADADDR: est             
+PASSWORD :             
+REFERENCE : 0       
+BLOCKS : 3     
+TEMPCRAP : ·    
+HAS_TAGLINE : *
+NSREC : 4
+
+SREC  : 4
+STATUSFLAG :  
+NUMBER : 547401 
+TEMPDATE : 07-19-10
+TEMPTIME : 20:15
+TO : mark                     
+FROM : joe test                 
+SUBJECT : BADADDR: est             
+PASSWORD :             
+REFERENCE : 0       
+BLOCKS : 3     
+TEMPCRAP : ·    
+HAS_TAGLINE : *
+NSREC : 7
+
+SREC  : 7
+STATUSFLAG :  
+NUMBER : 547402 
+TEMPDATE : 07-19-10
+TEMPTIME : 20:16
+TO : mark                     
+FROM : joe test                 
+SUBJECT : BADADDR: est             
+PASSWORD :             
+REFERENCE : 0       
+BLOCKS : 3     
+TEMPCRAP : ·    
+HAS_TAGLINE : *
+NSREC : 10
+
+SREC  : 10
+STATUSFLAG :  
+NUMBER : 547403 
+TEMPDATE : 07-19-10
+TEMPTIME : 20:26
+TO : mark                     
+FROM : joe test                 
+SUBJECT : BADADDR: est             
+PASSWORD :             
+REFERENCE : 0       
+BLOCKS : 3     
+TEMPCRAP : ·    
+HAS_TAGLINE : *
+NSREC : 13
+
+SREC  : 13
+STATUSFLAG :  
+NUMBER : 547404 
+TEMPDATE : 07-19-10
+TEMPTIME : 21:02
+TO : mark                     
+FROM : sysop                    
+SUBJECT : BADADDR:                 
+PASSWORD :             
+REFERENCE : 0       
+BLOCKS : 3     
+TEMPCRAP : ·    
+HAS_TAGLINE : *
+NSREC : 16
+
+Now Processing Packet qwk/2009.NDX which contains 3 messages.
+
+Found. Importing qwk/2009.NDX to Unix Discussion
+SREC  : 515
+STATUSFLAG :  
+NUMBER : 9344   
+TEMPDATE : 07-13-10
+TEMPTIME : 17:28
+TO : Ragnarok                 
+FROM : Kevinl                   
+SUBJECT : Re: For Linux users - qod
+PASSWORD :             
+REFERENCE : 9342    
+BLOCKS : 11    
+TEMPCRAP : ·Ÿ  
+HAS_TAGLINE : *
+NSREC : 526
+
+SREC  : 526
+STATUSFLAG :  
+NUMBER : 9345   
+TEMPDATE : 07-13-10
+TEMPTIME : 15:15
+TO : Rassilon                 
+FROM : Corey                    
+SUBJECT : Re: Netbook Linux        
+PASSWORD :             
+REFERENCE : 9343    
+BLOCKS : 5     
+TEMPCRAP : ·Ÿ  
+HAS_TAGLINE : *
+NSREC : 531
+
+SREC  : 531
+STATUSFLAG :  
+NUMBER : 9346   
+TEMPDATE : 07-13-10
+TEMPTIME : 20:49
+TO : Corey                    
+FROM : Access Denied            
+SUBJECT : Re: Netbook Linux        
+PASSWORD :             
+REFERENCE : 9345    
+BLOCKS : 4     
+TEMPCRAP : ·Ÿ  
+HAS_TAGLINE : *
+NSREC : 535
+
+Now Processing Packet qwk/2013.NDX which contains 4 messages.
+
+QWK: ERROR: No mapping found for area qwk/2013.NDX
+Now Processing Packet qwk/2004.NDX which contains 19 messages.
+
+Found. Importing qwk/2004.NDX to Debate
+SREC  : 339
+STATUSFLAG :  
+NUMBER : 37827  
+TEMPDATE : 07-14-10
+TEMPTIME : 12:45
+TO : thinktank                
+FROM : Gaylen Hintz             
+SUBJECT : CNN Breaking News        
+PASSWORD :             
+REFERENCE : 0       
+BLOCKS : 10    
+TEMPCRAP : ·‘  
+HAS_TAGLINE : *
+NSREC : 349
+
+SREC  : 349
+STATUSFLAG :  
+NUMBER : 37828  
+TEMPDATE : 07-14-10
+TEMPTIME : 11:08
+TO : Gaylen Hintz             
+FROM : John Guillory            
+SUBJECT : CNN Breaking News        
+PASSWORD :             
+REFERENCE : 37827   
+BLOCKS : 4     
+TEMPCRAP : ·‘  
+HAS_TAGLINE : *
+NSREC : 353
+
+SREC  : 353
+STATUSFLAG :  
+NUMBER : 37829  
+TEMPDATE : 07-14-10
+TEMPTIME : 10:43
+TO : Gaylen Hintz             
+FROM : DOS                      
+SUBJECT : CNN Breaking News        
+PASSWORD :             
+REFERENCE : 37827   
+BLOCKS : 11    
+TEMPCRAP : ·‘  
+HAS_TAGLINE : *
+NSREC : 364
+
+SREC  : 364
+STATUSFLAG :  
+NUMBER : 37830  
+TEMPDATE : 07-15-10
+TEMPTIME : 15:17
+TO : textbreakingnews@ema3lsv0
+FROM : CNN Breaking News        
+SUBJECT : CNN Breaking News        
+PASSWORD :             
+REFERENCE : 0       
+BLOCKS : 6     
+TEMPCRAP : ·‘  
+HAS_TAGLINE : *
+NSREC : 370
+
+SREC  : 370
+STATUSFLAG :  
+NUMBER : 37831  
+TEMPDATE : 07-15-10
+TEMPTIME : 15:57
+TO : textbreakingnews@ema3lsv0
+FROM : CNN Breaking News        
+SUBJECT : CNN Breaking News        
+PASSWORD :             
+REFERENCE : 0       
+BLOCKS : 6     
+TEMPCRAP : ·‘  
+HAS_TAGLINE : *
+NSREC : 376
+
+SREC  : 376
+STATUSFLAG :  
+NUMBER : 37832  
+TEMPDATE : 07-15-10
+TEMPTIME : 16:42
+TO : textbreakingnews@ema3lsv0
+FROM : CNN Breaking News        
+SUBJECT : CNN Breaking News        
+PASSWORD :             
+REFERENCE : 0       
+BLOCKS : 6     
+TEMPCRAP : ·‘  
+HAS_TAGLINE : *
+NSREC : 382
+
+SREC  : 382
+STATUSFLAG :  
+NUMBER : 37833  
+TEMPDATE : 07-16-10
+TEMPTIME : 05:59
+TO : DOS                      
+FROM : The Curmudgeon           
+SUBJECT : CNN Breaking News        
+PASSWORD :             
+REFERENCE : 0       
+BLOCKS : 9     
+TEMPCRAP : ·‘  
+HAS_TAGLINE : *
+NSREC : 391
+
+SREC  : 391
+STATUSFLAG :  
+NUMBER : 37834  
+TEMPDATE : 07-16-10
+TEMPTIME : 06:01
+TO : John Guillory            
+FROM : The Curmudgeon           
+SUBJECT : CNN Breaking News        
+PASSWORD :             
+REFERENCE : 0       
+BLOCKS : 8     
+TEMPCRAP : ·‘  
+HAS_TAGLINE : *
+NSREC : 399
+
+SREC  : 399
+STATUSFLAG :  
+NUMBER : 37835  
+TEMPDATE : 07-16-10
+TEMPTIME : 16:46
+TO : The Curmudgeon           
+FROM : DOS                      
+SUBJECT : CNN Breaking News        
+PASSWORD :             
+REFERENCE : 37833   
+BLOCKS : 24    
+TEMPCRAP : ·‘  
+HAS_TAGLINE : *
+NSREC : 423
+
+SREC  : 423
+STATUSFLAG :  
+NUMBER : 37836  
+TEMPDATE : 07-16-10
+TEMPTIME : 01:17
+TO : DOS                      
+FROM : thinktank                
+SUBJECT : CNN Breaking News        
+PASSWORD :             
+REFERENCE : 37829   
+BLOCKS : 4     
+TEMPCRAP : ·‘  
+HAS_TAGLINE : *
+NSREC : 427
+
+SREC  : 427
+STATUSFLAG :  
+NUMBER : 37837  
+TEMPDATE : 07-17-10
+TEMPTIME : 12:24
+TO : John Guillory            
+FROM : Ryedawg                  
+SUBJECT : CNN Breaking News        
+PASSWORD :             
+REFERENCE : 37821   
+BLOCKS : 8     
+TEMPCRAP : ·‘  
+HAS_TAGLINE : *
+NSREC : 435
+
+SREC  : 435
+STATUSFLAG :  
+NUMBER : 37838  
+TEMPDATE : 07-17-10
+TEMPTIME : 12:25
+TO : CNN Breaking News        
+FROM : Ryedawg                  
+SUBJECT : CNN Breaking News        
+PASSWORD :             
+REFERENCE : 37823   
+BLOCKS : 4     
+TEMPCRAP : ·‘  
+HAS_TAGLINE : *
+NSREC : 439
+
+SREC  : 439
+STATUSFLAG :  
+NUMBER : 37839  
+TEMPDATE : 07-17-10
+TEMPTIME : 12:31
+TO : CNN Breaking News        
+FROM : Ryedawg                  
+SUBJECT : CNN Breaking News        
+PASSWORD :             
+REFERENCE : 37830   
+BLOCKS : 5     
+TEMPCRAP : ·‘  
+HAS_TAGLINE : *
+NSREC : 444
+
+SREC  : 444
+STATUSFLAG :  
+NUMBER : 37840  
+TEMPDATE : 07-17-10
+TEMPTIME : 12:31
+TO : CNN Breaking News        
+FROM : Ryedawg                  
+SUBJECT : CNN Breaking News        
+PASSWORD :             
+REFERENCE : 37831   
+BLOCKS : 4     
+TEMPCRAP : ·‘  
+HAS_TAGLINE : *
+NSREC : 448
+
+SREC  : 448
+STATUSFLAG :  
+NUMBER : 37841  
+TEMPDATE : 07-17-10
+TEMPTIME : 12:32
+TO : CNN Breaking News        
+FROM : Ryedawg                  
+SUBJECT : CNN Breaking News        
+PASSWORD :             
+REFERENCE : 37832   
+BLOCKS : 4     
+TEMPCRAP : ·‘  
+HAS_TAGLINE : *
+NSREC : 452
+
+SREC  : 452
+STATUSFLAG : -
+NUMBER : 37842  
+TEMPDATE : 07-17-10
+TEMPTIME : 16:42
+TO : Ryedawg                  
+FROM : Crazy Giant              
+SUBJECT : CNN Breaking News        
+PASSWORD :             
+REFERENCE : 37838   
+BLOCKS : 5     
+TEMPCRAP : ·‘  
+HAS_TAGLINE : *
+NSREC : 457
+
+SREC  : 457
+STATUSFLAG : -
+NUMBER : 37843  
+TEMPDATE : 07-17-10
+TEMPTIME : 16:43
+TO : Ryedawg                  
+FROM : Crazy Giant              
+SUBJECT : CNN Breaking News        
+PASSWORD :             
+REFERENCE : 37839   
+BLOCKS : 6     
+TEMPCRAP : ·‘  
+HAS_TAGLINE : *
+NSREC : 463
+
+SREC  : 463
+STATUSFLAG :  
+NUMBER : 37844  
+TEMPDATE : 07-18-10
+TEMPTIME : 21:22
+TO : textbreakingnews@ema3lsv0
+FROM : CNN Breaking News        
+SUBJECT : CNN Breaking News        
+PASSWORD :             
+REFERENCE : 0       
+BLOCKS : 6     
+TEMPCRAP : ·‘  
+HAS_TAGLINE : *
+NSREC : 469
+
+SREC  : 469
+STATUSFLAG :  
+NUMBER : 37845  
+TEMPDATE : 07-18-10
+TEMPTIME : 22:49
+TO : All                      
+FROM : Crazy Giant              
+SUBJECT : CNN Breaking News        
+PASSWORD :             
+REFERENCE : 37844   
+BLOCKS : 4     
+TEMPCRAP : ·‘  
+HAS_TAGLINE : *
+NSREC : 473
+
+Now Processing Packet qwk/2005.NDX which contains 4 messages.
+
+Found. Importing qwk/2005.NDX to Hardware/Software Help
+SREC  : 473
+STATUSFLAG :  
+NUMBER : 13202  
+TEMPDATE : 07-17-10
+TEMPTIME : 12:17
+TO : ALL                      
+FROM : MIKE POWELL              
+SUBJECT : Looking for a New Router 
+PASSWORD :             
+REFERENCE : 0       
+BLOCKS : 23    
+TEMPCRAP : ·’  
+HAS_TAGLINE : *
+NSREC : 496
+
+SREC  : 496
+STATUSFLAG :  
+NUMBER : 13203  
+TEMPDATE : 07-17-10
+TEMPTIME : 16:37
+TO : MIKE POWELL              
+FROM : Crazy Giant              
+SUBJECT : Looking for a New Router 
+PASSWORD :             
+REFERENCE : 13202   
+BLOCKS : 4     
+TEMPCRAP : ·’  
+HAS_TAGLINE : *
+NSREC : 500
+
+SREC  : 500
+STATUSFLAG :  
+NUMBER : 13204  
+TEMPDATE : 07-17-10
+TEMPTIME : 17:08
+TO : Crazy Giant              
+FROM : Jon Justvig              
+SUBJECT : Looking for a New Router 
+PASSWORD :             
+REFERENCE : 13203   
+BLOCKS : 5     
+TEMPCRAP : ·’  
+HAS_TAGLINE : *
+NSREC : 505
+
+SREC  : 505
+STATUSFLAG :  
+NUMBER : 13205  
+TEMPDATE : 07-17-10
+TEMPTIME : 23:51
+TO : MIKE POWELL              
+FROM : Nightfox                 
+SUBJECT : Looking for a New Router 
+PASSWORD :             
+REFERENCE : 13202   
+BLOCKS : 10    
+TEMPCRAP : ·’  
+HAS_TAGLINE : *
+NSREC : 515
+
+Now Processing Packet qwk/2007.NDX which contains 11 messages.
+
+Found. Importing qwk/2007.NDX to Synchronet Discussion
+SREC  : 595
+STATUSFLAG : -
+NUMBER : 56958  
+TEMPDATE : 07-13-10
+TEMPTIME : 15:55
+TO : Epx 998                  
+FROM : Digital Man              
+SUBJECT : Customization of the logi
+PASSWORD :             
+REFERENCE : 56956   
+BLOCKS : 6     
+TEMPCRAP : ·◊  
+HAS_TAGLINE : *
+NSREC : 601
+
+SREC  : 601
+STATUSFLAG : -
+NUMBER : 56959  
+TEMPDATE : 07-14-10
+TEMPTIME : 10:38
+TO : Digital Man              
+FROM : Pbmountaincat            
+SUBJECT : sbbs_dev.zip             
+PASSWORD :             
+REFERENCE : 0       
+BLOCKS : 4     
+TEMPCRAP : ·◊  
+HAS_TAGLINE : *
+NSREC : 605
+
+SREC  : 605
+STATUSFLAG : -
+NUMBER : 56960  
+TEMPDATE : 07-14-10
+TEMPTIME : 11:14
+TO : Digital Man              
+FROM : John Guillory            
+SUBJECT : Calling a javascript from
+PASSWORD :             
+REFERENCE : 56959   
+BLOCKS : 7     
+TEMPCRAP : ·◊  
+HAS_TAGLINE : *
+NSREC : 612
+
+SREC  : 612
+STATUSFLAG :  
+NUMBER : 56961  
+TEMPDATE : 07-14-10
+TEMPTIME : 10:43
+TO : Pbmountaincat            
+FROM : Lord Time                
+SUBJECT : sbbs_dev.zip             
+PASSWORD :             
+REFERENCE : 56959   
+BLOCKS : 7     
+TEMPCRAP : ·◊  
+HAS_TAGLINE : *
+NSREC : 619
+
+SREC  : 619
+STATUSFLAG : -
+NUMBER : 56962  
+TEMPDATE : 07-14-10
+TEMPTIME : 12:32
+TO : Digital Man              
+FROM : Epx 998                  
+SUBJECT : Customization of the logi
+PASSWORD :             
+REFERENCE : 56958   
+BLOCKS : 7     
+TEMPCRAP : ·◊  
+HAS_TAGLINE : *
+NSREC : 626
+
+SREC  : 626
+STATUSFLAG :  
+NUMBER : 56963  
+TEMPDATE : 07-14-10
+TEMPTIME : 14:25
+TO : Pbmountaincat            
+FROM : Digital Man              
+SUBJECT : sbbs_dev.zip             
+PASSWORD :             
+REFERENCE : 56959   
+BLOCKS : 7     
+TEMPCRAP : ·◊  
+HAS_TAGLINE : *
+NSREC : 633
+
+SREC  : 633
+STATUSFLAG :  
+NUMBER : 56964  
+TEMPDATE : 07-14-10
+TEMPTIME : 14:26
+TO : John Guillory            
+FROM : Digital Man              
+SUBJECT : Calling a javascript from
+PASSWORD :             
+REFERENCE : 56960   
+BLOCKS : 10    
+TEMPCRAP : ·◊  
+HAS_TAGLINE : *
+NSREC : 643
+
+SREC  : 643
+STATUSFLAG : -
+NUMBER : 56965  
+TEMPDATE : 07-14-10
+TEMPTIME : 14:26
+TO : Digital Man              
+FROM : Epx 998                  
+SUBJECT : Re: Synchro on Mint 9.   
+PASSWORD :             
+REFERENCE : 56951   
+BLOCKS : 8     
+TEMPCRAP : ·◊  
+HAS_TAGLINE : *
+NSREC : 651
+
+SREC  : 651
+STATUSFLAG : -
+NUMBER : 56966  
+TEMPDATE : 07-14-10
+TEMPTIME : 14:27
+TO : Epx 998                  
+FROM : Digital Man              
+SUBJECT : Customization of the logi
+PASSWORD :             
+REFERENCE : 56962   
+BLOCKS : 10    
+TEMPCRAP : ·◊  
+HAS_TAGLINE : *
+NSREC : 661
+
+SREC  : 661
+STATUSFLAG :  
+NUMBER : 56967  
+TEMPDATE : 07-14-10
+TEMPTIME : 15:02
+TO : alt.bbs.synchronet       
+FROM : sampsa                   
+SUBJECT : Re: FidoNet              
+PASSWORD :             
+REFERENCE : 56944   
+BLOCKS : 6     
+TEMPCRAP : ·◊  
+HAS_TAGLINE : *
+NSREC : 667
+
+SREC  : 667
+STATUSFLAG : -
+NUMBER : 56968  
+TEMPDATE : 07-14-10
+TEMPTIME : 20:27
+TO : Digital Man              
+FROM : Pbmountaincat            
+SUBJECT : sbbs_dev.zip             
+PASSWORD :             
+REFERENCE : 56963   
+BLOCKS : 6     
+TEMPCRAP : ·◊  
+HAS_TAGLINE : *
+NSREC : 673
+
+Now Processing Packet qwk/2001.NDX which contains 30 messages.
+
+Found. Importing qwk/2001.NDX to General
+SREC  : 16
+STATUSFLAG : -
+NUMBER : 68241  
+TEMPDATE : 07-13-10
+TEMPTIME : 15:49
+TO : MARK FIRESTONE           
+FROM : Digital Man              
+SUBJECT : test                     
+PASSWORD :             
+REFERENCE : 68236   
+BLOCKS : 5     
+TEMPCRAP : ·—  
+HAS_TAGLINE : *
+NSREC : 21
+
+SREC  : 21
+STATUSFLAG : -
+NUMBER : 68242  
+TEMPDATE : 07-13-10
+TEMPTIME : 15:50
+TO : Deafguy                  
+FROM : Digital Man              
+SUBJECT : reading                  
+PASSWORD :             
+REFERENCE : 68238   
+BLOCKS : 6     
+TEMPCRAP : ·—  
+HAS_TAGLINE : *
+NSREC : 27
+
+SREC  : 27
+STATUSFLAG : -
+NUMBER : 68243  
+TEMPDATE : 07-13-10
+TEMPTIME : 20:03
+TO : Digital Man              
+FROM : Deafguy                  
+SUBJECT : reading                  
+PASSWORD :             
+REFERENCE : 68242   
+BLOCKS : 11    
+TEMPCRAP : ·—  
+HAS_TAGLINE : *
+NSREC : 38
+
+SREC  : 38
+STATUSFLAG : -
+NUMBER : 68244  
+TEMPDATE : 07-14-10
+TEMPTIME : 12:45
+TO : Deafguy                  
+FROM : The Curmudgeon           
+SUBJECT : testing...               
+PASSWORD :             
+REFERENCE : 0       
+BLOCKS : 8     
+TEMPCRAP : ·—  
+HAS_TAGLINE : *
+NSREC : 46
+
+SREC  : 46
+STATUSFLAG :  
+NUMBER : 68245  
+TEMPDATE : 07-14-10
+TEMPTIME : 12:45
+TO : John Guillory            
+FROM : The Curmudgeon           
+SUBJECT : testing...               
+PASSWORD :             
+REFERENCE : 0       
+BLOCKS : 9     
+TEMPCRAP : ·—  
+HAS_TAGLINE : *
+NSREC : 55
+
+SREC  : 55
+STATUSFLAG :  
+NUMBER : 68246  
+TEMPDATE : 07-17-10
+TEMPTIME : 10:56
+TO : DOVE-Net.General,FidoNet.
+FROM : Gandolf                  
+SUBJECT : 3D Realms Software       
+PASSWORD :             
+REFERENCE : 0       
+BLOCKS : 25    
+TEMPCRAP : ·—  
+HAS_TAGLINE : *
+NSREC : 80
+
+SREC  : 80
+STATUSFLAG :  
+NUMBER : 68247  
+TEMPDATE : 07-17-10
+TEMPTIME : 11:29
+TO : ALL                      
+FROM : dennis nedry             
+SUBJECT : Another Test             
+PASSWORD :             
+REFERENCE : 0       
+BLOCKS : 3     
+TEMPCRAP : ·—  
+HAS_TAGLINE : *
+NSREC : 83
+
+SREC  : 83
+STATUSFLAG :  
+NUMBER : 68248  
+TEMPDATE : 07-17-10
+TEMPTIME : 11:21
+TO : dennis nedry             
+FROM : Lord Time                
+SUBJECT : Another Test             
+PASSWORD :             
+REFERENCE : 0       
+BLOCKS : 7     
+TEMPCRAP : ·—  
+HAS_TAGLINE : *
+NSREC : 90
+
+SREC  : 90
+STATUSFLAG :  
+NUMBER : 68249  
+TEMPDATE : 07-17-10
+TEMPTIME : 14:43
+TO : dennis nedry             
+FROM : thuff                    
+SUBJECT : Re: Another Test         
+PASSWORD :             
+REFERENCE : 0       
+BLOCKS : 5     
+TEMPCRAP : ·—  
+HAS_TAGLINE : *
+NSREC : 95
+
+SREC  : 95
+STATUSFLAG :  
+NUMBER : 68250  
+TEMPDATE : 07-17-10
+TEMPTIME : 16:27
+TO : dennis nedry             
+FROM : Crazy Giant              
+SUBJECT : Another Test             
+PASSWORD :             
+REFERENCE : 0       
+BLOCKS : 4     
+TEMPCRAP : ·—  
+HAS_TAGLINE : *
+NSREC : 99
+
+SREC  : 99
+STATUSFLAG :  
+NUMBER : 68251  
+TEMPDATE : 07-17-10
+TEMPTIME : 14:25
+TO : Gandolf                  
+FROM : Corey                    
+SUBJECT : 3D Realms Software       
+PASSWORD :             
+REFERENCE : 68246   
+BLOCKS : 32    
+TEMPCRAP : ·—  
+HAS_TAGLINE : *
+NSREC : 131
+
+SREC  : 131
+STATUSFLAG :  
+NUMBER : 68252  
+TEMPDATE : 07-17-10
+TEMPTIME : 18:21
+TO : dennis nedry             
+FROM : Harry Squindo            
+SUBJECT : Another Test             
+PASSWORD :             
+REFERENCE : 0       
+BLOCKS : 4     
+TEMPCRAP : ·—  
+HAS_TAGLINE : *
+NSREC : 135
+
+SREC  : 135
+STATUSFLAG :  
+NUMBER : 68253  
+TEMPDATE : 07-18-10
+TEMPTIME : 11:35
+TO : dennis nedry             
+FROM : Deanz                    
+SUBJECT : Re: Another Test         
+PASSWORD :             
+REFERENCE : 68247   
+BLOCKS : 5     
+TEMPCRAP : ·—  
+HAS_TAGLINE : *
+NSREC : 140
+
+SREC  : 140
+STATUSFLAG :  
+NUMBER : 68254  
+TEMPDATE : 07-18-10
+TEMPTIME : 21:26
+TO : CRAZY GIANT              
+FROM : dennis nedry             
+SUBJECT : Another Test             
+PASSWORD :             
+REFERENCE : 0       
+BLOCKS : 6     
+TEMPCRAP : ·—  
+HAS_TAGLINE : *
+NSREC : 146
+
+SREC  : 146
+STATUSFLAG :  
+NUMBER : 68255  
+TEMPDATE : 07-18-10
+TEMPTIME : 21:37
+TO : HARRY SQUINDO            
+FROM : dennis nedry             
+SUBJECT : Another Test             
+PASSWORD :             
+REFERENCE : 0       
+BLOCKS : 6     
+TEMPCRAP : ·—  
+HAS_TAGLINE : *
+NSREC : 152
+
+SREC  : 152
+STATUSFLAG :  
+NUMBER : 68256  
+TEMPDATE : 07-18-10
+TEMPTIME : 15:45
+TO : dennis nedry             
+FROM : John Guillory            
+SUBJECT : Another Test             
+PASSWORD :             
+REFERENCE : 0       
+BLOCKS : 4     
+TEMPCRAP : ·—  
+HAS_TAGLINE : *
+NSREC : 156
+
+SREC  : 156
+STATUSFLAG :  
+NUMBER : 68257  
+TEMPDATE : 07-18-10
+TEMPTIME : 15:46
+TO : Lord Time                
+FROM : John Guillory            
+SUBJECT : Another Test             
+PASSWORD :             
+REFERENCE : 68248   
+BLOCKS : 4     
+TEMPCRAP : ·—  
+HAS_TAGLINE : *
+NSREC : 160
+
+SREC  : 160
+STATUSFLAG :  
+NUMBER : 68258  
+TEMPDATE : 07-18-10
+TEMPTIME : 18:20
+TO : John Guillory            
+FROM : Lord Time                
+SUBJECT : Another Test             
+PASSWORD :             
+REFERENCE : 68257   
+BLOCKS : 7     
+TEMPCRAP : ·—  
+HAS_TAGLINE : *
+NSREC : 167
+
+SREC  : 167
+STATUSFLAG :  
+NUMBER : 68259  
+TEMPDATE : 07-19-10
+TEMPTIME : 08:07
+TO : JOHN GUILLORY            
+FROM : dennis nedry             
+SUBJECT : Another Test             
+PASSWORD :             
+REFERENCE : 0       
+BLOCKS : 3     
+TEMPCRAP : ·—  
+HAS_TAGLINE : *
+NSREC : 170
+
+SREC  : 170
+STATUSFLAG :  
+NUMBER : 68260  
+TEMPDATE : 07-19-10
+TEMPTIME : 15:29
+TO : ALL                      
+FROM : dennis nedry             
+SUBJECT : Features...              
+PASSWORD :             
+REFERENCE : 0       
+BLOCKS : 7     
+TEMPCRAP : ·—  
+HAS_TAGLINE : *
+NSREC : 177
+
+SREC  : 177
+STATUSFLAG :  
+NUMBER : 68261  
+TEMPDATE : 07-19-10
+TEMPTIME : 09:54
+TO : dennis nedry             
+FROM : Lord Time                
+SUBJECT : Features...              
+PASSWORD :             
+REFERENCE : 0       
+BLOCKS : 11    
+TEMPCRAP : ·—  
+HAS_TAGLINE : *
+NSREC : 188
+
+SREC  : 188
+STATUSFLAG :  
+NUMBER : 68262  
+TEMPDATE : 07-19-10
+TEMPTIME : 18:22
+TO : LORD TIME                
+FROM : dennis nedry             
+SUBJECT : Features...              
+PASSWORD :             
+REFERENCE : 0       
+BLOCKS : 8     
+TEMPCRAP : ·—  
+HAS_TAGLINE : *
+NSREC : 196
+
+SREC  : 196
+STATUSFLAG :  
+NUMBER : 68263  
+TEMPDATE : 07-19-10
+TEMPTIME : 15:27
+TO : dennis nedry             
+FROM : The Curmudgeon           
+SUBJECT : Features...              
+PASSWORD :             
+REFERENCE : 0       
+BLOCKS : 13    
+TEMPCRAP : ·—  
+HAS_TAGLINE : *
+NSREC : 209
+
+SREC  : 209
+STATUSFLAG :  
+NUMBER : 68264  
+TEMPDATE : 07-19-10
+TEMPTIME : 18:00
+TO : dennis nedry             
+FROM : Lord Time                
+SUBJECT : Features...              
+PASSWORD :             
+REFERENCE : 0       
+BLOCKS : 11    
+TEMPCRAP : ·—  
+HAS_TAGLINE : *
+NSREC : 220
+
+SREC  : 220
+STATUSFLAG :  
+NUMBER : 68265  
+TEMPDATE : 07-20-10
+TEMPTIME : 13:41
+TO : dennis nedry             
+FROM : Geo                      
+SUBJECT : Features...              
+PASSWORD :             
+REFERENCE : 0       
+BLOCKS : 12    
+TEMPCRAP : ·—  
+HAS_TAGLINE : *
+NSREC : 232
+
+SREC  : 232
+STATUSFLAG :  
+NUMBER : 68266  
+TEMPDATE : 07-19-10
+TEMPTIME : 23:34
+TO : All                      
+FROM : Whitedistortion          
+SUBJECT : New Music                
+PASSWORD :             
+REFERENCE : 0       
+BLOCKS : 4     
+TEMPCRAP : ·—  
+HAS_TAGLINE : *
+NSREC : 236
+
+SREC  : 236
+STATUSFLAG :  
+NUMBER : 68267  
+TEMPDATE : 07-20-10
+TEMPTIME : 08:32
+TO : ALL                      
+FROM : dennis nedry             
+SUBJECT : Features...              
+PASSWORD :             
+REFERENCE : 0       
+BLOCKS : 11    
+TEMPCRAP : ·—  
+HAS_TAGLINE : *
+NSREC : 247
+
+SREC  : 247
+STATUSFLAG :  
+NUMBER : 68268  
+TEMPDATE : 07-20-10
+TEMPTIME : 08:39
+TO : ALL                      
+FROM : dennis nedry             
+SUBJECT : Features...              
+PASSWORD :             
+REFERENCE : 0       
+BLOCKS : 12    
+TEMPCRAP : ·—  
+HAS_TAGLINE : *
+NSREC : 259
+
+SREC  : 259
+STATUSFLAG :  
+NUMBER : 68269  
+TEMPDATE : 07-20-10
+TEMPTIME : 10:08
+TO : dennis nedry             
+FROM : art                      
+SUBJECT : Features...              
+PASSWORD :             
+REFERENCE : 0       
+BLOCKS : 7     
+TEMPCRAP : ·—  
+HAS_TAGLINE : *
+NSREC : 266
+
+SREC  : 266
+STATUSFLAG :  
+NUMBER : 68270  
+TEMPDATE : 07-20-10
+TEMPTIME : 11:19
+TO : ALL                      
+FROM : dennis nedry             
+SUBJECT : Features...              
+PASSWORD :             
+REFERENCE : 0       
+BLOCKS : 8     
+TEMPCRAP : ·—  
+HAS_TAGLINE : *
+NSREC : 274
+
+Now Processing Packet qwk/2014.NDX which contains 5 messages.
+
+QWK: ERROR: No mapping found for area qwk/2014.NDX
+Now Processing Packet qwk/2002.NDX which contains 6 messages.
+
+Found. Importing qwk/2002.NDX to Adverstisements
+SREC  : 274
+STATUSFLAG :  
+NUMBER : 12223  
+TEMPDATE : 07-14-10
+TEMPTIME : 23:11
+TO : All                      
+FROM : Sampsa                   
+SUBJECT : CHIMPY:: The VMS Experien
+PASSWORD :             
+REFERENCE : 0       
+BLOCKS : 8     
+TEMPCRAP : ·“  
+HAS_TAGLINE : *
+NSREC : 282
+
+SREC  : 282
+STATUSFLAG :  
+NUMBER : 12224  
+TEMPDATE : 07-14-10
+TEMPTIME : 23:11
+TO : All                      
+FROM : Sampsa                   
+SUBJECT : UUHECNET - Free UUCP feed
+PASSWORD :             
+REFERENCE : 0       
+BLOCKS : 6     
+TEMPCRAP : ·“  
+HAS_TAGLINE : *
+NSREC : 288
+
+SREC  : 288
+STATUSFLAG :  
+NUMBER : 12225  
+TEMPDATE : 07-16-10
+TEMPTIME : 08:18
+TO : Ruben Figueroa           
+FROM : dirtysanchez             
+SUBJECT : Re: Trying my shot at mus
+PASSWORD :             
+REFERENCE : 0       
+BLOCKS : 3     
+TEMPCRAP : ·“  
+HAS_TAGLINE : *
+NSREC : 291
+
+SREC  : 291
+STATUSFLAG :  
+NUMBER : 12226  
+TEMPDATE : 07-18-10
+TEMPTIME : 03:00
+TO : ALL                      
+FROM : TCCNET-BOT               
+SUBJECT : Computer Connection BBS  
+PASSWORD :             
+REFERENCE : 0       
+BLOCKS : 10    
+TEMPCRAP : ·“  
+HAS_TAGLINE : *
+NSREC : 301
+
+SREC  : 301
+STATUSFLAG :  
+NUMBER : 12227  
+TEMPDATE : 07-18-10
+TEMPTIME : 15:50
+TO : dirtysanchez             
+FROM : John Guillory            
+SUBJECT : Re: Trying my shot at mus
+PASSWORD :             
+REFERENCE : 12225   
+BLOCKS : 5     
+TEMPCRAP : ·“  
+HAS_TAGLINE : *
+NSREC : 306
+
+SREC  : 306
+STATUSFLAG :  
+NUMBER : 12228  
+TEMPDATE : 07-19-10
+TEMPTIME : 23:48
+TO : Ruben Figueroa           
+FROM : Whitedistortion          
+SUBJECT : Re: Trying my shot at mus
+PASSWORD :             
+REFERENCE : 12218   
+BLOCKS : 3     
+TEMPCRAP : ·“  
+HAS_TAGLINE : *
+NSREC : 309
+
+Now Processing Packet qwk/2019.NDX which contains 4 messages.
+
+Found. Importing qwk/2019.NDX to Sports Discussion
+SREC  : 573
+STATUSFLAG :  
+NUMBER : 6709   
+TEMPDATE : 07-14-10
+TEMPTIME : 02:50
+TO : Rassilon                 
+FROM : Samos                    
+SUBJECT : Steinbrenner             
+PASSWORD :             
+REFERENCE : 6708    
+BLOCKS : 5     
+TEMPCRAP : ·„  
+HAS_TAGLINE : *
+NSREC : 578
+
+SREC  : 578
+STATUSFLAG :  
+NUMBER : 6710   
+TEMPDATE : 07-13-10
+TEMPTIME : 20:51
+TO : Rassilon                 
+FROM : Access Denied            
+SUBJECT : Steinbrenner             
+PASSWORD :             
+REFERENCE : 6708    
+BLOCKS : 6     
+TEMPCRAP : ·„  
+HAS_TAGLINE : *
+NSREC : 584
+
+SREC  : 584
+STATUSFLAG :  
+NUMBER : 6711   
+TEMPDATE : 07-14-10
+TEMPTIME : 09:29
+TO : Rassilon                 
+FROM : Samos                    
+SUBJECT : gone?                    
+PASSWORD :             
+REFERENCE : 6708    
+BLOCKS : 4     
+TEMPCRAP : ·„  
+HAS_TAGLINE : *
+NSREC : 588
+
+SREC  : 588
+STATUSFLAG :  
+NUMBER : 6712   
+TEMPDATE : 07-17-10
+TEMPTIME : 12:15
+TO : Rassilon                 
+FROM : Ryedawg                  
+SUBJECT : Steinbrenner             
+PASSWORD :             
+REFERENCE : 6708    
+BLOCKS : 7     
+TEMPCRAP : ·„  
+HAS_TAGLINE : *
+NSREC : 595
+
+228 areas in CONTROL.DAT
+16 areas found in QWK packet
+["2010"] Sysops
+["2020"] DOVE-RELIG
+["2003"] Entertain
+["2012"] Sync-JS
+["2015"] HAM
+["2016"] Internet
+["2009"] Unix
+["2013"] SYNCDATA
+["2004"] Debate
+["2005"] Technical
+["2007"] Synchronet
+["2001"] DOVE-Net
+["2014"] Sync Prog
+["2002"] Ads
+["2019"] Sports
+Now Processing Packet qwk/2010.NDX which contains 10 messages.
+
+Found. Importing qwk/2010.NDX to Synchronet Prog. (c/c++/cvs)
+SREC  : 1374
+STATUSFLAG :  
+NUMBER : 12171  
+TEMPDATE : 07-13-10
+TEMPTIME : 23:16
+TO : All                      
+FROM : esc                      
+SUBJECT : test message             
+PASSWORD :             
+REFERENCE : 0       
+BLOCKS : 3     
+TEMPCRAP : ·⁄  
+HAS_TAGLINE : *
+NSREC : 1377
+
+SREC  : 1377
+STATUSFLAG :  
+NUMBER : 12172  
+TEMPDATE : 07-14-10
+TEMPTIME : 06:22
+TO : Crazy Giant              
+FROM : Crazy Giant              
+SUBJECT : Re: Testing              
+PASSWORD :             
+REFERENCE : 12170   
+BLOCKS : 5     
+TEMPCRAP : ·⁄  
+HAS_TAGLINE : *
+NSREC : 1382
+
+SREC  : 1382
+STATUSFLAG :  
+NUMBER : 12173  
+TEMPDATE : 07-14-10
+TEMPTIME : 09:11
+TO : Crazy Giant              
+FROM : Lord Time                
+SUBJECT : Testing                  
+PASSWORD :             
+REFERENCE : 12170   
+BLOCKS : 7     
+TEMPCRAP : ·⁄  
+HAS_TAGLINE : *
+NSREC : 1389
+
+SREC  : 1389
+STATUSFLAG :  
+NUMBER : 12174  
+TEMPDATE : 07-14-10
+TEMPTIME : 09:12
+TO : esc                      
+FROM : Lord Time                
+SUBJECT : test message             
+PASSWORD :             
+REFERENCE : 12171   
+BLOCKS : 6     
+TEMPCRAP : ·⁄  
+HAS_TAGLINE : *
+NSREC : 1395
+
+SREC  : 1395
+STATUSFLAG :  
+NUMBER : 12175  
+TEMPDATE : 07-14-10
+TEMPTIME : 19:27
+TO : esc                      
+FROM : Jon Justvig              
+SUBJECT : Re: test message         
+PASSWORD :             
+REFERENCE : 12171   
+BLOCKS : 5     
+TEMPCRAP : ·⁄  
+HAS_TAGLINE : *
+NSREC : 1400
+
+SREC  : 1400
+STATUSFLAG :  
+NUMBER : 12176  
+TEMPDATE : 07-16-10
+TEMPTIME : 22:04
+TO : All                      
+FROM : Beowulf                  
+SUBJECT : Hybrid setup             
+PASSWORD :             
+REFERENCE : 0       
+BLOCKS : 8     
+TEMPCRAP : ·⁄  
+HAS_TAGLINE : *
+NSREC : 1408
+
+SREC  : 1408
+STATUSFLAG :  
+NUMBER : 12177  
+TEMPDATE : 07-18-10
+TEMPTIME : 12:28
+TO : All                      
+FROM : TEK1                     
+SUBJECT : message base restore     
+PASSWORD :             
+REFERENCE : 0       
+BLOCKS : 4     
+TEMPCRAP : ·⁄  
+HAS_TAGLINE : *
+NSREC : 1412
+
+SREC  : 1412
+STATUSFLAG :  
+NUMBER : 12178  
+TEMPDATE : 07-19-10
+TEMPTIME : 16:47
+TO : Beowulf                  
+FROM : Digital Man              
+SUBJECT : Hybrid setup             
+PASSWORD :             
+REFERENCE : 12176   
+BLOCKS : 13    
+TEMPCRAP : ·⁄  
+HAS_TAGLINE : *
+NSREC : 1425
+
+SREC  : 1425
+STATUSFLAG : -
+NUMBER : 12179  
+TEMPDATE : 07-19-10
+TEMPTIME : 16:47
+TO : TEK1                     
+FROM : Digital Man              
+SUBJECT : message base restore     
+PASSWORD :             
+REFERENCE : 12177   
+BLOCKS : 7     
+TEMPCRAP : ·⁄  
+HAS_TAGLINE : *
+NSREC : 1432
+
+SREC  : 1432
+STATUSFLAG :  
+NUMBER : 12180  
+TEMPDATE : 07-20-10
+TEMPTIME : 09:13
+TO : Digital Man              
+FROM : TEK1                     
+SUBJECT : Re: message base restore 
+PASSWORD :             
+REFERENCE : 12179   
+BLOCKS : 7     
+TEMPCRAP : ·⁄  
+HAS_TAGLINE : *
+NSREC : 1439
+
+Now Processing Packet qwk/2020.NDX which contains 4 messages.
+
+Found. Importing qwk/2020.NDX to Religious Nuts
+SREC  : 1020
+STATUSFLAG :  
+NUMBER : 6962   
+TEMPDATE : 07-09-10
+TEMPTIME : 11:22
+TO : All                      
+FROM : Matt Munson              
+SUBJECT : a tagline                
+PASSWORD :             
+REFERENCE : 0       
+BLOCKS : 4     
+TEMPCRAP : ·‰  
+HAS_TAGLINE : *
+NSREC : 1024
+
+SREC  : 1024
+STATUSFLAG :  
+NUMBER : 6963   
+TEMPDATE : 07-12-10
+TEMPTIME : 07:41
+TO : Matt Munson              
+FROM : Corey                    
+SUBJECT : a tagline                
+PASSWORD :             
+REFERENCE : 6962    
+BLOCKS : 7     
+TEMPCRAP : ·‰  
+HAS_TAGLINE : *
+NSREC : 1031
+
+SREC  : 1031
+STATUSFLAG :  
+NUMBER : 6964   
+TEMPDATE : 07-12-10
+TEMPTIME : 11:48
+TO : Matt Munson              
+FROM : Deanz                    
+SUBJECT : Re: a tagline            
+PASSWORD :             
+REFERENCE : 6962    
+BLOCKS : 7     
+TEMPCRAP : ·‰  
+HAS_TAGLINE : *
+NSREC : 1038
+
+SREC  : 1038
+STATUSFLAG :  
+NUMBER : 6965   
+TEMPDATE : 07-13-10
+TEMPTIME : 15:10
+TO : All                      
+FROM : Matt Munson              
+SUBJECT : Churchill on Islam       
+PASSWORD :             
+REFERENCE : 0       
+BLOCKS : 23    
+TEMPCRAP : ·‰  
+HAS_TAGLINE : *
+NSREC : 1061
+
+Now Processing Packet qwk/2003.NDX which contains 6 messages.
+
+Found. Importing qwk/2003.NDX to Entertainment
+SREC  : 433
+STATUSFLAG :  
+NUMBER : 13056  
+TEMPDATE : 07-13-10
+TEMPTIME : 18:00
+TO : Crash_Override           
+FROM : Razor                    
+SUBJECT : Real American            
+PASSWORD :             
+REFERENCE : 13055   
+BLOCKS : 6     
+TEMPCRAP : ·”  
+HAS_TAGLINE : *
+NSREC : 439
+
+SREC  : 439
+STATUSFLAG :  
+NUMBER : 13057  
+TEMPDATE : 07-14-10
+TEMPTIME : 15:40
+TO : Razor                    
+FROM : Crash_Override           
+SUBJECT : Re: Real American        
+PASSWORD :             
+REFERENCE : 13056   
+BLOCKS : 6     
+TEMPCRAP : ·”  
+HAS_TAGLINE : *
+NSREC : 445
+
+SREC  : 445
+STATUSFLAG :  
+NUMBER : 13058  
+TEMPDATE : 07-17-10
+TEMPTIME : 12:17
+TO : Crash_Override           
+FROM : Ryedawg                  
+SUBJECT : Real American            
+PASSWORD :             
+REFERENCE : 13055   
+BLOCKS : 8     
+TEMPCRAP : ·”  
+HAS_TAGLINE : *
+NSREC : 453
+
+SREC  : 453
+STATUSFLAG : -
+NUMBER : 13059  
+TEMPDATE : 07-17-10
+TEMPTIME : 14:27
+TO : Ryedawg                  
+FROM : Corey                    
+SUBJECT : Real American            
+PASSWORD :             
+REFERENCE : 13058   
+BLOCKS : 10    
+TEMPCRAP : ·”  
+HAS_TAGLINE : *
+NSREC : 463
+
+SREC  : 463
+STATUSFLAG :  
+NUMBER : 13060  
+TEMPDATE : 07-18-10
+TEMPTIME : 08:05
+TO : Corey                    
+FROM : Access Denied            
+SUBJECT : Real American            
+PASSWORD :             
+REFERENCE : 13059   
+BLOCKS : 6     
+TEMPCRAP : ·”  
+HAS_TAGLINE : *
+NSREC : 469
+
+SREC  : 469
+STATUSFLAG :  
+NUMBER : 13061  
+TEMPDATE : 07-19-10
+TEMPTIME : 23:54
+TO : North*star               
+FROM : Whitedistortion          
+SUBJECT : Anyone "make their own?" 
+PASSWORD :             
+REFERENCE : 12856   
+BLOCKS : 5     
+TEMPCRAP : ·”  
+HAS_TAGLINE : *
+NSREC : 474
+
+Now Processing Packet qwk/2012.NDX which contains 3 messages.
+
+Found. Importing qwk/2012.NDX to Synchronet Prog. (Javascript)
+SREC  : 1293
+STATUSFLAG :  
+NUMBER : 1065   
+TEMPDATE : 07-19-10
+TEMPTIME : 09:41
+TO : Mindless Automaton       
+FROM : Mindless Automaton       
+SUBJECT : Re: bbs.replace_text     
+PASSWORD :             
+REFERENCE : 1064    
+BLOCKS : 6     
+TEMPCRAP : ·‹  
+HAS_TAGLINE : *
+NSREC : 1299
+
+SREC  : 1299
+STATUSFLAG :  
+NUMBER : 1066   
+TEMPDATE : 07-19-10
+TEMPTIME : 16:44
+TO : Mindless Automaton       
+FROM : Digital Man              
+SUBJECT : bbs.replace_text         
+PASSWORD :             
+REFERENCE : 1064    
+BLOCKS : 8     
+TEMPCRAP : ·‹  
+HAS_TAGLINE : *
+NSREC : 1307
+
+SREC  : 1307
+STATUSFLAG :  
+NUMBER : 1067   
+TEMPDATE : 07-19-10
+TEMPTIME : 16:44
+TO : Mindless Automaton       
+FROM : Digital Man              
+SUBJECT : Re: bbs.replace_text     
+PASSWORD :             
+REFERENCE : 1065    
+BLOCKS : 9     
+TEMPCRAP : ·‹  
+HAS_TAGLINE : *
+NSREC : 1316
+
+Now Processing Packet qwk/2015.NDX which contains 10 messages.
+
+Found. Importing qwk/2015.NDX to Ham Radio
+SREC  : 824
+STATUSFLAG :  
+NUMBER : 4020   
+TEMPDATE : 07-11-10
+TEMPTIME : 16:49
+TO : All                      
+FROM : John Guillory            
+SUBJECT : HELP!                    
+PASSWORD :             
+REFERENCE : 0       
+BLOCKS : 19    
+TEMPCRAP : ·ﬂ  
+HAS_TAGLINE : *
+NSREC : 843
+
+SREC  : 843
+STATUSFLAG :  
+NUMBER : 4021   
+TEMPDATE : 07-11-10
+TEMPTIME : 17:10
+TO : All                      
+FROM : John Guillory            
+SUBJECT : HELP!                    
+PASSWORD :             
+REFERENCE : 4020    
+BLOCKS : 8     
+TEMPCRAP : ·ﬂ  
+HAS_TAGLINE : *
+NSREC : 851
+
+SREC  : 851
+STATUSFLAG :  
+NUMBER : 4022   
+TEMPDATE : 07-12-10
+TEMPTIME : 15:58
+TO : John Guillory            
+FROM : Digital Man              
+SUBJECT : HELP!                    
+PASSWORD :             
+REFERENCE : 4020    
+BLOCKS : 8     
+TEMPCRAP : ·ﬂ  
+HAS_TAGLINE : *
+NSREC : 859
+
+SREC  : 859
+STATUSFLAG :  
+NUMBER : 4023   
+TEMPDATE : 07-12-10
+TEMPTIME : 16:00
+TO : John Guillory            
+FROM : Digital Man              
+SUBJECT : HELP!                    
+PASSWORD :             
+REFERENCE : 4021    
+BLOCKS : 14    
+TEMPCRAP : ·ﬂ  
+HAS_TAGLINE : *
+NSREC : 873
+
+SREC  : 873
+STATUSFLAG : -
+NUMBER : 4024   
+TEMPDATE : 07-12-10
+TEMPTIME : 17:26
+TO : Digital Man              
+FROM : Corey                    
+SUBJECT : HELP!                    
+PASSWORD :             
+REFERENCE : 4022    
+BLOCKS : 9     
+TEMPCRAP : ·ﬂ  
+HAS_TAGLINE : *
+NSREC : 882
+
+SREC  : 882
+STATUSFLAG : -
+NUMBER : 4025   
+TEMPDATE : 07-12-10
+TEMPTIME : 20:17
+TO : Digital Man              
+FROM : John Guillory            
+SUBJECT : HELP!                    
+PASSWORD :             
+REFERENCE : 4022    
+BLOCKS : 9     
+TEMPCRAP : ·ﬂ  
+HAS_TAGLINE : *
+NSREC : 891
+
+SREC  : 891
+STATUSFLAG :  
+NUMBER : 4026   
+TEMPDATE : 07-12-10
+TEMPTIME : 20:19
+TO : Corey                    
+FROM : John Guillory            
+SUBJECT : HELP!                    
+PASSWORD :             
+REFERENCE : 4024    
+BLOCKS : 4     
+TEMPCRAP : ·ﬂ  
+HAS_TAGLINE : *
+NSREC : 895
+
+SREC  : 895
+STATUSFLAG :  
+NUMBER : 4027   
+TEMPDATE : 07-13-10
+TEMPTIME : 10:52
+TO : Phantomrage              
+FROM : Crash_Override           
+SUBJECT : Re: any radio talk?      
+PASSWORD :             
+REFERENCE : 4019    
+BLOCKS : 8     
+TEMPCRAP : ·ﬂ  
+HAS_TAGLINE : *
+NSREC : 903
+
+SREC  : 903
+STATUSFLAG :  
+NUMBER : 4028   
+TEMPDATE : 07-13-10
+TEMPTIME : 10:55
+TO : Robert D                 
+FROM : Crash_Override           
+SUBJECT : Re: Rigblaster Plug and P
+PASSWORD :             
+REFERENCE : 4015    
+BLOCKS : 12    
+TEMPCRAP : ·ﬂ  
+HAS_TAGLINE : *
+NSREC : 915
+
+SREC  : 915
+STATUSFLAG :  
+NUMBER : 4029   
+TEMPDATE : 07-13-10
+TEMPTIME : 21:14
+TO : Crash_Override           
+FROM : John Guillory            
+SUBJECT : Re: any radio talk?      
+PASSWORD :             
+REFERENCE : 4027    
+BLOCKS : 10    
+TEMPCRAP : ·ﬂ  
+HAS_TAGLINE : *
+NSREC : 925
+
+Now Processing Packet qwk/2016.NDX which contains 6 messages.
+
+Found. Importing qwk/2016.NDX to Internet
+SREC  : 925
+STATUSFLAG :  
+NUMBER : 4063   
+TEMPDATE : 07-10-10
+TEMPTIME : 16:17
+TO : John Guillory            
+FROM : Mit                      
+SUBJECT : Apparently Hackers are Ra
+PASSWORD :             
+REFERENCE : 4061    
+BLOCKS : 14    
+TEMPCRAP : ·‡  
+HAS_TAGLINE : *
+NSREC : 939
+
+SREC  : 939
+STATUSFLAG :  
+NUMBER : 4064   
+TEMPDATE : 07-10-10
+TEMPTIME : 15:59
+TO : Mindless Automaton       
+FROM : John Guillory            
+SUBJECT : Re: Apparently Hackers ar
+PASSWORD :             
+REFERENCE : 4062    
+BLOCKS : 11    
+TEMPCRAP : ·‡  
+HAS_TAGLINE : *
+NSREC : 950
+
+SREC  : 950
+STATUSFLAG :  
+NUMBER : 4065   
+TEMPDATE : 07-10-10
+TEMPTIME : 16:05
+TO : Mit                      
+FROM : John Guillory            
+SUBJECT : Apparently Hackers are Ra
+PASSWORD :             
+REFERENCE : 4063    
+BLOCKS : 11    
+TEMPCRAP : ·‡  
+HAS_TAGLINE : *
+NSREC : 961
+
+SREC  : 961
+STATUSFLAG :  
+NUMBER : 4066   
+TEMPDATE : 07-15-10
+TEMPTIME : 20:50
+TO : All                      
+FROM : Diamond Dave             
+SUBJECT : DoS attacks              
+PASSWORD :             
+REFERENCE : 0       
+BLOCKS : 9     
+TEMPCRAP : ·‡  
+HAS_TAGLINE : *
+NSREC : 970
+
+SREC  : 970
+STATUSFLAG :  
+NUMBER : 4067   
+TEMPDATE : 07-15-10
+TEMPTIME : 23:03
+TO : All                      
+FROM : Matt Munson              
+SUBJECT : quick question           
+PASSWORD :             
+REFERENCE : 0       
+BLOCKS : 3     
+TEMPCRAP : ·‡  
+HAS_TAGLINE : *
+NSREC : 973
+
+SREC  : 973
+STATUSFLAG :  
+NUMBER : 4068   
+TEMPDATE : 07-16-10
+TEMPTIME : 05:54
+TO : Garrett00                
+FROM : Gennss                   
+SUBJECT : Re: Freenet Anyone?      
+PASSWORD :             
+REFERENCE : 4057    
+BLOCKS : 19    
+TEMPCRAP : ·‡  
+HAS_TAGLINE : *
+NSREC : 992
+
+Now Processing Packet qwk/000.NDX which contains 1 messages.
+
+Found. Importing qwk/000.NDX to Email
+SREC  : 1
+STATUSFLAG :  
+NUMBER : 547405 
+TEMPDATE : 07-19-10
+TEMPTIME : 21:02
+TO : mark                     
+FROM : sysop                    
+SUBJECT : BADADDR:                 
+PASSWORD :             
+REFERENCE : 0       
+BLOCKS : 2     
+TEMPCRAP : ·    
+HAS_TAGLINE : *
+NSREC : 3
+
+Now Processing Packet qwk/2009.NDX which contains 4 messages.
+
+Found. Importing qwk/2009.NDX to Unix Discussion
+SREC  : 793
+STATUSFLAG :  
+NUMBER : 9343   
+TEMPDATE : 07-13-10
+TEMPTIME : 15:22
+TO : Jame                     
+FROM : Rassilon                 
+SUBJECT : Re: Netbook Linux        
+PASSWORD :             
+REFERENCE : 9326    
+BLOCKS : 6     
+TEMPCRAP : ·Ÿ  
+HAS_TAGLINE : *
+NSREC : 799
+
+SREC  : 799
+STATUSFLAG :  
+NUMBER : 9344   
+TEMPDATE : 07-13-10
+TEMPTIME : 17:28
+TO : Ragnarok                 
+FROM : Kevinl                   
+SUBJECT : Re: For Linux users - qod
+PASSWORD :             
+REFERENCE : 9342    
+BLOCKS : 12    
+TEMPCRAP : ·Ÿ  
+HAS_TAGLINE : *
+NSREC : 811
+
+SREC  : 811
+STATUSFLAG :  
+NUMBER : 9345   
+TEMPDATE : 07-13-10
+TEMPTIME : 15:15
+TO : Rassilon                 
+FROM : Corey                    
+SUBJECT : Re: Netbook Linux        
+PASSWORD :             
+REFERENCE : 9343    
+BLOCKS : 7     
+TEMPCRAP : ·Ÿ  
+HAS_TAGLINE : *
+NSREC : 818
+
+SREC  : 818
+STATUSFLAG :  
+NUMBER : 9346   
+TEMPDATE : 07-13-10
+TEMPTIME : 20:49
+TO : Corey                    
+FROM : Access Denied            
+SUBJECT : Re: Netbook Linux        
+PASSWORD :             
+REFERENCE : 9345    
+BLOCKS : 6     
+TEMPCRAP : ·Ÿ  
+HAS_TAGLINE : *
+NSREC : 824
+
+Now Processing Packet qwk/2013.NDX which contains 4 messages.
+
+QWK: ERROR: No mapping found for area qwk/2013.NDX
+Now Processing Packet qwk/2004.NDX which contains 32 messages.
+
+Found. Importing qwk/2004.NDX to Debate
+SREC  : 474
+STATUSFLAG :  
+NUMBER : 37814  
+TEMPDATE : 07-10-10
+TEMPTIME : 15:10
+TO : textbreakingnews@ema3lsv0
+FROM : CNN Breaking News        
+SUBJECT : CNN Breaking News        
+PASSWORD :             
+REFERENCE : 0       
+BLOCKS : 8     
+TEMPCRAP : ·‘  
+HAS_TAGLINE : *
+NSREC : 482
+
+SREC  : 482
+STATUSFLAG :  
+NUMBER : 37815  
+TEMPDATE : 07-10-10
+TEMPTIME : 15:51
+TO : CNN Breaking News        
+FROM : John Guillory            
+SUBJECT : CNN Breaking News        
+PASSWORD :             
+REFERENCE : 37814   
+BLOCKS : 7     
+TEMPCRAP : ·‘  
+HAS_TAGLINE : *
+NSREC : 489
+
+SREC  : 489
+STATUSFLAG :  
+NUMBER : 37816  
+TEMPDATE : 07-10-10
+TEMPTIME : 19:21
+TO : John Guillory            
+FROM : DOS                      
+SUBJECT : CNN Breaking News        
+PASSWORD :             
+REFERENCE : 37815   
+BLOCKS : 20    
+TEMPCRAP : ·‘  
+HAS_TAGLINE : *
+NSREC : 509
+
+SREC  : 509
+STATUSFLAG :  
+NUMBER : 37817  
+TEMPDATE : 07-10-10
+TEMPTIME : 21:59
+TO : John Guillory            
+FROM : Deafguy                  
+SUBJECT : CNN Breaking News        
+PASSWORD :             
+REFERENCE : 37815   
+BLOCKS : 10    
+TEMPCRAP : ·‘  
+HAS_TAGLINE : *
+NSREC : 519
+
+SREC  : 519
+STATUSFLAG :  
+NUMBER : 37818  
+TEMPDATE : 07-11-10
+TEMPTIME : 17:03
+TO : textbreakingnews@ema3lsv0
+FROM : CNN Breaking News        
+SUBJECT : CNN Breaking News        
+PASSWORD :             
+REFERENCE : 0       
+BLOCKS : 8     
+TEMPCRAP : ·‘  
+HAS_TAGLINE : *
+NSREC : 527
+
+SREC  : 527
+STATUSFLAG :  
+NUMBER : 37819  
+TEMPDATE : 07-11-10
+TEMPTIME : 20:49
+TO : thinktank                
+FROM : Ryedawg                  
+SUBJECT : CNN Breaking News        
+PASSWORD :             
+REFERENCE : 37809   
+BLOCKS : 9     
+TEMPCRAP : ·‘  
+HAS_TAGLINE : *
+NSREC : 536
+
+SREC  : 536
+STATUSFLAG : -
+NUMBER : 37820  
+TEMPDATE : 07-11-10
+TEMPTIME : 20:54
+TO : Deafguy                  
+FROM : Ryedawg                  
+SUBJECT : CNN Breaking News        
+PASSWORD :             
+REFERENCE : 37817   
+BLOCKS : 13    
+TEMPCRAP : ·‘  
+HAS_TAGLINE : *
+NSREC : 549
+
+SREC  : 549
+STATUSFLAG : -
+NUMBER : 37821  
+TEMPDATE : 07-12-10
+TEMPTIME : 06:04
+TO : Ryedawg                  
+FROM : John Guillory            
+SUBJECT : CNN Breaking News        
+PASSWORD :             
+REFERENCE : 37820   
+BLOCKS : 8     
+TEMPCRAP : ·‘  
+HAS_TAGLINE : *
+NSREC : 557
+
+SREC  : 557
+STATUSFLAG :  
+NUMBER : 37822  
+TEMPDATE : 07-12-10
+TEMPTIME : 13:48
+TO : textbreakingnews@ema3lsv0
+FROM : CNN Breaking News        
+SUBJECT : CNN Breaking News        
+PASSWORD :             
+REFERENCE : 0       
+BLOCKS : 6     
+TEMPCRAP : ·‘  
+HAS_TAGLINE : *
+NSREC : 563
+
+SREC  : 563
+STATUSFLAG :  
+NUMBER : 37823  
+TEMPDATE : 07-12-10
+TEMPTIME : 20:56
+TO : textbreakingnews@ema3lsv0
+FROM : CNN Breaking News        
+SUBJECT : CNN Breaking News        
+PASSWORD :             
+REFERENCE : 0       
+BLOCKS : 6     
+TEMPCRAP : ·‘  
+HAS_TAGLINE : *
+NSREC : 569
+
+SREC  : 569
+STATUSFLAG :  
+NUMBER : 37824  
+TEMPDATE : 07-13-10
+TEMPTIME : 10:03
+TO : textbreakingnews@ema3lsv0
+FROM : CNN Breaking News        
+SUBJECT : CNN Breaking News        
+PASSWORD :             
+REFERENCE : 0       
+BLOCKS : 6     
+TEMPCRAP : ·‘  
+HAS_TAGLINE : *
+NSREC : 575
+
+SREC  : 575
+STATUSFLAG :  
+NUMBER : 37825  
+TEMPDATE : 07-13-10
+TEMPTIME : 15:20
+TO : CNN Breaking News        
+FROM : Rassilon                 
+SUBJECT : CNN Breaking News        
+PASSWORD :             
+REFERENCE : 37824   
+BLOCKS : 6     
+TEMPCRAP : ·‘  
+HAS_TAGLINE : *
+NSREC : 581
+
+SREC  : 581
+STATUSFLAG : -
+NUMBER : 37826  
+TEMPDATE : 07-12-10
+TEMPTIME : 01:28
+TO : Ryedawg                  
+FROM : thinktank                
+SUBJECT : CNN Breaking News        
+PASSWORD :             
+REFERENCE : 37819   
+BLOCKS : 8     
+TEMPCRAP : ·‘  
+HAS_TAGLINE : *
+NSREC : 589
+
+SREC  : 589
+STATUSFLAG :  
+NUMBER : 37827  
+TEMPDATE : 07-14-10
+TEMPTIME : 12:45
+TO : thinktank                
+FROM : Gaylen Hintz             
+SUBJECT : CNN Breaking News        
+PASSWORD :             
+REFERENCE : 0       
+BLOCKS : 10    
+TEMPCRAP : ·‘  
+HAS_TAGLINE : *
+NSREC : 599
+
+SREC  : 599
+STATUSFLAG :  
+NUMBER : 37828  
+TEMPDATE : 07-14-10
+TEMPTIME : 11:08
+TO : Gaylen Hintz             
+FROM : John Guillory            
+SUBJECT : CNN Breaking News        
+PASSWORD :             
+REFERENCE : 37827   
+BLOCKS : 6     
+TEMPCRAP : ·‘  
+HAS_TAGLINE : *
+NSREC : 605
+
+SREC  : 605
+STATUSFLAG :  
+NUMBER : 37829  
+TEMPDATE : 07-14-10
+TEMPTIME : 10:43
+TO : Gaylen Hintz             
+FROM : DOS                      
+SUBJECT : CNN Breaking News        
+PASSWORD :             
+REFERENCE : 37827   
+BLOCKS : 13    
+TEMPCRAP : ·‘  
+HAS_TAGLINE : *
+NSREC : 618
+
+SREC  : 618
+STATUSFLAG :  
+NUMBER : 37830  
+TEMPDATE : 07-15-10
+TEMPTIME : 15:17
+TO : textbreakingnews@ema3lsv0
+FROM : CNN Breaking News        
+SUBJECT : CNN Breaking News        
+PASSWORD :             
+REFERENCE : 0       
+BLOCKS : 6     
+TEMPCRAP : ·‘  
+HAS_TAGLINE : *
+NSREC : 624
+
+SREC  : 624
+STATUSFLAG :  
+NUMBER : 37831  
+TEMPDATE : 07-15-10
+TEMPTIME : 15:57
+TO : textbreakingnews@ema3lsv0
+FROM : CNN Breaking News        
+SUBJECT : CNN Breaking News        
+PASSWORD :             
+REFERENCE : 0       
+BLOCKS : 6     
+TEMPCRAP : ·‘  
+HAS_TAGLINE : *
+NSREC : 630
+
+SREC  : 630
+STATUSFLAG :  
+NUMBER : 37832  
+TEMPDATE : 07-15-10
+TEMPTIME : 16:42
+TO : textbreakingnews@ema3lsv0
+FROM : CNN Breaking News        
+SUBJECT : CNN Breaking News        
+PASSWORD :             
+REFERENCE : 0       
+BLOCKS : 6     
+TEMPCRAP : ·‘  
+HAS_TAGLINE : *
+NSREC : 636
+
+SREC  : 636
+STATUSFLAG :  
+NUMBER : 37833  
+TEMPDATE : 07-16-10
+TEMPTIME : 05:59
+TO : DOS                      
+FROM : The Curmudgeon           
+SUBJECT : CNN Breaking News        
+PASSWORD :             
+REFERENCE : 0       
+BLOCKS : 10    
+TEMPCRAP : ·‘  
+HAS_TAGLINE : *
+NSREC : 646
+
+SREC  : 646
+STATUSFLAG :  
+NUMBER : 37834  
+TEMPDATE : 07-16-10
+TEMPTIME : 06:01
+TO : John Guillory            
+FROM : The Curmudgeon           
+SUBJECT : CNN Breaking News        
+PASSWORD :             
+REFERENCE : 0       
+BLOCKS : 8     
+TEMPCRAP : ·‘  
+HAS_TAGLINE : *
+NSREC : 654
+
+SREC  : 654
+STATUSFLAG :  
+NUMBER : 37835  
+TEMPDATE : 07-16-10
+TEMPTIME : 16:46
+TO : The Curmudgeon           
+FROM : DOS                      
+SUBJECT : CNN Breaking News        
+PASSWORD :             
+REFERENCE : 37833   
+BLOCKS : 26    
+TEMPCRAP : ·‘  
+HAS_TAGLINE : *
+NSREC : 680
+
+SREC  : 680
+STATUSFLAG :  
+NUMBER : 37836  
+TEMPDATE : 07-16-10
+TEMPTIME : 01:17
+TO : DOS                      
+FROM : thinktank                
+SUBJECT : CNN Breaking News        
+PASSWORD :             
+REFERENCE : 37829   
+BLOCKS : 6     
+TEMPCRAP : ·‘  
+HAS_TAGLINE : *
+NSREC : 686
+
+SREC  : 686
+STATUSFLAG :  
+NUMBER : 37837  
+TEMPDATE : 07-17-10
+TEMPTIME : 12:24
+TO : John Guillory            
+FROM : Ryedawg                  
+SUBJECT : CNN Breaking News        
+PASSWORD :             
+REFERENCE : 37821   
+BLOCKS : 10    
+TEMPCRAP : ·‘  
+HAS_TAGLINE : *
+NSREC : 696
+
+SREC  : 696
+STATUSFLAG :  
+NUMBER : 37838  
+TEMPDATE : 07-17-10
+TEMPTIME : 12:25
+TO : CNN Breaking News        
+FROM : Ryedawg                  
+SUBJECT : CNN Breaking News        
+PASSWORD :             
+REFERENCE : 37823   
+BLOCKS : 5     
+TEMPCRAP : ·‘  
+HAS_TAGLINE : *
+NSREC : 701
+
+SREC  : 701
+STATUSFLAG :  
+NUMBER : 37839  
+TEMPDATE : 07-17-10
+TEMPTIME : 12:31
+TO : CNN Breaking News        
+FROM : Ryedawg                  
+SUBJECT : CNN Breaking News        
+PASSWORD :             
+REFERENCE : 37830   
+BLOCKS : 7     
+TEMPCRAP : ·‘  
+HAS_TAGLINE : *
+NSREC : 708
+
+SREC  : 708
+STATUSFLAG :  
+NUMBER : 37840  
+TEMPDATE : 07-17-10
+TEMPTIME : 12:31
+TO : CNN Breaking News        
+FROM : Ryedawg                  
+SUBJECT : CNN Breaking News        
+PASSWORD :             
+REFERENCE : 37831   
+BLOCKS : 5     
+TEMPCRAP : ·‘  
+HAS_TAGLINE : *
+NSREC : 713
+
+SREC  : 713
+STATUSFLAG :  
+NUMBER : 37841  
+TEMPDATE : 07-17-10
+TEMPTIME : 12:32
+TO : CNN Breaking News        
+FROM : Ryedawg                  
+SUBJECT : CNN Breaking News        
+PASSWORD :             
+REFERENCE : 37832   
+BLOCKS : 6     
+TEMPCRAP : ·‘  
+HAS_TAGLINE : *
+NSREC : 719
+
+SREC  : 719
+STATUSFLAG : -
+NUMBER : 37842  
+TEMPDATE : 07-17-10
+TEMPTIME : 16:42
+TO : Ryedawg                  
+FROM : Crazy Giant              
+SUBJECT : CNN Breaking News        
+PASSWORD :             
+REFERENCE : 37838   
+BLOCKS : 7     
+TEMPCRAP : ·‘  
+HAS_TAGLINE : *
+NSREC : 726
+
+SREC  : 726
+STATUSFLAG : -
+NUMBER : 37843  
+TEMPDATE : 07-17-10
+TEMPTIME : 16:43
+TO : Ryedawg                  
+FROM : Crazy Giant              
+SUBJECT : CNN Breaking News        
+PASSWORD :             
+REFERENCE : 37839   
+BLOCKS : 8     
+TEMPCRAP : ·‘  
+HAS_TAGLINE : *
+NSREC : 734
+
+SREC  : 734
+STATUSFLAG :  
+NUMBER : 37844  
+TEMPDATE : 07-18-10
+TEMPTIME : 21:22
+TO : textbreakingnews@ema3lsv0
+FROM : CNN Breaking News        
+SUBJECT : CNN Breaking News        
+PASSWORD :             
+REFERENCE : 0       
+BLOCKS : 6     
+TEMPCRAP : ·‘  
+HAS_TAGLINE : *
+NSREC : 740
+
+SREC  : 740
+STATUSFLAG :  
+NUMBER : 37845  
+TEMPDATE : 07-18-10
+TEMPTIME : 22:49
+TO : All                      
+FROM : Crazy Giant              
+SUBJECT : CNN Breaking News        
+PASSWORD :             
+REFERENCE : 37844   
+BLOCKS : 6     
+TEMPCRAP : ·‘  
+HAS_TAGLINE : *
+NSREC : 746
+
+Now Processing Packet qwk/2005.NDX which contains 4 messages.
+
+Found. Importing qwk/2005.NDX to Hardware/Software Help
+SREC  : 746
+STATUSFLAG :  
+NUMBER : 13202  
+TEMPDATE : 07-17-10
+TEMPTIME : 12:17
+TO : ALL                      
+FROM : MIKE POWELL              
+SUBJECT : Looking for a New Router 
+PASSWORD :             
+REFERENCE : 0       
+BLOCKS : 23    
+TEMPCRAP : ·’  
+HAS_TAGLINE : *
+NSREC : 769
+
+SREC  : 769
+STATUSFLAG :  
+NUMBER : 13203  
+TEMPDATE : 07-17-10
+TEMPTIME : 16:37
+TO : MIKE POWELL              
+FROM : Crazy Giant              
+SUBJECT : Looking for a New Router 
+PASSWORD :             
+REFERENCE : 13202   
+BLOCKS : 6     
+TEMPCRAP : ·’  
+HAS_TAGLINE : *
+NSREC : 775
+
+SREC  : 775
+STATUSFLAG :  
+NUMBER : 13204  
+TEMPDATE : 07-17-10
+TEMPTIME : 17:08
+TO : Crazy Giant              
+FROM : Jon Justvig              
+SUBJECT : Looking for a New Router 
+PASSWORD :             
+REFERENCE : 13203   
+BLOCKS : 6     
+TEMPCRAP : ·’  
+HAS_TAGLINE : *
+NSREC : 781
+
+SREC  : 781
+STATUSFLAG :  
+NUMBER : 13205  
+TEMPDATE : 07-17-10
+TEMPTIME : 23:51
+TO : MIKE POWELL              
+FROM : Nightfox                 
+SUBJECT : Looking for a New Router 
+PASSWORD :             
+REFERENCE : 13202   
+BLOCKS : 12    
+TEMPCRAP : ·’  
+HAS_TAGLINE : *
+NSREC : 793
+
+Now Processing Packet qwk/2007.NDX which contains 28 messages.
+
+Found. Importing qwk/2007.NDX to Synchronet Discussion
+SREC  : 1061
+STATUSFLAG :  
+NUMBER : 56941  
+TEMPDATE : 07-11-10
+TEMPTIME : 15:20
+TO : alt.bbs.synchronet       
+FROM : Squid                    
+SUBJECT : Frontdoor   problem      
+PASSWORD :             
+REFERENCE : 0       
+BLOCKS : 7     
+TEMPCRAP : ·◊  
+HAS_TAGLINE : *
+NSREC : 1068
+
+SREC  : 1068
+STATUSFLAG :  
+NUMBER : 56942  
+TEMPDATE : 07-10-27
+TEMPTIME : 19:11
+TO : Tracker1                 
+FROM : DaiTengu                 
+SUBJECT : SyncTERM                 
+PASSWORD :             
+REFERENCE : 0       
+BLOCKS : 6     
+TEMPCRAP : ·◊  
+HAS_TAGLINE : *
+NSREC : 1074
+
+SREC  : 1074
+STATUSFLAG :  
+NUMBER : 56943  
+TEMPDATE : 07-11-10
+TEMPTIME : 16:24
+TO : Squid                    
+FROM : Lord Time                
+SUBJECT : Frontdoor   problem      
+PASSWORD :             
+REFERENCE : 56941   
+BLOCKS : 11    
+TEMPCRAP : ·◊  
+HAS_TAGLINE : *
+NSREC : 1085
+
+SREC  : 1085
+STATUSFLAG :  
+NUMBER : 56944  
+TEMPDATE : 07-12-10
+TEMPTIME : 09:55
+TO : Jame                     
+FROM : Geo                      
+SUBJECT : Re: FidoNet              
+PASSWORD :             
+REFERENCE : 56940   
+BLOCKS : 8     
+TEMPCRAP : ·◊  
+HAS_TAGLINE : *
+NSREC : 1093
+
+SREC  : 1093
+STATUSFLAG :  
+NUMBER : 56945  
+TEMPDATE : 07-11-10
+TEMPTIME : 20:39
+TO : Lord Time                
+FROM : Joe Delahaye             
+SUBJECT : Frontdoor   problem      
+PASSWORD :             
+REFERENCE : 0       
+BLOCKS : 6     
+TEMPCRAP : ·◊  
+HAS_TAGLINE : *
+NSREC : 1099
+
+SREC  : 1099
+STATUSFLAG :  
+NUMBER : 56946  
+TEMPDATE : 07-11-10
+TEMPTIME : 23:41
+TO : All                      
+FROM : Epx 998                  
+SUBJECT : Linux (Mint9)            
+PASSWORD :             
+REFERENCE : 0       
+BLOCKS : 6     
+TEMPCRAP : ·◊  
+HAS_TAGLINE : *
+NSREC : 1105
+
+SREC  : 1105
+STATUSFLAG :  
+NUMBER : 56947  
+TEMPDATE : 07-11-10
+TEMPTIME : 23:31
+TO : Joe Delahaye             
+FROM : Lord Time                
+SUBJECT : Frontdoor   problem      
+PASSWORD :             
+REFERENCE : 56945   
+BLOCKS : 9     
+TEMPCRAP : ·◊  
+HAS_TAGLINE : *
+NSREC : 1114
+
+SREC  : 1114
+STATUSFLAG :  
+NUMBER : 56948  
+TEMPDATE : 07-12-10
+TEMPTIME : 09:01
+TO : Lord Time                
+FROM : Joe Delahaye             
+SUBJECT : Frontdoor   problem      
+PASSWORD :             
+REFERENCE : 0       
+BLOCKS : 7     
+TEMPCRAP : ·◊  
+HAS_TAGLINE : *
+NSREC : 1121
+
+SREC  : 1121
+STATUSFLAG :  
+NUMBER : 56949  
+TEMPDATE : 07-12-10
+TEMPTIME : 08:55
+TO : Joe Delahaye             
+FROM : Lord Time                
+SUBJECT : Frontdoor   problem      
+PASSWORD :             
+REFERENCE : 56948   
+BLOCKS : 10    
+TEMPCRAP : ·◊  
+HAS_TAGLINE : *
+NSREC : 1131
+
+SREC  : 1131
+STATUSFLAG : -
+NUMBER : 56950  
+TEMPDATE : 07-12-10
+TEMPTIME : 13:10
+TO : Epx 998                  
+FROM : Darryl                   
+SUBJECT : Linux (Mint9)            
+PASSWORD :             
+REFERENCE : 56946   
+BLOCKS : 8     
+TEMPCRAP : ·◊  
+HAS_TAGLINE : *
+NSREC : 1139
+
+SREC  : 1139
+STATUSFLAG : -
+NUMBER : 56951  
+TEMPDATE : 07-12-10
+TEMPTIME : 16:02
+TO : Epx 998                  
+FROM : Digital Man              
+SUBJECT : Synchro on Mint 9.       
+PASSWORD :             
+REFERENCE : 56939   
+BLOCKS : 8     
+TEMPCRAP : ·◊  
+HAS_TAGLINE : *
+NSREC : 1147
+
+SREC  : 1147
+STATUSFLAG :  
+NUMBER : 56952  
+TEMPDATE : 07-12-10
+TEMPTIME : 16:04
+TO : Squid                    
+FROM : Digital Man              
+SUBJECT : Frontdoor   problem      
+PASSWORD :             
+REFERENCE : 56941   
+BLOCKS : 9     
+TEMPCRAP : ·◊  
+HAS_TAGLINE : *
+NSREC : 1156
+
+SREC  : 1156
+STATUSFLAG : -
+NUMBER : 56953  
+TEMPDATE : 07-12-10
+TEMPTIME : 16:06
+TO : Epx 998                  
+FROM : Digital Man              
+SUBJECT : Linux (Mint9)            
+PASSWORD :             
+REFERENCE : 56946   
+BLOCKS : 11    
+TEMPCRAP : ·◊  
+HAS_TAGLINE : *
+NSREC : 1167
+
+SREC  : 1167
+STATUSFLAG : -
+NUMBER : 56954  
+TEMPDATE : 07-12-10
+TEMPTIME : 20:55
+TO : Digital Man              
+FROM : Deafguy                  
+SUBJECT : Frontdoor   problem      
+PASSWORD :             
+REFERENCE : 56952   
+BLOCKS : 14    
+TEMPCRAP : ·◊  
+HAS_TAGLINE : *
+NSREC : 1181
+
+SREC  : 1181
+STATUSFLAG : -
+NUMBER : 56955  
+TEMPDATE : 07-13-10
+TEMPTIME : 05:09
+TO : Deafguy                  
+FROM : ROCKFORD                 
+SUBJECT : Re: Frontdoor   problem  
+PASSWORD :             
+REFERENCE : 56954   
+BLOCKS : 6     
+TEMPCRAP : ·◊  
+HAS_TAGLINE : *
+NSREC : 1187
+
+SREC  : 1187
+STATUSFLAG :  
+NUMBER : 56956  
+TEMPDATE : 07-13-10
+TEMPTIME : 10:28
+TO : All                      
+FROM : Epx 998                  
+SUBJECT : Customization of the logi
+PASSWORD :             
+REFERENCE : 0       
+BLOCKS : 4     
+TEMPCRAP : ·◊  
+HAS_TAGLINE : *
+NSREC : 1191
+
+SREC  : 1191
+STATUSFLAG : -
+NUMBER : 56957  
+TEMPDATE : 07-13-10
+TEMPTIME : 12:25
+TO : Epx 998                  
+FROM : Corey                    
+SUBJECT : Customization of the logi
+PASSWORD :             
+REFERENCE : 56956   
+BLOCKS : 8     
+TEMPCRAP : ·◊  
+HAS_TAGLINE : *
+NSREC : 1199
+
+SREC  : 1199
+STATUSFLAG : -
+NUMBER : 56958  
+TEMPDATE : 07-13-10
+TEMPTIME : 15:55
+TO : Epx 998                  
+FROM : Digital Man              
+SUBJECT : Customization of the logi
+PASSWORD :             
+REFERENCE : 56956   
+BLOCKS : 7     
+TEMPCRAP : ·◊  
+HAS_TAGLINE : *
+NSREC : 1206
+
+SREC  : 1206
+STATUSFLAG : -
+NUMBER : 56959  
+TEMPDATE : 07-14-10
+TEMPTIME : 10:38
+TO : Digital Man              
+FROM : Pbmountaincat            
+SUBJECT : sbbs_dev.zip             
+PASSWORD :             
+REFERENCE : 0       
+BLOCKS : 5     
+TEMPCRAP : ·◊  
+HAS_TAGLINE : *
+NSREC : 1211
+
+SREC  : 1211
+STATUSFLAG : -
+NUMBER : 56960  
+TEMPDATE : 07-14-10
+TEMPTIME : 11:14
+TO : Digital Man              
+FROM : John Guillory            
+SUBJECT : Calling a javascript from
+PASSWORD :             
+REFERENCE : 56959   
+BLOCKS : 8     
+TEMPCRAP : ·◊  
+HAS_TAGLINE : *
+NSREC : 1219
+
+SREC  : 1219
+STATUSFLAG :  
+NUMBER : 56961  
+TEMPDATE : 07-14-10
+TEMPTIME : 10:43
+TO : Pbmountaincat            
+FROM : Lord Time                
+SUBJECT : sbbs_dev.zip             
+PASSWORD :             
+REFERENCE : 56959   
+BLOCKS : 9     
+TEMPCRAP : ·◊  
+HAS_TAGLINE : *
+NSREC : 1228
+
+SREC  : 1228
+STATUSFLAG : -
+NUMBER : 56962  
+TEMPDATE : 07-14-10
+TEMPTIME : 12:32
+TO : Digital Man              
+FROM : Epx 998                  
+SUBJECT : Customization of the logi
+PASSWORD :             
+REFERENCE : 56958   
+BLOCKS : 9     
+TEMPCRAP : ·◊  
+HAS_TAGLINE : *
+NSREC : 1237
+
+SREC  : 1237
+STATUSFLAG :  
+NUMBER : 56963  
+TEMPDATE : 07-14-10
+TEMPTIME : 14:25
+TO : Pbmountaincat            
+FROM : Digital Man              
+SUBJECT : sbbs_dev.zip             
+PASSWORD :             
+REFERENCE : 56959   
+BLOCKS : 8     
+TEMPCRAP : ·◊  
+HAS_TAGLINE : *
+NSREC : 1245
+
+SREC  : 1245
+STATUSFLAG :  
+NUMBER : 56964  
+TEMPDATE : 07-14-10
+TEMPTIME : 14:26
+TO : John Guillory            
+FROM : Digital Man              
+SUBJECT : Calling a javascript from
+PASSWORD :             
+REFERENCE : 56960   
+BLOCKS : 12    
+TEMPCRAP : ·◊  
+HAS_TAGLINE : *
+NSREC : 1257
+
+SREC  : 1257
+STATUSFLAG : -
+NUMBER : 56965  
+TEMPDATE : 07-14-10
+TEMPTIME : 14:26
+TO : Digital Man              
+FROM : Epx 998                  
+SUBJECT : Re: Synchro on Mint 9.   
+PASSWORD :             
+REFERENCE : 56951   
+BLOCKS : 9     
+TEMPCRAP : ·◊  
+HAS_TAGLINE : *
+NSREC : 1266
+
+SREC  : 1266
+STATUSFLAG : -
+NUMBER : 56966  
+TEMPDATE : 07-14-10
+TEMPTIME : 14:27
+TO : Epx 998                  
+FROM : Digital Man              
+SUBJECT : Customization of the logi
+PASSWORD :             
+REFERENCE : 56962   
+BLOCKS : 12    
+TEMPCRAP : ·◊  
+HAS_TAGLINE : *
+NSREC : 1278
+
+SREC  : 1278
+STATUSFLAG :  
+NUMBER : 56967  
+TEMPDATE : 07-14-10
+TEMPTIME : 15:02
+TO : alt.bbs.synchronet       
+FROM : sampsa                   
+SUBJECT : Re: FidoNet              
+PASSWORD :             
+REFERENCE : 56944   
+BLOCKS : 7     
+TEMPCRAP : ·◊  
+HAS_TAGLINE : *
+NSREC : 1285
+
+SREC  : 1285
+STATUSFLAG : -
+NUMBER : 56968  
+TEMPDATE : 07-14-10
+TEMPTIME : 20:27
+TO : Digital Man              
+FROM : Pbmountaincat            
+SUBJECT : sbbs_dev.zip             
+PASSWORD :             
+REFERENCE : 56963   
+BLOCKS : 8     
+TEMPCRAP : ·◊  
+HAS_TAGLINE : *
+NSREC : 1293
+
+Now Processing Packet qwk/2001.NDX which contains 41 messages.
+
+Found. Importing qwk/2001.NDX to General
+SREC  : 3
+STATUSFLAG :  
+NUMBER : 68229  
+TEMPDATE : 07-10-10
+TEMPTIME : 15:46
+TO : The Curmudgeon           
+FROM : John Guillory            
+SUBJECT : testing...               
+PASSWORD :             
+REFERENCE : 68224   
+BLOCKS : 6     
+TEMPCRAP : ·—  
+HAS_TAGLINE : *
+NSREC : 9
+
+SREC  : 9
+STATUSFLAG : -
+NUMBER : 68230  
+TEMPDATE : 07-10-10
+TEMPTIME : 22:34
+TO : Deafguy                  
+FROM : Deanz                    
+SUBJECT : Re: testing...           
+PASSWORD :             
+REFERENCE : 68219   
+BLOCKS : 5     
+TEMPCRAP : ·—  
+HAS_TAGLINE : *
+NSREC : 14
+
+SREC  : 14
+STATUSFLAG :  
+NUMBER : 68231  
+TEMPDATE : 07-10-10
+TEMPTIME : 21:53
+TO : Mit                      
+FROM : Deafguy                  
+SUBJECT : testing...               
+PASSWORD :             
+REFERENCE : 68228   
+BLOCKS : 15    
+TEMPCRAP : ·—  
+HAS_TAGLINE : *
+NSREC : 29
+
+SREC  : 29
+STATUSFLAG :  
+NUMBER : 68232  
+TEMPDATE : 07-10-10
+TEMPTIME : 21:55
+TO : John Guillory            
+FROM : Deafguy                  
+SUBJECT : testing...               
+PASSWORD :             
+REFERENCE : 68229   
+BLOCKS : 7     
+TEMPCRAP : ·—  
+HAS_TAGLINE : *
+NSREC : 36
+
+SREC  : 36
+STATUSFLAG : -
+NUMBER : 68233  
+TEMPDATE : 07-11-10
+TEMPTIME : 09:00
+TO : Deafguy                  
+FROM : Lord Time                
+SUBJECT : testing...               
+PASSWORD :             
+REFERENCE : 68231   
+BLOCKS : 8     
+TEMPCRAP : ·—  
+HAS_TAGLINE : *
+NSREC : 44
+
+SREC  : 44
+STATUSFLAG : -
+NUMBER : 68234  
+TEMPDATE : 07-11-10
+TEMPTIME : 21:55
+TO : Deafguy                  
+FROM : Corey                    
+SUBJECT : testing...               
+PASSWORD :             
+REFERENCE : 68219   
+BLOCKS : 5     
+TEMPCRAP : ·—  
+HAS_TAGLINE : *
+NSREC : 49
+
+SREC  : 49
+STATUSFLAG :  
+NUMBER : 68235  
+TEMPDATE : 07-12-10
+TEMPTIME : 14:37
+TO : Corey                    
+FROM : Deafguy                  
+SUBJECT : testing...               
+PASSWORD :             
+REFERENCE : 68234   
+BLOCKS : 7     
+TEMPCRAP : ·—  
+HAS_TAGLINE : *
+NSREC : 56
+
+SREC  : 56
+STATUSFLAG : -
+NUMBER : 68237  
+TEMPDATE : 07-12-10
+TEMPTIME : 20:12
+TO : Deafguy                  
+FROM : John Guillory            
+SUBJECT : testing...               
+PASSWORD :             
+REFERENCE : 68235   
+BLOCKS : 8     
+TEMPCRAP : ·—  
+HAS_TAGLINE : *
+NSREC : 64
+
+SREC  : 64
+STATUSFLAG :  
+NUMBER : 68238  
+TEMPDATE : 07-12-10
+TEMPTIME : 21:23
+TO : All                      
+FROM : Deafguy                  
+SUBJECT : reading                  
+PASSWORD :             
+REFERENCE : 0       
+BLOCKS : 5     
+TEMPCRAP : ·—  
+HAS_TAGLINE : *
+NSREC : 69
+
+SREC  : 69
+STATUSFLAG : -
+NUMBER : 68239  
+TEMPDATE : 07-12-10
+TEMPTIME : 20:50
+TO : MARK FIRESTONE           
+FROM : Lord Time                
+SUBJECT : test                     
+PASSWORD :             
+REFERENCE : 0       
+BLOCKS : 8     
+TEMPCRAP : ·—  
+HAS_TAGLINE : *
+NSREC : 77
+
+SREC  : 77
+STATUSFLAG :  
+NUMBER : 68240  
+TEMPDATE : 07-13-10
+TEMPTIME : 15:03
+TO : Corey                    
+FROM : Rassilon                 
+SUBJECT : testing...               
+PASSWORD :             
+REFERENCE : 68234   
+BLOCKS : 6     
+TEMPCRAP : ·—  
+HAS_TAGLINE : *
+NSREC : 83
+
+SREC  : 83
+STATUSFLAG : -
+NUMBER : 68241  
+TEMPDATE : 07-13-10
+TEMPTIME : 15:49
+TO : MARK FIRESTONE           
+FROM : Digital Man              
+SUBJECT : test                     
+PASSWORD :             
+REFERENCE : 68236   
+BLOCKS : 6     
+TEMPCRAP : ·—  
+HAS_TAGLINE : *
+NSREC : 89
+
+SREC  : 89
+STATUSFLAG : -
+NUMBER : 68242  
+TEMPDATE : 07-13-10
+TEMPTIME : 15:50
+TO : Deafguy                  
+FROM : Digital Man              
+SUBJECT : reading                  
+PASSWORD :             
+REFERENCE : 68238   
+BLOCKS : 8     
+TEMPCRAP : ·—  
+HAS_TAGLINE : *
+NSREC : 97
+
+SREC  : 97
+STATUSFLAG : -
+NUMBER : 68243  
+TEMPDATE : 07-13-10
+TEMPTIME : 20:03
+TO : Digital Man              
+FROM : Deafguy                  
+SUBJECT : reading                  
+PASSWORD :             
+REFERENCE : 68242   
+BLOCKS : 13    
+TEMPCRAP : ·—  
+HAS_TAGLINE : *
+NSREC : 110
+
+SREC  : 110
+STATUSFLAG : -
+NUMBER : 68244  
+TEMPDATE : 07-14-10
+TEMPTIME : 12:45
+TO : Deafguy                  
+FROM : The Curmudgeon           
+SUBJECT : testing...               
+PASSWORD :             
+REFERENCE : 0       
+BLOCKS : 8     
+TEMPCRAP : ·—  
+HAS_TAGLINE : *
+NSREC : 118
+
+SREC  : 118
+STATUSFLAG :  
+NUMBER : 68245  
+TEMPDATE : 07-14-10
+TEMPTIME : 12:45
+TO : John Guillory            
+FROM : The Curmudgeon           
+SUBJECT : testing...               
+PASSWORD :             
+REFERENCE : 0       
+BLOCKS : 10    
+TEMPCRAP : ·—  
+HAS_TAGLINE : *
+NSREC : 128
+
+SREC  : 128
+STATUSFLAG :  
+NUMBER : 68246  
+TEMPDATE : 07-17-10
+TEMPTIME : 10:56
+TO : DOVE-Net.General,FidoNet.
+FROM : Gandolf                  
+SUBJECT : 3D Realms Software       
+PASSWORD :             
+REFERENCE : 0       
+BLOCKS : 26    
+TEMPCRAP : ·—  
+HAS_TAGLINE : *
+NSREC : 154
+
+SREC  : 154
+STATUSFLAG :  
+NUMBER : 68247  
+TEMPDATE : 07-17-10
+TEMPTIME : 11:29
+TO : ALL                      
+FROM : dennis nedry             
+SUBJECT : Another Test             
+PASSWORD :             
+REFERENCE : 0       
+BLOCKS : 4     
+TEMPCRAP : ·—  
+HAS_TAGLINE : *
+NSREC : 158
+
+SREC  : 158
+STATUSFLAG :  
+NUMBER : 68248  
+TEMPDATE : 07-17-10
+TEMPTIME : 11:21
+TO : dennis nedry             
+FROM : Lord Time                
+SUBJECT : Another Test             
+PASSWORD :             
+REFERENCE : 0       
+BLOCKS : 9     
+TEMPCRAP : ·—  
+HAS_TAGLINE : *
+NSREC : 167
+
+SREC  : 167
+STATUSFLAG :  
+NUMBER : 68249  
+TEMPDATE : 07-17-10
+TEMPTIME : 14:43
+TO : dennis nedry             
+FROM : thuff                    
+SUBJECT : Re: Another Test         
+PASSWORD :             
+REFERENCE : 0       
+BLOCKS : 6     
+TEMPCRAP : ·—  
+HAS_TAGLINE : *
+NSREC : 173
+
+SREC  : 173
+STATUSFLAG :  
+NUMBER : 68250  
+TEMPDATE : 07-17-10
+TEMPTIME : 16:27
+TO : dennis nedry             
+FROM : Crazy Giant              
+SUBJECT : Another Test             
+PASSWORD :             
+REFERENCE : 0       
+BLOCKS : 6     
+TEMPCRAP : ·—  
+HAS_TAGLINE : *
+NSREC : 179
+
+SREC  : 179
+STATUSFLAG :  
+NUMBER : 68251  
+TEMPDATE : 07-17-10
+TEMPTIME : 14:25
+TO : Gandolf                  
+FROM : Corey                    
+SUBJECT : 3D Realms Software       
+PASSWORD :             
+REFERENCE : 68246   
+BLOCKS : 33    
+TEMPCRAP : ·—  
+HAS_TAGLINE : *
+NSREC : 212
+
+SREC  : 212
+STATUSFLAG :  
+NUMBER : 68252  
+TEMPDATE : 07-17-10
+TEMPTIME : 18:21
+TO : dennis nedry             
+FROM : Harry Squindo            
+SUBJECT : Another Test             
+PASSWORD :             
+REFERENCE : 0       
+BLOCKS : 6     
+TEMPCRAP : ·—  
+HAS_TAGLINE : *
+NSREC : 218
+
+SREC  : 218
+STATUSFLAG :  
+NUMBER : 68253  
+TEMPDATE : 07-18-10
+TEMPTIME : 11:35
+TO : dennis nedry             
+FROM : Deanz                    
+SUBJECT : Re: Another Test         
+PASSWORD :             
+REFERENCE : 68247   
+BLOCKS : 6     
+TEMPCRAP : ·—  
+HAS_TAGLINE : *
+NSREC : 224
+
+SREC  : 224
+STATUSFLAG :  
+NUMBER : 68254  
+TEMPDATE : 07-18-10
+TEMPTIME : 21:26
+TO : CRAZY GIANT              
+FROM : dennis nedry             
+SUBJECT : Another Test             
+PASSWORD :             
+REFERENCE : 0       
+BLOCKS : 6     
+TEMPCRAP : ·—  
+HAS_TAGLINE : *
+NSREC : 230
+
+SREC  : 230
+STATUSFLAG :  
+NUMBER : 68255  
+TEMPDATE : 07-18-10
+TEMPTIME : 21:37
+TO : HARRY SQUINDO            
+FROM : dennis nedry             
+SUBJECT : Another Test             
+PASSWORD :             
+REFERENCE : 0       
+BLOCKS : 6     
+TEMPCRAP : ·—  
+HAS_TAGLINE : *
+NSREC : 236
+
+SREC  : 236
+STATUSFLAG :  
+NUMBER : 68256  
+TEMPDATE : 07-18-10
+TEMPTIME : 15:45
+TO : dennis nedry             
+FROM : John Guillory            
+SUBJECT : Another Test             
+PASSWORD :             
+REFERENCE : 0       
+BLOCKS : 6     
+TEMPCRAP : ·—  
+HAS_TAGLINE : *
+NSREC : 242
+
+SREC  : 242
+STATUSFLAG :  
+NUMBER : 68257  
+TEMPDATE : 07-18-10
+TEMPTIME : 15:46
+TO : Lord Time                
+FROM : John Guillory            
+SUBJECT : Another Test             
+PASSWORD :             
+REFERENCE : 68248   
+BLOCKS : 6     
+TEMPCRAP : ·—  
+HAS_TAGLINE : *
+NSREC : 248
+
+SREC  : 248
+STATUSFLAG :  
+NUMBER : 68258  
+TEMPDATE : 07-18-10
+TEMPTIME : 18:20
+TO : John Guillory            
+FROM : Lord Time                
+SUBJECT : Another Test             
+PASSWORD :             
+REFERENCE : 68257   
+BLOCKS : 9     
+TEMPCRAP : ·—  
+HAS_TAGLINE : *
+NSREC : 257
+
+SREC  : 257
+STATUSFLAG :  
+NUMBER : 68259  
+TEMPDATE : 07-19-10
+TEMPTIME : 08:07
+TO : JOHN GUILLORY            
+FROM : dennis nedry             
+SUBJECT : Another Test             
+PASSWORD :             
+REFERENCE : 0       
+BLOCKS : 3     
+TEMPCRAP : ·—  
+HAS_TAGLINE : *
+NSREC : 260
+
+SREC  : 260
+STATUSFLAG :  
+NUMBER : 68260  
+TEMPDATE : 07-19-10
+TEMPTIME : 15:29
+TO : ALL                      
+FROM : dennis nedry             
+SUBJECT : Features...              
+PASSWORD :             
+REFERENCE : 0       
+BLOCKS : 8     
+TEMPCRAP : ·—  
+HAS_TAGLINE : *
+NSREC : 268
+
+SREC  : 268
+STATUSFLAG :  
+NUMBER : 68261  
+TEMPDATE : 07-19-10
+TEMPTIME : 09:54
+TO : dennis nedry             
+FROM : Lord Time                
+SUBJECT : Features...              
+PASSWORD :             
+REFERENCE : 0       
+BLOCKS : 12    
+TEMPCRAP : ·—  
+HAS_TAGLINE : *
+NSREC : 280
+
+SREC  : 280
+STATUSFLAG :  
+NUMBER : 68262  
+TEMPDATE : 07-19-10
+TEMPTIME : 18:22
+TO : LORD TIME                
+FROM : dennis nedry             
+SUBJECT : Features...              
+PASSWORD :             
+REFERENCE : 0       
+BLOCKS : 8     
+TEMPCRAP : ·—  
+HAS_TAGLINE : *
+NSREC : 288
+
+SREC  : 288
+STATUSFLAG :  
+NUMBER : 68263  
+TEMPDATE : 07-19-10
+TEMPTIME : 15:27
+TO : dennis nedry             
+FROM : The Curmudgeon           
+SUBJECT : Features...              
+PASSWORD :             
+REFERENCE : 0       
+BLOCKS : 13    
+TEMPCRAP : ·—  
+HAS_TAGLINE : *
+NSREC : 301
+
+SREC  : 301
+STATUSFLAG :  
+NUMBER : 68264  
+TEMPDATE : 07-19-10
+TEMPTIME : 18:00
+TO : dennis nedry             
+FROM : Lord Time                
+SUBJECT : Features...              
+PASSWORD :             
+REFERENCE : 0       
+BLOCKS : 12    
+TEMPCRAP : ·—  
+HAS_TAGLINE : *
+NSREC : 313
+
+SREC  : 313
+STATUSFLAG :  
+NUMBER : 68265  
+TEMPDATE : 07-20-10
+TEMPTIME : 13:41
+TO : dennis nedry             
+FROM : Geo                      
+SUBJECT : Features...              
+PASSWORD :             
+REFERENCE : 0       
+BLOCKS : 14    
+TEMPCRAP : ·—  
+HAS_TAGLINE : *
+NSREC : 327
+
+SREC  : 327
+STATUSFLAG :  
+NUMBER : 68266  
+TEMPDATE : 07-19-10
+TEMPTIME : 23:34
+TO : All                      
+FROM : Whitedistortion          
+SUBJECT : New Music                
+PASSWORD :             
+REFERENCE : 0       
+BLOCKS : 4     
+TEMPCRAP : ·—  
+HAS_TAGLINE : *
+NSREC : 331
+
+SREC  : 331
+STATUSFLAG :  
+NUMBER : 68267  
+TEMPDATE : 07-20-10
+TEMPTIME : 08:32
+TO : ALL                      
+FROM : dennis nedry             
+SUBJECT : Features...              
+PASSWORD :             
+REFERENCE : 0       
+BLOCKS : 11    
+TEMPCRAP : ·—  
+HAS_TAGLINE : *
+NSREC : 342
+
+SREC  : 342
+STATUSFLAG :  
+NUMBER : 68268  
+TEMPDATE : 07-20-10
+TEMPTIME : 08:39
+TO : ALL                      
+FROM : dennis nedry             
+SUBJECT : Features...              
+PASSWORD :             
+REFERENCE : 0       
+BLOCKS : 13    
+TEMPCRAP : ·—  
+HAS_TAGLINE : *
+NSREC : 355
+
+SREC  : 355
+STATUSFLAG :  
+NUMBER : 68269  
+TEMPDATE : 07-20-10
+TEMPTIME : 10:08
+TO : dennis nedry             
+FROM : art                      
+SUBJECT : Features...              
+PASSWORD :             
+REFERENCE : 0       
+BLOCKS : 9     
+TEMPCRAP : ·—  
+HAS_TAGLINE : *
+NSREC : 364
+
+SREC  : 364
+STATUSFLAG :  
+NUMBER : 68270  
+TEMPDATE : 07-20-10
+TEMPTIME : 11:19
+TO : ALL                      
+FROM : dennis nedry             
+SUBJECT : Features...              
+PASSWORD :             
+REFERENCE : 0       
+BLOCKS : 8     
+TEMPCRAP : ·—  
+HAS_TAGLINE : *
+NSREC : 372
+
+Now Processing Packet qwk/2014.NDX which contains 6 messages.
+
+QWK: ERROR: No mapping found for area qwk/2014.NDX
+Now Processing Packet qwk/2002.NDX which contains 8 messages.
+
+Found. Importing qwk/2002.NDX to Adverstisements
+SREC  : 372
+STATUSFLAG :  
+NUMBER : 12221  
+TEMPDATE : 07-12-10
+TEMPTIME : 23:49
+TO : RAINMAN                  
+FROM : MARK FIRESTONE           
+SUBJECT : Digital Distortion BBS   
+PASSWORD :             
+REFERENCE : 0       
+BLOCKS : 6     
+TEMPCRAP : ·“  
+HAS_TAGLINE : *
+NSREC : 378
+
+SREC  : 378
+STATUSFLAG :  
+NUMBER : 12222  
+TEMPDATE : 07-12-10
+TEMPTIME : 22:14
+TO : All                      
+FROM : DOS                      
+SUBJECT : BBS                      
+PASSWORD :             
+REFERENCE : 0       
+BLOCKS : 14    
+TEMPCRAP : ·“  
+HAS_TAGLINE : *
+NSREC : 392
+
+SREC  : 392
+STATUSFLAG :  
+NUMBER : 12223  
+TEMPDATE : 07-14-10
+TEMPTIME : 23:11
+TO : All                      
+FROM : Sampsa                   
+SUBJECT : CHIMPY:: The VMS Experien
+PASSWORD :             
+REFERENCE : 0       
+BLOCKS : 8     
+TEMPCRAP : ·“  
+HAS_TAGLINE : *
+NSREC : 400
+
+SREC  : 400
+STATUSFLAG :  
+NUMBER : 12224  
+TEMPDATE : 07-14-10
+TEMPTIME : 23:11
+TO : All                      
+FROM : Sampsa                   
+SUBJECT : UUHECNET - Free UUCP feed
+PASSWORD :             
+REFERENCE : 0       
+BLOCKS : 7     
+TEMPCRAP : ·“  
+HAS_TAGLINE : *
+NSREC : 407
+
+SREC  : 407
+STATUSFLAG :  
+NUMBER : 12225  
+TEMPDATE : 07-16-10
+TEMPTIME : 08:18
+TO : Ruben Figueroa           
+FROM : dirtysanchez             
+SUBJECT : Re: Trying my shot at mus
+PASSWORD :             
+REFERENCE : 0       
+BLOCKS : 4     
+TEMPCRAP : ·“  
+HAS_TAGLINE : *
+NSREC : 411
+
+SREC  : 411
+STATUSFLAG :  
+NUMBER : 12226  
+TEMPDATE : 07-18-10
+TEMPTIME : 03:00
+TO : ALL                      
+FROM : TCCNET-BOT               
+SUBJECT : Computer Connection BBS  
+PASSWORD :             
+REFERENCE : 0       
+BLOCKS : 11    
+TEMPCRAP : ·“  
+HAS_TAGLINE : *
+NSREC : 422
+
+SREC  : 422
+STATUSFLAG :  
+NUMBER : 12227  
+TEMPDATE : 07-18-10
+TEMPTIME : 15:50
+TO : dirtysanchez             
+FROM : John Guillory            
+SUBJECT : Re: Trying my shot at mus
+PASSWORD :             
+REFERENCE : 12225   
+BLOCKS : 6     
+TEMPCRAP : ·“  
+HAS_TAGLINE : *
+NSREC : 428
+
+SREC  : 428
+STATUSFLAG :  
+NUMBER : 12228  
+TEMPDATE : 07-19-10
+TEMPTIME : 23:48
+TO : Ruben Figueroa           
+FROM : Whitedistortion          
+SUBJECT : Re: Trying my shot at mus
+PASSWORD :             
+REFERENCE : 12218   
+BLOCKS : 5     
+TEMPCRAP : ·“  
+HAS_TAGLINE : *
+NSREC : 433
+
+Now Processing Packet qwk/2019.NDX which contains 4 messages.
+
+Found. Importing qwk/2019.NDX to Sports Discussion
+SREC  : 992
+STATUSFLAG :  
+NUMBER : 6709   
+TEMPDATE : 07-14-10
+TEMPTIME : 02:50
+TO : Rassilon                 
+FROM : Samos                    
+SUBJECT : Steinbrenner             
+PASSWORD :             
+REFERENCE : 6708    
+BLOCKS : 6     
+TEMPCRAP : ·„  
+HAS_TAGLINE : *
+NSREC : 998
+
+SREC  : 998
+STATUSFLAG :  
+NUMBER : 6710   
+TEMPDATE : 07-13-10
+TEMPTIME : 20:51
+TO : Rassilon                 
+FROM : Access Denied            
+SUBJECT : Steinbrenner             
+PASSWORD :             
+REFERENCE : 6708    
+BLOCKS : 8     
+TEMPCRAP : ·„  
+HAS_TAGLINE : *
+NSREC : 1006
+
+SREC  : 1006
+STATUSFLAG :  
+NUMBER : 6711   
+TEMPDATE : 07-14-10
+TEMPTIME : 09:29
+TO : Rassilon                 
+FROM : Samos                    
+SUBJECT : gone?                    
+PASSWORD :             
+REFERENCE : 6708    
+BLOCKS : 6     
+TEMPCRAP : ·„  
+HAS_TAGLINE : *
+NSREC : 1012
+
+SREC  : 1012
+STATUSFLAG :  
+NUMBER : 6712   
+TEMPDATE : 07-17-10
+TEMPTIME : 12:15
+TO : Rassilon                 
+FROM : Ryedawg                  
+SUBJECT : Steinbrenner             
+PASSWORD :             
+REFERENCE : 6708    
+BLOCKS : 8     
+TEMPCRAP : ·„  
+HAS_TAGLINE : *
+NSREC : 1020
+
+0 areas in CONTROL.DAT
+0 areas found in QWK packet

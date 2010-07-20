@@ -338,53 +338,52 @@ if !session[:name].nil? then
   msg_subject=params["msg_subject"]
   msg_text=params['msg_text']
   e_uid = params['e_uid']
+  msgid = params['msgid']
+  via = params['via']
+  tz = params['tz']
+  qwk = false
+  qwk = true if params['qwk'] == "t"
   reply = false
   reply = true if params['reply'] == "t"
   pvt = false
   pvt = true if params['private'] == "t"
-  puts "!!!!!!!!!!!!!!!!!!!!!!!!! pvt = #{pvt}  params: #{params['private']}"
-    post_out = ""
-    area=fetch_area(m_area)
-    user = fetch_user(get_uid(name))
-    pointer = get_pointer(user,m_area)
-     if (pointer.access == "W") or (pointer.access == "C") or (pointer.access == "M") or (area.number == 0) or (user.level == 255) and (!area.delete) and (pointer.access !="N") then
+  post_out = ""
+  area=fetch_area(m_area)
+  area=fetch_area(0) if pvt
+  user = fetch_user(get_uid(name))
+  pointer = get_pointer(user,m_area)
+    
+  if (pointer.access == "W") or (pointer.access == "C") or (pointer.access == "M") or (area.number == 0) or (user.level == 255) and (!area.delete) and (pointer.access !="N") then
     if !msg_to.nil? and !msg_to.empty? and pvt then
-      puts "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!IN PVT EMAIL STUFF!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-       case determine_email_type(msg_text)
-         when F_NETMAIL
-          puts "fidonet detected"
-         when Q_NETMAIL
-         area =  find_qwk_area(QWKMAIL,nil)  # we want to save this message to the outgoing QWK area.
-         puts "area.number: #{area.number}"
-          if reply then 
-           msg_text,kludge = qwk_kludge_search(msg_text)
-              if !kludge.nil? then
-               if !kludge.via.nil? then
-                  msg_text.insert(0,"#{to}@#{kludge.via}")   #get the kludge line, send email reply to the correct user.
-                  msg_to = "NETMAIL"
-                end
-              end
-           else
-             to,route = qwkmailadr(msg_text)
-              if route.upcase != BBSID then #kludge line for a user not on the QWK Hub
+      if qwk then
+        puts "im here"
+        area =  find_qwk_area(QWKMAIL,nil)  # we want to save this message to the outgoing QWK area.
+        puts "area.number: #{area.number}"
+        if reply then 
+          if !via.nil? and !via.empty? then
+             msg_text.insert(0,"#{msg_to}@#{via}")   #get the kludge line, send email reply to the correct user.
+             msg_to = "NETMAIL"
+           end
+         else
+           if !via.nil? and !via.empty? then
+             if via.upcase != BBSID then #kludge line for a user not on the QWK Hub
                puts "im here"
                msg_text.insert(0,"#{msg_to}\r")  
                msg_to = "NETMAIL" #tell the QWK hub it needs to forward the message.
-             else
+              end
+            else
               msg_to = to #Otherwise, strip the QWK Hub name from the To: line
             end
           end
-           
-         when SMTP
-          puts "smtp detected"
-       end #of case
-       
-      
-    else
-       if !e_uid.nil? then   #we've gotten a local email recp. 
+
+        end
+            else
+       if !e_uid.nil? and !e_uid.empty? then   #we've gotten a local email recp. 
          msg_to = fetch_user(e_uid.to_i).name
        end
-    end
+     end
+  # end
+
     if !msg_subject.nil? then
        msg_subject = msg_subject[0..39] if msg_subject.length > 40
      end
@@ -400,7 +399,6 @@ if !session[:name].nil? then
       absolute = add_msg(msg_to,name,msg_date,msg_subject,msg_text,false,false,nil,nil,nil,nil,false, nil,nil,nil,
                                       nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,false,area.number)
       post_out << "Posted Absolute Message ##{absolute}<BR>"
-      post_out << "PVT" if pvt
       out = "/message?m_area=#{m_area}&"
       out = "/email?" if m_area == 0
       post_out << ("<a href='#{out}last=#{last}&dir=#{dir}'>Return</a>&nbsp;&nbsp;")
@@ -432,8 +430,6 @@ if !session[:name].nil? then
   subject=params["subject"]
   pvt = false
   pvt = true if  params["pvt"]=="t"
-  puts "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-  puts "pvt: #{pvt} in post "
   post_out << "Sending Private Message<br/>" if pvt
    user = fetch_user(get_uid(name))
    pointer = get_pointer(user,m_area)
@@ -451,7 +447,7 @@ if !session[:name].nil? then
                 post_out <<  "<input name='reply' type='hidden' value='t'>"   #let the /postsave from know we are replying
                
 	        if curmessage.network then
-	         reply,kludge = qwk_kludge_search(reply)
+	         reply,kludge = qwk_kludge_search(reply) 
                end
               end
         end
@@ -460,7 +456,14 @@ if !session[:name].nil? then
           post_out << "<input name='dir' type='hidden'  value='#{dir}'>" 
           post_out <<  "<input name='last' type='hidden' value='#{last}'>" 
           post_out <<  "<input name='m_area' type='hidden' value='#{m_area}'>"
-          post_out <<  "<input name='private' type='hidden' id='privae' value='t'>" if pvt
+          post_out <<  "<input name='private' type='hidden' value='t'>" if pvt 
+           if pvt  and !kludge.nil? and curmessage.network then
+             post_out <<  "<input name='private' type='hidden' value='t'>" 
+             post_out <<  "<input name='msgid' type='hidden' value='#{kludge.msgid}'>"  if !kludge.msgid.nil?
+             post_out <<  "<input name='via' type='hidden' value='#{kludge.via}'>" if !kludge.via.nil?
+             post_out <<  "<input name='tz' type='hidden' value='#{kludge.tz}'>" if ! kludge.tz.nil?
+             post_out <<  "<input name='qwk' type='hidden' value='t'>" 
+           end
           post_out <<  "<tr><td>From: </td> <td>#{name}</td></tr>" 
           if pvt then
             if to.nil? or to.empty? then
@@ -1244,7 +1247,7 @@ if !session[:name].nil? then
        m_out << tempstr
        m_out << "<BR>"
        m_out << m_menu(m_area,pointer,dir,subject,from,e_hmsg(user),true)
-      else m_out << "No Messages.  Send an <a href='/post?m_area=0'>Email." end
+      else m_out << "No Messages.  Send an <a href='/post?m_area=0&pvt=t'>Email." end
 
       
     else      
