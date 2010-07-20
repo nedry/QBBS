@@ -187,14 +187,23 @@ def m_menu(m_area,pntr,dir,subject,from,total,email)
   m_out = ""
   abs = 0
   abs =absolute_message(m_area,pntr) if pntr > 0
+
   t_out = "/message" 
-  t_out = "/email" if email
+  e_out = "Post"
+  ptv = ""
+  if email then
+    t_out = "/email" 
+    e_out = "Email"
+    pvt = "&pvt=t"
+  end 
+  
   m_out << "<span style='background:white;color:black'><table><tr><td><B>Messages 1 - #{total} [</b>#{pntr}<b>]:</b></td> "
   m_out << "<td><a href='#{t_out}?m_area=#{m_area}&last=#{pntr}&dir=b'>Previous</a>&nbsp;&nbsp;"
   m_out << "<a href='#{t_out}?m_area=#{m_area}&last=#{pntr}&dir=f'>Next</a>&nbsp;&nbsp;"
-  m_out << "<a href='/post?m_area=#{m_area}&subject=#{subject}&to=#{from}&last=#{pntr}&dir=f'>Reply</a>&nbsp;&nbsp;"
+  m_out << "<a href='/post?m_area=#{m_area}&subject=#{subject}&to=#{from}&last=#{pntr}&dir=f#{pvt}'>Reply</a>&nbsp;&nbsp;"
   m_out << "<a href='/delete?abs=#{abs}&area=#{m_area}'>Delete</a>&nbsp;&nbsp;" 
-  m_out << "<a href='/post?m_area=#{m_area}&last=#{pntr}&dir=f'>Post</a>&nbsp;&nbsp;"
+  m_out << "<a href='/post?m_area=#{m_area}&last=#{pntr}&dir=f#{pvt}'>#{e_out}</a>&nbsp;&nbsp;"
+  m_out << "<a href='/post?m_area=#{m_area}&subject=#{subject}&to=#{from}&last=#{pntr}&dir=f&pvt=t'>Email Reply</a>&nbsp;&nbsp;" if !email
   m_out <<  "</td><td><form action='#{t_out}' method='post'>"
   m_out <<  "<input type='hidden' name='m_area' value='#{m_area}'>"
   m_out <<  "<input type='hidden' name='dir' value='j'>"
@@ -329,34 +338,48 @@ if !session[:name].nil? then
   msg_subject=params["msg_subject"]
   msg_text=params['msg_text']
   e_uid = params['e_uid']
-  
-  post_out = ""
+  reply = false
+  reply = true if params['reply'] == "t"
+  pvt = false
+  pvt = true if params['private'] == "t"
+  puts "!!!!!!!!!!!!!!!!!!!!!!!!! pvt = #{pvt}  params: #{params['private']}"
+    post_out = ""
     area=fetch_area(m_area)
     user = fetch_user(get_uid(name))
     pointer = get_pointer(user,m_area)
      if (pointer.access == "W") or (pointer.access == "C") or (pointer.access == "M") or (area.number == 0) or (user.level == 255) and (!area.delete) and (pointer.access !="N") then
-    if !msg_to.nil? and !msg_to.empty? then
-       case determine_email_type(msg_to)
+    if !msg_to.nil? and !msg_to.empty? and pvt then
+      puts "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!IN PVT EMAIL STUFF!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+       case determine_email_type(msg_text)
          when F_NETMAIL
           puts "fidonet detected"
          when Q_NETMAIL
-           to,route = qwkmailadr(msg_to)
-           puts "route.upcase #{route.upcase}"
-           puts "BBSID: #{BBSID}"
-            if route.upcase != BBSID then
-              puts "im here"
-             msg_text.insert(0,"#{msg_to}\r")
-             msg_to = "NETMAIL"
+         area =  find_qwk_area(QWKMAIL,nil)  # we want to save this message to the outgoing QWK area.
+         puts "area.number: #{area.number}"
+          if reply then 
+           msg_text,kludge = qwk_kludge_search(msg_text)
+              if !kludge.nil? then
+               if !kludge.via.nil? then
+                  msg_text.insert(0,"#{to}@#{kludge.via}")   #get the kludge line, send email reply to the correct user.
+                  msg_to = "NETMAIL"
+                end
+              end
+           else
+             to,route = qwkmailadr(msg_text)
+              if route.upcase != BBSID then #kludge line for a user not on the QWK Hub
+               puts "im here"
+               msg_text.insert(0,"#{msg_to}\r")  
+               msg_to = "NETMAIL" #tell the QWK hub it needs to forward the message.
+             else
+              msg_to = to #Otherwise, strip the QWK Hub name from the To: line
             end
-          puts "qwk mail detected"
-          
-          puts "to: #{to}"
-          puts "route: #{route}"
+          end
+           
          when SMTP
           puts "smtp detected"
-       end
+       end #of case
        
-       msg_to = msg_to[0..39] if msg_to.length > 40
+      
     else
        if !e_uid.nil? then   #we've gotten a local email recp. 
          msg_to = fetch_user(e_uid.to_i).name
@@ -364,7 +387,10 @@ if !session[:name].nil? then
     end
     if !msg_subject.nil? then
        msg_subject = msg_subject[0..39] if msg_subject.length > 40
-   end
+     end
+     if !msg_to.nil?
+       msg_to = msg_to[0..39] if msg_to.length > 40
+     end
        msg_text = WordWrapper.wrap(msg_text,79)
        msg_text.gsub!(10.chr,"")
        msg_text = convert_to_utf8(msg_text)
@@ -374,6 +400,7 @@ if !session[:name].nil? then
       absolute = add_msg(msg_to,name,msg_date,msg_subject,msg_text,false,false,nil,nil,nil,nil,false, nil,nil,nil,
                                       nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,false,area.number)
       post_out << "Posted Absolute Message ##{absolute}<BR>"
+      post_out << "PVT" if pvt
       out = "/message?m_area=#{m_area}&"
       out = "/email?" if m_area == 0
       post_out << ("<a href='#{out}last=#{last}&dir=#{dir}'>Return</a>&nbsp;&nbsp;")
@@ -394,7 +421,7 @@ if !session[:name].nil? then
   name = session[:name]
   uid = get_uid(name)
   who_list_update(uid,"Information:")
-  
+      post_out = ""
   m_area = params['m_area']
   m_area = m_area.to_i
   last =params["last"]
@@ -403,33 +430,40 @@ if !session[:name].nil? then
   dir = "+" if dir == ""
   to = params["to"]
   subject=params["subject"]
-  
+  pvt = false
+  pvt = true if  params["pvt"]=="t"
+  puts "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+  puts "pvt: #{pvt} in post "
+  post_out << "Sending Private Message<br/>" if pvt
    user = fetch_user(get_uid(name))
    pointer = get_pointer(user,m_area)
 
    area=fetch_area(m_area)
    
-    post_out = ""
+
      if (pointer.access == "W") or (pointer.access == "C") or (pointer.access == "M") or (area.number == 0) or (user.level == 255) and (!area.delete) and (pointer.access !="N") then
        reply = []
         if !to.nil? then 
 	       curmessage = fetch_msg(absolute_message(area.number,last))
 	       #curmessage.msg_text.gsub!(10.chr,'')
-	       reply =  convert_to_ascii(curmessage.msg_text)
+              if !curmessage.nil?   # if curmessage is nil it means there was no message to load...
+	        reply =  convert_to_ascii(curmessage.msg_text)
+                post_out <<  "<input name='reply' type='hidden' value='t'>"   #let the /postsave from know we are replying
                
 	        if curmessage.network then
 	         reply,kludge = qwk_kludge_search(reply)
                end
+              end
         end
           post_out <<  "<table>"
           post_out << "<form name='main' method='post' action='/postsave'>" 
           post_out << "<input name='dir' type='hidden'  value='#{dir}'>" 
           post_out <<  "<input name='last' type='hidden' value='#{last}'>" 
           post_out <<  "<input name='m_area' type='hidden' value='#{m_area}'>"
+          post_out <<  "<input name='private' type='hidden' id='privae' value='t'>" if pvt
           post_out <<  "<tr><td>From: </td> <td>#{name}</td></tr>" 
-          if m_area == 0 then
-            if to.nil? then
-            
+          if pvt then
+            if to.nil? or to.empty? then
               post_out << "<tr><td>To (local):</td>"
               post_out << "<td><select name='e_uid' size='1' style='width:200px;'>"
               fetch_user_list.each {|x| 
@@ -438,38 +472,39 @@ if !session[:name].nil? then
                post_out << "</select>"
             else
              post_out <<  "<input name='msg_to' type='hidden' value='#{to}'>"
-             post_out << "<tr><td>To: #{to}"
+             post_out << "<tr><td>To:</td><td> #{to}"  #hmmm
             end
           else
-   
-
           end
-          if to.nil? then 
-           post_out << "<tr><td>To: (remote)</td>"
+          if to.nil? or to.empty? then 
+           out = ""
+           out = "(remote)" if pvt
+           post_out << "<tr><td>To: #{out}</td>"  #hmmm
            post_out << "<td><input name='msg_to' type='text' id='msg_to'></td>" 
           else 
-           post_out << "<td>#{to}</td></tr>"
+           post_out << "<td>To:</td><td> #{to}</td></tr>"
+           post_out <<  "<input name='msg_to' type='hidden' value='#{to}'>"
           end
           post_out <<  "<tr><td>Subject:</td><td><input name='msg_subject' type='text' id='msg_subject' value='#{subject}'></td></tr>"
           post_out <<  "#{CRLF}"
           post_out <<  "<tr><td colspan=2><textarea style='font-size:12px' name='msg_text' cols='79' rows='25'  id='msg_text'>#{CRLF}"
           
          
-          if !to.nil? and !reply.nil? then 
+          if !to.nil? and !reply.nil? and !reply.empty? then 
            reply = reply.split(13.chr)
            post_out <<  ("--- #{to} wrote --- #{CRLF}") 
            reply.each {|line| post_out << "&gt; #{line[0..75].strip}#{CRLF}"}
           end
-    
-               
-         post_out << "</textarea></td>" 
-         post_out << "</tr>"
+
+          post_out << "</textarea></td>" 
+          post_out << "</tr>"
           post_out << "<tr>" 
           post_out << "<td>&nbsp;</td>" 
           post_out << "<td><input type='submit' name='Submit' value='Post'> </td>" 
           post_out << "</tr>" 
           post_out << "</form>" 
 	  post_out << "</table>"
+            puts "pvt: #{pvt} in end "
      else
      post_out << 'You do not have access.'
      end

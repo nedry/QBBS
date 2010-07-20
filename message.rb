@@ -397,7 +397,7 @@ class Session
      tempmsg.each_line(DLIM) {|line| message.push(line.chop!)} #changed from .each for ruby 1.9
 
     
-    write "%W##{mpointer} %G[%C#{curmessage.absolute}%G] %M#{curmessage.msg_date.strftime("%A the %d#{time_thingie(curmessage.msg_date)} of %B, %Y  %I:%M%p")}"
+    write "%W##{mpointer} %G[%C#{curmessage.absolute}%G] %M#{curmessage.msg_date.strftime("%A the %d#{time_thingie(curmessage.msg_date)} of %B, %Y at %I:%M%p")}"
     if !kludge.nil?
      if !kludge.tz.nil? then
       tz = kludge.tz.upcase
@@ -615,7 +615,7 @@ end
 %CValidated Access: %G#{area.v_access}
 %CQWK/REP Net # %G#{out}
 %CFidoNet Area: %G#{area.fido_net}
-%CLast Modified: %G#{area.modify_date}
+%CLast Modified: %G#{area.modify_date.strftime("%A the %d#{time_thingie(area.modify_date)} of %B, %Y at %I:%M%p")}
 %CTotal Messages: %G#{m_total(area.number)}
 %CGroup: %G#{area.group.groupname}
 here
