@@ -256,7 +256,10 @@ def netmailadr(address)
     if grumpy then
       node = $1;point = $2
     end
-
+  zone = zone.to_i
+  net = net.to_i
+  node = node.to_i
+  point = point.to_i
   end
   return [to,zone,net,node,point]
 end

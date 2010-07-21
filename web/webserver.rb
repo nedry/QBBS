@@ -27,7 +27,7 @@ require "../wrap.rb"
 
 
 TEXT_ROOT = "/home/mark/qbbs/text/"
-TITLE = "QUARKseven Web v.75"
+TITLE = "QUARKseven Web v.85"
 EXISTS = 1
 INVALID = 2
 OKAY = 3
@@ -343,10 +343,18 @@ if !session[:name].nil? then
   tz = params['tz']
   qwk = false
   qwk = true if params['qwk'] == "t"
+  fido = false
+  fido = true if params['fido'] == "t"
   reply = false
   reply = true if params['reply'] == "t"
   pvt = false
   pvt = true if params['private'] == "t"
+  abs = params['abs'].to_i
+  intl = nil
+  zone = nil
+  net = nil
+  node = nil
+  
   post_out = ""
   area=fetch_area(m_area)
   area=fetch_area(0) if pvt
@@ -355,34 +363,61 @@ if !session[:name].nil? then
     
   if (pointer.access == "W") or (pointer.access == "C") or (pointer.access == "M") or (area.number == 0) or (user.level == 255) and (!area.delete) and (pointer.access !="N") then
     if !msg_to.nil? and !msg_to.empty? and pvt then
+      if !reply then
+        puts "determine_email_type(msg_to): #{determine_email_type(msg_to)  }"
+        case determine_email_type(msg_to)  
+             when Q_NETMAIL
+               qwk = true
+              when F_NETMAIL
+               fido = true
+               puts "!!!FIDO NETMAIL ADDRESS DETECTED!!!"
+               puts "qwk: #{qwk}"
+            end # of case
+         end
       if qwk then
-        puts "im here"
         area =  find_qwk_area(QWKMAIL,nil)  # we want to save this message to the outgoing QWK area.
-        puts "area.number: #{area.number}"
-        if reply then 
-          if !via.nil? and !via.empty? then
-             msg_text.insert(0,"#{msg_to}@#{via}")   #get the kludge line, send email reply to the correct user.
-             msg_to = "NETMAIL"
-           end
-         else
-           if !via.nil? and !via.empty? then
-             if via.upcase != BBSID then #kludge line for a user not on the QWK Hub
-               puts "im here"
-               msg_text.insert(0,"#{msg_to}\r")  
+        route = via
+        to = msg_to
+          puts "reply: #{reply}"
+        to,route = qwkmailadr(msg_to) if !reply
+          puts "to: #{to}"
+          puts "route: #{route}"
+          puts "via: #{via}"
+          puts route.upcase != BBSID
+          puts !route.nil? and !route.empty?
+           if !route.nil? and !route.empty? then
+             if route.upcase != BBSID then #kludge line for a user not on the QWK Hub
+               out = ""
+               puts "im in if route"
+               out = "@#{via}" if !via.nil?
+               puts out
+               msg_text.insert(0,"#{msg_to}#{out}\r")   #get the kludge line, send email reply to the correct user
                msg_to = "NETMAIL" #tell the QWK hub it needs to forward the message.
-              end
             else
               msg_to = to #Otherwise, strip the QWK Hub name from the To: line
-            end
-          end
+             end
+           end
+                 else
+ 
 
-        end
-            else
+        if fido then
+          puts "reached fido!"
+          to,zone,net,node,point = netmailadr(msg_to)
+           puts "to: #{to}"
+           puts "zone: #{zone}"
+           puts "net: #{net}"
+           puts "node: #{node}"
+           puts "point: #{point}"
+          area = fetch_area( find_fido_area(NETMAIL))
+          intl = "#{zone}:#{net}/#{node} #{FIDOZONE}:#{FIDONET}/#{FIDONODE}"
+      else
        if !e_uid.nil? and !e_uid.empty? then   #we've gotten a local email recp. 
          msg_to = fetch_user(e_uid.to_i).name
        end
+end
      end
-  # end
+    end
+#more validations
 
     if !msg_subject.nil? then
        msg_subject = msg_subject[0..39] if msg_subject.length > 40
@@ -396,9 +431,22 @@ if !session[:name].nil? then
    
       msg_date = Time.now
    #   absolute = add_msg(msg_to,name,msg_date,msg_subject,msg_text,false,false,false,nil,nil,nil,nil,false,area.number)
-      absolute = add_msg(msg_to,name,msg_date,msg_subject,msg_text,false,false,nil,nil,nil,nil,false, nil,nil,nil,
+      absolute = add_msg(msg_to,name,msg_date,msg_subject,msg_text,false,false,node,net,intl,nil,false,fido,nil,nil,
                                       nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,false,area.number)
-      post_out << "Posted Absolute Message ##{absolute}<BR>"
+      if qwk 
+       post_out << "QWK Netmail Sent. ##{absolute}<BR>"
+      else
+        if fido then
+          post_out << "Fidonet Netmail Sent ##{absolute}<BR>"
+          
+          else
+            if m_area == 0 then
+               post_out << "Local Email Sent ##{absolute}<BR>"
+        else
+         post_out << "Posted Absolute Message ##{absolute}<BR>"
+       end
+     end
+    end
       out = "/message?m_area=#{m_area}&"
       out = "/email?" if m_area == 0
       post_out << ("<a href='#{out}last=#{last}&dir=#{dir}'>Return</a>&nbsp;&nbsp;")
@@ -418,7 +466,7 @@ if !session[:name].nil? then
 
   name = session[:name]
   uid = get_uid(name)
-  who_list_update(uid,"Information:")
+  who_list_update(uid,"Post Message")
       post_out = ""
   m_area = params['m_area']
   m_area = m_area.to_i
@@ -450,19 +498,28 @@ if !session[:name].nil? then
 	         reply,kludge = qwk_kludge_search(reply) 
                end
               end
-        end
+            end
+            
+            #This is going to be cleaned up when I change the qwk/rep system to store kludge lines in the message record.
           post_out <<  "<table>"
           post_out << "<form name='main' method='post' action='/postsave'>" 
           post_out << "<input name='dir' type='hidden'  value='#{dir}'>" 
           post_out <<  "<input name='last' type='hidden' value='#{last}'>" 
           post_out <<  "<input name='m_area' type='hidden' value='#{m_area}'>"
           post_out <<  "<input name='private' type='hidden' value='t'>" if pvt 
-           if pvt  and !kludge.nil? and curmessage.network then
-             post_out <<  "<input name='private' type='hidden' value='t'>" 
+           if !curmessage.nil? and pvt then
+           if !kludge.nil? and curmessage.network and !reply.empty? then
              post_out <<  "<input name='msgid' type='hidden' value='#{kludge.msgid}'>"  if !kludge.msgid.nil?
              post_out <<  "<input name='via' type='hidden' value='#{kludge.via}'>" if !kludge.via.nil?
              post_out <<  "<input name='tz' type='hidden' value='#{kludge.tz}'>" if ! kludge.tz.nil?
              post_out <<  "<input name='qwk' type='hidden' value='t'>" 
+              post_out <<  "<input name='reply' type='hidden' value='t'>" 
+           end
+          
+             if curmessage.f_network  then
+             post_out <<  "<input name='fido' type='hidden' value='t'>" 
+             post_out <<  "<input name='abs' type='hidden' value='#{curmessage.absolute}'>" 
+           end
            end
           post_out <<  "<tr><td>From: </td> <td>#{name}</td></tr>" 
           if pvt then
@@ -484,9 +541,11 @@ if !session[:name].nil? then
            out = "(remote)" if pvt
            post_out << "<tr><td>To: #{out}</td>"  #hmmm
            post_out << "<td><input name='msg_to' type='text' id='msg_to'></td>" 
+ 
           else 
            post_out << "<td>To:</td><td> #{to}</td></tr>"
            post_out <<  "<input name='msg_to' type='hidden' value='#{to}'>"
+           
           end
           post_out <<  "<tr><td>Subject:</td><td><input name='msg_subject' type='text' id='msg_subject' value='#{subject}'></td></tr>"
           post_out <<  "#{CRLF}"
