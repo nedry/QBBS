@@ -217,7 +217,7 @@ def w_display_message(mpointer,user,m_area,email,dir,total)
       area = fetch_area(m_area)
       pointer = get_pointer(user,m_area)
       if email then
-	 abs = email_absolute_message(mpointer,user.name)
+	     abs = email_absolute_message(mpointer,user.name)
       else
          abs = absolute_message(area.number,mpointer)
       end
@@ -228,14 +228,9 @@ def w_display_message(mpointer,user,m_area,email,dir,total)
        pointer.lastread = curmessage.absolute
        update_pointer(pointer)
       end
-       message = []
-
-      if curmessage.network then
-       message,kludge = qwk_kludge_search(curmessage.msg_text.strip)
-      else
-        message = curmessage.msg_text.strip
-      end
-        message.gsub!(13.chr,"<br/>")
+      message = curmessage.msg_text.strip
+      message.gsub!(13.chr,"<br/>")
+      
       m_out << "<div class='fixed' style='background-color:black;color:white'>"
       m_out << "##{mpointer} <span style='color:#54fc54'>[</span><span style='color:#54fcfc'>#{curmessage.absolute}</span><span style='color:#54fc54'>]</span> <span style='color:#fc54fc'>"
       m_out << "#{curmessage.msg_date.strftime('%A the %d')}"
@@ -265,7 +260,7 @@ def w_display_message(mpointer,user,m_area,email,dir,total)
       end
       if curmessage.network then
        out = BBSID
-       out = kludge.via if !kludge.via.nil?
+       out = curmessage.q_via if !curmessage.q_via.nil?
        m_out << " <span style='color:#54fc54'>(</span><span style='color:#54fcfc'>#{out}</span><span style='color:#54fc54'>)</span>"
       end
       m_out << "</td></tr>"
@@ -338,9 +333,6 @@ if !session[:name].nil? then
   msg_subject=params["msg_subject"]
   msg_text=params['msg_text']
   e_uid = params['e_uid']
-  msgid = params['msgid']
-  via = params['via']
-  tz = params['tz']
   qwk = false
   qwk = true if params['qwk'] == "t"
   fido = false
@@ -350,11 +342,14 @@ if !session[:name].nil? then
   pvt = false
   pvt = true if params['private'] == "t"
   abs = params['abs'].to_i
+
+  
   intl = nil
   zone = nil
   net = nil
   node = nil
   
+  route = ""
   post_out = ""
   area=fetch_area(m_area)
   area=fetch_area(0) if pvt
@@ -364,42 +359,29 @@ if !session[:name].nil? then
   if (pointer.access == "W") or (pointer.access == "C") or (pointer.access == "M") or (area.number == 0) or (user.level == 255) and (!area.delete) and (pointer.access !="N") then
     if !msg_to.nil? and !msg_to.empty? and pvt then
       if !reply then
-        puts "determine_email_type(msg_to): #{determine_email_type(msg_to)  }"
         case determine_email_type(msg_to)  
              when Q_NETMAIL
                qwk = true
+               to,route = qwkmailadr(msg_to) 
               when F_NETMAIL
                fido = true
                puts "!!!FIDO NETMAIL ADDRESS DETECTED!!!"
-               puts "qwk: #{qwk}"
             end # of case
-         end
+         end #of reply
       if qwk then
         area =  find_qwk_area(QWKMAIL,nil)  # we want to save this message to the outgoing QWK area.
-        route = via
+        r_message = fetch_msg(abs)
         to = msg_to
-          puts "reply: #{reply}"
-        to,route = qwkmailadr(msg_to) if !reply
-          puts "to: #{to}"
-          puts "route: #{route}"
-          puts "via: #{via}"
-          puts route.upcase != BBSID
-          puts !route.nil? and !route.empty?
-           if !route.nil? and !route.empty? then
+        route = r_message.q_via if reply and !r_message.q_via.nil?
+        route = BBSID if route.empty?
              if route.upcase != BBSID then #kludge line for a user not on the QWK Hub
-               out = ""
-               puts "im in if route"
-               out = "@#{via}" if !via.nil?
-               puts out
-               msg_text.insert(0,"#{msg_to}#{out}\r")   #get the kludge line, send email reply to the correct user
+               msg_text.insert(0,"#{msg_to}@#{route}\r")   #get the kludge line, send email reply to the correct user
                msg_to = "NETMAIL" #tell the QWK hub it needs to forward the message.
             else
               msg_to = to #Otherwise, strip the QWK Hub name from the To: line
              end
-           end
-                 else
- 
-
+        end
+    
         if fido then
           puts "reached fido!"
           to,zone,net,node,point = netmailadr(msg_to)
@@ -410,13 +392,14 @@ if !session[:name].nil? then
            puts "point: #{point}"
           area = fetch_area( find_fido_area(NETMAIL))
           intl = "#{zone}:#{net}/#{node} #{FIDOZONE}:#{FIDONET}/#{FIDONODE}"
-      else
+       end
+ 
+              else
        if !e_uid.nil? and !e_uid.empty? then   #we've gotten a local email recp. 
          msg_to = fetch_user(e_uid.to_i).name
-       end
-end
      end
-    end
+
+end
 #more validations
 
     if !msg_subject.nil? then
@@ -428,11 +411,8 @@ end
        msg_text = WordWrapper.wrap(msg_text,79)
        msg_text.gsub!(10.chr,"")
        msg_text = convert_to_utf8(msg_text)
-   
-      msg_date = Time.now
-   #   absolute = add_msg(msg_to,name,msg_date,msg_subject,msg_text,false,false,false,nil,nil,nil,nil,false,area.number)
-      absolute = add_msg(msg_to,name,msg_date,msg_subject,msg_text,false,false,node,net,intl,nil,false,fido,nil,nil,
-                                      nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,false,area.number)
+      absolute = add_msg(msg_to,name,Time.now,msg_subject,msg_text,false,false,node,net,intl,nil,false,fido,nil,nil,
+                                      nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,false,area.number,nil,nil,nil,nil)
       if qwk 
        post_out << "QWK Netmail Sent. ##{absolute}<BR>"
       else
@@ -483,44 +463,36 @@ if !session[:name].nil? then
    pointer = get_pointer(user,m_area)
 
    area=fetch_area(m_area)
-   
+   abs = 0
 
      if (pointer.access == "W") or (pointer.access == "C") or (pointer.access == "M") or (area.number == 0) or (user.level == 255) and (!area.delete) and (pointer.access !="N") then
-       reply = []
+
         if !to.nil? then 
 	       curmessage = fetch_msg(absolute_message(area.number,last))
-	       #curmessage.msg_text.gsub!(10.chr,'')
-              if !curmessage.nil?   # if curmessage is nil it means there was no message to load...
-	        reply =  convert_to_ascii(curmessage.msg_text)
-                post_out <<  "<input name='reply' type='hidden' value='t'>"   #let the /postsave from know we are replying
-               
-	        if curmessage.network then
-	         reply,kludge = qwk_kludge_search(reply) 
-               end
-              end
-            end
-            
+         reply =  convert_to_ascii(curmessage.msg_text)
+         abs = curmessage.absolute
+        end
+                   
             #This is going to be cleaned up when I change the qwk/rep system to store kludge lines in the message record.
           post_out <<  "<table>"
           post_out << "<form name='main' method='post' action='/postsave'>" 
           post_out << "<input name='dir' type='hidden'  value='#{dir}'>" 
           post_out <<  "<input name='last' type='hidden' value='#{last}'>" 
           post_out <<  "<input name='m_area' type='hidden' value='#{m_area}'>"
+          post_out <<  "<input name='abs' type='hidden' value='#{abs}'>" 
           post_out <<  "<input name='private' type='hidden' value='t'>" if pvt 
-           if !curmessage.nil? and pvt then
-           if !kludge.nil? and curmessage.network and !reply.empty? then
-             post_out <<  "<input name='msgid' type='hidden' value='#{kludge.msgid}'>"  if !kludge.msgid.nil?
-             post_out <<  "<input name='via' type='hidden' value='#{kludge.via}'>" if !kludge.via.nil?
-             post_out <<  "<input name='tz' type='hidden' value='#{kludge.tz}'>" if ! kludge.tz.nil?
-             post_out <<  "<input name='qwk' type='hidden' value='t'>" 
-              post_out <<  "<input name='reply' type='hidden' value='t'>" 
-           end
           
-             if curmessage.f_network  then
+          if !curmessage.nil?  # if curmessage is nil it means there was no message to load...
+            if curmessage.network then
+              post_out <<  "<input name='reply' type='hidden' value='t'>"   #let the /postsave from know we are replying
+              post_out <<  "<input name='qwk' type='hidden' value='t'>"  if curmessage.network 
+            end
+              
+          if curmessage.f_network  then
              post_out <<  "<input name='fido' type='hidden' value='t'>" 
-             post_out <<  "<input name='abs' type='hidden' value='#{curmessage.absolute}'>" 
            end
-           end
+         end
+         
           post_out <<  "<tr><td>From: </td> <td>#{name}</td></tr>" 
           if pvt then
             if to.nil? or to.empty? then
@@ -566,7 +538,6 @@ if !session[:name].nil? then
           post_out << "</tr>" 
           post_out << "</form>" 
 	  post_out << "</table>"
-            puts "pvt: #{pvt} in end "
      else
      post_out << 'You do not have access.'
      end

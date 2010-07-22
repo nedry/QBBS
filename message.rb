@@ -209,8 +209,7 @@ class Session
     m_from = @c_user.name
     msg_date = Time.now.strftime("%Y-%m-%d %I:%M%p")
     absolute = add_msg(to,m_from,msg_date,title,msg_text,exported,false,destnode,destnet,intl,point,false, nil,nil,nil,
-                                      nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,reply,area.number)
-   # absolute = add_msg(to,m_from,msg_date,title,msg_text,exported,false,reply,destnode,destnet,intl,point,false,area.number)
+                                      nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,reply,area.number,nil,nil,nil,nil)
     add_log_entry(5,Time.now,"#{@c_user.name} posted msg # #{absolute}")
   end
 
@@ -391,20 +390,17 @@ class Session
     tempmsg=convert_to_ascii(curmessage.msg_text)
 
 
-    if curmessage.network then
-      tempmsg,kludge= qwk_kludge_search(tempmsg)
-    end
+    #if curmessage.network then
+     # tempmsg,kludge= qwk_kludge_search(tempmsg)
+    #end
      tempmsg.each_line(DLIM) {|line| message.push(line.chop!)} #changed from .each for ruby 1.9
 
     
     write "%W##{mpointer} %G[%C#{curmessage.absolute}%G] %M#{curmessage.msg_date.strftime("%A the %d#{time_thingie(curmessage.msg_date)} of %B, %Y at %I:%M%p")}"
-    if !kludge.nil?
-     if !kludge.tz.nil? then
-      tz = kludge.tz.upcase
-      #puts "tz: #{tz}"
-      out = TIME_TABLE[kludge.tz]
-      #puts out
-      out = non_standard_zone(tz) if out.nil?
+    if curmessage.network then
+     if !curmessage.q_tz.nil? then
+      out = TIME_TABLE[curmessage.q_tz.upcase]
+      out = non_standard_zone(curmessage.q_tz) if out.nil?
       write " %W(%G#{out}%W)"
      end
     end
@@ -430,11 +426,10 @@ class Session
     end
     if curmessage.network then
       out = BBSID
-      if !kludge.nil? then
-       out = kludge.via if !kludge.via.nil?
+      out = curmessage.q_via if !curmessage.q_via.nil?
       end
       write " %G(%C#{out}%G)"
-    end
+  #  end
     print
     print "%CTitle: %G#{curmessage.subject}%Y"
     j =5

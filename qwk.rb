@@ -11,7 +11,7 @@ module Qwk
   Message = Struct.new('Message',:error, :statusflag, :number,
                        :date, :to, :from, :subject, :password,
                        :reference, :blocks, :deleted,
-                       :logicalnum, :tagline, :text)
+                       :logicalnum, :tagline, :text, :msgid, :via, :tz, :reply)
 
   class Message
     private :initialize
@@ -32,6 +32,12 @@ module Qwk
         a.logicalnum = 0
         a.tagline = false
         a.text = []
+        a.msgid = ''
+        a.via = ''
+        a.tz = ''
+        a.reply = ''
+        
+        
         return a
       end
     end
@@ -112,6 +118,52 @@ module Qwk
       end
     end
 
+
+class Q_Kludge
+ attr_accessor  :msgid, :tz, :via, :reply
+
+ def initialize (msgid=nil,tz=nil,via=nil,reply=nil)
+  @msgid	= msgid
+  @tz   	= tz
+  @via	= via
+  @reply	= reply
+ end
+
+ def []=(field, value)
+   field = field.downcase
+   self.send("#{field}=", value)
+ end
+
+end #of class Kludge
+
+ def qwk_kludge_search(buffer)	#searches the message buffer for kludge lines and returns them
+  kludge = Q_Kludge.new
+
+  msg_array = buffer.split(227.chr)  #split the message into an array so we can deal with it.
+
+  
+  # if we find any of these, reject the message
+  invalid = ["@MSGID:", "@VIA:", "@TZ:", "@REPLY:"]
+
+  valid_messages = []
+  msg_array.each do |x|
+    match = (/^(\S*)(.*)/) =~ x
+    if match then
+      header = $1
+      value = $2
+      if invalid.include? header
+        temp = header.gsub(/:/, '')
+	field = temp.gsub(/@/,'')
+        kludge[field] = value.strip!
+      else
+        valid_messages << x
+      end
+    end
+  end
+
+  return [valid_messages.join(227.chr) , kludge]
+end
+
     def getcontrol(path)
       filename = "#{path}/CONTROL.DAT"
       if File.exists?(filename) then
@@ -176,8 +228,14 @@ module Qwk
         if message.blocks > 1 then
 
           temp = file.read((message.blocks - 1) * 128)
-	 # message_text = temp.force_encoding("IBM437").encode("UTF-8")
-	  message.text = convert_to_utf8(temp)
+          dekludgify, kludge = qwk_kludge_search(temp)
+	        message.text = convert_to_utf8(dekludgify)
+          if !kludge.nil? then
+            message.via = kludge.via
+            message.tz = kludge.tz
+            message.reply = kludge.reply
+            message.msgid = kludge.msgid
+          end
  
         end
       end

@@ -239,20 +239,3 @@ class LineEditor
   attr_accessor :msgtext, :line, :save
 end
 
-
-class Q_Kludge
- attr_accessor  :msgid, :tz, :via, :reply
-
- def initialize (msgid=nil,tz=nil,via=nil,reply=nil)
-  @msgid	= msgid
-  @tz   	= tz
-  @via	= via
-  @reply	= reply
- end
-
- def []=(field, value)
-   field = field.downcase
-   self.send("#{field}=", value)
- end
-
-end #of class Kludge

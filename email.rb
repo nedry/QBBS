@@ -248,9 +248,9 @@ def sendemail(feedback)
       print "Sending Local e-mail..."
 
     when F_NETMAIL
-      table,number = find_fido_area(NETMAIL)
+      number = find_fido_area(NETMAIL)
       intl = "#{zone}:#{net}/#{node} #{FIDOZONE}:#{FIDONET}/#{FIDONODE}"
-      savecurmessage(to,title,false,false,node,net,intl,point,number)
+      savecurmessage(number,to,title,false,false,node,net,intl,point)
       print "Sending Netmail..."
 
     when Q_NETMAIL
@@ -274,6 +274,7 @@ end # of def sendemail
 def replyemail(epointer,carea)
   area = fetch_area(carea)
   u = @c_user
+  pointer = get_pointer(@c_user,0)
   if carea > 0 then
     abs = absolute_message(area.number,epointer)
     r_message = fetch_msg(abs)
@@ -284,7 +285,7 @@ def replyemail(epointer,carea)
   r_message.msg_text.each_line(DLIM) {|line| msg_text.push(line.chop!)} #1.9 modification
   done = false
   print
-  if %w(R N).include?(@c_user.areaaccess[0])
+  if %w(R N).include?(pointer.access)
     print "%RYou do not have write access."
     return false
   end
@@ -305,9 +306,9 @@ def replyemail(epointer,carea)
     m_type = F_NETMAIL
   end
   if r_message.network then
-    msg_text,msgid,via,tz,reply = qwk_kludge_search(msg_text)
+    #msg_text,msgid,via,tz,reply = qwk_kludge_search(msg_text)
     out = BBSID
-    out = via if !via.nil?
+    out = r_message.q_via if ! r_message.q_via.nil?
     print "Replying to: %W#{to}@#{out}"
     m_type = Q_NETMAIL
   end
@@ -340,14 +341,14 @@ def replyemail(epointer,carea)
       savecurmessage(number, to, title, false,false,node,net,intl,point)
       print "Sending Netmail..."
     when Q_NETMAIL
-      number = find_qwk_area(QWKMAIL,nil)
-      if !via.nil? then
-        @lineeditor.msgtext.unshift("#{to}@#{via}")
+      area = find_qwk_area(QWKMAIL,nil)
+      if ! r_message.q_via.nil? then
+        @lineeditor.msgtext.unshift("#{to}@#{ r_message.q_via}")
         to = "NETMAIL"
 
       end
       print "Sending QWK Netmail..."
-      savecurmessage(number, to, title, false,false,node,net,intl,point)
+      savecurmessage(area.number, to, title, false,false,node,net,intl,point)
     when SMTP
       print "Sending SMTP (Internet) Email..."
       smtp_send(to,@c_user.name,title,@lineeditor.msgtext)

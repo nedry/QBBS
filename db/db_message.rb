@@ -92,7 +92,7 @@ def email_absolute_message(ind,m_to)
   result = lazy_list[ind-1].absolute
 end
 
-def add_msg(m_to,m_from,msg_date,subject,msg_text,exported,network,destnode,destnet,intl,topt,smtp, f_network,orgnode,orgnet,attribute,cost,area,msgid,path,tzutc,charset, tid,pid,fmpt,origin,reply,number)
+def add_msg(m_to,m_from,msg_date,subject,msg_text,exported,network,destnode,destnet,intl,topt,smtp, f_network,orgnode,orgnet,attribute,cost,area,msgid,path,tzutc,charset, tid,pid,fmpt,origin,reply,number,q_msgid,q_tz,q_via,q_reply)
 
   topt = -1 if topt.nil?
   destnode = -1 if destnode.nil?
@@ -126,7 +126,11 @@ def add_msg(m_to,m_from,msg_date,subject,msg_text,exported,network,destnode,dest
     :pid  => pid,
     :fmpt  => fmpt,  
     :origin  => origin,
-    :reply  => reply
+    :reply  => reply,
+    :q_msgid => q_msgid,
+    :q_tz => q_tz,
+    :q_via => q_via,
+    :q_reply => q_reply
   ) 
   
   worked = message.save
@@ -144,13 +148,15 @@ def add_qwk_message(message, area)
   msg_text = message.text
   msg_date = message.date
   title = message.subject.strip
+  q_msgid = message.msgid
+  q_tz = message.tz
+  q_via = message.via
+  q_reply = message.reply
   exported = true
   network = true
-  #absolute = add_msg(to,m_from,msg_date,title,msg_text,exported,network,false,nil,nil,nil,nil,false,area.number)
-  absolute = add_msg(to,m_from,msg_date,title,msg_text,exported,network,nil,nil,nil,nil,false,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,false,area.number)
-
-
-
+  absolute = add_msg(to,m_from,msg_date,title,msg_text,exported,network,nil,nil,nil,nil,false,
+                                   nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,false,area.number,
+                                   q_msgid,q_tz,q_via,q_reply)
   user.posted = user.posted + 1
   pointer.lastread = absolute
   update_pointer(pointer)
@@ -192,33 +198,7 @@ def convert_to_ascii(message)
   return temp
 end
 
- def qwk_kludge_search(buffer)	#searches the message buffer for kludge lines and returns them
-  kludge = Q_Kludge.new
 
-  msg_array = buffer.split("\r")  #split the message into an array so we can deal with it.
-
-  
-  # if we find any of these, reject the message
-  invalid = ["@MSGID:", "@VIA:", "@TZ:", "@REPLY:"]
-
-  valid_messages = []
-  msg_array.each do |x|
-    match = (/^(\S*)(.*)/) =~ x
-    if match then
-      header = $1
-      value = $2
-      if invalid.include? header
-        temp = header.gsub(/:/, '')
-	field = temp.gsub(/@/,'')
-        kludge[field] = value.strip!
-      else
-        valid_messages << x
-      end
-    end
-  end
-
-  return [valid_messages.join("\r") , kludge]
-end
 
   def get_orig_address(msgid)
     orig = nil
