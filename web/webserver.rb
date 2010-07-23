@@ -183,11 +183,17 @@ def area_list_gubbins(grp)
   return o_area,o_name
 end
 
-def m_menu(m_area,pntr,dir,subject,from,total,email)
+def m_menu(m_area,pntr,dir,subject,from,total,email,user)
   m_out = ""
   abs = 0
-  abs =absolute_message(m_area,pntr) if pntr > 0
-
+  if pntr > 0 then
+   if email then
+	  abs = email_absolute_message(pntr,user.name)
+   else
+     abs = absolute_message(m_area,pntr)
+   end
+  end
+   #m_out << "abs: #{abs}<br>m_area: #{m_area}<br> pntr: #{pntr}"
   t_out = "/message" 
   e_out = "Post"
   ptv = ""
@@ -223,7 +229,7 @@ def w_display_message(mpointer,user,m_area,email,dir,total)
       end
       m_out = ""
       curmessage = fetch_msg(abs)
-      m_out << m_menu(m_area,mpointer,dir,curmessage.subject.strip,curmessage.m_from.strip,total,email)
+      m_out << m_menu(m_area,mpointer,dir,curmessage.subject.strip,curmessage.m_from.strip,total,email,user)
       if pointer.lastread < curmessage.absolute then
        pointer.lastread = curmessage.absolute
        update_pointer(pointer)
@@ -776,7 +782,7 @@ if !session[:name].nil? then
             o_out = "Message (#{abs}) Deleted. <a href='#{out}'>Back</a>"
             haml :delete, :locals => {:email => e_out, :groups => g_out, :output => o_out}
          else
-            err_out = "Delete Message, are you sure? <a href='/delete?abs=#{abs}&area=#{area}&doit=Y'>Yes</a>."
+            err_out = "Delete Message #{abs}, are you sure? <a href='/delete?abs=#{abs}&area=#{area}&doit=Y'>Yes</a>. <a href='#{out}'>No</a>"
             haml :deleteerror, :locals => {:email => e_out, :groups => g_out, :err =>err_out}   
          end
        else
@@ -1276,7 +1282,7 @@ if !session[:name].nil? then
        from,subject,tempstr = w_display_message(pointer,user,m_area,true,dir,e_hmsg(user)) 
        m_out << tempstr
        m_out << "<BR>"
-       m_out << m_menu(m_area,pointer,dir,subject,from,e_hmsg(user),true)
+       m_out << m_menu(m_area,pointer,dir,subject,from,e_hmsg(user),true,user)
       else m_out << "No Messages.  Send an <a href='/post?m_area=0&pvt=t'>Email." end
 
       
@@ -1287,7 +1293,7 @@ if !session[:name].nil? then
        from,subject,tempstr = w_display_message(last,user,m_area,true,dir,e_hmsg(user))
        m_out << tempstr
        m_out << "<BR>"
-       m_out << m_menu(m_area,pointer,dir,subject,from,e_hmsg(user),true)
+       m_out << m_menu(m_area,pointer,dir,subject,from,e_hmsg(user),true,user)
       else
        m_out << "Out of Range."
       end
@@ -1299,12 +1305,12 @@ if !session[:name].nil? then
        from,subject,tempstr = w_display_message(pointer,user,m_area,true,dir,e_hmsg(user))
        m_out << tempstr
        m_out << "<BR>"
-       m_out << m_menu(m_area,pointer,dir,subject,from,e_hmsg(user),true)
+       m_out << m_menu(m_area,pointer,dir,subject,from,e_hmsg(user),true,user)
       else
       m_out << "Highest Message."
        pointer = e_hmsg(user)
        m_out << "<BR>"
-       m_out << m_menu(m_area,pointer,dir,subject,from,e_hmsg(user),true)
+       m_out << m_menu(m_area,pointer,dir,subject,from,e_hmsg(user),true,user)
 	end
       else
        if last > 1 then 
@@ -1316,7 +1322,7 @@ if !session[:name].nil? then
 	m_out << "Lowest Message"
 	pointer = 1
 	m_out << "<BR>"
-        m_out << m_menu(m_area,pointer,dir,subject,from,e_hmsg(user),true)
+        m_out << m_menu(m_area,pointer,dir,subject,from,e_hmsg(user),true,user)
        end
       end
       end
@@ -1413,7 +1419,7 @@ if !session[:name].nil? then
 
 
 	m_out << "<BR>"
-        m_out << m_menu(m_area, pntr(user,m_area) ,dir,subject,from,h_msg(m_area),false)
+        m_out << m_menu(m_area, pntr(user,m_area) ,dir,subject,from,h_msg(m_area),false,user)
  
   e_out,g_out = side_menu_gubbins    #make the side menu database inserts on the sinatra side, like the manual says
 
