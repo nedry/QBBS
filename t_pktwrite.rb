@@ -50,7 +50,7 @@ def pkt_export_run
     puts 
 
     if new > 0
-     export_messages(xp.number,pointer.lastread).each {|msg|
+     export_messages(xp.number,pointer.lastread).each_with_index {|msg,i|
 
           if !msg.f_network and !msg.exported then
             pkt_writer.write_a_message(xp.number,xp.fido_net,msg)

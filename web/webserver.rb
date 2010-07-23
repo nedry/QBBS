@@ -411,7 +411,7 @@ end
        msg_text = WordWrapper.wrap(msg_text,79)
        msg_text.gsub!(10.chr,"")
        msg_text = convert_to_utf8(msg_text)
-      absolute = add_msg(msg_to,name,Time.now,msg_subject,msg_text,false,false,node,net,intl,nil,false,fido,nil,nil,
+      absolute = add_msg(msg_to,name,Time.now,msg_subject,msg_text,false,false,node,net,intl,nil,false,false,nil,nil,
                                       nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,false,area.number,nil,nil,nil,nil)
       if qwk 
        post_out << "QWK Netmail Sent. ##{absolute}<BR>"
