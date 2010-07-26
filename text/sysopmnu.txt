@@ -1,11 +1,11 @@
 
-TARDIS BBS
+             %WSYSOP COMMANDS
 
-             SYSOP COMMANDS
+%W[%YAM%W]%GArea Maintenance %W[%YBM%W]%GBulletin Maintenance
+%W[%YDM%W]%GDoor Maintenance %W[%YGM%W]%GGroup Maintenance
+%W[%YKL%W]%GKill User Log    %W[%YKU%W]%GKill User (punt) 
+%W[%YUM%W]%GUser Maintenance 
 
-[AM]Area Maintenance [BM]Bulletin Maintenance
-[KU]Kill User (punt) [KL]Kill User Log
-[UM]User Maintenance
 
 Use a ; to stack commands together (I.E., %;a;q)
 Some commands take parameters (I.E., a2)

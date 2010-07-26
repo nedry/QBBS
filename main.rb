@@ -113,6 +113,7 @@ class Session
 			when "KL"; run_if_ulevel {clearlog}
 			when "AM"; run_if_ulevel {areamaintmenu}
 			when "BM"; run_if_ulevel {bullmaint}
+                        when "GM"; run_if_ulevel {groupmaintmenu}
 			when "A"; areachange(parameters)
 			when "B"; bullets(parameters)
 			when "T";  if IRC_ON then 

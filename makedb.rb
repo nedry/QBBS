@@ -32,9 +32,10 @@ DataObjects::Postgres.logger = DataObjects::Logger.new(STDOUT,:debug)
 DataMapper.auto_migrate!
 
 # create initial groups
-%w(Local DoveNet FidoNet).each {|g|
-  Group.new(:groupname => g).save!
-}
+
+Group.new(:groupname => 'Local', :number => 0 ).save!
+Group.new(:groupname => 'Dove.net', :number => 1 ).save!
+Group.new(:groupname => 'Fidonet', :number => 2 ).save!
 
 
 Subsys.new(:subsystem => 2, :name => 'FIDO').save!

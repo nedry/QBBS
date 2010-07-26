@@ -183,17 +183,11 @@ def area_list_gubbins(grp)
   return o_area,o_name
 end
 
-def m_menu(m_area,pntr,dir,subject,from,total,email,user)
+def m_menu(m_area,pntr,dir,subject,from,total,email)
   m_out = ""
   abs = 0
-  if pntr > 0 then
-   if email then
-	  abs = email_absolute_message(pntr,user.name)
-   else
-     abs = absolute_message(m_area,pntr)
-   end
-  end
-   #m_out << "abs: #{abs}<br>m_area: #{m_area}<br> pntr: #{pntr}"
+  abs =absolute_message(m_area,pntr) if pntr > 0
+
   t_out = "/message" 
   e_out = "Post"
   ptv = ""
@@ -223,20 +217,25 @@ def w_display_message(mpointer,user,m_area,email,dir,total)
       area = fetch_area(m_area)
       pointer = get_pointer(user,m_area)
       if email then
-	     abs = email_absolute_message(mpointer,user.name)
+	 abs = email_absolute_message(mpointer,user.name)
       else
          abs = absolute_message(area.number,mpointer)
       end
       m_out = ""
       curmessage = fetch_msg(abs)
-      m_out << m_menu(m_area,mpointer,dir,curmessage.subject.strip,curmessage.m_from.strip,total,email,user)
+      m_out << m_menu(m_area,mpointer,dir,curmessage.subject.strip,curmessage.m_from.strip,total,email)
       if pointer.lastread < curmessage.absolute then
        pointer.lastread = curmessage.absolute
        update_pointer(pointer)
       end
-      message = curmessage.msg_text.strip
-      message.gsub!(13.chr,"<br/>")
-      
+ #      message = []
+
+  #    if curmessage.network then
+  #     message,kludge = qwk_kludge_search(curmessage.msg_text.strip)
+   #   else
+        message = curmessage.msg_text.strip
+   #   end
+        message.gsub!(13.chr,"<br/>")
       m_out << "<div class='fixed' style='background-color:black;color:white'>"
       m_out << "##{mpointer} <span style='color:#54fc54'>[</span><span style='color:#54fcfc'>#{curmessage.absolute}</span><span style='color:#54fc54'>]</span> <span style='color:#fc54fc'>"
       m_out << "#{curmessage.msg_date.strftime('%A the %d')}"
@@ -266,7 +265,7 @@ def w_display_message(mpointer,user,m_area,email,dir,total)
       end
       if curmessage.network then
        out = BBSID
-       out = curmessage.q_via if !curmessage.q_via.nil?
+       out = curmessage.q_via if !curmessage.q_via.nil? and !curmessage.q_via.empty?
        m_out << " <span style='color:#54fc54'>(</span><span style='color:#54fcfc'>#{out}</span><span style='color:#54fc54'>)</span>"
       end
       m_out << "</td></tr>"
@@ -327,7 +326,7 @@ if !session[:name].nil? then
 
   name = session[:name]
   uid = get_uid(name)
-  who_list_update(uid,"Writing a Message:")
+  who_list_update(uid,"Writing a Message")
   
   m_area = params['m_area']
   m_area = m_area.to_i
@@ -348,46 +347,48 @@ if !session[:name].nil? then
   pvt = false
   pvt = true if params['private'] == "t"
   abs = params['abs'].to_i
-
-  
   intl = nil
   zone = nil
   net = nil
   node = nil
   
-  route = ""
   post_out = ""
   area=fetch_area(m_area)
   area=fetch_area(0) if pvt
   user = fetch_user(get_uid(name))
   pointer = get_pointer(user,m_area)
-    
+  
   if (pointer.access == "W") or (pointer.access == "C") or (pointer.access == "M") or (area.number == 0) or (user.level == 255) and (!area.delete) and (pointer.access !="N") then
     if !msg_to.nil? and !msg_to.empty? and pvt then
       if !reply then
         case determine_email_type(msg_to)  
              when Q_NETMAIL
                qwk = true
-               to,route = qwkmailadr(msg_to) 
               when F_NETMAIL
                fido = true
                puts "!!!FIDO NETMAIL ADDRESS DETECTED!!!"
+               puts "qwk: #{qwk}"
             end # of case
-         end #of reply
+         end
       if qwk then
+        reply_message = fetch_msg(abs)
         area =  find_qwk_area(QWKMAIL,nil)  # we want to save this message to the outgoing QWK area.
-        r_message = fetch_msg(abs)
+        route = reply_message.q_via if  reply
         to = msg_to
-        route = r_message.q_via if reply and !r_message.q_via.nil?
-        route = BBSID if route.empty?
+        to,route = qwkmailadr(msg_to) if !reply
+           if !route.nil? and !route.empty? then
              if route.upcase != BBSID then #kludge line for a user not on the QWK Hub
-               msg_text.insert(0,"#{msg_to}@#{route}\r")   #get the kludge line, send email reply to the correct user
+               out = ""
+               out = "@#{reply_message.q_via}" if reply
+               msg_text.insert(0,"#{msg_to}#{out}\r")   #get the kludge line, send email reply to the correct user
                msg_to = "NETMAIL" #tell the QWK hub it needs to forward the message.
             else
               msg_to = to #Otherwise, strip the QWK Hub name from the To: line
              end
-        end
-    
+           end
+        else
+ 
+
         if fido then
           puts "reached fido!"
           to,zone,net,node,point = netmailadr(msg_to)
@@ -398,14 +399,13 @@ if !session[:name].nil? then
            puts "point: #{point}"
           area = fetch_area( find_fido_area(NETMAIL))
           intl = "#{zone}:#{net}/#{node} #{FIDOZONE}:#{FIDONET}/#{FIDONODE}"
-       end
- 
-              else
+      else
        if !e_uid.nil? and !e_uid.empty? then   #we've gotten a local email recp. 
          msg_to = fetch_user(e_uid.to_i).name
-     end
-
+       end
 end
+     end
+    end
 #more validations
 
     if !msg_subject.nil? then
@@ -417,7 +417,10 @@ end
        msg_text = WordWrapper.wrap(msg_text,79)
        msg_text.gsub!(10.chr,"")
        msg_text = convert_to_utf8(msg_text)
-      absolute = add_msg(msg_to,name,Time.now,msg_subject,msg_text,false,false,node,net,intl,nil,false,false,nil,nil,
+   
+      msg_date = Time.now
+   #   absolute = add_msg(msg_to,name,msg_date,msg_subject,msg_text,false,false,false,nil,nil,nil,nil,false,area.number)
+      absolute = add_msg(msg_to,name,msg_date,msg_subject,msg_text,false,false,node,net,intl,nil,false,fido,nil,nil,
                                       nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,false,area.number,nil,nil,nil,nil)
       if qwk 
        post_out << "QWK Netmail Sent. ##{absolute}<BR>"
@@ -469,36 +472,33 @@ if !session[:name].nil? then
    pointer = get_pointer(user,m_area)
 
    area=fetch_area(m_area)
-   abs = 0
+   
 
      if (pointer.access == "W") or (pointer.access == "C") or (pointer.access == "M") or (area.number == 0) or (user.level == 255) and (!area.delete) and (pointer.access !="N") then
+       reply = []
+       puts "!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+       puts "to: #{to}"
 
-        if !to.nil? then 
-	       curmessage = fetch_msg(absolute_message(area.number,last))
-         reply =  convert_to_ascii(curmessage.msg_text)
-         abs = curmessage.absolute
-        end
-                   
-            #This is going to be cleaned up when I change the qwk/rep system to store kludge lines in the message record.
+            
           post_out <<  "<table>"
           post_out << "<form name='main' method='post' action='/postsave'>" 
+        if !to.nil? then 
+	       curmessage = fetch_msg(absolute_message(area.number,last))
+              if !curmessage.nil?   # if curmessage is nil it means there was no message to load...
+                puts "I'm here"
+	        reply =  convert_to_ascii(curmessage.msg_text)
+                post_out <<  "<input name='reply' type='hidden' value='t'>"   #let the /postsave from know we are replying
+                post_out <<  "<input name='abs' type='hidden' value='#{curmessage.absolute}'>" #let /postsave know the message id so it can get stuff from it
+                post_out <<  "<input name='qwk' type='hidden' value='t'>"  if curmessage.network
+                post_out <<  "<input name='fido' type='hidden' value='t'>" if curmessage.f_network 
+              end
+            end
+            
           post_out << "<input name='dir' type='hidden'  value='#{dir}'>" 
           post_out <<  "<input name='last' type='hidden' value='#{last}'>" 
           post_out <<  "<input name='m_area' type='hidden' value='#{m_area}'>"
-          post_out <<  "<input name='abs' type='hidden' value='#{abs}'>" 
           post_out <<  "<input name='private' type='hidden' value='t'>" if pvt 
-          
-          if !curmessage.nil?  # if curmessage is nil it means there was no message to load...
-            if curmessage.network then
-              post_out <<  "<input name='reply' type='hidden' value='t'>"   #let the /postsave from know we are replying
-              post_out <<  "<input name='qwk' type='hidden' value='t'>"  if curmessage.network 
-            end
-              
-          if curmessage.f_network  then
-             post_out <<  "<input name='fido' type='hidden' value='t'>" 
-           end
-         end
-         
+  
           post_out <<  "<tr><td>From: </td> <td>#{name}</td></tr>" 
           if pvt then
             if to.nil? or to.empty? then
@@ -652,7 +652,7 @@ if !session[:name].nil? then
 
   name = session[:name]
   uid = get_uid(name)
-  who_list_update(uid,"Information:")
+  who_list_update(uid,"Information")
   b_out = ""
   b_out << "<table cellspacing='5'>"
    for i in 1..(b_total)
@@ -676,7 +676,7 @@ if !session[:name].nil? then
 
   name = session[:name]
   uid = get_uid(name)
-  who_list_update(uid,"IRC Chat:")
+  who_list_update(uid,"IRC Chat")
   user = fetch_user(get_uid(name))
   m_out = ""
   
@@ -782,7 +782,7 @@ if !session[:name].nil? then
             o_out = "Message (#{abs}) Deleted. <a href='#{out}'>Back</a>"
             haml :delete, :locals => {:email => e_out, :groups => g_out, :output => o_out}
          else
-            err_out = "Delete Message #{abs}, are you sure? <a href='/delete?abs=#{abs}&area=#{area}&doit=Y'>Yes</a>. <a href='#{out}'>No</a>"
+            err_out = "Delete Message, are you sure? <a href='/delete?abs=#{abs}&area=#{area}&doit=Y'>Yes</a>."
             haml :deleteerror, :locals => {:email => e_out, :groups => g_out, :err =>err_out}   
          end
        else
@@ -891,7 +891,7 @@ if !session[:name].nil? then
   user = fetch_user(uid)
 
   e_out,g_out = side_menu_gubbins
-  who_list_update(uid,"Saving User Settings:")
+  who_list_update(uid,"Saving User Settings")
 
        if old_password.upcase.strip != user.password.strip then
          err_out = "You must enter your correct current password!"
@@ -923,7 +923,7 @@ if !session[:name].nil? then
   user = fetch_user(uid)
 
   e_out,g_out = side_menu_gubbins
-  who_list_update(uid,"Saving Chat Alias:")
+  who_list_update(uid,"Saving Chat Alias")
   newalias = new_alias.strip.to_s.slice(0..14)
 	if newalias == user.alias then
          err_out = "That is already your alias."
@@ -951,7 +951,7 @@ if !session[:name].nil? then
 
   name = session[:name]
   uid = get_uid(name)
-  who_list_update(uid,"User Settings:")
+  who_list_update(uid,"User Settings")
   
    user = fetch_user(get_uid(name))
        pass_out = ""
@@ -998,7 +998,7 @@ if !session[:name].nil? then
 
   name = session[:name]
   uid = get_uid(name)
-  who_list_update(uid,"User Details:")
+  who_list_update(uid,"User Details")
   
   o_uid=params['uid'].to_i
   o_user = fetch_user(o_uid)
@@ -1026,7 +1026,7 @@ if !session[:name].nil? then
 
   name = session[:name]
   uid = get_uid(name)
-  who_list_update(uid,"User List:")
+  who_list_update(uid,"User List")
   u_out = ""
   u_out << "<table class = 'green_table'>"
   u_out << "<th>User ID</th><th>Location</th>"
@@ -1056,11 +1056,11 @@ if !session[:name].nil? then
 
   name = session[:name]
   uid = get_uid(name)
-  who_list_update(uid,"Who is Online:")
+  who_list_update(uid,"Who is Online")
   w_out = ""
   w_out << "<h3>Web Users:</h3>"
   w_out <<  "<table class='green_table'>"
-  w_out <<  "<tr><td><b>User ID</b></td><td><b>Location</b></td><td><b>Last Activity</b></td><td><b>Where</b></td></tr>"
+  w_out <<  "<th>User ID</th><th>Location</th><th>Last Activity</th><th>Where</th>"
   fetch_who_list.each {|x| 
 	   w_out <<  "<tr><td><a href='/showuser?uid=#{x.number}'>#{x.user.name}</a>"
 	   time = x.lastactivity.strftime('%Y-%m-%d %I:%M%p')
@@ -1069,7 +1069,7 @@ if !session[:name].nil? then
    w_out <<  "</table>"
    w_out <<   "<table class='green_table'>"
    w_out <<  "<h3>Telnet Users:</h3>"
-   w_out <<  "<tr><td><b>Node</b></td><td><b>User ID</b></td><td><b>Location</b></td><td><b>Where</b></td></tr>"
+   w_out <<  "<th>Node</th><th>User ID</th><th>Location</th><th>Where</th>"
    fetch_who_t_list.each {|x| 
 	   w_out <<   "<tr><td>#{x.node}"
            w_out <<   "<td>#{x.name} </td><td>#{x.location} </td><td>#{x.where}</td></tr>"
@@ -1090,7 +1090,7 @@ if !session[:name].nil? then
   wall_cull
   name = session[:name]
   uid = get_uid(name)
-  who_list_update(uid,"Last Callers:")
+  who_list_update(uid,"Last Callers")
   l_out = ""
   l_out << "<table class='green_table'>"
   l_out <<  "<th>User ID</tn><th>Date</th><th>Connection</th>"
@@ -1113,7 +1113,7 @@ if !session[:name].nil? then
 
   name = session[:name]
   uid = get_uid(name)
-  who_list_update(uid,"System Log:")
+  who_list_update(uid,"System Log")
   dir = "f"
   last = 0
 
@@ -1246,7 +1246,7 @@ if !session[:name].nil? then
   grp = params["m_grp"]
   name = session[:name]
   uid = get_uid(name)
-  who_list_update(uid,"Area List.")
+  who_list_update(uid,"Area List")
   a_out,n_out = area_list_gubbins(grp)
   e_out,g_out = side_menu_gubbins    #make the side menu database inserts on the sinatra side, like the manual says
 
@@ -1282,7 +1282,7 @@ if !session[:name].nil? then
        from,subject,tempstr = w_display_message(pointer,user,m_area,true,dir,e_hmsg(user)) 
        m_out << tempstr
        m_out << "<BR>"
-       m_out << m_menu(m_area,pointer,dir,subject,from,e_hmsg(user),true,user)
+       m_out << m_menu(m_area,pointer,dir,subject,from,e_hmsg(user),true)
       else m_out << "No Messages.  Send an <a href='/post?m_area=0&pvt=t'>Email." end
 
       
@@ -1293,7 +1293,7 @@ if !session[:name].nil? then
        from,subject,tempstr = w_display_message(last,user,m_area,true,dir,e_hmsg(user))
        m_out << tempstr
        m_out << "<BR>"
-       m_out << m_menu(m_area,pointer,dir,subject,from,e_hmsg(user),true,user)
+       m_out << m_menu(m_area,pointer,dir,subject,from,e_hmsg(user),true)
       else
        m_out << "Out of Range."
       end
@@ -1305,12 +1305,12 @@ if !session[:name].nil? then
        from,subject,tempstr = w_display_message(pointer,user,m_area,true,dir,e_hmsg(user))
        m_out << tempstr
        m_out << "<BR>"
-       m_out << m_menu(m_area,pointer,dir,subject,from,e_hmsg(user),true,user)
+       m_out << m_menu(m_area,pointer,dir,subject,from,e_hmsg(user),true)
       else
       m_out << "Highest Message."
        pointer = e_hmsg(user)
        m_out << "<BR>"
-       m_out << m_menu(m_area,pointer,dir,subject,from,e_hmsg(user),true,user)
+       m_out << m_menu(m_area,pointer,dir,subject,from,e_hmsg(user),true)
 	end
       else
        if last > 1 then 
@@ -1322,7 +1322,7 @@ if !session[:name].nil? then
 	m_out << "Lowest Message"
 	pointer = 1
 	m_out << "<BR>"
-        m_out << m_menu(m_area,pointer,dir,subject,from,e_hmsg(user),true,user)
+        m_out << m_menu(m_area,pointer,dir,subject,from,e_hmsg(user),true)
        end
       end
       end
@@ -1360,7 +1360,7 @@ if !session[:name].nil? then
   dir = params["dir"]
   name = session[:name]
   uid = get_uid(name)
-  who_list_update(uid,"Reading Messages.")
+  who_list_update(uid,"Reading Messages")
    user = fetch_user(get_uid(name))
    scanforaccess(user)
    area=fetch_area(m_area)
@@ -1419,7 +1419,7 @@ if !session[:name].nil? then
 
 
 	m_out << "<BR>"
-        m_out << m_menu(m_area, pntr(user,m_area) ,dir,subject,from,h_msg(m_area),false,user)
+        m_out << m_menu(m_area, pntr(user,m_area) ,dir,subject,from,h_msg(m_area),false)
  
   e_out,g_out = side_menu_gubbins    #make the side menu database inserts on the sinatra side, like the manual says
 
@@ -1436,7 +1436,7 @@ if !session[:name].nil? then
 
   name = session[:name]
   uid = get_uid(name)
-  who_list_update(uid,"Main Menu.")
+  who_list_update(uid,"Main Menu")
   e_out,g_out = side_menu_gubbins    #make the side menu database inserts on the sinatra side, like the manual says
 
   haml :main, :locals => {:email => e_out, :groups => g_out, :name => name}

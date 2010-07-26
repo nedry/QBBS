@@ -62,6 +62,7 @@ class Session
   require "email.rb"
   require "teleconference.rb"
   require "main.rb"
+  require "groups.rb"
 
   def run
     telnetsetup
@@ -178,7 +179,7 @@ class MailSchedulethread
         tick = Time.now.min.to_i
       end
 
-      #puts "Idle Time:  #{idle}"
+      puts "Idle Time:  #{idle}"
       if idle >= QWKREPINTERVAL then
         doit(idle)
         idle = 0
