@@ -140,8 +140,8 @@ def add_msg(m_to,m_from,msg_date,subject,msg_text,exported,network,destnode,dest
   return high_absolute(area.number)
 end
 
-def add_qwk_message(message, area)
-  user = fetch_user(get_uid(QWKUSER))
+def add_qwk_message(message, area,qwkuser)
+  user = fetch_user(get_uid(qwkuser))
   pointer = get_pointer(user,area.number)
   to = message.to.upcase.strip
   m_from = message.from.upcase.strip

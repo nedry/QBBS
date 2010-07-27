@@ -33,8 +33,8 @@ def fetch_area_list(grp)
   return areas
 end
 
-def find_qwk_area (number,name)  # name for future use.
-  Area.first(:netnum => number)
+def find_qwk_area (number,grp)  # name for future use.
+  Area.first(:netnum => number, :grp => grp)
 end
 
 def add_area(name, d_access,v_access,netnum,fido_net,group)

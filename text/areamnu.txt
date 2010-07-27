@@ -1,4 +1,3 @@
-%G_%Y_%Br%Ce%Wt%Mr%Ro %GC%YO%BM%CP%WU%MT%RI%GN%YG%B %CB%WB%MS%R_%G_%Y_%B_%C_%W_%M_%R_%G_%Y_%B_%C_%W_%M_%R_%G_%Y_%B_%C_%W_%M_%R_%G_%Y_%B_%C_%W_%M_%R_%G_%Y_%B_
 
 %C     AREA MAINTENANCE COMMANDS
 

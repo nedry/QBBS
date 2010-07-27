@@ -84,8 +84,8 @@ module Qwk
   class Importer
     attr_accessor :file, :log
     
-   def initialize(path)
-      @file = path
+   def initialize(qwknet)
+      @qwknet = qwknet
       @log = Log.new("qwklog.txt")
     end
     
@@ -268,7 +268,7 @@ end
 
     def getindexlist(path)
       list = Dir.glob(path)
-      list.delete("qwk/PERSONAL.NDX") #we don't want this .. it's dupe causing
+      list.delete("@/PERSONAL.NDX") #we don't want this .. it's dupe causing
       return list
     end
 
@@ -298,7 +298,7 @@ end
 
     def clearoldqwk
       puts "-QWK: Deleting old packets"
-      happy = system("rm qwk/*")
+      happy = system("rm #{@qwknet.qwkdir}/*")
       if happy then 
         puts "-Success" 
       else 
@@ -321,7 +321,7 @@ end
       n_read = 0
       index.each_with_index do |msg_index, x|
         n_read += 1
-        message = getmessage("qwk", msg_index)
+        message = getmessage(@qwknet.qwkdir, msg_index)
         if message.error then
           puts
           puts "-QWK: ERROR detected in packet.  Aborting."
@@ -347,12 +347,12 @@ end
        unzippacket
       end
 
-      idxlist = getindexlist("qwk/*.NDX")
-      control = getcontrol("qwk")
+      idxlist = getindexlist("#{@qwknet.qwkdir}/*.NDX")
+      control = getcontrol(@qwknet.qwkdir)
       makearealist(control)
       displaypacketstats(idxlist)
 
-      user = fetch_user(get_uid(QWKUSER))
+      user = fetch_user(get_uid(@qwknet.qwkuser))
       scanforaccess(user)
       tmsgimport = 0
 
@@ -366,7 +366,7 @@ end
         find = tempstr[0].to_i
         print "-QWK: Finding Import Area for packet# #{find}..."
         if find > 0 then
-         area =  find_qwk_area(find, nil) 
+         area =  find_qwk_area(find,@qwknet.grp) 
         else
           area = fetch_area(0)  #we want to import all email into email.  QWK/REP email is always 000
         end
@@ -378,7 +378,7 @@ end
           print "-QWK: Processing Message #"
 
           read_messages(index) do |message|
-            add_qwk_message(message, area) # in db_message
+            add_qwk_message(message, area,@qwknet.qwkuser) # in db_message
           end
         else
           puts

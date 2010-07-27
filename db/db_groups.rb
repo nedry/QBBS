@@ -30,9 +30,14 @@ def get_qwknet(group)
   qwknet = group.qwknets.first
 end
 
+
 def remove_qwknet(group)
   qwknet = group.qwknets.first
   qwknet.destroy!
+end
+
+def update_qwknet(qwknet)
+  qwknet.save
 end
 
 def add_qwknet(group,name,bbsid,qwkuser,ftpaddress,ftpaccount,ftppassword)

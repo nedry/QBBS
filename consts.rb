@@ -1,8 +1,8 @@
 DEBUG = true
 LISTENPORT = 2323
-QWK = false
+QWK = true
 QWK_DEBUG = true
-FIDO = true
+FIDO = false
 SMTP = false
 IRC_ON =  false
 
@@ -66,26 +66,28 @@ IRCOPERPSWD = "x1g9t6m3a0"
 
 #QWK/REP Settings (to be converted to postgres for multiple networks)
 
-QWKUSER = "QWKREP"
-BBSID = "VERT"
-REPDATA = "rep/VERT.MSG"
-REPPACKET = "rep/VERT.REP"
-REPPACKETUP = "VERT.REP"
 
-QWKPACKET ="qwk/VERT.QWK"
-QWKPACKETDOWN = "VERT.QWK"
-QWKDIR = "qwk"
+#REPDATA = "rep/VERT.MSG"
+#REPPACKET = "rep/VERT.REP"
+#REPPACKETUP = "VERT.REP"
+
+#QWKPACKET ="qwk/VERT.QWK"
+#QWKPACKETDOWN = "VERT.QWK"
+#QWKDIR = "qwk"
 
 QWKMAIL = 0
 
-QWKTAG ="#{254.chr} retroCOMPUTING BBS - Home of QUARKware #{254.chr} telnet 81.96.235.250 2323"
+D_QWKEXT = "QWK"
+D_REPEXT = "REP"
+D_QWKDIR = "qwk"
+D_REPDIR = "rep"
+
+D_QWKTAG ="#{254.chr} retroCOMPUTING BBS - Home of QUARKware #{254.chr} telnet 81.96.235.250 2323"
 
 
 QWKREPINTERVAL = 15
 
-FTPADDRESS ="vert.synchro.net"
-FTPACCOUNT ="QBBSTEST"
-FTPPASSWORD ="flatmo"
+
 
 
 #FidoNET settings
