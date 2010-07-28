@@ -315,10 +315,11 @@ class Session
       print "%CDest:%G #{fidomessage.destnet}/#{fidomessage.destnode}"
 
       # [[field, attr], ....]. if attr is missing, it is field.downcase 
-      fields = [ "Attribute", "Cost", ["Date Time", :msg_date], ["To", :m_to],
-        ["From", :m_from], "Subject", "Area", "Msgid", "Path", ["TzUTZ", :tzutc],
-        "CharSet", ["Tosser ID", :tid], ["Proc ID", :pid], "Intl", "Topt", "Fmpt",
-        "Reply", "Origin"]
+ fields = [ "Attribute", "Cost", ["Date Time", :msg_date], ["To", :m_to],
+       ["From", :m_from], "Subject", "Area", "Msgid", "Path",
+       ["TzUTZ", :tzutc],"CharSet", ["Tosser ID", :tid], ["Proc ID", :pid], "Intl",
+       "Topt", "Fmpt", "Reply", "Origin",["QWK Message ID", :q_msgid],
+       ["QWK Time Zone",:q_tz],["QWK Via",:q_via],["QWK Reply",:q_reply]]
 
       fields.each do |f|
         field, attr = (f.is_a? Array) ? f : [f, f.downcase]
