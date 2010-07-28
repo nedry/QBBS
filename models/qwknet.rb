@@ -9,7 +9,7 @@ class Qwknet
   property :locked, Boolean, :default => false
   #property :number, Integer, :required => true
   property :modify_date, DateTime
- # property :network, String, :length => 40
+  property :repdata, String, :length => 40
   property :qwkuser, String, :length => 40
   property :bbsid, String, :length => 40
   property :reppacket, String, :length => 40

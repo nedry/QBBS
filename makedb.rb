@@ -5,6 +5,8 @@ require "dm-validations"
 require 'yaml'
 require 'consts'
 require 'db/db_area'
+require 'db/db_groups'
+require 'db/db_message'
 
 
 Dir['models/*'].each {|i| require i}
@@ -87,13 +89,16 @@ add_area("Synchronet Prog. (Baja)","W","W",2011,nil,2)
 add_area("Synchronet Prog. (Javascript)","W","W",2012,nil,2)
 add_area("Synchronet Prog. (c/c++/cvs)","W","W",2010,nil,2)
 
-#FidoNet
+add_area("DoveQWKMail","I","I",0,nil,2)
 
+#FidoNet
 add_area("Sysop712","I","I",nil,"SYSOP712",3)
 add_area("Netmail","I","I",nil,"NETMAIL",3)
 add_area("BadNetMail","I","I",nil,"BADNETMAIL",3)
-add_area("QWKmail","I","I",0,nil,1)
 add_area("Weather","W","W",nil,"WEATHER",3)
+
+add_qwknet(fetch_group(1),"Dove.Net","VERT","DOVEQWK","vert.synchro.net","QBBSTEST","FLATMO")
+
 # initial system
 s = System.new(
   :lastqwkrep => Time.now,
@@ -105,3 +110,5 @@ happy = s.save
 puts "errors:"
 s.errors{|error| puts error}
 puts happy
+
+

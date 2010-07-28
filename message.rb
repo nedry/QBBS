@@ -372,6 +372,10 @@ class Session
     i = 0
     area = fetch_area(@c_area)
     pointer = get_pointer(@c_user,area.number)
+    group = fetch_group_grp(area.grp)
+    qwknet = get_qwknet(group)
+    bbsid = ""
+    bbsid = qwknet.bbsid if !qwknet.nil?
     u = @c_user
     
     if email then
@@ -390,9 +394,6 @@ class Session
     tempmsg=convert_to_ascii(curmessage.msg_text)
 
 
-    #if curmessage.network then
-     # tempmsg,kludge= qwk_kludge_search(tempmsg)
-    #end
      tempmsg.each_line(DLIM) {|line| message.push(line.chop!)} #changed from .each for ruby 1.9
 
     
@@ -425,7 +426,7 @@ class Session
       write " %G(%C#{out}%G)"
     end
     if curmessage.network then
-      out = BBSID
+      out = bbsid
       out = curmessage.q_via if !curmessage.q_via.nil?
       end
       write " %G(%C#{out}%G)"

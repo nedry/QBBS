@@ -1,6 +1,6 @@
 DEBUG = true
 LISTENPORT = 2323
-QWK = true
+QWK = false
 QWK_DEBUG = true
 FIDO = false
 SMTP = false
@@ -81,8 +81,9 @@ D_QWKEXT = "QWK"
 D_REPEXT = "REP"
 D_QWKDIR = "qwk"
 D_REPDIR = "rep"
+D_REPDATA = "MSG"
 
-D_QWKTAG ="#{254.chr} retroCOMPUTING BBS - Home of QUARKware #{254.chr} telnet 81.96.235.250 2323"
+D_QWKTAG ="#{254.chr} TARDIS BBS - Home of QUARKseven #{254.chr} telnet/http bbs.cortex-media.info"
 
 
 QWKREPINTERVAL = 15

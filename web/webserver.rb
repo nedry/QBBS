@@ -216,6 +216,10 @@ end
 def w_display_message(mpointer,user,m_area,email,dir,total)
       area = fetch_area(m_area)
       pointer = get_pointer(user,m_area)
+      group = fetch_group_grp(area.grp)
+     qwknet = get_qwknet(group)
+      bbsid = ""
+      bbsid = qwknet.bbsid if !qwknet.nil?
       if email then
 	 abs = email_absolute_message(mpointer,user.name)
       else
@@ -264,7 +268,7 @@ def w_display_message(mpointer,user,m_area,email,dir,total)
        m_out << " (#{out})" 
       end
       if curmessage.network then
-       out = BBSID
+       out = bbsid
        out = curmessage.q_via if !curmessage.q_via.nil? and !curmessage.q_via.empty?
        m_out << " <span style='color:#54fc54'>(</span><span style='color:#54fcfc'>#{out}</span><span style='color:#54fc54'>)</span>"
       end

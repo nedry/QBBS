@@ -16,6 +16,7 @@
     print " %G[%YB%G]BSid: %Y#{qwknet.bbsid}"
     print " %G[%YRD%G]Rep Directory: %Y#{qwknet.repdir}"
     print " %G[%YRP%G]Rep Packet: %Y#{qwknet.reppacket}"
+    print " %G[%YRP%G]Rep Datafile: %Y#{qwknet.repdata}"
     print " %G[%YQP%G]QWK Directory: %Y#{qwknet.qwkdir}"
     print " %G[%YQP%G]QWK Packet: %Y#{qwknet.qwkpacket}"
     print " %G[%YQT%G]QWK Tag:"
@@ -285,6 +286,32 @@ def changerepdirectory(number)
       print "No QWK/NET Network defined."
     end
     displaygroup(number)
+  end
+  
+  
+  def changerepdata(number)
+    
+  group = fetch_group(number)
+  qwknet = get_qwknet(group)   
+   if !qwknet.nil? then
+
+      prompt = "%WEnter the name for REP data packets:%G "
+      repdata = getinp(prompt) 
+      
+      if repdata.length > 40 then
+        print "%RName too long. 40 Character Maximum"
+      else
+        if repdata == "" then
+          print "%RCancelled"
+        else
+          qwknet.repdata = repdata
+          update_qwknet(qwknet)
+        end
+      end
+    else
+      print "No QWK/NET Network defined."
+    end
+    displaygroup(number)
  end
  
  def changereppacket(number)
@@ -415,7 +442,7 @@ def changeqwkname(number)
     end
     
    while true
-      prompt = "%WEnter the ftp account address on the REMOTE system:%G "
+      prompt = "%WEnter the ftp account UserID on the REMOTE system:%G "
       ftpaddress = getinp(prompt) {|n| n != ""}
       if ftpaddress.length > 40 then
         print "%RName too long. 40 Character Maximum"

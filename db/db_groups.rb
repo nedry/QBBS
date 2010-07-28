@@ -14,6 +14,10 @@ def fetch_group(number)
   Group.first(:number => number)
 end
 
+def fetch_group_grp(number)
+  Group.first(:grp => number)
+end
+
 def update_group(g)
   g.save
 end
@@ -48,11 +52,12 @@ def add_qwknet(group,name,bbsid,qwkuser,ftpaddress,ftpaccount,ftppassword)
  bbsid.upcase!
  qwkpacket = "#{bbsid}.#{D_QWKEXT}"
  reppacket = "#{bbsid}.#{D_REPEXT}"
+ repdata = "#{bbsid}.#{D_REPDATA}"
  
  qwkrep = group.qwknets.new(:name => name, :bbsid => bbsid, :qwkuser => qwkuser, :ftpaddress => ftpaddress, 
                                                 :ftpaccount => ftpaccount, :ftppassword => ftppassword, :qwktag => qwktag,
                                                 :qwkdir => qwkdir, :repdir => repdir, :qwkpacket => qwkpacket, 
-                                                :reppacket => reppacket)
+                                                :reppacket => reppacket, :repdata => repdata)
  e = qwkrep.save
  puts "Worked: #{e}"
  qwkrep.errors.each{|error| puts error}

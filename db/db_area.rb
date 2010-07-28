@@ -60,6 +60,6 @@ def fido_export_lst
     areas = Area.all(:fido_net.not => "", :fido_net.not => BADNETMAIL, :order => [:number])
 end
 
-def qwk_export_list
-    areas = Area.all(:netnum.gt => - 1, :order => [:number])
+def qwk_export_list(grp)
+    areas = Area.all(:netnum.gt => - 1, :grp => grp, :order => [:number])
 end

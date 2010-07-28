@@ -364,15 +364,15 @@ end
         @log.write ("")
         tempstr = idx.scan(/\d\d\d\d/)
         find = tempstr[0].to_i
-        print "-QWK: Finding Import Area for packet# #{find}..."
+        puts "-QWK: Seeking Import Area for packet# #{find}..."
         if find > 0 then
          area =  find_qwk_area(find,@qwknet.grp) 
         else
           area = fetch_area(0)  #we want to import all email into email.  QWK/REP email is always 000
         end
         if area
-          @log.write "Found. Importing #{idx} to #{area.name}"
-          puts "Found. Importing #{idx} to #{area.name}"
+          @log.write "Found! Importing #{idx} to #{area.name}"
+          puts "-QWK: Found. Importing #{idx} to #{area.name}"
           puts
           x = 0
           print "-QWK: Processing Message #"
@@ -382,7 +382,7 @@ end
           end
         else
           puts
-          putslog "QWK: ERROR: No mapping found for area #{idx}"
+          putslog "ERROR: No mapping found for area #{idx}"
           puts
           add_log_entry(8,Time.now,"No QWK mapping for area #{idx}")
         end

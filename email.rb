@@ -254,9 +254,14 @@ def sendemail(feedback)
       print "Sending Netmail..."
 
     when Q_NETMAIL
-      area = find_qwk_area(QWKMAIL,nil)
+     group = fetch_group_grp(area.grp)
+     qwknet = get_qwknet(group)
+     bbsid = ""
+     bbsid = qwknet.bbsid if !qwknet.nil?
+      area = find_qwk_area(QWKMAIL,qwknet.grp) 
+     # area = find_qwk_area(QWKMAIL,nil)
       number = area.number
-      if route.upcase != BBSID then
+      if route.upcase != bbsid then
         @lineeditor.msgtext.unshift(inp)
         to = "NETMAIL"
       end
@@ -273,8 +278,13 @@ end # of def sendemail
 
 def replyemail(epointer,carea)
   area = fetch_area(carea)
+
   u = @c_user
   pointer = get_pointer(@c_user,0)
+  group = fetch_group_grp(area.grp)
+  qwknet = get_qwknet(group)
+  bbsid = ""
+  bbsid = qwknet.bbsid if !qwknet.nil?
   if carea > 0 then
     abs = absolute_message(area.number,epointer)
     r_message = fetch_msg(abs)
@@ -307,7 +317,7 @@ def replyemail(epointer,carea)
   end
   if r_message.network then
     #msg_text,msgid,via,tz,reply = qwk_kludge_search(msg_text)
-    out = BBSID
+    out = bbsid
     out = r_message.q_via if ! r_message.q_via.nil?
     print "Replying to: %W#{to}@#{out}"
     m_type = Q_NETMAIL
@@ -341,7 +351,7 @@ def replyemail(epointer,carea)
       savecurmessage(number, to, title, false,false,node,net,intl,point)
       print "Sending Netmail..."
     when Q_NETMAIL
-      area = find_qwk_area(QWKMAIL,nil)
+       area = find_qwk_area(QWKMAIL,qwknet.grp) 
       if ! r_message.q_via.nil? then
         @lineeditor.msgtext.unshift("#{to}@#{ r_message.q_via}")
         to = "NETMAIL"

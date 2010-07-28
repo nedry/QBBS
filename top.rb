@@ -146,12 +146,12 @@ class MailSchedulethread
     add_log_entry(L_SCHEDULE,Time.now,"Starting a QWK transfer.")
     
     if ftptest(qwknet.ftpaddress,qwknet.ftpaccount,qwknet.ftppassword) or QWK_DEBUG then
-    #  worked = Rep::Exporter.new(REPDATA)
-     #  worked.repexport(QWKUSER)
-     # if worked then 
+      worked = Rep::Exporter.new(qwknet)
+       worked.repexport
+      if worked then 
         qwkimp =  Qwk::Importer.new(qwknet)
         qwkimp.import
-    #  end
+      end
     end
   end
 
@@ -159,8 +159,6 @@ class MailSchedulethread
   def doit(idle)
     up_down_fido(idle) if FIDO
     do_smtp if SMTP
-   # up_down(idle) if QWK
-
   end
 
 
@@ -199,6 +197,7 @@ class MailSchedulethread
 
       puts "Idle Time:  #{idle}"
       if idle >= QWKREPINTERVAL then
+        qwk_loop(idle)
         doit(idle)
         idle = 0
       end
