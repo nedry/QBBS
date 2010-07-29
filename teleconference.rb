@@ -196,7 +196,7 @@ end
 	def checkuseralias 
 		if @c_user.alias.nil? then 
 			@c_user.alias = defaultalias(@c_user.name)
-			update_user(@c_user,get_uid(@c_user.name))
+			update_user(@c_user)
 			print <<-here
 			%RYou have not selected a chat alias!
 			%GYou have been assigned the default alias of %Y#{@c_user.alias}
