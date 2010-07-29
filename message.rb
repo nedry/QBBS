@@ -313,7 +313,8 @@ class Session
       print
       print "%COrg:%G #{fidomessage.orgnet}/#{fidomessage.orgnode}"
       print "%CDest:%G #{fidomessage.destnet}/#{fidomessage.destnode}"
-
+      print" i'm here"
+  print "%Cq_msgid:%G #{fidomessage.q_msgid}"
       # [[field, attr], ....]. if attr is missing, it is field.downcase 
  fields = [ "Attribute", "Cost", ["Date Time", :msg_date], ["To", :m_to],
        ["From", :m_from], "Subject", "Area", "Msgid", "Path",

@@ -1,6 +1,6 @@
 DEBUG = true
 LISTENPORT = 2323
-QWK = false
+QWK = true
 QWK_DEBUG = true
 FIDO = false
 SMTP = false
@@ -14,7 +14,7 @@ LF = 10
 CTRL_U = 21
 QUOTE = 230.chr
 DLIM = 13.chr
-#DLIM = 227.chr
+DAY_SEC = 86400
 CLS ="\e[2J"
 HOME = "\e[H"
 CRLF = "\r\n"
@@ -66,22 +66,19 @@ IRCOPERPSWD = "x1g9t6m3a0"
 
 #QWK/REP Settings (to be converted to postgres for multiple networks)
 
-
-#REPDATA = "rep/VERT.MSG"
-#REPPACKET = "rep/VERT.REP"
-#REPPACKETUP = "VERT.REP"
-
-#QWKPACKET ="qwk/VERT.QWK"
-#QWKPACKETDOWN = "VERT.QWK"
-#QWKDIR = "qwk"
-
 QWKMAIL = 0
+
+#Defaults... Don't change, unless you want to.
 
 D_QWKEXT = "QWK"
 D_REPEXT = "REP"
 D_QWKDIR = "qwk"
 D_REPDIR = "rep"
 D_REPDATA = "MSG"
+
+#How long QWK message routes live, in days...
+
+ROUTE_SCAVENGE = 90
 
 D_QWKTAG ="#{254.chr} TARDIS BBS - Home of QUARKseven #{254.chr} telnet/http bbs.cortex-media.info"
 
@@ -156,8 +153,8 @@ WEB_IDLE_MAX = 30
 MAX_L_CALLERS = 10
 
 #Door Constants
-DOS	= 0
-LINUX	= 1
+DOS     = 0
+LINUX   = 1
 RSTS    = 2
 
 RBBS	= 0

@@ -3,6 +3,8 @@ require 'models/area'
 require 'dm-validations'
 require 'consts.rb'
 require 'encodings.rb'
+require 'db/db_groups'
+require 'models/qwkroute'
 
 def scanforaccess(user)
   for i in 0..(a_total - 1) do
@@ -154,6 +156,22 @@ def add_qwk_message(message, area,qwkuser)
   q_reply = message.reply
   exported = true
   network = true
+  
+  group =  fetch_group_grp(area.grp)
+  puts area.number
+  qwknet = get_qwknet(group)
+  dest,route = get_qwk_dest(q_via)
+  qwkroute_scavenge(qwknet)
+  
+  if !route.nil?
+   current = get_qwkroute(qwknet,dest)
+   if !current.nil? then
+     puts "deleting old route..."
+      remove_qwkroute(qwknet,dest)
+   end
+   save_qwkroute(qwknet,dest,route)
+  end
+  
   absolute = add_msg(to,m_from,msg_date,title,msg_text,exported,network,nil,nil,nil,nil,false,
                                    nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,false,area.number,
                                    q_msgid,q_tz,q_via,q_reply)

@@ -24,5 +24,6 @@ class Qwknet
   property :ftppassword, String, :length => 40
   property :grp, Integer, :default => 1, :min => 0, :max => 2**32
   belongs_to :group, :child_key => [:grp]
+  has n, :qwkroutes, :child_key => [:qwk_id]
 
 end

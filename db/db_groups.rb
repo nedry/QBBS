@@ -30,10 +30,44 @@ def add_group(name)
   )
 end
 
+
+def get_qwk_dest(route)
+  
+ dest = nil
+  
+if !route.nil?  
+ routes = route.split ("/")
+ dest = routes.pop
+ route = routes.join("/")
+end
+ return [dest,route]
+end
+
+
+def get_qwkroute(qwknet,dest)
+  qwkroute = qwknet.qwkroutes.first(:dest => dest)
+end
+
+def save_qwkroute(qwknet,dest,route)
+   qwkroute = qwknet.qwkroutes.new(:dest => dest, :route => route)
+   qwkroute.save
+ end
+ 
+ def remove_qwkroute(qwknet,dest)
+   qwkroute = qwknet.qwkroutes.first(:dest => dest)
+   qwkroute.destroy!
+ end
+ 
+ def qwkroute_scavenge(qwknet)
+   current_date = Time.now
+   scavengetime = Time.now - (DAY_SEC * ROUTE_SCAVENGE)
+   qwkroute = qwknet.qwkroutes.all(:modified.lte => scavengetime)
+   qwkroute.destroy!
+ end
+    
 def get_qwknet(group)
   qwknet = group.qwknets.first
 end
-
 
 def remove_qwknet(group)
   qwknet = group.qwknets.first

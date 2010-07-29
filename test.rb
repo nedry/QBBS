@@ -1,10 +1,10 @@
-require 'rubygems'
-require 'sinatra'
+DAY_SEC = 86400
 
-get '/' do
- "<h1>Hello world  #{Time.now}</h1>"
-end
+dude = Time.now
 
-get '/about' do
-	"I'm running on Version " + Sinatra::VERSION
-end
+puts dude
+
+oldtime = dude - (DAY_SEC * 90)
+
+puts oldtime
+
