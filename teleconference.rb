@@ -33,8 +33,8 @@ end
   #IRC::Event::Debug.new(@irc_client)
   @chatbuff.clear
   checkuseralias
-  puts "@c_user.alais.class: #{@c_user.alais.class}"
-  @irc_alias = @c_user.alais[0]  #1.9 fix?  Why has this turned into an array?
+
+  @irc_alias = @c_user.alias
   puts "@irc_alias; #{@irc_alias}"
      if !channel.nil? then 
       ircchannel = channel 
@@ -43,7 +43,7 @@ end
   @irc_channel = ircchannel
    puts " @irc_channel: #{ @irc_channel}"
    puts "attemping to log in"
-  @irc_client.login(@c_user.alais, @c_user.alais, "8", "*", "Telnet User")
+  @irc_client.login(@c_user.alias, @c_user.alias, "8", "*", "Telnet User")
    loop do
     count +=1
    # puts "looping"
@@ -61,9 +61,9 @@ end
       case m.command
         when IRC::ERR_NICKNAMEINUSE
 	 print "*** Nickname already in use."
-	 new_alias = "#{@c_user.alais}#{random(1..999)}"
+	 new_alias = "#{@c_user.alias}#{random(1..999)}"
 	 print "*** Trying #{new_alias}"
-	 @irc_client.login(new_alias, @c_user.alais, "8", "*", "Telnet User")
+	 @irc_client.login(new_alias, @c_user.alias, "8", "*", "Telnet User")
 	when IRC::RPL_CREATED
 	 (/^:(.*):(.*):(.*)/) =~ m.message
 	 print "%Y*** #{$2}:#{$3}"
@@ -174,11 +174,11 @@ while true
 	#puts "cmd:#{cmd}"
 	#puts "@gd_game:#{@gd_game}"
 	#puts "@gd_mode:#{@gd_mode}"
-	 if (GD_COMMANDS.index("#{cmd}") != nil or @gd_mode) and @gd_game then
-	  @irc_client.privmsg(GD_IRCUSER,line) if !line.nil?
-	 else 
+	# if (GD_COMMANDS.index("#{cmd}") != nil or @gd_mode) and @gd_game then
+	 # @irc_client.privmsg(GD_IRCUSER,line) if !line.nil?
+	# else 
 	  @irc_client.privmsg(@irc_channel,line) if !line.nil?
-	end
+#	end
        end
       
      end
@@ -194,12 +194,12 @@ end
 
 
 	def checkuseralias 
-		if @c_user.alais == '' then 
-			@c_user.alais = defaultalias(@c_user.name)
+		if @c_user.alias.nil? then 
+			@c_user.alias = defaultalias(@c_user.name)
 			update_user(@c_user,get_uid(@c_user.name))
 			print <<-here
 			%RYou have not selected a chat alias!
-			%GYou have been assigned the default alias of %Y#{@c_user.alais}
+			%GYou have been assigned the default alias of %Y#{@c_user.alias}
 			%GThis can be changed from the user configuration menu [#%Y%%G]
 			here
 			return false

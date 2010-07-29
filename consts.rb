@@ -4,7 +4,7 @@ QWK = true
 QWK_DEBUG = true
 FIDO = false
 SMTP = false
-IRC_ON =  false
+IRC_ON =  true
 
 BS = 8
 ESC = 27
@@ -57,7 +57,7 @@ FULLSCREENDIR = "/home/mark/qbbs/quote"
 IRCSERVER = "irc.larryniven.net"
 IRCPORT = 6667
 IRCCHANNEL = "#knownspace"
-IRCBOTUSER = "HAL9000"
+IRCBOTUSER = "HAL9000-test"
 IRCTOPIC = "Knownspace and RetroBBS Chat"
 
 IRCOPERID = "HAL9000"
