@@ -1,5 +1,6 @@
 require 'models/group'
 require 'models/qwknet'
+require 'models/qwkroute'
 
 def update_groups(number,name)
   g = Group.first(:number => number)
@@ -43,6 +44,15 @@ end
  return [dest,route]
 end
 
+def find_qwk_route(dest)
+  area = nil
+  qwkroute = Qwkroute.first(:conditions => ["upper(dest) = ?", dest.upcase])
+  if !qwkroute.nil?
+   area = fetch_group_grp(get_qwknet(qwkroute).grp).number
+ end
+ return area
+ end
+
 
 def get_qwkroute(qwknet,dest)
   qwkroute = qwknet.qwkroutes.first(:dest => dest)
@@ -50,6 +60,10 @@ end
 
 def save_qwkroute(qwknet,dest,route)
    qwkroute = qwknet.qwkroutes.new(:dest => dest, :route => route)
+   qwkroute.save
+ end
+ 
+ def update_qwkroute(qwkroute)
    qwkroute.save
  end
  
