@@ -84,7 +84,7 @@ module Rep
     end
 
     def ftppacketup
-      ftp = FtpClient.new(@qwknet.ftpaddress, @qwknet.ftpaccount, @qwknet.ftppassword)
+      ftp = FtpClient.new(@qwknet)
       ftp.rep_packet_up
     end
 
@@ -147,6 +147,7 @@ module Rep
       puts "-REP: Export Complete. #{total} message(s) exported."
       puts
       puts "-REP: Compressing Packet"
+      puts "zip -j -D #{@reppacket} #{@repdata}"
       happy = system("zip -j -D #{@reppacket} #{@repdata}")
       if happy then
         worked = ftppacketup

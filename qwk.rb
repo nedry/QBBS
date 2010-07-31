@@ -308,12 +308,12 @@ end
     end
 
     def ftppacketdown
-      ftp = FtpClient.new(FTPADDRESS, FTPACCOUNT, FTPPASSWORD)
+      ftp = FtpClient.new(@qwknet)
       ftp.qwk_packet_down
     end
 
     def unzippacket
-      happy = system("unzip #{QWKPACKET} -d #{QWKDIR}")
+      happy = system("unzip #{@qwknet.qwkdir}/#{@qwknet.qwkpacket} -d #{@qwknet.qwkdir}")
       add_log_entry(8,Time.now,"Could not unzip QWK Packet.") if !happy
     end
 

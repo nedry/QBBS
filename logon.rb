@@ -90,7 +90,7 @@ class Session
 
     if happy.nil? then
 			if !user_exists(username) then
-				username.upcase!
+				#username.upcase!
 				if yes("Create new user #{username}? [Y,n]",true,false,true)
 				   newuser(username, ip)
 				else
