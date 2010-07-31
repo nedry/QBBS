@@ -158,7 +158,6 @@ def add_qwk_message(message, area,qwkuser)
   network = true
   
   group =  fetch_group_grp(area.grp)
-  puts area.number
   qwknet = get_qwknet(group)
   dest,route = get_qwk_dest(q_via)
   qwkroute_scavenge(qwknet)
@@ -166,11 +165,12 @@ def add_qwk_message(message, area,qwkuser)
   if !route.nil?
    current = get_qwkroute(qwknet,dest)
    if !current.nil? then
-     puts "deleting old route..."
-      remove_qwkroute(qwknet,dest)
-   end
+     current.modified = Time.now
+     update_qwkroute(current)
+   else
    save_qwkroute(qwknet,dest,route)
-  end
+ end
+ end
   
   absolute = add_msg(to,m_from,msg_date,title,msg_text,exported,network,nil,nil,nil,nil,false,
                                    nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,false,area.number,

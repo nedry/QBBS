@@ -201,8 +201,14 @@ def sendemail(feedback)
       to,route = qwkmailadr(inp)
       if !to.nil? then
         print "Sending a QWK Netmail Message to: #{inp}"
+        out_area = find_qwk_route(route)
+        if !out_area.nil? then
+        puts out_area
+        puts fetch_area(out_area).name
+        else puts "no result" end
         m_type = Q_NETMAIL
         to.upcase!
+        
         break
       end
       smtp = stmpmailadr(inp)
