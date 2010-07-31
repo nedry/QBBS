@@ -2,6 +2,7 @@ require 'tools'
 require 'log'
 require 'ftpclient'
 require 'db/db_log'
+require 'db/db_message'
 require 'encodings.rb'
 
 module Rep
@@ -33,7 +34,7 @@ module Rep
       outmessage = convert_to_ascii(message.msg_text) # .join('?)
       outmessage.gsub!(DLIM,227.chr)
       outmessage = outmessage << 227.chr << "---" <<227.chr
-      outmessage = outmessage << QWKTAG << 227.chr
+      outmessage = outmessage << convert_to_ascii(@qwknet.qwktag) << 227.chr
       dec = outmessage.length / 128
       nblocks = (dec.succ)
       len = outmessage.length
