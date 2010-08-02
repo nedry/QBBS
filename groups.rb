@@ -1,6 +1,4 @@
 class Session
-
-
   def displaygroup(number)
     group = fetch_group(number)
     write "\r\n%R#%W#{number} %G #{group.groupname}"
@@ -29,8 +27,6 @@ class Session
     else
       print " %CNo QWK network assigned.%W"
     end
-
-
   end #displaygroup
 
   def groupmaintmenu
@@ -41,14 +37,14 @@ class Session
     ) {|sel, gpointer, moved|
       displaygroup(gpointer) if moved
       case sel
-      when "/"; displaygroup(gpointer)
-      when "B";changebbsid(gpointer)
-      when "Q"; gpointer = true
+      when "/";  displaygroup(gpointer)
+      when "B";  changebbsid(gpointer)
+      when "Q";  gpointer = true
       when "NQ"; qwknetadd(gpointer)
       when "QN"; changeqwkname(gpointer)
-      when "RD";  changerepdirectory(gpointer)
+      when "RD"; changerepdirectory(gpointer)
       when "RP"; changereppacket(gpointer)
-      when "QD";  changeqwkdirectory(gpointer)
+      when "QD"; changeqwkdirectory(gpointer)
       when "QP"; changeqwkpacket(gpointer)
       when "QR"; qwknetremove(gpointer)
       when "QT"; changeqwktag(gpointer)
@@ -56,25 +52,32 @@ class Session
       when "QU"; changeqwklocalaccount(gpointer)
       when "FA"; changeftpaddress(gpointer)
       when "FC"; changeftpaccount(gpointer)
-      when "FP";  changeftppassword(gpointer)
-      when "A"; gpointer = addgroup
-      when "W"; displaywho
+      when "FP"; changeftppassword(gpointer)
+      when "A";  gpointer = addgroup
+      when "W";  displaywho
       when "PU"; page
-      when "N"; changegroupname(gpointer)
-      when "D"; deletegroup(gpointer)
-      when "G"; leave
-      when "?"; gfileout ("groupmnu")
+      when "N";  changegroupname(gpointer)
+      when "D";  deletegroup(gpointer)
+      when "G";  leave
+      when "?";  gfileout ("groupmnu")
       end # of case
       p_return = [gpointer,(g_total - 1)]
     }
   end
 
-  def changeftppassword(number)
-
+  def change_group(number)
     group = fetch_group(number)
     qwknet = get_qwknet(group)   
-    if !qwknet.nil? then
+    if qwknet then
+      yield qwknet
+    else
+      print "No QWK/NET Network defined."
+    end
+    displaygroup(number)
+  end
 
+  def changeftppassword(number)
+    change_group(number) do |qwknet|
       prompt = "%WEnter the FTP Password:%G  "
       ftppassword = getinp(prompt) 
 
@@ -88,18 +91,11 @@ class Session
           update_qwknet(qwknet)
         end
       end
-    else
-      print "No QWK/NET Network defined."
     end
-    displaygroup(number)
   end
 
   def changeftpaddress(number)
-
-    group = fetch_group(number)
-    qwknet = get_qwknet(group)   
-    if !qwknet.nil? then
-
+    change_group(number) do |qwknet|
       prompt = "%WEnter the FTP Address:%G  "
       ftpaddress = getinp(prompt) 
 
@@ -113,10 +109,7 @@ class Session
           update_qwknet(qwknet)
         end
       end
-    else
-      print "No QWK/NET Network defined."
     end
-    displaygroup(number)
   end
 
   def qwknetremove(number)
@@ -133,15 +126,10 @@ class Session
         print "Cancelled."
       end
     end
-
   end 
 
   def changeftpaccount(number)
-
-    group = fetch_group(number)
-    qwknet = get_qwknet(group)   
-    if !qwknet.nil? then
-
+    change_group(number) do |qwknet|
       prompt = "%WEnter the FTP UserID:%G  "
       ftpaccount = getinp(prompt) 
 
@@ -155,19 +143,11 @@ class Session
           update_qwknet(qwknet)
         end
       end
-    else
-      print "No QWK/NET Network defined."
     end
-    displaygroup(number)
   end
 
-
   def changeqwktag(number)
-
-    group = fetch_group(number)
-    qwknet = get_qwknet(group)   
-    if !qwknet.nil? then
-
+    change_group(number) do |qwknet|
       prompt = "%WEnter the QWK  tag:%G  "
       qwktag = getinp(prompt) 
 
@@ -181,18 +161,11 @@ class Session
           update_qwknet(qwknet)
         end
       end
-    else
-      print "No QWK/NET Network defined."
     end
-    displaygroup(number)
   end
 
   def changebbsid(number)
-
-    group = fetch_group(number)
-    qwknet = get_qwknet(group)   
-    if !qwknet.nil? then
-
+    change_group(number) do |qwknet|
       prompt = "%WEnter the BBSID of the remote system:%G "
       bbsid = getinp(prompt) 
 
@@ -207,18 +180,11 @@ class Session
           update_qwknet(qwknet)
         end
       end
-    else
-      print "No QWK/NET Network defined."
     end
-    displaygroup(number)
   end
 
   def changeqwkdirectory(number)
-
-    group = fetch_group(number)
-    qwknet = get_qwknet(group)   
-    if !qwknet.nil? then
-
+    change_group(number) do |qwknet|
       prompt = "%WEnter the path for QWK packets:%G "
       qwkdir = getinp(prompt) 
 
@@ -232,18 +198,11 @@ class Session
           update_qwknet(qwknet)
         end
       end
-    else
-      print "No QWK/NET Network defined."
     end
-    displaygroup(number)
   end
 
   def changeqwkpacket(number)
-
-    group = fetch_group(number)
-    qwknet = get_qwknet(group)   
-    if !qwknet.nil? then
-
+    change_group(number) do |qwknet|
       prompt = "%WEnter the file name for QWK packets:%G "
       qwkpacket = getinp(prompt) 
 
@@ -257,18 +216,11 @@ class Session
           update_qwknet(qwknet)
         end
       end
-    else
-      print "No QWK/NET Network defined."
     end
-    displaygroup(number)
   end
 
   def changerepdirectory(number)
-
-    group = fetch_group(number)
-    qwknet = get_qwknet(group)   
-    if !qwknet.nil? then
-
+    change_group(number) do |qwknet|
       prompt = "%WEnter the path for REP packets:%G "
       repdir = getinp(prompt) 
 
@@ -282,19 +234,11 @@ class Session
           update_qwknet(qwknet)
         end
       end
-    else
-      print "No QWK/NET Network defined."
     end
-    displaygroup(number)
   end
 
-
   def changerepdata(number)
-
-    group = fetch_group(number)
-    qwknet = get_qwknet(group)   
-    if !qwknet.nil? then
-
+    change_group(number) do |qwknet|
       prompt = "%WEnter the name for REP data packets:%G "
       repdata = getinp(prompt) 
 
@@ -308,18 +252,11 @@ class Session
           update_qwknet(qwknet)
         end
       end
-    else
-      print "No QWK/NET Network defined."
     end
-    displaygroup(number)
   end
 
   def changereppacket(number)
-
-    group = fetch_group(number)
-    qwknet = get_qwknet(group)   
-    if !qwknet.nil? then
-
+    change_group(number) do |qwknet|
       prompt = "%WEnter the file name for REP packets:%G "
       reppacket = getinp(prompt) 
 
@@ -333,19 +270,11 @@ class Session
           update_qwknet(qwknet)
         end
       end
-    else
-      print "No QWK/NET Network defined."
     end
-    displaygroup(number)
   end
 
-
   def changeqwkname(number)
-
-    group = fetch_group(number)
-    qwknet = get_qwknet(group)   
-    if !qwknet.nil? then
-
+    change_group(number) do |qwknet|
       prompt = "%WEnter QWK/REP network name:%G "
       name = getinp(prompt) 
 
@@ -359,19 +288,11 @@ class Session
           update_qwknet(qwknet)
         end
       end
-    else
-      print "No QWK/NET Network defined."
     end
-    displaygroup(number)
   end
 
-
   def changeqwklocalaccount(number)
-
-    group = fetch_group(number)
-    qwknet = get_qwknet(group)   
-    if !qwknet.nil? then
-
+    change_group(number) do |qwknet|
       prompt = "%WEnter the User ID of QWK/REP service account on the LOCAL system:%G "
       account = getinp(prompt) 
 
@@ -389,14 +310,10 @@ class Session
           end
         end
       end
-    else
-      print "No QWK/NET Network defined."
     end
-    displaygroup(number)
   end
 
   def qwknetadd(number)
-
     group = fetch_group(number)
     if get_qwknet(group).nil? then
       while true
@@ -457,7 +374,6 @@ class Session
         else break end
       end
 
-
       commit = yes("Are you sure #{YESNO}",true,false,true)
       if commit then
         add_qwknet(group,name,bbsid,qwkuser,ftpaddress,ftpaccount,ftppassword)
@@ -490,7 +406,6 @@ class Session
 
 
   def addgroup
-
     while true
       prompt = "Enter new group name: "
       name = getinp(prompt) 
@@ -512,13 +427,9 @@ class Session
       gpointer = g_total - 1
       return
     end
-
   end
 
-
-
   def changegroupname(gpointer)
-
     group = fetch_group(gpointer)
 
     prompt = "Enter new group name: "
@@ -535,7 +446,6 @@ class Session
       end
     end
   end
-
 
 end # class Session
 
