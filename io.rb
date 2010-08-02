@@ -358,7 +358,7 @@ class Session
   end
 
   def fileout (filename)
-    GraphFile.new(self, filename).fileout
+    GraphFile.new(self, filename).fileout(filename)
   end
 
   def gfileout(filename)
