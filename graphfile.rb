@@ -63,7 +63,7 @@ class GraphFile
   def gfileout
     graphfile = TEXTPATH + filename + ".gra"
     plainfile = TEXTPATH + filename + ".txt"
-    if @c_user.ansi == TRUE and File.exists?(graphfile)
+    if @session.c_user.ansi == TRUE and File.exists?(graphfile)
       fileout(graphfile)
     else
       fileout(plainfile)
