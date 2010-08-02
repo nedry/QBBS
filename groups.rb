@@ -65,11 +65,16 @@ class Session
     }
   end
 
-  def change_group(number)
+  def change_group(number, prompt)
     group = fetch_group(number)
-    qwknet = get_qwknet(group)   
+    qwknet = get_qwknet(group)
     if qwknet then
-      yield qwknet
+      new_val = getinp(prompt)
+      if new_val == ""
+        print "%RCancelled"
+      else
+        yield [qwknet, new_val]
+      end
     else
       print "No QWK/NET Network defined."
     end
@@ -77,37 +82,29 @@ class Session
   end
 
   def changeftppassword(number)
-    change_group(number) do |qwknet|
-      prompt = "%WEnter the FTP Password:%G  "
-      ftppassword = getinp(prompt) 
+    prompt = "%WEnter the FTP Password:%G  "
+    change_group(number, prompt) do |qwknet, inp|
+      ftppassword = inp
 
       if ftppassword.length > 40 then
         print "%RPassword too long. 40 Character Maximum"
       else
-        if ftppassword == "" then
-          print "%RCancelled"
-        else
-          qwknet.ftppassword = ftppassword
-          update_qwknet(qwknet)
-        end
+        qwknet.ftppassword = ftppassword
+        update_qwknet(qwknet)
       end
     end
   end
 
   def changeftpaddress(number)
-    change_group(number) do |qwknet|
-      prompt = "%WEnter the FTP Address:%G  "
-      ftpaddress = getinp(prompt) 
+    prompt = "%WEnter the FTP Address:%G  "
+    change_group(number, prompt) do |qwknet, inp|
+      ftpaddress = inp
 
       if ftpaddress.length > 40 then
         print "%RAddress too long. 40 Character Maximum"
       else
-        if ftpaddress == "" then
-          print "%RCancelled"
-        else
-          qwknet.ftpaddress = ftpaddress
-          update_qwknet(qwknet)
-        end
+        qwknet.ftpaddress = ftpaddress
+        update_qwknet(qwknet)
       end
     end
   end
@@ -129,185 +126,145 @@ class Session
   end 
 
   def changeftpaccount(number)
-    change_group(number) do |qwknet|
-      prompt = "%WEnter the FTP UserID:%G  "
-      ftpaccount = getinp(prompt) 
+    prompt = "%WEnter the FTP UserID:%G  "
+    change_group(number, prompt) do |qwknet, inp|
+      ftpaccount = inp
 
       if ftpaccount.length > 40 then
         print "%RUserID too long. 40 Character Maximum"
       else
-        if ftpaccount == "" then
-          print "%RCancelled"
-        else
-          qwknet.ftpaccount = ftpaccount
-          update_qwknet(qwknet)
-        end
+        qwknet.ftpaccount = ftpaccount
+        update_qwknet(qwknet)
       end
     end
   end
 
   def changeqwktag(number)
-    change_group(number) do |qwknet|
-      prompt = "%WEnter the QWK  tag:%G  "
-      qwktag = getinp(prompt) 
+    prompt = "%WEnter the QWK  tag:%G  "
+    change_group(number, prompt) do |qwknet, inp|
+      qwktag = inp
 
       if qwktag.length > 78 then
         print "%RTag too long. 78 Character Maximum"
       else
-        if qwktag == "" then
-          print "%RCancelled"
-        else
-          qwknet.qwktag =  convert_to_utf8(qwktag)
-          update_qwknet(qwknet)
-        end
+        qwknet.qwktag =  convert_to_utf8(qwktag)
+        update_qwknet(qwknet)
       end
     end
   end
 
   def changebbsid(number)
-    change_group(number) do |qwknet|
-      prompt = "%WEnter the BBSID of the remote system:%G "
-      bbsid = getinp(prompt) 
+    prompt = "%WEnter the BBSID of the remote system:%G "
+    change_group(number, prompt) do |qwknet, inp|
+      bbsid = inp
 
       if bbsid.length > 40 then
         print "%RName too long. 40 Character Maximum"
       else
-        if bbsid == "" then
-          print "%RCancelled"
-        else
-          bbsid.upcase!
-          qwknet.bbsid = bbsid
-          update_qwknet(qwknet)
-        end
+        bbsid.upcase!
+        qwknet.bbsid = bbsid
+        update_qwknet(qwknet)
       end
     end
   end
 
   def changeqwkdirectory(number)
-    change_group(number) do |qwknet|
-      prompt = "%WEnter the path for QWK packets:%G "
-      qwkdir = getinp(prompt) 
+    prompt = "%WEnter the path for QWK packets:%G "
+    change_group(number, prompt) do |qwknet, inp|
+      qwkdir = inp
 
       if qwkdir.length > 40 then
         print "%RPath too long. 40 Character Maximum"
       else
-        if qwkdir == "" then
-          print "%RCancelled"
-        else
-          qwknet.qwkdir = qwkdir
-          update_qwknet(qwknet)
-        end
+        qwknet.qwkdir = qwkdir
+        update_qwknet(qwknet)
       end
     end
   end
 
   def changeqwkpacket(number)
-    change_group(number) do |qwknet|
-      prompt = "%WEnter the file name for QWK packets:%G "
-      qwkpacket = getinp(prompt) 
+    prompt = "%WEnter the file name for QWK packets:%G "
+    change_group(number, prompt) do |qwknet, inp|
+      qwkpacket = inp
 
       if qwkpacket.length > 40 then
         print "%RFilename too long. 40 Character Maximum"
       else
-        if qwkpacket == "" then
-          print "%RCancelled"
-        else
-          qwknet.qwkpacket = qwkpacket
-          update_qwknet(qwknet)
-        end
+        qwknet.qwkpacket = qwkpacket
+        update_qwknet(qwknet)
       end
     end
   end
 
   def changerepdirectory(number)
-    change_group(number) do |qwknet|
-      prompt = "%WEnter the path for REP packets:%G "
-      repdir = getinp(prompt) 
+    prompt = "%WEnter the path for REP packets:%G "
+    change_group(number, prompt) do |qwknet, inp|
+      repdir = inp
 
       if repdir.length > 40 then
         print "%RPath too long. 40 Character Maximum"
       else
-        if repdir == "" then
-          print "%RCancelled"
-        else
-          qwknet.repdir = repdir
-          update_qwknet(qwknet)
-        end
+        qwknet.repdir = repdir
+        update_qwknet(qwknet)
       end
     end
   end
 
   def changerepdata(number)
-    change_group(number) do |qwknet|
-      prompt = "%WEnter the name for REP data packets:%G "
-      repdata = getinp(prompt) 
+    prompt = "%WEnter the name for REP data packets:%G "
+    change_group(number, prompt) do |qwknet, inp|
+      repdata = inp
 
       if repdata.length > 40 then
         print "%RName too long. 40 Character Maximum"
       else
-        if repdata == "" then
-          print "%RCancelled"
-        else
-          qwknet.repdata = repdata
-          update_qwknet(qwknet)
-        end
+        qwknet.repdata = repdata
+        update_qwknet(qwknet)
       end
     end
   end
 
   def changereppacket(number)
-    change_group(number) do |qwknet|
-      prompt = "%WEnter the file name for REP packets:%G "
-      reppacket = getinp(prompt) 
+    prompt = "%WEnter the file name for REP packets:%G "
+    change_group(number, prompt) do |qwknet, inp|
+      reppacket = inp
 
       if reppacket.length > 40 then
         print "%RFilename too long. 40 Character Maximum"
       else
-        if reppacket == "" then
-          print "%RCancelled"
-        else
-          qwknet.reppacket = reppacket
-          update_qwknet(qwknet)
-        end
+        qwknet.reppacket = reppacket
+        update_qwknet(qwknet)
       end
     end
   end
 
   def changeqwkname(number)
-    change_group(number) do |qwknet|
-      prompt = "%WEnter QWK/REP network name:%G "
-      name = getinp(prompt) 
+    prompt = "%WEnter QWK/REP network name:%G "
+    change_group(number, prompt) do |qwknet, inp|
+      name = inp
 
       if name.length > 40 then
         print "%RName too long. 40 Character Maximum"
       else
-        if name == "" then
-          print "%RCancelled"
-        else
-          qwknet.name = name
-          update_qwknet(qwknet)
-        end
+        qwknet.name = name
+        update_qwknet(qwknet)
       end
     end
   end
 
   def changeqwklocalaccount(number)
-    change_group(number) do |qwknet|
-      prompt = "%WEnter the User ID of QWK/REP service account on the LOCAL system:%G "
-      account = getinp(prompt) 
+    prompt = "%WEnter the User ID of QWK/REP service account on the LOCAL system:%G "
+    change_group(number, prompt) do |qwknet, inp|
+      account = inp
 
       if account.length > 40 then
         print "%RAccount too long. 40 Character Maximum"
       else
-        if account == "" then
-          print "%RCancelled"
+        if !user_exists(account) then
+          print "%RLocal user does not exist.  Try again..."
         else
-          if !user_exists(account) then
-            print "%RLocal user does not exist.  Try again..."
-          else
-            qwknet.qwkuser = account
-            update_qwknet(qwknet)
-          end
+          qwknet.qwkuser = account
+          update_qwknet(qwknet)
         end
       end
     end
