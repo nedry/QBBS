@@ -1,10 +1,10 @@
 DEBUG = true
 LISTENPORT = 2323
-QWK = true
+QWK = false
 QWK_DEBUG = true
 FIDO = false
 SMTP = false
-IRC_ON =  true
+IRC_ON =  false
 
 BS = 8
 ESC = 27
@@ -36,7 +36,7 @@ DONE = false
 
 SYSOPNAME = "SYSOP"
 
-SYSTEMNAME = "Retro Computing BBS"
+SYSTEMNAME = "TARDIS BBS"
 
 NODES = 10
 ROOT_PATH = "/home/mark/qbbs/"
@@ -48,8 +48,8 @@ ROOT_PATH = "/home/mark/qbbs/"
 QOTD = "fortune > /home/mark/qbbs/text/quote.txt"
 
 # Full Screen Editor
-#FULLSCREENPROG = 'nano -Q"> " -t -o %a'
-FULLSCREENPROG = 'ruby /home/mark/qbbs/edit.rb -L '
+FULLSCREENPROG = 'pico -Q"> " -t -o %a'
+#FULLSCREENPROG = 'ruby /home/mark/qbbs/edit.rb -L '
 FULLSCREENDIR = "/home/mark/qbbs/quote"
 
 #IRC/Chat Settings

@@ -1,10 +1,6 @@
-DAY_SEC = 86400
 
-dude = Time.now
+puts "happy".upcase!
 
-puts dude
+puts "1234".upcase!
 
-oldtime = dude - (DAY_SEC * 90)
-
-puts oldtime
-
+puts "happy1234".upcase!

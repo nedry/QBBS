@@ -15,6 +15,10 @@ def fetch_group(number)
   Group.first(:number => number)
 end
 
+def fetch_qwknet_qwk(qwk_id)
+  qwknet = Qwknet.first(:qwk_id => qwk_id)
+end
+
 def fetch_group_grp(number)
   Group.first(:grp => number)
 end
@@ -46,16 +50,32 @@ end
 
 def find_qwk_route(dest)
   area = nil
+  route = nil
+  puts "dest: #{dest}"
   qwkroute = Qwkroute.first(:conditions => ["upper(dest) = ?", dest.upcase])
-  if !qwkroute.nil?
-   area = fetch_group_grp(get_qwknet(qwkroute).grp).number
- end
- return area
+  if !qwkroute.nil? then
+    group = fetch_qwknet_qwk(qwkroute.qwk_id)
+    area = fetch_area_grp(group.grp)  
+    route = qwkroute.route
+  end
+  return area,route
  end
 
+def find_qwk_single_hop(bbsid)
+  area = nil
+  puts "bbsid: #{bbsid}"
+  qwknet = Qwknet.first(:conditions => ["upper(bbsid) = ?", bbsid.upcase])
+  area = fetch_area_grp(qwknet.grp)  if !qwknet.nil? 
+  return area
+ end
 
 def get_qwkroute(qwknet,dest)
   qwkroute = qwknet.qwkroutes.first(:dest => dest)
+end
+
+
+def get_qwkroutes(qwknet)
+  qwkroute = qwknet.qwkroutes.all
 end
 
 def save_qwkroute(qwknet,dest,route)

@@ -216,7 +216,15 @@ def convert_to_ascii(message)
   return temp
 end
 
-
+def qwk_route(route)
+  out_area=find_qwk_single_hop(route)
+  puts "hub: #{out_area.name}" if !out_area.nil?
+  if out_area.nil? then     #the message is not to a hub
+    out_area = find_qwk_route(route) #is the message to a node we know about?
+    puts "route: #{out_area.name}" if !out_area.nil?
+  end
+  return out_area
+end
 
   def get_orig_address(msgid)
     orig = nil
@@ -231,7 +239,7 @@ end
 
   to = nil;route = nil
   if !address.index(".") then
-    happy = (/^(.+)@([a-z,A-Z]+)/) =~ address
+    happy = (/^(.+)@([a-z,A-Z,0-9]+)/) =~ address
     if happy then
       to = $1;route = $2
     end

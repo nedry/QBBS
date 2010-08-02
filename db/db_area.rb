@@ -17,6 +17,9 @@ def fetch_area(record)
   Area.first(:number => record)
 end
 
+def fetch_area_grp(grp)
+  Area.first(:grp => grp)
+end
 
 def add_area(group,area)
  group = Group.get(group)
