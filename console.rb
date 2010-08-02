@@ -2,11 +2,13 @@
 # provides a session, i/o and a menu
 
 class Console
-  include BBSIO
+  extend Forwardable
 
   def initialize(session)
     @session = session
   end
+
+  def_delegators :@session, :print, :write, :getinp
 
   def readmenu(args)
     dir = +1
