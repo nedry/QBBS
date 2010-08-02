@@ -1,6 +1,6 @@
- class Session
- 
- 
+class Session
+
+
   def displaygroup(number)
     group = fetch_group(number)
     write "\r\n%R#%W#{number} %G #{group.groupname}"
@@ -8,28 +8,28 @@
     print ""
     print "%CQWK/REP Mapping:"
     print 
-  if !get_qwknet(group).nil? then
-    qwknet = get_qwknet(group)
-    
-    print " %G[%YQN%G]ame: %Y#{qwknet.name}"
-    print " %G[%YQU%G]Local QWK account: %Y#{qwknet.qwkuser}"
-    print " %G[%YB%G]BSid: %Y#{qwknet.bbsid}"
-    print " %G[%YRD%G]Rep Directory: %Y#{qwknet.repdir}"
-    print " %G[%YRP%G]Rep Packet: %Y#{qwknet.reppacket}"
-    print " %G[%YRP%G]Rep Datafile: %Y#{qwknet.repdata}"
-    print " %G[%YQP%G]QWK Directory: %Y#{qwknet.qwkdir}"
-    print " %G[%YQP%G]QWK Packet: %Y#{qwknet.qwkpacket}"
-    print " %G[%YQT%G]QWK Tag:"
-    print "  %Y#{qwknet.qwktag}"
-    print " %G[%YFA%G]FTP Address: %Y#{qwknet.ftpaddress}"
-    print " %G[%YFC%G]FTP User: %Y#{qwknet.ftpaccount}"
-    print " %G[%YFP%G]FTP Password: %Y#{qwknet.ftppassword}"
-    print " %G[%Y?%G]More Options"
-    print
-  else
-   print " %CNo QWK network assigned.%W"
-  end
-  
+    if !get_qwknet(group).nil? then
+      qwknet = get_qwknet(group)
+
+      print " %G[%YQN%G]ame: %Y#{qwknet.name}"
+      print " %G[%YQU%G]Local QWK account: %Y#{qwknet.qwkuser}"
+      print " %G[%YB%G]BSid: %Y#{qwknet.bbsid}"
+      print " %G[%YRD%G]Rep Directory: %Y#{qwknet.repdir}"
+      print " %G[%YRP%G]Rep Packet: %Y#{qwknet.reppacket}"
+      print " %G[%YRP%G]Rep Datafile: %Y#{qwknet.repdata}"
+      print " %G[%YQP%G]QWK Directory: %Y#{qwknet.qwkdir}"
+      print " %G[%YQP%G]QWK Packet: %Y#{qwknet.qwkpacket}"
+      print " %G[%YQT%G]QWK Tag:"
+      print "  %Y#{qwknet.qwktag}"
+      print " %G[%YFA%G]FTP Address: %Y#{qwknet.ftpaddress}"
+      print " %G[%YFC%G]FTP User: %Y#{qwknet.ftpaccount}"
+      print " %G[%YFP%G]FTP Password: %Y#{qwknet.ftppassword}"
+      print " %G[%Y?%G]More Options"
+      print
+    else
+      print " %CNo QWK network assigned.%W"
+    end
+
 
   end #displaygroup
 
@@ -68,16 +68,16 @@
       p_return = [gpointer,(g_total - 1)]
     }
   end
-  
+
   def changeftppassword(number)
-    
-  group = fetch_group(number)
-  qwknet = get_qwknet(group)   
-   if !qwknet.nil? then
+
+    group = fetch_group(number)
+    qwknet = get_qwknet(group)   
+    if !qwknet.nil? then
 
       prompt = "%WEnter the FTP Password:%G  "
       ftppassword = getinp(prompt) 
-      
+
       if ftppassword.length > 40 then
         print "%RPassword too long. 40 Character Maximum"
       else
@@ -92,17 +92,17 @@
       print "No QWK/NET Network defined."
     end
     displaygroup(number)
- end
- 
+  end
+
   def changeftpaddress(number)
-    
-  group = fetch_group(number)
-  qwknet = get_qwknet(group)   
-   if !qwknet.nil? then
+
+    group = fetch_group(number)
+    qwknet = get_qwknet(group)   
+    if !qwknet.nil? then
 
       prompt = "%WEnter the FTP Address:%G  "
       ftpaddress = getinp(prompt) 
-      
+
       if ftpaddress.length > 40 then
         print "%RAddress too long. 40 Character Maximum"
       else
@@ -117,11 +117,11 @@
       print "No QWK/NET Network defined."
     end
     displaygroup(number)
- end
- 
+  end
+
   def qwknetremove(number)
     group = fetch_group(number)
-    
+
     if  get_qwknet(group).nil? then
       print "%RNo QWK network to delete"
     else
@@ -133,18 +133,18 @@
         print "Cancelled."
       end
     end
-      
+
   end 
-  
-def changeftpaccount(number)
-    
-  group = fetch_group(number)
-  qwknet = get_qwknet(group)   
-   if !qwknet.nil? then
+
+  def changeftpaccount(number)
+
+    group = fetch_group(number)
+    qwknet = get_qwknet(group)   
+    if !qwknet.nil? then
 
       prompt = "%WEnter the FTP UserID:%G  "
       ftpaccount = getinp(prompt) 
-      
+
       if ftpaccount.length > 40 then
         print "%RUserID too long. 40 Character Maximum"
       else
@@ -159,18 +159,18 @@ def changeftpaccount(number)
       print "No QWK/NET Network defined."
     end
     displaygroup(number)
- end
- 
- 
-def changeqwktag(number)
-    
-  group = fetch_group(number)
-  qwknet = get_qwknet(group)   
-   if !qwknet.nil? then
+  end
+
+
+  def changeqwktag(number)
+
+    group = fetch_group(number)
+    qwknet = get_qwknet(group)   
+    if !qwknet.nil? then
 
       prompt = "%WEnter the QWK  tag:%G  "
       qwktag = getinp(prompt) 
-      
+
       if qwktag.length > 78 then
         print "%RTag too long. 78 Character Maximum"
       else
@@ -185,17 +185,17 @@ def changeqwktag(number)
       print "No QWK/NET Network defined."
     end
     displaygroup(number)
- end
- 
-def changebbsid(number)
-    
-  group = fetch_group(number)
-  qwknet = get_qwknet(group)   
-   if !qwknet.nil? then
+  end
+
+  def changebbsid(number)
+
+    group = fetch_group(number)
+    qwknet = get_qwknet(group)   
+    if !qwknet.nil? then
 
       prompt = "%WEnter the BBSID of the remote system:%G "
       bbsid = getinp(prompt) 
-      
+
       if bbsid.length > 40 then
         print "%RName too long. 40 Character Maximum"
       else
@@ -211,17 +211,17 @@ def changebbsid(number)
       print "No QWK/NET Network defined."
     end
     displaygroup(number)
- end
+  end
 
-def changeqwkdirectory(number)
-    
-  group = fetch_group(number)
-  qwknet = get_qwknet(group)   
-   if !qwknet.nil? then
+  def changeqwkdirectory(number)
+
+    group = fetch_group(number)
+    qwknet = get_qwknet(group)   
+    if !qwknet.nil? then
 
       prompt = "%WEnter the path for QWK packets:%G "
       qwkdir = getinp(prompt) 
-      
+
       if qwkdir.length > 40 then
         print "%RPath too long. 40 Character Maximum"
       else
@@ -236,17 +236,17 @@ def changeqwkdirectory(number)
       print "No QWK/NET Network defined."
     end
     displaygroup(number)
- end
- 
- def changeqwkpacket(number)
-    
-  group = fetch_group(number)
-  qwknet = get_qwknet(group)   
-   if !qwknet.nil? then
+  end
+
+  def changeqwkpacket(number)
+
+    group = fetch_group(number)
+    qwknet = get_qwknet(group)   
+    if !qwknet.nil? then
 
       prompt = "%WEnter the file name for QWK packets:%G "
       qwkpacket = getinp(prompt) 
-      
+
       if qwkpacket.length > 40 then
         print "%RFilename too long. 40 Character Maximum"
       else
@@ -261,17 +261,17 @@ def changeqwkdirectory(number)
       print "No QWK/NET Network defined."
     end
     displaygroup(number)
- end
+  end
 
-def changerepdirectory(number)
-    
-  group = fetch_group(number)
-  qwknet = get_qwknet(group)   
-   if !qwknet.nil? then
+  def changerepdirectory(number)
+
+    group = fetch_group(number)
+    qwknet = get_qwknet(group)   
+    if !qwknet.nil? then
 
       prompt = "%WEnter the path for REP packets:%G "
       repdir = getinp(prompt) 
-      
+
       if repdir.length > 40 then
         print "%RPath too long. 40 Character Maximum"
       else
@@ -287,17 +287,17 @@ def changerepdirectory(number)
     end
     displaygroup(number)
   end
-  
-  
+
+
   def changerepdata(number)
-    
-  group = fetch_group(number)
-  qwknet = get_qwknet(group)   
-   if !qwknet.nil? then
+
+    group = fetch_group(number)
+    qwknet = get_qwknet(group)   
+    if !qwknet.nil? then
 
       prompt = "%WEnter the name for REP data packets:%G "
       repdata = getinp(prompt) 
-      
+
       if repdata.length > 40 then
         print "%RName too long. 40 Character Maximum"
       else
@@ -312,17 +312,17 @@ def changerepdirectory(number)
       print "No QWK/NET Network defined."
     end
     displaygroup(number)
- end
- 
- def changereppacket(number)
-    
-  group = fetch_group(number)
-  qwknet = get_qwknet(group)   
-   if !qwknet.nil? then
+  end
+
+  def changereppacket(number)
+
+    group = fetch_group(number)
+    qwknet = get_qwknet(group)   
+    if !qwknet.nil? then
 
       prompt = "%WEnter the file name for REP packets:%G "
       reppacket = getinp(prompt) 
-      
+
       if reppacket.length > 40 then
         print "%RFilename too long. 40 Character Maximum"
       else
@@ -337,18 +337,18 @@ def changerepdirectory(number)
       print "No QWK/NET Network defined."
     end
     displaygroup(number)
- end
+  end
 
- 
-def changeqwkname(number)
-    
-  group = fetch_group(number)
-  qwknet = get_qwknet(group)   
-   if !qwknet.nil? then
+
+  def changeqwkname(number)
+
+    group = fetch_group(number)
+    qwknet = get_qwknet(group)   
+    if !qwknet.nil? then
 
       prompt = "%WEnter QWK/REP network name:%G "
       name = getinp(prompt) 
-      
+
       if name.length > 40 then
         print "%RName too long. 40 Character Maximum"
       else
@@ -363,18 +363,18 @@ def changeqwkname(number)
       print "No QWK/NET Network defined."
     end
     displaygroup(number)
- end
- 
- 
- def changeqwklocalaccount(number)
-    
-  group = fetch_group(number)
-  qwknet = get_qwknet(group)   
-   if !qwknet.nil? then
+  end
+
+
+  def changeqwklocalaccount(number)
+
+    group = fetch_group(number)
+    qwknet = get_qwknet(group)   
+    if !qwknet.nil? then
 
       prompt = "%WEnter the User ID of QWK/REP service account on the LOCAL system:%G "
       account = getinp(prompt) 
-      
+
       if account.length > 40 then
         print "%RAccount too long. 40 Character Maximum"
       else
@@ -393,70 +393,70 @@ def changeqwkname(number)
       print "No QWK/NET Network defined."
     end
     displaygroup(number)
- end
- 
+  end
+
   def qwknetadd(number)
-    
+
     group = fetch_group(number)
-  if get_qwknet(group).nil? then
-    while true
-      prompt = "Enter QWK/REP network name:%G "
-      name = getinp(prompt)
-      if name == "" then
-        print "%RCancelled"
-        return [gpointer,(g_total - 1)]
+    if get_qwknet(group).nil? then
+      while true
+        prompt = "Enter QWK/REP network name:%G "
+        name = getinp(prompt)
+        if name == "" then
+          print "%RCancelled"
+          return [gpointer,(g_total - 1)]
+        end
+        if name.length > 40 then
+          print "%RName too long. 40 Character Maximum"
+        else break end
       end
-      if name.length > 40 then
-        print "%RName too long. 40 Character Maximum"
-      else break end
-    end
-    
-   while true
-      prompt = "%WEnter the BBSID of the remote system:%G "
-      bbsid = getinp(prompt) {|n| n != ""}
-      if bbsid.length > 40 then
-        print "%RName too long. 40 Character Maximum"
-      else break end
-    end
-    
-   while true
-      prompt = "%WEnter the User ID of QWK/REP service account on the LOCAL system:%G "
-      qwkuser = getinp(prompt) {|n| n != ""}
-      if qwkuser.length > 40 then
-        print "%RName too long. 40 Character Maximum"
-      else
-        if !user_exists(qwkuser) then
-          print "%RLocal user does not exist.  Try again..."
+
+      while true
+        prompt = "%WEnter the BBSID of the remote system:%G "
+        bbsid = getinp(prompt) {|n| n != ""}
+        if bbsid.length > 40 then
+          print "%RName too long. 40 Character Maximum"
+        else break end
+      end
+
+      while true
+        prompt = "%WEnter the User ID of QWK/REP service account on the LOCAL system:%G "
+        qwkuser = getinp(prompt) {|n| n != ""}
+        if qwkuser.length > 40 then
+          print "%RName too long. 40 Character Maximum"
         else
-         break 
-       end
-     end
-   end
-   
-   while true
-      prompt = "%WEnter the User ID of QWK/REP ftp account on the REMOTE system:%G "
-      ftpaccount = getinp(prompt) {|n| n != ""}
-      if ftpaccount.length > 40 then
-        print "%RName too long. 40 Character Maximum"
-      else break end
-    end
-    
-   while true
-      prompt = "%WEnter the ftp account UserID on the REMOTE system:%G "
-      ftpaddress = getinp(prompt) {|n| n != ""}
-      if ftpaddress.length > 40 then
-        print "%RName too long. 40 Character Maximum"
-      else break end
-    end
-  
-  while true
-      prompt = "%WEnter the ftp account password on the REMOTE system:%G "
-      ftppassword = getinp(prompt) {|n| n != ""}
-      if ftppassword.length > 40 then
-        print "%RName too long. 40 Character Maximum"
-      else break end
-    end
-    
+          if !user_exists(qwkuser) then
+            print "%RLocal user does not exist.  Try again..."
+          else
+            break 
+          end
+        end
+      end
+
+      while true
+        prompt = "%WEnter the User ID of QWK/REP ftp account on the REMOTE system:%G "
+        ftpaccount = getinp(prompt) {|n| n != ""}
+        if ftpaccount.length > 40 then
+          print "%RName too long. 40 Character Maximum"
+        else break end
+      end
+
+      while true
+        prompt = "%WEnter the ftp account UserID on the REMOTE system:%G "
+        ftpaddress = getinp(prompt) {|n| n != ""}
+        if ftpaddress.length > 40 then
+          print "%RName too long. 40 Character Maximum"
+        else break end
+      end
+
+      while true
+        prompt = "%WEnter the ftp account password on the REMOTE system:%G "
+        ftppassword = getinp(prompt) {|n| n != ""}
+        if ftppassword.length > 40 then
+          print "%RName too long. 40 Character Maximum"
+        else break end
+      end
+
 
       commit = yes("Are you sure #{YESNO}",true,false,true)
       if commit then
@@ -465,9 +465,9 @@ def changeqwkname(number)
         print "%RCancelled."
         return
       end
-  else
-    print "%RYou may only have one QWK network per message group."
-  end
+    else
+      print "%RYou may only have one QWK network per message group."
+    end
   end
 
   def deletegroup(gpointer)
@@ -503,15 +503,15 @@ def changeqwkname(number)
       else break end
     end
 
-      commit = yes("Are you sure #{YESNO}",true,false,true)
-      if commit then
-        add_group(name)
-        gpointer = g_total - 1
-      else
-        print "%RCancelled."
-        gpointer = g_total - 1
-        return
-      end
+    commit = yes("Are you sure #{YESNO}",true,false,true)
+    if commit then
+      add_group(name)
+      gpointer = g_total - 1
+    else
+      print "%RCancelled."
+      gpointer = g_total - 1
+      return
+    end
 
   end
 
@@ -521,21 +521,21 @@ def changeqwkname(number)
 
     group = fetch_group(gpointer)
 
-      prompt = "Enter new group name: "
-      name = getinp(prompt) 
-      if name == "" then
-        print "%RCancelled"
-      else
+    prompt = "Enter new group name: "
+    name = getinp(prompt) 
+    if name == "" then
+      print "%RCancelled"
+    else
       if name.length > 40 then
         print "Name too long. 40 Character Maximum"
       else 
-    group.name = name
-    update_area(group)
-    print
+        group.name = name
+        update_area(group)
+        print
+      end
+    end
   end
-end
-end
 
- 
+
 end # class Session
 
