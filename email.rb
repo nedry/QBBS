@@ -174,14 +174,15 @@ def display_qwk_routing_tables
            cont = true
              cols = %w(Y G C).map {|i| "%"+i}
             headings = %w(Destination Route Last-Seen)
-            widths = [15,45,20]
+            widths = [15,35,20]
 	    header = cols.zip(headings).map {|a,b| a+b}.formatrow(widths)
             underscore = cols.zip(['-'*30]*5).map{|a,b| a+b}.formatrow(widths)
 
    fetch_groups.each {|group| qwknet = get_qwknet(group)
                                                 if !qwknet.nil? then
-                                                  print "#{qwknet.name}: routes..."
+                                                  
                                                   if !get_qwkroutes(qwknet).nil? then
+						    print "#{qwknet.name}: #{get_qwkroutes(qwknet).length} routes found..."
                                                     print header
 	                                            print underscore
                                                     get_qwkroutes(qwknet).each {|route| 
