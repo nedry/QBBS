@@ -33,8 +33,8 @@ def fetch_area_list(grp)
   return areas
 end
 
-def find_qwk_area (number,name)  # name for future use.
-  Area.first(:netnum => number)
+def find_qwk_area (number,grp)  # name for future use.
+  Area.first(:netnum => number, :grp => grp)
 end
 
 def add_area(name, d_access,v_access,netnum,fido_net,group)
@@ -60,6 +60,6 @@ def fido_export_lst
     areas = Area.all(:fido_net.not => "", :fido_net.not => BADNETMAIL, :order => [:number])
 end
 
-def qwk_export_list
-    areas = Area.all(:netnum.gt => - 1, :order => [:number])
+def qwk_export_list(grp)
+    areas = Area.all(:netnum.gt => - 1, :grp => grp, :order => [:number])
 end

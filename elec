@@ -1,0 +1,32 @@
+             name              | delete | locked | number | netnum | d_access | v_access |     modify_date     | network |  fido_net  | grp 
+-------------------------------+--------+--------+--------+--------+----------+----------+---------------------+---------+------------+-----
+ Email                         | f      | f      |      0 |     -1 | I        | I        | 2010-07-26 14:43:32 |         |            |   1
+ General Discussions           | f      | f      |      1 |     -1 | W        | W        | 2010-07-26 14:43:32 |         |            |   1
+ The APC Net                   | f      | f      |      2 |     -1 | W        | W        | 2010-07-26 14:43:32 |         |            |   1
+ General                       | f      | f      |      3 |   2001 | W        | W        | 2010-07-26 14:43:32 |         |            |   2
+ Adverstisements               | f      | f      |      4 |   2002 | W        | W        | 2010-07-26 14:43:32 |         |            |   2
+ Entertainment                 | f      | f      |      5 |   2003 | W        | W        | 2010-07-26 14:43:32 |         |            |   2
+ Debate                        | f      | f      |      6 |   2004 | W        | W        | 2010-07-26 14:43:32 |         |            |   2
+ Hardware/Software Help        | f      | f      |      7 |   2005 | W        | W        | 2010-07-26 14:43:32 |         |            |   2
+ Programming                   | f      | f      |      8 |   2006 | W        | W        | 2010-07-26 14:43:32 |         |            |   2
+ Unix Discussion               | f      | f      |      9 |   2009 | W        | W        | 2010-07-26 14:43:32 |         |            |   2
+ Ham Radio                     | f      | f      |     10 |   2015 | W        | W        | 2010-07-26 14:43:32 |         |            |   2
+ Internet                      | f      | f      |     11 |   2016 | W        | W        | 2010-07-26 14:43:32 |         |            |   2
+ Pro-Audio                     | f      | f      |     12 |   2017 | W        | W        | 2010-07-26 14:43:32 |         |            |   2
+ Firearms                      | f      | f      |     13 |   2008 | W        | W        | 2010-07-26 14:43:32 |         |            |   2
+ Sports Discussion             | f      | f      |     14 |   2019 | W        | W        | 2010-07-26 14:43:32 |         |            |   2
+ Religious Nuts                | f      | f      |     15 |   2020 | W        | W        | 2010-07-26 14:43:32 |         |            |   2
+ Synchronet Announcements      | f      | f      |     16 |   2030 | W        | W        | 2010-07-26 14:43:32 |         |            |   2
+ Hobbies                       | f      | f      |     17 |   2021 | W        | W        | 2010-07-26 14:43:32 |         |            |   2
+ Synchronet Discussion         | f      | f      |     18 |   2007 | W        | W        | 2010-07-26 14:43:32 |         |            |   2
+ Sysops Only                   | f      | f      |     19 |   2008 | I        | I        | 2010-07-26 14:43:32 |         |            |   2
+ Synchronet Prog. (Baja)       | f      | f      |     20 |   2011 | W        | W        | 2010-07-26 14:43:32 |         |            |   2
+ Synchronet Prog. (Javascript) | f      | f      |     21 |   2012 | W        | W        | 2010-07-26 14:43:32 |         |            |   2
+ Synchronet Prog. (c/c++/cvs)  | f      | f      |     22 |   2010 | W        | W        | 2010-07-26 14:43:32 |         |            |   2
+ Sysop712                      | f      | f      |     23 |     -1 | I        | I        | 2010-07-26 14:43:32 |         | SYSOP712   |   3
+ Netmail                       | f      | f      |     24 |     -1 | I        | I        | 2010-07-26 14:43:32 |         | NETMAIL    |   3
+ BadNetMail                    | f      | f      |     25 |     -1 | I        | I        | 2010-07-26 14:43:32 |         | BADNETMAIL |   3
+ QWKmail                       | f      | f      |     26 |      0 | I        | I        | 2010-07-26 14:43:32 |         |            |   1
+ Weather                       | f      | f      |     27 |     -1 | W        | W        | 2010-07-26 14:43:32 |         | WEATHER    |   3
+(28 rows)
+

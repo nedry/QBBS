@@ -1,0 +1,20 @@
+.main_frame
+  #main-l
+    #main2-l
+      #main3-l
+        .main-title
+          %h2{:class => "w_header"}Logon Failure
+          .main-content
+            %table
+              %tr
+                %td
+                  %img{:src => "../graphix/boom.gif"}
+                %td
+                  =error
+                  %br
+                  Try
+                  = frm_out
+                  again.
+
+
+= partial("footer")

@@ -63,6 +63,7 @@ class Session
   require "email.rb"
   require "teleconference.rb"
   require "main.rb"
+  require "groups.rb"
 
   def run
     telnetsetup
@@ -123,32 +124,33 @@ class MailSchedulethread
     unbundle
   end
 
-  def ftptest
+  def ftptest(ftpaddress,ftpaccount,ftppassword)
     begin
-      ftp = Net::FTP.new(FTPADDRESS)
+      ftp = Net::FTP.new(ftpaddress)
       ftp.debug_mode = false
       ftp.passive = false
-      ftp.login(FTPACCOUNT,FTPPASSWORD)
+      ftp.login(ftpaccount,ftppassword)
       ftp.close
       add_log_entry(L_SCHEDULE,Time.now,"Connected via FTP. Starting QWK Export.")
-      puts "-QWK/REP: Successfull Connection to FTP Server. Starting Export"
+      puts "-QWK/REP: Connect to #{ftpaddress}. Starting Export"
       return true
     rescue
-      puts "-QWK/REP: Cannot connect to FTP Server. #{$!}"
-      add_log_entry(L_SCHEDULE,Time.now,"Cannot connect to FTP Server.")
+      puts "-QWK/REP: Connect Fail to #{ftpaddress}. #{$!}"
+      add_log_entry(L_SCHEDULE,Time.now,"Connect Fail: #{ftpaddress}.")
       return false
     end
   end
 
-  def up_down(idle)
-    puts "-SCHED: Starting a QWK/REP message transfer #{Time.now.strftime("%m/%d/%Y at %I:%M%p")}... Idle: #{idle}"
-    add_log_entry(L_SCHEDULE,Time.now,"Starting a QWK/REPmessage transfer.")
+  def up_down(idle,qwknet)
     
-    if ftptest or QWK_DEBUG then
-      worked = Rep::Exporter.new(REPDATA)
-       worked.repexport(QWKUSER)
+    puts "-SCHED: Starting a QWK transfer #{Time.now.strftime("%m/%d/%Y at %I:%M%p")}... Idle: #{idle}"
+    add_log_entry(L_SCHEDULE,Time.now,"Starting a QWK transfer.")
+    
+    if ftptest(qwknet.ftpaddress,qwknet.ftpaccount,qwknet.ftppassword) or QWK_DEBUG then
+      worked = Rep::Exporter.new(qwknet)
+       worked.repexport
       if worked then 
-        qwkimp =  Qwk::Importer.new(nil)
+        qwkimp =  Qwk::Importer.new(qwknet)
         qwkimp.import
       end
     end
@@ -158,14 +160,29 @@ class MailSchedulethread
   def doit(idle)
     up_down_fido(idle) if FIDO
     do_smtp if SMTP
-    up_down(idle) if QWK
-
   end
 
+
+  def qwk_loop(idle)
+  
+    if QWK
+      fetch_groups.each {|group| qwknet = get_qwknet(group)
+                                                if !qwknet.nil? then
+                                                  puts "-SCHED: Starting message run for #{qwknet.name}"
+                                                  up_down(idle,qwknet)
+                                                end
+                                                }
+    else
+      puts "-SCHED: QWK network transfers disabled."
+    end
+  end
+  
   def run
     # begin
+   
     puts "-SCHED: Starting Message Transfer Thread."
     idle = 0
+    qwk_loop(idle)
     doit(idle)
     tick = Time.now.min.to_i
     # up_down
@@ -179,8 +196,9 @@ class MailSchedulethread
         tick = Time.now.min.to_i
       end
 
-      #puts "Idle Time:  #{idle}"
+      puts "Idle Time:  #{idle}"
       if idle >= QWKREPINTERVAL then
+        qwk_loop(idle)
         doit(idle)
         idle = 0
       end

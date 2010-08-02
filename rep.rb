@@ -2,20 +2,23 @@ require 'tools'
 require 'log'
 require 'ftpclient'
 require 'db/db_log'
+require 'db/db_message'
 require 'encodings.rb'
 
 module Rep
   class Exporter
     attr_accessor :file, :log
 
-    def initialize(path)
-      @file = path
+    def initialize(qwknet)
+      @qwknet = qwknet
       @log = Log.new("replog.txt")
+      @repdata = "#{@qwknet.repdir}/#{@qwknet.repdata}"
+      @reppacket = "#{@qwknet.repdir}/#{@qwknet.reppacket}"
     end
 
     def writeheader
-      File.open(file, "ab") do |f|
-        f.write BBSID.ljust(128)
+      File.open(@repdata, "ab") do |f|
+        f.write @qwknet.bbsid.ljust(128)
       end
     end
 
@@ -31,7 +34,7 @@ module Rep
       outmessage = convert_to_ascii(message.msg_text) # .join('?)
       outmessage.gsub!(DLIM,227.chr)
       outmessage = outmessage << 227.chr << "---" <<227.chr
-      outmessage = outmessage << QWKTAG << 227.chr
+      outmessage = outmessage << convert_to_ascii(@qwknet.qwktag) << 227.chr
       dec = outmessage.length / 128
       nblocks = (dec.succ)
       len = outmessage.length
@@ -52,7 +55,7 @@ module Rep
       m_subj = "No Subject" if message.subject.nil? or message.subject.empty?
       log.write("BLOCKS: #{nblocks}")
 
-      File.open(@file, "a") do |f|
+      File.open(@repdata, "a") do |f|
         f.write " "                      # Status Flag (not used on this system)
         f.write conf.to_s.ljust(7)       #Message Number
         f.write outdate.ljust(8)         #Message Date
@@ -75,24 +78,25 @@ module Rep
  end
 
     def makeexportlist
-      xport =qwk_export_list
+      xport =qwk_export_list(@qwknet.grp)
       puts "-REP: The following areas have export mappings..."
       xport.each {|x| puts "     #{x.netnum} #{x.name}" }
       return xport
     end
 
     def ftppacketup
-      ftp = FtpClient.new(FTPADDRESS, FTPACCOUNT, FTPPASSWORD)
+      ftp = FtpClient.new(@qwknet)
       ftp.rep_packet_up
     end
 
     def clearoldrep
       puts "-REP: Deleting old packets"
-      File.delete(REPDATA) if File.exists?(REPDATA)
-      File.delete(REPPACKET) if File.exists?(REPPACKET)
+
+      File.delete(@repdata) if File.exists?(@repdata)
+      File.delete(@reppacket) if File.exists?(@reppacket)
     end
 
-    def repexport(u)
+    def repexport
       clearoldrep
       ddate = Time.now.strftime("%m/%d/%Y at %I:%M%p")
       puts "-REP: Starting export."
@@ -104,16 +108,16 @@ module Rep
         puts "-REP: Now Processing #{xp.name} message area."
 	@log.write "-REP: Now Processing #{xp.name} message area."
 
-       user = fetch_user(get_uid(u))
+       user = fetch_user(get_uid(@qwknet.qwkuser))
        scanforaccess(user)
        pointer = get_pointer(user,xp.number)       
        
-        replogandputs "-REP: Last [absolute] Exported Message: #{pointer.lastread}"
+        replogandputs "-REP: Last [absolute] Exported Message...#{pointer.lastread}"
 
-        replogandputs "-REP: Highest [absolute] Message: #{high_absolute(xp.number)}"
-        replogandputs "-REP: Total Messages            : #{m_total(xp.number)}"
+        replogandputs "-REP: Highest [absolute] Message.........#{high_absolute(xp.number)}"
+        replogandputs "-REP: Total Messages.....................#{m_total(xp.number)}"
         new = new_messages(xp.number,pointer.lastread)
-        replogandputs "-REP: Messages to Export        : #{new}"
+        replogandputs "-REP: Messages to Export.................#{new}"
 	puts 
         if new > 0 then
           #puts "-REP: Starting Export"
@@ -144,7 +148,8 @@ module Rep
       puts "-REP: Export Complete. #{total} message(s) exported."
       puts
       puts "-REP: Compressing Packet"
-      happy = system("zip -j -D #{REPPACKET} #{REPDATA}")
+      puts "zip -j -D #{@reppacket} #{@repdata}"
+      happy = system("zip -j -D #{@reppacket} #{@repdata}")
       if happy then
         worked = ftppacketup
         return worked

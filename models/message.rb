@@ -35,5 +35,9 @@ class Message
   property :origin, String, :length => 80
   property :smtp, Boolean, :default => false 
   property :number, Integer,  :min => 0, :max => 2**32,  :key => true
+  property :q_msgid, String, :length => 80
+  property :q_tz, String, :length => 40
+  property :q_via, String, :length => 255
+  property :q_reply, String, :length => 255
   belongs_to :area, :child_key => [:number]
   end

@@ -158,50 +158,6 @@ def deletemessage(epointer) #revised
 end
 
 
-def qwkmailadr(address)
-
-  to = nil;route = nil
-  if !address.index(".") then
-    happy = (/^(.+)@([a-z,A-Z]+)/) =~ address
-    if happy then
-      to = $1;route = $2
-    end
-  end
-  return [to,route]
-end
-
-def stmpmailadr(address)
-  happy = (/^(.+)@(.+)\.(.+)/) =~ address
-  if happy then return true else return false end
-end
-
-def netmailadr(address)
-
-  to = nil;zone = nil;net = nil;node = nil;point = nil
-  happy = (/^(.*)@(\d?):(\d{1,4})\/(.*)/) =~ address
-  if happy then
-    to = $1;zone = $2;net = $3;node = $4
-    grumpy = (/(\d{1,4})\.(\d{1,4})/) =~ node
-    if grumpy then
-      node = $1;point = $2
-    end
-
-  end
-  return [to,zone,net,node,point]
-end
-
-def parse_intl(address)
-
-  happy = (/^(\d?):(\d{1,4})\/(.*)/) =~ address
-  if happy then
-    zone = $1;net = $2;node = $3
-    grumpy = (/(\d{1,4})\.(\d{1,4})/) =~ node
-    if grumpy then
-      node = $1;point = $2
-    end
-  end
-  return [zone,net,node,point]
-end
 
 def findlocal(user)
 
@@ -245,8 +201,14 @@ def sendemail(feedback)
       to,route = qwkmailadr(inp)
       if !to.nil? then
         print "Sending a QWK Netmail Message to: #{inp}"
+        out_area = find_qwk_route(route)
+        if !out_area.nil? then
+        puts out_area
+        puts fetch_area(out_area).name
+        else puts "no result" end
         m_type = Q_NETMAIL
         to.upcase!
+        
         break
       end
       smtp = stmpmailadr(inp)
@@ -292,14 +254,20 @@ def sendemail(feedback)
       print "Sending Local e-mail..."
 
     when F_NETMAIL
-      table,number = find_fido_area(NETMAIL)
+      number = find_fido_area(NETMAIL)
       intl = "#{zone}:#{net}/#{node} #{FIDOZONE}:#{FIDONET}/#{FIDONODE}"
-      savecurmessage(to,title,false,false,node,net,intl,point,number)
+      savecurmessage(number,to,title,false,false,node,net,intl,point)
       print "Sending Netmail..."
 
     when Q_NETMAIL
-      number = find_qwk_area(QWKMAIL,nil)
-      if route.upcase != BBSID then
+     group = fetch_group_grp(area.grp)
+     qwknet = get_qwknet(group)
+     bbsid = ""
+     bbsid = qwknet.bbsid if !qwknet.nil?
+      area = find_qwk_area(QWKMAIL,qwknet.grp) 
+     # area = find_qwk_area(QWKMAIL,nil)
+      number = area.number
+      if route.upcase != bbsid then
         @lineeditor.msgtext.unshift(inp)
         to = "NETMAIL"
       end
@@ -316,7 +284,13 @@ end # of def sendemail
 
 def replyemail(epointer,carea)
   area = fetch_area(carea)
+
   u = @c_user
+  pointer = get_pointer(@c_user,0)
+  group = fetch_group_grp(area.grp)
+  qwknet = get_qwknet(group)
+  bbsid = ""
+  bbsid = qwknet.bbsid if !qwknet.nil?
   if carea > 0 then
     abs = absolute_message(area.number,epointer)
     r_message = fetch_msg(abs)
@@ -327,7 +301,7 @@ def replyemail(epointer,carea)
   r_message.msg_text.each_line(DLIM) {|line| msg_text.push(line.chop!)} #1.9 modification
   done = false
   print
-  if %w(R N).include?(@c_user.areaaccess[0])
+  if %w(R N).include?(pointer.access)
     print "%RYou do not have write access."
     return false
   end
@@ -348,9 +322,9 @@ def replyemail(epointer,carea)
     m_type = F_NETMAIL
   end
   if r_message.network then
-    msg_text,msgid,via,tz,reply = qwk_kludge_search(msg_text)
-    out = BBSID
-    out = via if !via.nil?
+    #msg_text,msgid,via,tz,reply = qwk_kludge_search(msg_text)
+    out = bbsid
+    out = r_message.q_via if ! r_message.q_via.nil?
     print "Replying to: %W#{to}@#{out}"
     m_type = Q_NETMAIL
   end
@@ -383,14 +357,14 @@ def replyemail(epointer,carea)
       savecurmessage(number, to, title, false,false,node,net,intl,point)
       print "Sending Netmail..."
     when Q_NETMAIL
-      number = find_qwk_area(QWKMAIL,nil)
-      if !via.nil? then
-        @lineeditor.msgtext.unshift("#{to}@#{via}")
+       area = find_qwk_area(QWKMAIL,qwknet.grp) 
+      if ! r_message.q_via.nil? then
+        @lineeditor.msgtext.unshift("#{to}@#{ r_message.q_via}")
         to = "NETMAIL"
 
       end
       print "Sending QWK Netmail..."
-      savecurmessage(number, to, title, false,false,node,net,intl,point)
+      savecurmessage(area.number, to, title, false,false,node,net,intl,point)
     when SMTP
       print "Sending SMTP (Internet) Email..."
       smtp_send(to,@c_user.name,title,@lineeditor.msgtext)

@@ -14,7 +14,9 @@ class Session
   end
 
   def defaultalias(username)
-    newname = username.split.each {|subname| subname.capitalize!}.to_s
+    newname = ""
+    newname = username.gsub(/\W/,"").slice(0..14)
+
     x = 0
     while true
       break if !alias_exists(newname) 
@@ -91,8 +93,8 @@ def changepwd
 end
 
 def changenick
-  if @c_user.alais == '' then 
-    @c_user.alais = defaultalias(@c_user.name)
+  if @c_user.alias == '' then 
+    @c_user.alias = defaultalias(@c_user.name)
     update_user(@c_user)
   end
 
@@ -101,7 +103,7 @@ def changenick
   No Spaces are allowed. If you enter a space, it will be removed.  
   No inappropriate names please.
 
-  Your current Chat Alias is %Y#{@c_user.alais}%G.
+  Your current Chat Alias is %Y#{@c_user.alias}%G.
   here
 
   prompt = "Enter Chat Alias (Max 15 Characters): %Y"
@@ -113,7 +115,7 @@ def changenick
   newname = tempstr.gsub(/\W/,"").slice(0..14)
 
   if !alias_exists(newname) then 
-    @c_user.alais = newname
+    @c_user.alias = newname
     update_user(@c_user)
     usersettingsmenu
   else 

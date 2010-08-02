@@ -1,10 +1,10 @@
 DEBUG = true
 LISTENPORT = 2323
-QWK = false
+QWK = true
 QWK_DEBUG = true
 FIDO = false
 SMTP = false
-IRC_ON =  false
+IRC_ON =  true
 
 BS = 8
 ESC = 27
@@ -14,7 +14,7 @@ LF = 10
 CTRL_U = 21
 QUOTE = 230.chr
 DLIM = 13.chr
-#DLIM = 227.chr
+DAY_SEC = 86400
 CLS ="\e[2J"
 HOME = "\e[H"
 CRLF = "\r\n"
@@ -57,7 +57,7 @@ FULLSCREENDIR = "/home/mark/qbbs/quote"
 IRCSERVER = "irc.larryniven.net"
 IRCPORT = 6667
 IRCCHANNEL = "#knownspace"
-IRCBOTUSER = "HAL9000"
+IRCBOTUSER = "HAL9000-test"
 IRCTOPIC = "Knownspace and RetroBBS Chat"
 
 IRCOPERID = "HAL9000"
@@ -66,26 +66,26 @@ IRCOPERPSWD = "x1g9t6m3a0"
 
 #QWK/REP Settings (to be converted to postgres for multiple networks)
 
-QWKUSER = "QWKREP"
-BBSID = "VERT"
-REPDATA = "rep/VERT.MSG"
-REPPACKET = "rep/VERT.REP"
-REPPACKETUP = "VERT.REP"
-
-QWKPACKET ="qwk/VERT.QWK"
-QWKPACKETDOWN = "VERT.QWK"
-QWKDIR = "qwk"
-
 QWKMAIL = 0
 
-QWKTAG ="#{254.chr} retroCOMPUTING BBS - Home of QUARKware #{254.chr} telnet 81.96.235.250 2323"
+#Defaults... Don't change, unless you want to.
+
+D_QWKEXT = "QWK"
+D_REPEXT = "REP"
+D_QWKDIR = "qwk"
+D_REPDIR = "rep"
+D_REPDATA = "MSG"
+
+#How long QWK message routes live, in days...
+
+ROUTE_SCAVENGE = 90
+
+D_QWKTAG ="#{254.chr} TARDIS BBS - Home of QUARKseven #{254.chr} telnet/http bbs.cortex-media.info"
 
 
 QWKREPINTERVAL = 15
 
-FTPADDRESS ="vert.synchro.net"
-FTPACCOUNT ="QBBS"
-FTPPASSWORD ="flatmo"
+
 
 
 #FidoNET settings
@@ -153,8 +153,8 @@ WEB_IDLE_MAX = 30
 MAX_L_CALLERS = 10
 
 #Door Constants
-DOS	= 0
-LINUX	= 1
+DOS     = 0
+LINUX   = 1
 RSTS    = 2
 
 RBBS	= 0

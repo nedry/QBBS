@@ -202,14 +202,14 @@ class Session
   end
 
   def savecurmessage(x, to, title,exported,reply,destnode,destnet,intl,point)
+    puts x
     area = fetch_area(x)
     @lineeditor.msgtext << DLIM
     msg_text = @lineeditor.msgtext.join(DLIM)
     m_from = @c_user.name
     msg_date = Time.now.strftime("%Y-%m-%d %I:%M%p")
     absolute = add_msg(to,m_from,msg_date,title,msg_text,exported,false,destnode,destnet,intl,point,false, nil,nil,nil,
-                                      nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,reply,area.number)
-   # absolute = add_msg(to,m_from,msg_date,title,msg_text,exported,false,reply,destnode,destnet,intl,point,false,area.number)
+                                      nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,reply,area.number,nil,nil,nil,nil)
     add_log_entry(5,Time.now,"#{@c_user.name} posted msg # #{absolute}")
   end
 
@@ -229,7 +229,7 @@ class Session
     path = "#{FULLSCREENDIR}/#{outfile}"
     quotefile = File.new(path, File::CREAT|File::APPEND|File::RDWR, 0666)
     quotefile.puts "#{CRLF}"
-    reply_text.each {|line| quotefile.puts "#{line.chop![0..75]}#{CRLF}"} if reply_text != nil
+    reply_text.each_line {|line| quotefile.puts "#{line.chop![0..75]}#{CRLF}"} if reply_text != nil
     quotefile.close
     return outfile
   end
@@ -313,12 +313,14 @@ class Session
       print
       print "%COrg:%G #{fidomessage.orgnet}/#{fidomessage.orgnode}"
       print "%CDest:%G #{fidomessage.destnet}/#{fidomessage.destnode}"
-
+      print" i'm here"
+  print "%Cq_msgid:%G #{fidomessage.q_msgid}"
       # [[field, attr], ....]. if attr is missing, it is field.downcase 
-      fields = [ "Attribute", "Cost", ["Date Time", :msg_date], ["To", :m_to],
-        ["From", :m_from], "Subject", "Area", "Msgid", "Path", ["TzUTZ", :tzutc],
-        "CharSet", ["Tosser ID", :tid], ["Proc ID", :pid], "Intl", "Topt", "Fmpt",
-        "Reply", "Origin"]
+ fields = [ "Attribute", "Cost", ["Date Time", :msg_date], ["To", :m_to],
+       ["From", :m_from], "Subject", "Area", "Msgid", "Path",
+       ["TzUTZ", :tzutc],"CharSet", ["Tosser ID", :tid], ["Proc ID", :pid], "Intl",
+       "Topt", "Fmpt", "Reply", "Origin",["QWK Message ID", :q_msgid],
+       ["QWK Time Zone",:q_tz],["QWK Via",:q_via],["QWK Reply",:q_reply]]
 
       fields.each do |f|
         field, attr = (f.is_a? Array) ? f : [f, f.downcase]
@@ -372,6 +374,10 @@ class Session
     i = 0
     area = fetch_area(@c_area)
     pointer = get_pointer(@c_user,area.number)
+    group = fetch_group_grp(area.grp)
+    qwknet = get_qwknet(group)
+    bbsid = ""
+    bbsid = qwknet.bbsid if !qwknet.nil?
     u = @c_user
     
     if email then
@@ -390,20 +396,14 @@ class Session
     tempmsg=convert_to_ascii(curmessage.msg_text)
 
 
-    if curmessage.network then
-      tempmsg,kludge= qwk_kludge_search(tempmsg)
-    end
      tempmsg.each_line(DLIM) {|line| message.push(line.chop!)} #changed from .each for ruby 1.9
 
     
-    write "%W##{mpointer} %G[%C#{curmessage.absolute}%G] %M#{curmessage.msg_date.strftime("%A the %d#{time_thingie(curmessage.msg_date)} of %B, %Y  %I:%M%p")}"
-    if !kludge.nil?
-     if !kludge.tz.nil? then
-      tz = kludge.tz.upcase
-      #puts "tz: #{tz}"
-      out = TIME_TABLE[kludge.tz]
-      #puts out
-      out = non_standard_zone(tz) if out.nil?
+    write "%W##{mpointer} %G[%C#{curmessage.absolute}%G] %M#{curmessage.msg_date.strftime("%A the %d#{time_thingie(curmessage.msg_date)} of %B, %Y at %I:%M%p")}"
+    if curmessage.network then
+     if !curmessage.q_tz.nil? then
+      out = TIME_TABLE[curmessage.q_tz.upcase]
+      out = non_standard_zone(curmessage.q_tz) if out.nil?
       write " %W(%G#{out}%W)"
      end
     end
@@ -428,12 +428,11 @@ class Session
       write " %G(%C#{out}%G)"
     end
     if curmessage.network then
-      out = BBSID
-      if !kludge.nil? then
-       out = kludge.via if !kludge.via.nil?
+      out = bbsid
+      out = curmessage.q_via if !curmessage.q_via.nil?
       end
       write " %G(%C#{out}%G)"
-    end
+  #  end
     print
     print "%CTitle: %G#{curmessage.subject}%Y"
     j =5
@@ -614,7 +613,7 @@ end
 %CValidated Access: %G#{area.v_access}
 %CQWK/REP Net # %G#{out}
 %CFidoNet Area: %G#{area.fido_net}
-%CLast Modified: %G#{area.modify_date}
+%CLast Modified: %G#{area.modify_date.strftime("%A the %d#{time_thingie(area.modify_date)} of %B, %Y at %I:%M%p")}
 %CTotal Messages: %G#{m_total(area.number)}
 %CGroup: %G#{area.group.groupname}
 here

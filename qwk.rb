@@ -11,7 +11,7 @@ module Qwk
   Message = Struct.new('Message',:error, :statusflag, :number,
                        :date, :to, :from, :subject, :password,
                        :reference, :blocks, :deleted,
-                       :logicalnum, :tagline, :text)
+                       :logicalnum, :tagline, :text, :msgid, :via, :tz, :reply)
 
   class Message
     private :initialize
@@ -32,6 +32,12 @@ module Qwk
         a.logicalnum = 0
         a.tagline = false
         a.text = []
+        a.msgid = ''
+        a.via = ''
+        a.tz = ''
+        a.reply = ''
+        
+        
         return a
       end
     end
@@ -78,8 +84,8 @@ module Qwk
   class Importer
     attr_accessor :file, :log
     
-   def initialize(path)
-      @file = path
+   def initialize(qwknet)
+      @qwknet = qwknet
       @log = Log.new("qwklog.txt")
     end
     
@@ -111,6 +117,52 @@ module Qwk
         return index
       end
     end
+
+
+class Q_Kludge
+ attr_accessor  :msgid, :tz, :via, :reply
+
+ def initialize (msgid=nil,tz=nil,via=nil,reply=nil)
+  @msgid	= msgid
+  @tz   	= tz
+  @via	= via
+  @reply	= reply
+ end
+
+ def []=(field, value)
+   field = field.downcase
+   self.send("#{field}=", value)
+ end
+
+end #of class Kludge
+
+ def qwk_kludge_search(buffer)	#searches the message buffer for kludge lines and returns them
+  kludge = Q_Kludge.new
+
+  msg_array = buffer.split(227.chr)  #split the message into an array so we can deal with it.
+
+  
+  # if we find any of these, reject the message
+  invalid = ["@MSGID:", "@VIA:", "@TZ:", "@REPLY:"]
+
+  valid_messages = []
+  msg_array.each do |x|
+    match = (/^(\S*)(.*)/) =~ x
+    if match then
+      header = $1
+      value = $2
+      if invalid.include? header
+        temp = header.gsub(/:/, '')
+	field = temp.gsub(/@/,'')
+        kludge[field] = value.strip!
+      else
+        valid_messages << x
+      end
+    end
+  end
+
+  return [valid_messages.join(227.chr) , kludge]
+end
 
     def getcontrol(path)
       filename = "#{path}/CONTROL.DAT"
@@ -176,8 +228,14 @@ module Qwk
         if message.blocks > 1 then
 
           temp = file.read((message.blocks - 1) * 128)
-	 # message_text = temp.force_encoding("IBM437").encode("UTF-8")
-	  message.text = convert_to_utf8(temp)
+          dekludgify, kludge = qwk_kludge_search(temp)
+	        message.text = convert_to_utf8(dekludgify)
+          if !kludge.nil? then
+            message.via = kludge.via
+            message.tz = kludge.tz
+            message.reply = kludge.reply
+            message.msgid = kludge.msgid
+          end
  
         end
       end
@@ -210,7 +268,7 @@ module Qwk
 
     def getindexlist(path)
       list = Dir.glob(path)
-      list.delete("qwk/PERSONAL.NDX") #we don't want this .. it's dupe causing
+      list.delete("@/PERSONAL.NDX") #we don't want this .. it's dupe causing
       return list
     end
 
@@ -240,7 +298,7 @@ module Qwk
 
     def clearoldqwk
       puts "-QWK: Deleting old packets"
-      happy = system("rm qwk/*")
+      happy = system("rm #{@qwknet.qwkdir}/*")
       if happy then 
         puts "-Success" 
       else 
@@ -250,12 +308,12 @@ module Qwk
     end
 
     def ftppacketdown
-      ftp = FtpClient.new(FTPADDRESS, FTPACCOUNT, FTPPASSWORD)
+      ftp = FtpClient.new(@qwknet)
       ftp.qwk_packet_down
     end
 
     def unzippacket
-      happy = system("unzip #{QWKPACKET} -d #{QWKDIR}")
+      happy = system("unzip #{@qwknet.qwkdir}/#{@qwknet.qwkpacket} -d #{@qwknet.qwkdir}")
       add_log_entry(8,Time.now,"Could not unzip QWK Packet.") if !happy
     end
 
@@ -263,7 +321,7 @@ module Qwk
       n_read = 0
       index.each_with_index do |msg_index, x|
         n_read += 1
-        message = getmessage("qwk", msg_index)
+        message = getmessage(@qwknet.qwkdir, msg_index)
         if message.error then
           puts
           puts "-QWK: ERROR detected in packet.  Aborting."
@@ -289,12 +347,12 @@ module Qwk
        unzippacket
       end
 
-      idxlist = getindexlist("qwk/*.NDX")
-      control = getcontrol("qwk")
+      idxlist = getindexlist("#{@qwknet.qwkdir}/*.NDX")
+      control = getcontrol(@qwknet.qwkdir)
       makearealist(control)
       displaypacketstats(idxlist)
 
-      user = fetch_user(get_uid(QWKUSER))
+      user = fetch_user(get_uid(@qwknet.qwkuser))
       scanforaccess(user)
       tmsgimport = 0
 
@@ -306,21 +364,25 @@ module Qwk
         @log.write ("")
         tempstr = idx.scan(/\d\d\d\d/)
         find = tempstr[0].to_i
-        print "-QWK: Finding Import Area for packet# #{find}..."
-        area = (find == 0) ? 0 : find_qwk_area(find, nil) 
+        puts "-QWK: Seeking Import Area for packet# #{find}..."
+        if find > 0 then
+         area =  find_qwk_area(find,@qwknet.grp) 
+        else
+          area = fetch_area(0)  #we want to import all email into email.  QWK/REP email is always 000
+        end
         if area
-          @log.write "Found. Importing #{idx} to #{area.name}"
-          puts "Found. Importing #{idx} to #{area.name}"
+          @log.write "Found! Importing #{idx} to #{area.name}"
+          puts "-QWK: Found. Importing #{idx} to #{area.name}"
           puts
           x = 0
           print "-QWK: Processing Message #"
 
           read_messages(index) do |message|
-            add_qwk_message(message, area) # in db_message
+            add_qwk_message(message, area,@qwknet.qwkuser) # in db_message
           end
         else
           puts
-          putslog "QWK: ERROR: No mapping found for area #{idx}"
+          putslog "ERROR: No mapping found for area #{idx}"
           puts
           add_log_entry(8,Time.now,"No QWK mapping for area #{idx}")
         end
