@@ -49,13 +49,13 @@ class GraphFile
     2.times { @session.print }
   end
 
-  def fileout
-    if File.exists?(filename) 
-      IO.foreach(filename) { |line| 
+  def fileout(fname)
+    if File.exists?(fname)
+      IO.foreach(fname) { |line|
         @session.write line + "\r" 
       } 
     else
-      @session.print "\n#{filename} has run away...please tell sysop!\n"
+      @session.print "\n#{fname} has run away...please tell sysop!\n"
     end
     2.times { @session.print }
   end
