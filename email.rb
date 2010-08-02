@@ -80,7 +80,7 @@ class Session
       when "R"; if epointer > 0 then replyemail(epointer,0)  else print "%RNothing to reply to!" end
       when "?"; write "%W"; gfileout ("emailmnu")
       when "/";  showemail(epointer)
-   
+      when "QR"; display_qwk_routing_tables
       when "K"; deletemessage(epointer)
       when "N"; gfileout ("emailsnd");sendemail(false)
       when "S"; gfileout ("emailsnd");sendemail(false)
@@ -168,6 +168,40 @@ def findlocal(user)
   end
 end
 
+
+def display_qwk_routing_tables
+           j = 0
+           cont = true
+             cols = %w(Y G C).map {|i| "%"+i}
+            headings = %w(Destination Route Last-Seen)
+            widths = [15,45,20]
+	    header = cols.zip(headings).map {|a,b| a+b}.formatrow(widths)
+            underscore = cols.zip(['-'*30]*5).map{|a,b| a+b}.formatrow(widths)
+
+   fetch_groups.each {|group| qwknet = get_qwknet(group)
+                                                if !qwknet.nil? then
+                                                  print "#{qwknet.name}: routes..."
+                                                  if !get_qwkroutes(qwknet).nil? then
+                                                    print header
+	                                            print underscore
+                                                    get_qwkroutes(qwknet).each {|route| 
+                                                        t = route.modified.strftime("%m/%d/%y %I:%M%p")
+                                                        temp = cols.zip([route.dest,route.route,t]).map{|a,b| "#{a}#{b}"}.formatrow(widths) #fix for 1.9
+                                                        j +=1
+                                                        if j == (@c_user.length - 4) and @c_user.more then
+		                                          cont = moreprompt
+                                                          j = 1
+	                                                end
+	                                              break if !cont 
+                                                  print temp
+                                                  }
+                                                end
+                                                break if !cont
+                                                end
+                                                }
+
+end
+
 def smtp_send(to,from,subject,message)
   msgstr = message.join("\n")
   from_smtp = "#{from.gsub(" ",".")}@#{SMTPDOMAIN}"
@@ -200,15 +234,15 @@ def sendemail(feedback)
       end
       to,route = qwkmailadr(inp)
       if !to.nil? then
-        print "Sending a QWK Netmail Message to: #{inp}"
-        out_area = find_qwk_route(route)
-        if !out_area.nil? then
-        puts out_area
-        puts fetch_area(out_area).name
-        else puts "no result" end
+        area,path = qwk_route(route)
+        if !area.nil? then
+          print "Sending a QWK Netmail Message to: #{inp}"
+        else
+          print "%RNo route to that host found.  Type %GQR%R for a list of known hosts."
+          return
+        end
         m_type = Q_NETMAIL
         to.upcase!
-        
         break
       end
       smtp = stmpmailadr(inp)
@@ -265,6 +299,7 @@ def sendemail(feedback)
      bbsid = ""
      bbsid = qwknet.bbsid if !qwknet.nil?
       area = find_qwk_area(QWKMAIL,qwknet.grp) 
+      
      # area = find_qwk_area(QWKMAIL,nil)
       number = area.number
       if route.upcase != bbsid then
