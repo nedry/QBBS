@@ -3,6 +3,7 @@ require 'tools.rb'
 require "wrap.rb"
 require 'chat/irc'
 require 'irc_conference'
+require 'graphfile'
 
 module IOUtils
   # I/O utils. Depends on:
