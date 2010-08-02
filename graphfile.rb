@@ -30,8 +30,6 @@ class GraphFile
   end
 
   def ogfileout(offset)
-    outfile = outfile(filename, override)
-
     j = offset
     cont = true
     if File.exists?(outfile) 
