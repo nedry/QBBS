@@ -7,7 +7,6 @@ require 'graphfile'
 
 module IOUtils
   # I/O utils. Depends on:
-  # - @session
   # - getcmd
   # - print
   # - write

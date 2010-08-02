@@ -3,12 +3,13 @@
 
 class Console
   extend Forwardable
+  include IOUtils
 
   def initialize(session)
     @session = session
   end
 
-  def_delegators :@session, :print, :write, :getinp
+  def_delegators :@session, :print, :write, :getcmd
 
   def readmenu(args)
     dir = +1

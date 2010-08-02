@@ -215,7 +215,7 @@ here
 
     while true
       prompt = "Enter new FidoNet Area Mapping: "
-      fido_net= getinp(prompt) {|n| n != ""}
+      fido_net = getinp(prompt, :nonempty)
       if fido_net.length > 40 then
         print "Area too long. 40 Character Maximum"
       else break end
