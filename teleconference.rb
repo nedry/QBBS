@@ -29,8 +29,8 @@ class Session
     IRC::Event::Ping.new(@irc_client)
     @chatbuff.clear
     check_user_alias
-    puts "@c_user.alais.class: #{@c_user.alais.class}"
-    @irc_alias = @c_user.alais[0]  #1.9 fix?  Why has this turned into an array?
+
+    @irc_alias = @c_user.alias
     puts "@irc_alias; #{@irc_alias}"
     if channel then
       ircchannel = channel
@@ -41,10 +41,10 @@ class Session
     @irc_channel = ircchannel
     puts " @irc_channel: #{ @irc_channel}"
     puts "attemping to log in"
-    @irc_client.login(@c_user.alais, @c_user.alais, "8", "*", "Telnet User")
+    @irc_client.login(@c_user.alias, @c_user.alias, "8", "*", "Telnet User")
     loop do
       count +=1
-      return if count > 30 
+      return if count > 30
 
       m = @irc_client.isdata ? @irc_client.getline : nil
       if m then
@@ -57,20 +57,20 @@ class Session
           case m.command
           when IRC::ERR_NICKNAMEINUSE
             print "*** Nickname already in use."
-            new_alias = "#{@c_user.alais}#{random(1..999)}"
+            new_alias = "#{@c_user.alias}#{random(1..999)}"
             print "*** Trying #{new_alias}"
-            @irc_client.login(new_alias, @c_user.alais, "8", "*", "Telnet User")
+            @irc_client.login(new_alias, @c_user.alias, "8", "*", "Telnet User")
           when IRC::RPL_CREATED
             (/^:(.*):(.*):(.*)/) =~ m.message
             print "%Y*** #{$2}:#{$3}"
           when IRC::RPL_LUSEROP
-            (/^:(\S*)\s(\d*)\s(\S*)\s(\d*)\s:(.*)/) =~ m.message 
+            (/^:(\S*)\s(\d*)\s(\S*)\s(\d*)\s:(.*)/) =~ m.message
             print "%Y*** There are #{$4} #{$5}"
           when IRC::RPL_LUSERCHANNELS
-            (/^:(\S*)\s(\d*)\s(\S*)\s(\d*)\s:(.*)/) =~ m.message 
+            (/^:(\S*)\s(\d*)\s(\S*)\s(\d*)\s:(.*)/) =~ m.message
             print "%Y*** There are #{$4} #{$5}"
           else
-            (/^:(\S*)\s(\S*)\s(\S*)\s(.*)/) =~ m.message 
+            (/^:(\S*)\s(\S*)\s(\S*)\s(.*)/) =~ m.message
             out = $4
             hippy = (/^:(.*)/) =~ out
             out = $1 if !hippy.nil?
@@ -81,21 +81,21 @@ class Session
         if m.command == IRC::RPL_ENDOFMOTD || m.command == IRC::ERR_NOMOTD then
           @irc_client.join(ircchannel)
           loop do
-            m = @irc_client.getline 
+            m = @irc_client.getline
             break if m.command == IRC::RPL_ENDOFNAMES
           end
           break
         end
-      else 
+      else
         sleep(1)
       end
     end
 
-    print ""  
+    print ""
     prompt = "%G>%W"
     if game then ogfileout("gd_enter",1,true) else header end
 
-    while true  
+    while true
       getinp(nil,true) {|l|
         line = l.strip
         puts line
@@ -112,9 +112,9 @@ class Session
               ogfileout("#{GD_HELP_TABLE[help[1]]}",1,true)
               line = nil
             end
-          else 
+          else
             if help[0] == "HELP"
-              ogfileout("gd_main",1,true) 
+              ogfileout("gd_main",1,true)
               line = nil
             end
           end
@@ -148,31 +148,27 @@ class Session
           if line =="?" then
             gfileout("chatmnu")
           else
-            g_test = (/(\S*)(.*)/) =~ line
-            cmd = g_test ? $1.upcase : ""
             if line
-              if (GD_COMMANDS.index("#{cmd}") != nil or @gd_mode) and @gd_game then
-                @irc_client.privmsg(GD_IRCUSER,line)
-              else
-                @irc_client.privmsg(@irc_channel,line)
-              end
+              g_test = (/(\S*)(.*)/) =~ line
+              cmd = g_test ? $1.upcase : ""
+              @irc_client.privmsg(@irc_channel,line)
             end
           end
         end
 
-        @chatbuff.each {|x| print parse_ircc(x, @c_user.ansi, @logged_on) }
+        @chatbuff.each {|x| print parse_ircc(x)}
         @chatbuff.clear
       }
     end
   end
 
   def check_user_alias
-    if @c_user.alais == '' then 
-      @c_user.alais = defaultalias(@c_user.name)
-      update_user(@c_user,get_uid(@c_user.name))
+    if @c_user.alias.nil? then
+      @c_user.alias = defaultalias(@c_user.name)
+      update_user(@c_user)
       print <<-here
       %RYou have not selected a chat alias!
-      %GYou have been assigned the default alias of %Y#{@c_user.alais}
+      %GYou have been assigned the default alias of %Y#{@c_user.alias}
       %GThis can be changed from the user configuration menu [#%Y%%G]
       here
       return false
