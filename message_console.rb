@@ -76,9 +76,9 @@ class MessageConsole < Console
     l_read = new_messages(area.number, pointer.lastread)
 
     print "%W#{area.number.to_s.ljust(5)} " +
-      "%G#{l_read.to_s.rjust(4)} " + 
-      "%R#{pointer.access_display.ljust(8)}" + 
-      "%Y#{area.group.groupname.ljust(10)}" + 
+      "%G#{l_read.to_s.rjust(4)} " +
+      "%R#{pointer.access_display.ljust(8)}" +
+      "%Y#{area.group.groupname.ljust(10)}" +
       "%B#{area.name}"
   end
 
@@ -93,7 +93,7 @@ class MessageConsole < Console
     pointer = get_pointer(@session.c_user,area.number)
     u = @session.c_user
 
-    abs = email ? 
+    abs = email ?
       email_absolute_message(mpointer, u.name) :
       absolute_message(table, mpointer)
 
@@ -135,8 +135,8 @@ class MessageConsole < Console
           out = "#{zone}:#{net}/#{node}"
           out << ".#{point}" if point
         end
-      else 
-        out = get_orig_address(curmessage.msgid) 
+      else
+        out = get_orig_address(curmessage.msgid)
       end
       write " %G(%C#{out}%G)"
     end
@@ -159,7 +159,7 @@ class MessageConsole < Console
         j = 1
         break if !cont
       else
-        print 
+        print
       end
     }
     print
@@ -198,7 +198,7 @@ class MessageConsole < Console
       print "%GTitle: #{title}"
       title = get_or_cr("%REnter Title (<CR> for old): ", title)
       reply_text = [">--- #{to} wrote ---"]
-      r_message.msg_text.each_line(DLIM) {|line| 
+      r_message.msg_text.each_line(DLIM) {|line|
         reply_text.push("> #{line.chop!}")
       }
 
@@ -212,7 +212,7 @@ class MessageConsole < Console
       end
     end
   end
-  
+
   def savecurmessage(x, to, title, exported, reply, destnode, destnet, intl, point)
     area = fetch_area(x)
     @session.lineeditor.msgtext << DLIM
@@ -220,10 +220,10 @@ class MessageConsole < Console
     m_from = @session.c_user.name
     msg_date = Time.now.strftime("%Y-%m-%d %I:%M%p")
     absolute = add_msg(to,m_from,msg_date,title,msg_text,exported,false,destnode,destnet,intl,point,false, nil,nil,nil,
-                                      nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,reply,area.number)
+                       nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,reply,area.number)
     add_log_entry(5,Time.now,"#{@c_user.name} posted msg # #{absolute}")
   end
-  
+
   def write_quote_msg(reply_text)
     num = rand(100000).to_s
     outfile = "msg#{num}"
@@ -234,7 +234,7 @@ class MessageConsole < Console
     quotefile.close
     return outfile
   end
-  
+
   def suck_in_text(msg_file)
     ledit = @session.lineeditor
     ledit.msgtext = []
@@ -244,7 +244,7 @@ class MessageConsole < Console
     system("rm #{FULLSCREENDIR}/#{msg_file}")
     return true
   end
-  
+
   def launch_editor(msg_file)
     launch = FULLSCREENPROG
     launch.gsub!("%a",FULLSCREENDIR)
@@ -260,13 +260,13 @@ class MessageConsole < Console
     print (CLS)
     print (HOME)
   end
-  
+
   def post
     scanforaccess(@session.c_user)
     done = false
     area = fetch_area(@session.c_area)
     pointer = get_pointer(@session.c_user, area.number)
-    
+
     if pointer.access[@session.c_area] =~ /[RN]/
       print "%RYou do not have write access."
       return
@@ -299,7 +299,7 @@ class MessageConsole < Console
       saveit = lineedit(1,reply_text)
     end
   end
-  
+
   def display_fido_header(mpointer)
     area = fetch_area(@c_area)
     if (h_msg > 0) and (mpointer > 0) then
@@ -309,7 +309,7 @@ class MessageConsole < Console
       print "%COrg:%G #{fidomessage.orgnet}/#{fidomessage.orgnode}"
       print "%CDest:%G #{fidomessage.destnet}/#{fidomessage.destnode}"
 
-      # [[field, attr], ....]. if attr is missing, it is field.downcase 
+      # [[field, attr], ....]. if attr is missing, it is field.downcase
       fields = [ "Attribute", "Cost", ["Date Time", :msg_date], ["To", :m_to],
         ["From", :m_from], "Subject", "Area", "Msgid", "Path", ["TzUTZ", :tzutc],
         "CharSet", ["Tosser ID", :tid], ["Proc ID", :pid], "Intl", "Topt", "Fmpt",
@@ -326,7 +326,7 @@ class MessageConsole < Console
       no_message(mpointer)
     end
   end
-  
+
   def non_standard_zone(inzone)
     inzone = inzone[4..7] if inzone.length == 7
     num = inzone.to_i(16)
@@ -342,7 +342,7 @@ class MessageConsole < Console
       return "UNKNOWN"
     end
   end
-  
+
   def h_msg
     area = fetch_area(@session.c_area)
     h_msg = m_total(area.number)
@@ -450,7 +450,7 @@ class MessageConsole < Console
     print "\r\n%YThis message area is empty. Why not %G[P]ost%Y a Message?" if h_msg == 0
     print "\r\n%RYou haven't read any messages yet." if mpointer == 0
   end
-  
+
   # change current area
   def area_change(parameters)
     tempint = -1
@@ -479,9 +479,9 @@ class MessageConsole < Console
         #else
       end
       if (0..(a_total - 1)).include?(tempint)
-	pointer = get_pointer(@c_user,tempint)      
+        pointer = get_pointer(@c_user,tempint)
         t = pointer.access
-	area = fetch_area(tempint)
+        area = fetch_area(tempint)
         if t !~ /[NI]/ or (@c_user.level == 255) and (!area.delete)
           @c_area = tempint
           print "%GChanging to #{area.group.groupname}: #{area.name} area"+CRLF
