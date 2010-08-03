@@ -106,7 +106,7 @@ def who_list_update(uid,loc)
   end
 end
 
-def text_to_html (f_name)
+def text_to_html (f_name,user)
 
   filename = TEXT_ROOT+f_name
   output = ""
@@ -114,6 +114,7 @@ def text_to_html (f_name)
   if File.exists?(filename)
     output << "\n"
     IO.foreach(filename, :external_encoding=>"ASCII-8BIT") { |line| #line=line+"\n"
+      line = parse_text_commands(line,user) if !user.nil?
       line = parse_webcolor(line)
     output << line }
   else
@@ -653,7 +654,7 @@ get '/' do
 
   test = File.exists?(t_file) ? graphfile : plainfile
 
-  haml :index, :locals => {:display_text => text_to_html(test)}
+  haml :index, :locals => {:display_text => text_to_html(test,nil)}
 end
 
 get '/newusermsg' do
@@ -665,7 +666,7 @@ get '/newusermsg' do
 
   test = File.exists?(t_file) ? graphfile : plainfile
 
-  haml :newusermsg, :locals => {:display_text => text_to_html(test)}
+  haml :newusermsg, :locals => {:display_text => text_to_html(test,nil)}
 end
 
 get "/information" do
@@ -1227,7 +1228,10 @@ get '/welcome' do
 
   test = File.exists?(t_file) ? graphfile : plainfile
   if !session[:name].nil? then
-    haml :welcome,  :locals => {:display_text => text_to_html(test)}
+    name = session[:name]
+    uid = get_uid(name)
+    user = fetch_user(get_uid(name))
+    haml :welcome,  :locals => {:display_text => text_to_html(test,user)}
   else
     haml :notlogged
   end
@@ -1240,6 +1244,7 @@ get '/bulletin' do
 
     name = session[:name]
     uid = get_uid(name)
+    user = fetch_user(get_uid(name))
     who_list_update(uid,"Reading Bulletins")
     number = params["bull"].to_i
     bulletin = fetch_bulletin(number)
@@ -1255,7 +1260,7 @@ get '/bulletin' do
 
     e_out,g_out = side_menu_gubbins    #make the side menu database inserts on the sinatra side, like the manual says
 
-    haml :bulletin,  :locals => {:email => e_out, :groups => g_out,:display_text => text_to_html(test)}
+    haml :bulletin,  :locals => {:email => e_out, :groups => g_out,:display_text => text_to_html(test,user)}
   else
     haml :notlogged
   end

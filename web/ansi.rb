@@ -1,5 +1,7 @@
 # encoding:  ISO-8859-1
 
+require "../misc.rb"
+
 BBS_COLORTABLE = {
 	'%R' => "<span style='color: #fc5454'>", 
 	'%G' => "<span style='color: #54fc54'>",
@@ -211,6 +213,38 @@ EXTENDED_ANSI_TABLE = {
 	255.chr => "&nbsp;",	#255 non-blanking space
 
 }
+
+	def timeofday
+		hour = Time.now.hour
+		timeofday = (
+			case hour
+			when 0..11; "Morning"
+			when 12..17; "Afternoon"
+			when 17..24; "Evening"
+			end 
+		)
+	end
+  
+def parse_text_commands(line,user)
+
+    text_commands = {
+      "%NODE%"  => "Webserver",
+      "%TIMEOFDAY%" => timeofday,
+      "%USERNAME%" => user.name,
+      "%U_LDATE%" => user.laston.strftime("%A %B %d, %Y"),
+      "%U_LTIME%" => user.laston.strftime("%I:%M%p (%Z)"),
+      "%IP%" => @env['REMOTE_ADDR'],
+      "%PAUSE%" => ""
+    }
+
+    #line = line.to_s.gsub("\t",'')
+
+    text_commands.each_pair {|code, result|
+      line.gsub!(code,result)
+    }
+
+  return line
+end
 
 	def parse_ansi_ext(str)
 

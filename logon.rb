@@ -10,8 +10,8 @@ class Session
   end
 
   def figureip(peername)
-    i = peername.unpack('snCCCCa8')
-    ip = "#{i[2]}.#{i[3]}.#{i[4]}.#{i[5]}"
+    port, ip =Socket.unpack_sockaddr_in(@socket.getpeername)
+    ip.gsub!(/[A-Za-z\:]/,"")
     return ip
   end
 
