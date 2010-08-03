@@ -86,5 +86,6 @@ class Session
     who_list_check
     displayweb
     displayirc
+    print""
   end
 end

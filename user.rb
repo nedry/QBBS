@@ -142,7 +142,7 @@ class Session
       tempint = getnum(prompt,1,255)
       if !tempint.nil? then
         user.level = tempint
-        update_user(user,upointer)
+        update_user(user)
       else
         print "%RCancelled."
         return
@@ -158,7 +158,7 @@ class Session
 
     user.rsts_acc = getnum(prompt,0,254)
     puts user.rsts_acc
-    update_user(user,upointer)
+    update_user(user)
   end
 
   def changeusername(upointer)
@@ -166,7 +166,7 @@ class Session
     prompt = "%WUser Name?: "
     if upointer != 0 then
       user.name = getinp(prompt).slice(0..24)
-      update_user(user,upointer)
+      update_user(user)
     else 
       print "%RYou cannot change the name of the SYSOP" 
     end
@@ -177,7 +177,7 @@ class Session
     prompt = "%WLocation?: "
 
     user.citystate = getinp(prompt).slice(0..40)
-    update_user(user,upointer)
+    update_user(user)
 
   end
 
@@ -186,7 +186,7 @@ class Session
     prompt = "%WEnter new email address: "
     address = getinp(prompt)
     user.address = address
-    update_user(user,upointer)
+    update_user(user)
     print
   end
 
@@ -202,7 +202,7 @@ class Session
         users.deleted = true
         print "%RUser ##{upointer} deleted."
       end
-      update_user(user,upointer)
+      update_user(user)
     else
       print "%RYou cannot delete the SYSOP." 
     end
@@ -217,7 +217,7 @@ class Session
       users.locked = true
       print "%RUser ##{upointer} locked."
     end
-    update_user(user,upointer)
+    update_user(user)
   end
 
   def changepass(upointer)
@@ -227,7 +227,7 @@ class Session
     if pswd == pswd2
       print "Password Changed."
       user.password = pswd2
-      update_user(user,upointer)
+      update_user(user)
     else 
       print "%RPasswords don't match.  Try again." 
     end
