@@ -1,3 +1,10 @@
+Good %TIMEOFDAY% %USERNAME% and welcome to node: %NODE%
+%GYou were last logged on: %B%U_LDATE% at %C%U_LTIME%
+
+You have connected from IP Address: %IP%.
+
+%PAUSE%
+
 %RWelcome to...
 %C
    ____  __  _____    ____  __ __                         

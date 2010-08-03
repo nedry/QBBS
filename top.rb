@@ -29,7 +29,7 @@ require "rep.rb"
 
 class Session 
   attr_accessor :c_user, :c_area, :lineeditor, :who, :logged_on,
-    :cmdstack
+    :cmdstack, :node
 
   def initialize(irc_who, who, message, socket)
     @socket  = socket 
@@ -37,6 +37,7 @@ class Session
     @who  = who
     @message = message
     @c_user  = nil     #name of current user in this session
+    @node = 0 #current node
     @c_area = 1     #current message area
     @wrap     = ''     #session varible for word wrapped text 
     @lineeditor = LineEditor.new   #session variable for the line editor
@@ -46,8 +47,6 @@ class Session
     @irc_alias = nil			#irc alias (getting lazy here...)
     @irc_channel = nil		#I promise no more session vars!
     @message = message		
-    @gd_game = false		#ok, just one more!
-    @gd_mode = false 		#this time, I mean it.
   end 
 
   require "misc.rb"

@@ -115,7 +115,7 @@ class Session
 
 		logandgreetuser(username, ip)
 		if !@c_user.fastlogon then
-		 ogfileout("welcome2",4,true)
+		
 		 yes("%WPress %Y<--^%W: ",true,false,true)
 		 displaywho
 		end
@@ -218,16 +218,17 @@ class Session
  else
   print "List has been cleared"
   end
- end
+end
+
 	def logandgreetuser(username, ip)
 		add_log_entry(5,Time.now,"#{@c_user.name} logged on sucessfully.")
 		@logged_on = true
 		puts "-SA: Logon - #{@c_user.name}"
-                node = addtowholist
-		print "%WGood #{timeofday} #{username}.  You are logged into node #{node}"
-		ddate = @c_user.laston.strftime("%A %B %d, %Y")
-		dtime  = @c_user.laston.strftime("%I:%M%p (%Z)")
-		print "%GYou were last on %B#{ddate} %C #{dtime} %W"
+                @node = addtowholist
+                @c_user.logons = @c_user.logons.succ
+		@c_user.ip = ip
+                ogfileout("welcome2",4,true)
+		@c_user.laston = Time.now
 		if @c_user.fastlogon
 		  print
 		  print "%RFast User Logon Mode %YOn%R.  Skipping Logon Information."
@@ -247,9 +248,7 @@ class Session
 		  bullets(0)
 		 end
 		end
-		@c_user.logons = @c_user.logons.succ
-		@c_user.laston = Time.now
-		@c_user.ip = ip
+
 		#@c_user.page.clear if @c_user.page != nil #yet another linux nil check
                 update_user(@c_user)
 	end
