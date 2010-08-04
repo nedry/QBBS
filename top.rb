@@ -181,15 +181,27 @@ class MailSchedulethread
    
     puts "-SCHED: Starting Message Transfer Thread."
     idle = 0
+    current_day = Time.now.strftime("%j")
     qwk_loop(idle)
     doit(idle)
     tick = Time.now.min.to_i
     # up_down
     ddate = Time.now.strftime("%m/%d/%Y at %I:%M%p")
     while true
-      puts "-SCHED: Thread Pause 30 seconds"
+      puts "-SCHED: Thread Pause 30 seconds: Current Day #{current_day}"
       sleep(30)
-
+      new_day = Time.now.strftime("%j")
+      if new_day != current_day then  #do daily maintenance
+        puts "-SCHED: Daily Maintenance run"
+        system = fetch_system
+        system.logons_today = 0
+        system.posts_today = 0
+        system.emails_today = 0
+        system.feedback_today = 0
+        system.newu_today = 0
+        update_system(system)
+        current_day = new_day
+      end
       if Time.now.min.to_i != tick then
         idle = idle + 1
         tick = Time.now.min.to_i

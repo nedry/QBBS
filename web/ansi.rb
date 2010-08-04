@@ -226,15 +226,45 @@ EXTENDED_ANSI_TABLE = {
 	end
   
 def parse_text_commands(line,user)
-
+    system = fetch_system
+    posts = user.posted.to_f
+    calls =  user.logons.to_f
+    ratio = (posts  / calls) * 100
+    ualias = "<NONE>" if user.alias.nil?
     text_commands = {
       "%NODE%"  => "Webserver",
       "%TIMEOFDAY%" => timeofday,
       "%USERNAME%" => user.name,
       "%U_LDATE%" => user.laston.strftime("%A %B %d, %Y"),
       "%U_LTIME%" => user.laston.strftime("%I:%M%p (%Z)"),
+      "%U_LEVEL%" => user.level.to_s,
+      "%U_LOGONS%" => user.logons.to_s,
+      "%U_POSTS%" => user.posted.to_s,
+      "%U_RATIO%" => ratio.to_i.to_s,   
+      "%U_ADDR%" => user.address,  
+      "%U_CITYSTATE%" => user.citystate,  
+      "%U_ALIAS%" => ualias,
       "%IP%" => @env['REMOTE_ADDR'],
-      "%PAUSE%" => ""
+      "%PAUSE%" => "",
+      "%NOMORE%" => "",
+      "%BBSNAME%" => SYSTEMNAME,
+      "%FIDOADDR%" => "#{FIDOZONE}:#{FIDONET}/#{FIDONODE}.#{FIDOPOINT}",
+      "%VER%" => VER,
+      "%WEBVER%" => "Sinatra: #{Sinatra::VERSION}",
+      "%TNODES%" => NODES.to_s,
+      "%SYSOP%" => SYSOPNAME,
+      "%RVERSION%" => RUBY_VERSION,
+      "%PLATFORM%" => RUBY_PLATFORM,
+      "%PID%" => $$.to_s,
+      "%STIME%" => Time.now.strftime("%I:%M%p (%Z)"),
+      "%SDATE%" => Time.now.strftime("%A %B %d, %Y"),
+      "%SYSLOC%" => SYSTEMLOCATION,
+      "%TLOGON%" => system.total_logons.to_s,
+      "%LOGONS%" => system.logons_today.to_s,
+      "%POSTS%" =>  system.posts_today.to_s,
+      "%EMAILS%" =>  system.emails_today.to_s,
+      "%FEEDBACK%" =>  system.feedback_today.to_s,
+      "%NEWUSERS%" =>  system.newu_today.to_s
     }
 
     #line = line.to_s.gsub("\t",'')

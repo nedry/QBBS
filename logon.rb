@@ -158,6 +158,9 @@ class Session
     add_log_entry(5,Time.now,"New user #{@c_user.name} created.")
     ogfileout("newuser",2,true)
     yes("Press <--^: ",true,false,true)
+    system = fetch_system
+    system.newu_today += 1
+    update_system(system)
   end
 
   def checkkillfile(username)
@@ -220,6 +223,9 @@ class Session
   end
 
   def logandgreetuser(username, ip)
+    system = fetch_system
+    system.total_logons += 1
+    system.logons_today += 1
     add_log_entry(5,Time.now,"#{@c_user.name} logged on sucessfully.")
     @logged_on = true
     puts "-SA: Logon - #{@c_user.name}"
@@ -251,6 +257,7 @@ class Session
       end
     end
     update_user(@c_user)
+    update_system(system)
   end
 
   def checkmaxpwdmiss(count)

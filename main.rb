@@ -3,21 +3,6 @@
 class Session
 	require 'doors.rb'
 	require 'telnet_bbs.rb'
-	def userstatus
-		usr = @c_user
-		ratio = (usr.posted.to_f / usr.logons.to_f) * 100
-		print <<-here
-		%C          USER STATUS
-		__________________________________
-
-		Access Level.................#{usr.level}
-		Number of Logons.............#{usr.logons}
-		Messages Posted..............#{usr.posted}
-		Post/Call Ratio..............#{ratio.to_i}%
-		Caller Number................?
-		__________________________________
-		here
-	end
 
 	def leave
 		@who.user(@c_user.name).where="Goodbye"
@@ -136,7 +121,7 @@ class Session
 			when "R" ; messagemenu(false)
 			when "Z" ; messagemenu(true)
 			when "PU" ; page 
-			when "S"; userstatus
+			when "S"; ogfileout("user_information",1,true)
 			when "V"; version
 			when "W"; displaywho
 			when "L"; displaylog

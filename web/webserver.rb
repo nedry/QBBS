@@ -19,6 +19,7 @@ require "../db/db_groups.rb"
 require "../db/db_bulletins.rb"
 require "../db/db_log.rb"
 require "../db/db_who_telnet.rb"
+require "../db/db_system.rb"
 require "../tools.rb"
 require "../consts.rb"
 require "../class.rb"
@@ -440,6 +441,15 @@ post "/postsave" do
       if !area.nil?
         absolute = add_msg(msg_to,name,msg_date,msg_subject,msg_text,false,false,node,net,intl,nil,false,fido,nil,nil,
         nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,false,area.number,nil,nil,nil,nil)
+        system = fetch_system
+        if !pvt
+          system.posts_today += 1
+        else
+          system.emails_today += 1 
+        end
+        user.posted += 1
+        update_user(user)
+        update_system(system)
       end
       if area.nil? then
         post_out << "No route to this address. Check the routing <a href='/table'>table.</a> "
@@ -601,6 +611,9 @@ post '/usersave' do
       if location.length > 2 then
         user_to_make = validate_user(username)
         if user_to_make == OKAY then
+          system = fetch_system
+          system.newu_today += 1
+          update_system(system)
           add_user(username,'000.000.000',new_password.upcase,location,email,24,80,true, true, DEFLEVEL, true)
           haml :usersuccess
         else
@@ -1207,7 +1220,10 @@ post '/clogon' do
     uid = get_uid(name)
     who_list_add(uid) #add user to the list of web users online
     add_wall(uid,"","Web Interface")
-
+    system = fetch_system
+    system.total_logons += 1
+    system.logons_today += 1
+    update_system(system)
     redirect "/welcome"
   else
 

@@ -1,3 +1,4 @@
+%NOMORE%
 Good %TIMEOFDAY% %USERNAME% and welcome to node: %NODE%
 %GYou were last logged on: %B%U_LDATE% at %C%U_LTIME%
 

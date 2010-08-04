@@ -192,6 +192,13 @@ class Session
         saveit = lineedit(1,reply_text)
       end
       if (saveit) then
+        system = fetch_system
+        if !private then
+         system.posts_today += 1 
+        else
+          system.emails_today += 1 
+        end
+        update_system(system)
         x = private ? 0 : @c_area
         savecurmessage(x, to, title, false,true,nil,nil,nil,nil)
         print private ? "Sending Private Mail..." : "%GSaving Message.."
@@ -202,7 +209,7 @@ class Session
   end
 
   def savecurmessage(x, to, title,exported,reply,destnode,destnet,intl,point)
-    puts x
+
     area = fetch_area(x)
     @lineeditor.msgtext << DLIM
     msg_text = @lineeditor.msgtext.join(DLIM)
@@ -300,6 +307,9 @@ class Session
       savecurmessage(@c_area, to, title,false,false,nil,nil,nil,nil)
       @c_user.posted += 1
       update_user(@c_user)
+      system = fetch_system
+      system.posts_today += 1 
+      update_system(system)
     end
   end # of def post
 

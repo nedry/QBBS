@@ -37,7 +37,7 @@ DONE = false
 SYSOPNAME = "SYSOP"
 
 SYSTEMNAME = "TARDIS BBS"
-
+SYSTEMLOCATION = "The TARDIS"
 NODES = 10
 ROOT_PATH = "/home/mark/qbbs/"
 
@@ -199,6 +199,7 @@ IRCCOLORTABLE = {
 }
 
 
+  
 
 
 TIME_TABLE = {
