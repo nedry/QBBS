@@ -38,6 +38,7 @@ DataMapper.auto_migrate!
 Group.new(:groupname => 'Local', :number => 0 ).save!
 Group.new(:groupname => 'Dove.net', :number => 1 ).save!
 Group.new(:groupname => 'Fidonet', :number => 2 ).save!
+Group.new(:groupname => 'Paranormal Net', :number =>  3 ).save!
 
 
 Subsys.new(:subsystem => 2, :name => 'FIDO').save!
@@ -97,7 +98,30 @@ add_area("Netmail","I","I",nil,"NETMAIL",3)
 add_area("BadNetMail","I","I",nil,"BADNETMAIL",3)
 add_area("Weather","W","W",nil,"WEATHER",3)
 
-add_qwknet(fetch_group(1),"Dove.Net","VERT","DOVEQWK","vert.synchro.net","QBBSTEST","FLATMO")
+add_area("ParaQWKMail","I","I",0,nil,4)
+
+add_area("UFO Reports","W","W",5001,nil,4)
+add_area("UFO Discussion","W","W",5002,nil,4)
+add_area("Origins and Ancients","W","W",5003,nil,4)
+add_area("Mars","W","W",5004,nil,4)
+add_area("NASA - The Moon and Beyond","W","W",5005,nil,4)
+add_area("Out of Body","W","W",5006,nil,4)
+add_area("Past Lives and Deja Vu","W","W",5007,nil,4)
+add_area("Hauntings, Ghosts and Spirits","W","W",5008,nil,4)
+add_area("Psychic Healing","W","W",5009,nil,4)
+add_area("Angles and Miracles","W","W",5010,nil,4)
+add_area("Paranormal Net Sysops","I","I",5011,nil,4)
+add_area("Abductions","W","W",5012,nil,4)
+add_area("Crop Circles","W","W",5013,nil,4)
+add_area("Psychic","W","W",5014,nil,4)
+add_area("Pagan/Wiccan","W","W",5015,nil,4)
+add_area("Super Sciences and Events","W","W",5016,nil,4)
+add_area("X-Files TV Show","W","W",5017,nil,4)
+add_area("Conspiracies","W","W",5018,nil,4)
+add_area("The Quickening","W","W",5019,nil,4)
+
+add_qwknet(fetch_group(1),"Dove.Net","VERT","DOVEQWK","vert.synchro.net","QBBS","FLATMO")
+add_qwknet(fetch_group(3),"Paranormal Net","TIME","PARAQWK","time.synchro.net","QBBS","FLATMO")
 
 # initial system
 s = System.new(

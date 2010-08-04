@@ -199,7 +199,7 @@ class Session
     if !wall_empty  then
       cols = %w(Y G R).map {|i| "%"+i}
       headings = %w(Name Time-On Connection)
-      widths = [30,20,29]
+      widths = [30,20,10]
       header = cols.zip(headings).map {|a,b| a+b}.formatrow(widths)
       underscore = cols.zip(['-'*30]*5).map{|a,b| a+b}.formatrow(widths)
       print header

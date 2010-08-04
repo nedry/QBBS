@@ -184,7 +184,7 @@ class Session
     cont = true
     cols = %w(Y G C).map {|i| "%"+i}
     headings = %w(Destination Route Last-Seen)
-    widths = [15,35,20]
+    widths = [15,40,20]
     header = cols.zip(headings).map {|a,b| a+b}.formatrow(widths)
     underscore = cols.zip(['-'*30]*5).map{|a,b| a+b}.formatrow(widths)
 
@@ -202,6 +202,9 @@ class Session
             if j == (@c_user.length - 4) and @c_user.more then
               cont = moreprompt
               j = 1
+              print
+              print header
+              print underscore
             end
             break if !cont
             print temp
