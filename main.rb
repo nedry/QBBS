@@ -8,7 +8,7 @@ class Session
 		@who.user(@c_user.name).where="Goodbye"
 		update_who_t(@c_user.name,"Goodbye")
 		if yes("Log off now #{YESNO}", true, false,false) then
-			write "%W"
+			write "%W%"
 			gfileout('bye')
 			print "NO CARRIER"
 			sleep (1)
@@ -17,33 +17,34 @@ class Session
 	end
 
 	def youreoutahere
-		prompt = "Boot which user number?: "
+		prompt = "%RW%Boot which user number?: %W%"
 		which = getnum(prompt,0,@who.len)
 		if which > 0 then
-			print "Booting User ##{which} from system."
+			print "%GW%Booting User ##{which} from system.%W%"
 			Thread.kill(@who[which-1].threadn)
-		else print "Aborted"
+		else
+                  print "%RW%Aborted%W%"
 		end
 	end
 	
 	
 	def page
-		to = getinp("%GUser to Page: ")
+		to = getinp("%G%User to Page: %W%")
                 exists = get_uid(to)
                 if exists.nil? then
-                  print "%RThat user does not exist."
+                  print "%WR%That user does not exist.%W%"
                   print
                   return
                 end
 		return if to.empty?
 		if @who.user(to).nil? and  !who_exists(exists) then
-			print "%R#{to} is not online... %Gthey will get the message when they log in."
+			print "%WR%#{to} is not online... %WG%they will get the message when they log in.%W%"
 			print 
 		end
-		message = getinp("%CMessage: ")
+		message = getinp("%C%Message: %W%")
 		return if message.empty?
                 add_page(@c_user.number,to,message,false)
-		print "%GMessage Sent."
+		print "%WG%Message Sent.%W%"
 	end
 	
  def displaylog
@@ -51,14 +52,15 @@ class Session
   j = 0
   cont = true
  if !log_empty  then
-  cols = %w(Y G C).map {|i| "%"+i}
+  cols = %w(Y G C).map {|i| "%"+i +"%"}
+  hcols = %w(WY WG WC).map {|i| "%"+i +"%"}
   headings = %w(Date System Message)
   widths = [18,10,50]
-  header = cols.zip(headings).map {|a,b| a+b}.formatrow(widths)
+  header = hcols.zip(headings).map {|a,b| a+b}.formatrow(widths) +"%W%"
   underscore = cols.zip(['-'*30]*5).map{|a,b| a+b}.formatrow(widths)
 
 			print header
-			print underscore
+			print underscore if !@c_user.ansi
 			fetch_log(0)
   fetch_log(0).each {|x|
    t= Time.parse(x.ent_date.to_s).strftime("%m/%d/%y %I:%M%p")
@@ -67,13 +69,18 @@ class Session
 				if j == (@c_user.length - 2) and @c_user.more then
 					cont = moreprompt
 					j = 1
+                                        if cont then
+                                          print
+                                          print header
+			                  print underscore if !@c_user.ansi
+                                        end
 				end
 				break if !cont 
   print temp
   }
 
  else
-  print "System Log Empty"
+  print "%WR%System Log Empty%W%"
   end
  end
 
@@ -82,7 +89,7 @@ class Session
              while true
 		@who.user(@c_user.name).where="Main Menu"
 		update_who_t(@c_user.name,"Main Menu")
-		o_prompt = "%G-=%p%W:? for menu%G:=-"
+		o_prompt = "%G%-=%p%W%:? for menu%G%:=-"
 		area = fetch_area(@c_area)
 		prompt = o_prompt.gsub("%p","#{area.name}")
 		imp = getinp(prompt,false)
@@ -92,7 +99,6 @@ class Session
 			ulevel = @c_user.level
 
 			case sel
-			when "&" ; print "exists: #{who_t_exists("MARK FIRESTONE")}"; who_delete_t("MARK FIRESTONE")
 			when "G" ; leave
 			when "UM"; run_if_ulevel {usermenu}
 			when "KL"; run_if_ulevel {clearlog}
@@ -104,7 +110,7 @@ class Session
 			when "T";  if IRC_ON then 
 				            teleconference(nil) 
 					   else
-					     print "%RTeleconference is disabled!%W\r\n"
+					     print "%WR%Teleconference is disabled!%W%\r\n"
 					   end
 			when "KU"; youreoutahere if ulevel == 255
 			when "Q"; questionaire
@@ -128,7 +134,7 @@ class Session
 			when "X"; ogfileout("sysopmnu",1,true) if ulevel == 255
 			when "?"
 			        gfileout("mainmnu")
-				print "%RX - eXtended Sysop Menu" if ulevel == 255
+				print "%R%X%W% - %WG%eXtended Sysop Menu%W%" if ulevel == 255
 			end
 		
 		end
@@ -138,7 +144,7 @@ class Session
 		if  @c_user.level == 255
 			yield
 		else
-			print "You do not have access!"
+			print "%WR%You do not have access!%W%"
 		end
 	end
 end

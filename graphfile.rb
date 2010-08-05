@@ -52,7 +52,7 @@ class GraphFile
         break if !cont
         out = parse_text_commands(line)
         if !out.gsub!("%PAUSE%","").nil? and @session.logged_on  then
-          @session.yes("%WPress %Y<--^%W: ",true,false,true)
+          @session.yes("%W%Press #{RET}",true,false,true)
         end
         nomore = true if !out.gsub!("%NOMORE%","").nil?   #disable more prompt for this file
         @session.write out + "\r"

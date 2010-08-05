@@ -1,9 +1,9 @@
- %W_       __     __                             
+      __     __                             
 | |     / /__  / /________  ____ ___  ___      
 | | /| / / _ \/ / ___/ __ \/ __ `__ \/ _ \     
 | |/ |/ /  __/ / /__/ /_/ / / / / / /  __/ _ _ 
 |__/|__/\___/_/\___/\____/_/ /_/ /_/\___(_|_|_)
-  %C                                             
+                                         
 
 to the RetroCOMPUTING BBS.  RetroCOMPUTING BBS (formerly Tardis BBS)
 was originally brought on line in 1985, with custom software written by the 
@@ -26,4 +26,4 @@ send [F]eedback to the SYSOP.
 
 Welcome.
 
-Mark Firestone - sysop
+The Doctor - sysop

@@ -192,7 +192,7 @@ class Session
       else 
         if !@c_user.nil? and new_pages(@c_user) > 0 then
           pages = get_all_pages(@c_user)
-          print; pages.each {|x| print "%GPAGE %W(%C#{fetch_user(x.from).name}%W): %Y#{x.message}"}
+          print; pages.each {|x| print "%W%PAGE %W%(%C%#{fetch_user(x.from).name}%W%): %WY%#{x.message}%W%"}
           prompt += whole if !prompt.nil? 
            write prompt
            clear_pages(@c_user)
@@ -253,7 +253,7 @@ class Session
 
   def warntimeout(idle, warn, warned, limit, todotime, prompt)
     if (idle >= limit)
-      print; print "%RIdle time limit exceeded.  Disconnecting!"
+      print; print "%WR%Idle time limit exceeded.  Disconnecting!%W%"
       print "%WNO CARRIER"
       sleep(5)
       hangup
@@ -261,7 +261,7 @@ class Session
 
     if (idle >= warn) and (!warned) 
       if todotime > 1 then tempstr = "minutes" else tempstr = "minute" end
-      print; print "%RYou have #{todotime} #{tempstr} in which to do something!%W"
+      print; print "%WR%You have #{todotime} #{tempstr} in which to do something!%W%"
       write prompt
       warned = true
     end
@@ -319,6 +319,7 @@ class Session
   #make sure everything goes through this!
   def parse_c(line)
     line = line.to_s.gsub("\t",'')
+
     if @logged_on then
       COLORTABLE.each_pair {|color, result|
         line.gsub!(color) {@c_user.ansi ? result : ''}
@@ -339,7 +340,8 @@ class Session
 
   # Write line without CR 
   def write(line = '') 
-    out = parse_c(line.to_s)
+   
+    out    = parse_c(line.to_s)
     @socket.write parse_celerity(out)
   end 
 

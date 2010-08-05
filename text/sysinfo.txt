@@ -1,4 +1,4 @@
-%WSystem Information
+%WR%About TARDIS BBS%W%
 
 This system has been in operation, in one form or antoher, since 1993.
 

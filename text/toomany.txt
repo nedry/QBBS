@@ -2,10 +2,10 @@ There are already 10 users logged on the system. For your comfort and
 convenience, only 10 users are allowed on the system at one time.  
 Please try again later.
 
-You could try e-mailing sysop@retrobbs.org
+You could try e-mailing thedoctor@cortex-media.info
 
 Thank you,
 
-retroCOMPUTING BBS
+TARDIS BBS
 
 NO CARRIER

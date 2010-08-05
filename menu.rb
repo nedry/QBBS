@@ -41,7 +41,7 @@ def up(ptr, high, out)
       stop = zipscan(@c_area)
       if stop.nil? then return else ptr = stop end
     else
-      print("%RCan't go higher")
+      print("%WR%Can't go higher%W%")
     end
   end
   ptr
@@ -51,7 +51,7 @@ def down(ptr, low)
   if ptr > low then
     ptr = ptr - 1
   else
-    print("%GCan't go lower")
+    print("%WG%Can't go lower%W%")
   end
   ptr
 end
@@ -60,7 +60,7 @@ def jumpto(ptr, newptr, low, high)
   if (newptr >= low) and (newptr <= high) then 
     newptr
   else
-    print "Out of Range."
+    print "%WR%Out of Range.%W%"
     ptr
   end
 end

@@ -18,20 +18,20 @@ class Session
         width = u.width - 5
 
         case happy
-        when "L" 
+        when "L"
           cont = true
           j = 0
           len = reply_text ? reply_text.length : 0
           start, stop = getlinerange(len, parameters,true)
-          write "%W"
+          write "%W%"
 
           if !start.nil?  and !stop.nil? then
             for i in start..stop do
               print "#{i}:  #{reply_text[i - 1]}".slice(0..width)
-              j = j.succ
+              j +=1
               if j == u.length and u.more then
                 cont = moreprompt
-                write "%W"
+                write "%W%"
                 j = 1
               end
               break if !cont
@@ -46,10 +46,10 @@ class Session
               @lineeditor.msgtext.push(">#{reply_text[i-1]}".slice(0..width))
             end
             print "#{(stop - start + 1)} line(s) quoted"
-            len = (@lineeditor.msgtext.nil?) ? 0 : @lineeditor.msgtext.length 
+            len = (@lineeditor.msgtext.nil?) ? 0 : @lineeditor.msgtext.length
             @lineeditor.line = len + 1
           else
-            print "%RAborted.%C"
+            print "%RW%Aborted.%W%"
           end
         when "R"
           return
@@ -83,23 +83,38 @@ class Session
   end
 
   def displaycolors
-    print "%Y"
-    @socket.write "Color Changing Codes: "
-    write "%R"; @socket.write "%R "
-    write "%r"; @socket.write "%r "
-    write "%G"; @socket.write "%G "
-    write "%g"; @socket.write "%g "
-    write "%Y"; @socket.write "%Y "
-    write "%y"; @socket.write "%y "
-    write "%B"; @socket.write "%B "
-    write "%b"; @socket.write "%b "
-    write "%M"; @socket.write "%M "
-    write "%m"; @socket.write "%m "
-    write "%C"; @socket.write "%C "
-    write "%c"; @socket.write "%c "
-    write "%W"; @socket.write "%W "
-    write "%w"; @socket.write "%w"
-    print ""
+    write "%Y%"
+    @socket.write "Color Codes: "
+    write "%R%"; @socket.write "%R% "
+    write "%r%"; @socket.write "%r% "
+    write "%G%"; @socket.write "%G% "
+    write "%g%"; @socket.write "%g% "
+    write "%Y%"; @socket.write "%Y% "
+    write "%y%"; @socket.write "%y% "
+    write "%B%"; @socket.write "%B% "
+    write "%b%"; @socket.write "%b% "
+    write "%M%"; @socket.write "%M% "
+    write "%m%"; @socket.write "%m% "
+    write "%C%"; @socket.write "%C% "
+    write "%c%"; @socket.write "%c% "
+    write "%W%"; @socket.write "%W% "
+    write "%w%"; @socket.write "%w%"
+    print
+    print "%G%Background Codes follow Forground Codes: "
+    write "%WR% "; @socket.write "%WR% "
+    write "%W% %wr%"; @socket.write "%wr%"
+    write "%W% %WG%"; @socket.write "%WG%"
+    write "%W% %wg%"; @socket.write "%wg%"
+    write "%W% %WY%"; @socket.write "%WY%"
+    write "%W% %wy%"; @socket.write "%wy%"
+    write "%W% %WB%"; @socket.write "%WB%"
+    write "%W% %wb%"; @socket.write "%wb%"
+    write "%W% %WM%"; @socket.write "%WM%"
+    write "%W% %wm%"; @socket.write "%wm%"
+    write "%W% %WC%"; @socket.write "%WC%"
+    write "%W% %wc%"; @socket.write "%wc%"
+    write "%W% %W%"
+    print
   end
 
   def editmenu
@@ -112,7 +127,7 @@ class Session
   end
 
   def replace_line(args)
-    len = getmsglen 
+    len = getmsglen
     replaceline = args.shift || 0
 
     prompt = "Replace line (1-#{len}) or 0 to abort? "
@@ -125,7 +140,7 @@ class Session
       prompt = "Enter new line or enter <CR> to abort: "
       newline = getinp(prompt)
       if newline == "" then print "Line NOT replaced"
-      else 
+      else
         print "Line REPLACED."
         @lineeditor.msgtext[replaceline - 1] = newline
       end
@@ -133,29 +148,29 @@ class Session
   end
 
   def insert_lines(args)
-    len = getmsglen 
-    insertline = args.shift || 0 
+    len = getmsglen
+    insertline = args.shift || 0
 
     if len >= MAXMESSAGESIZE then
       print "No more room!"
       return false
-    end	
+    end
 
-    insertline = getnum("Insert after which line? ",0,len) if 
-    !(1...len).include?(insertline) 
+    insertline = getnum("Insert after which line? ",0,len) if
+    !(1...len).include?(insertline)
 
     if (insertline <= len) and (insertline >= 0) then
       @lineeditor.line = (insertline)
       return true
-    else 
-      print "Invalid input!"
+    else
+      print "%WR%Invalid input!%W%"
     end
   end
 
   def delete_lines(parameters)
-    len = getmsglen		
+    len = getmsglen
     start, stop = getlinerange(len, parameters,false)
-    return if !start 
+    return if !start
     @lineeditor.msgtext.slice!(start-1..stop-1)
     print "#{(stop - start + 1)} line(s) deleted"
     @lineeditor.msgtext.compact!
@@ -188,7 +203,7 @@ class Session
     len = getmsglen
     start, stop = getlinerange(len, parameters,true)
     for i in start..stop do
-      print "#{i}:  #{@lineeditor.msgtext[i - 1]}" 
+      print "#{i}:  #{@lineeditor.msgtext[i - 1]}"
     end
   end
 
@@ -196,7 +211,7 @@ class Session
     @lineeditor.msgtext.compact!
 
     while true
-      prompt = "Edit Prompt: " 
+      prompt = "Edit Prompt: "
       happy = getinp(prompt).upcase
       parameters = Parse.parse(happy)
       happy.gsub!(/[-\d]/,"")
@@ -217,44 +232,49 @@ class Session
 
   def lineedit(startline,reply_text)
 
-    print "%GEnter message text.  %Y#{MAXMESSAGESIZE}%G lines maximum."
-    print "%R/EX for editor prompt, /S to save, /Q to quote, /A to abort."
-    if @c_user.ansi then displaycolors end
-    write "%C"
-
-    len 		= 0
-    done 		= false
-    workingline 	= ''
-    @lineeditor.line = 1
-
-    @cmdstack.cmd.clear			#clear the command buffer
-    @lineeditor.msgtext.clear			#clear the message buffer
-
-    until (done) 
-
-      until (len >= MAXMESSAGESIZE) or (done)
-        prompt1 = "#{@lineeditor.line}: "
-        write prompt1
-        workingline = getstr(ECHO,WRAP,@c_user.width-4,prompt1,false,false)
-
-        case workingline.upcase.strip 
-        when  "/A"; done = true; @lineeditor.save = false
-        when "/S"; done = true; @lineeditor.save = true
-        when "/Q"; quoter(reply_text)
-        when "/EX"; break				#and we fall through the loop to editprompt
-        else
-          @lineeditor.line += 1
-          offset = @lineeditor.line < len ? 2 : 0
-          @lineeditor.msgtext[@lineeditor.line - offset,0] = workingline
-          len = @lineeditor.msgtext.length
-          if len == (MAXMESSAGESIZE - 2) then print "Two Lines Left!" end
-        end # of Case
-
-      end # of Inner Until
-      if !done then 
-        done = editprompt 
+    print "%G%Enter message text.  %Y%#{MAXMESSAGESIZE}%G% lines maximum."
+    if @c_user.ansi
+      then
+        displaycolors
       end
-    end #of Outer until
-    return @lineeditor.save
-  end
-end #class Session
+      print
+      print "%WR%/EX for editor prompt, /S to save, /Q to quote, /A to abort.%W%"
+
+      write "%C%"
+
+      len 		= 0
+      done 		= false
+      workingline 	= ''
+      @lineeditor.line = 1
+
+      @cmdstack.cmd.clear			#clear the command buffer
+      @lineeditor.msgtext.clear			#clear the message buffer
+
+      until (done)
+
+        until (len >= MAXMESSAGESIZE) or (done)
+          prompt1 = "#{@lineeditor.line}: "
+          write prompt1
+          workingline = getstr(ECHO,WRAP,@c_user.width-4,prompt1,false,false)
+
+          case workingline.upcase.strip
+          when  "/A"; done = true; @lineeditor.save = false
+          when "/S"; done = true; @lineeditor.save = true
+          when "/Q"; quoter(reply_text)
+          when "/EX"; break				#and we fall through the loop to editprompt
+          else
+            @lineeditor.line += 1
+            offset = @lineeditor.line < len ? 2 : 0
+            @lineeditor.msgtext[@lineeditor.line - offset,0] = workingline
+            len = @lineeditor.msgtext.length
+            if len == (MAXMESSAGESIZE - 2) then print "%WR%Two Lines Left!%W%" end
+          end # of Case
+
+        end # of Inner Until
+        if !done then
+          done = editprompt
+        end
+      end #of Outer until
+      return @lineeditor.save
+    end
+  end #class Session

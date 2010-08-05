@@ -4,21 +4,21 @@ require 'messagestrings.rb'
 
 
 def showbbs(num)
-  if o_total > 0 then 
+  if o_total > 0 then
     bbs = fetch_other(num)
-    print "%R#%W#{num} %G #{bbs.name}"
-    print "%CAddress:      %G#{bbs.address}"
+    print "%R%#%W%#{num} %G% #{bbs.name}"
+    print "%C%Address:      %G%#{bbs.address}"
     print
-  else 
-    print "%RNo Other BBS Systems"
+  else
+    print "%WR%No Other BBS Systems%W%"
   end
 end
 
 def telnetmaint
   readmenu(
-    :initval => 1,
-    :range => 1..(o_total),
-    :prompt => '"%W#{sdir}BBS System [%p] (1-#{o_total}): "'
+  :initval => 1,
+  :range => 1..(o_total),
+  :prompt => '"%W%#{sdir}BBS System [%p] (1-#{o_total}): "'
   ) {|sel, bpointer, moved|
     if !sel.integer?
       parameters = Parse.parse(sel)
@@ -49,13 +49,13 @@ def addbbs
 
   name = get_max_length("Enter new BBS name: ",40,"BBS name")
   name.strip! if name != ""
-  address = get_max_length("Enter new BBS telnet address: ",40,"BBS address") 
+  address = get_max_length("Enter new BBS telnet address: ",40,"BBS address")
   address.strip! if address != ""
 
   if yes("Are you sure #{YESNO}", false, false)
     add_other(name,address)
   else
-    print "%RAborted."
+    print "%WR%Aborted.%W%"
   end
   print
 end
@@ -70,7 +70,7 @@ def changebbsname(bpointer)
     bbs.name = name
     update_other(bbs)
   else
-    print "%RNot Changed."
+    print "%WR%Not Changed.%W%"
   end
   print
 end
@@ -84,7 +84,7 @@ def changebbsaddress(bpointer)
     bbs.address = address
     update_other(bbs)
   else
-    print "%RNot Changed."
+    print "%WR%Not Changed.%W%"
   end
   print
 end
@@ -104,13 +104,13 @@ end
 def displaybbs
   i = 0
   if o_total <= 0 then
-    print "No External BBS Systems."
-    return
-  end
-  print "%GSystems Available:"
+    print "%WR%No External BBS Systems.%W%"
+   else
+  print "%G%Systems Available:"
   for i in 1..(o_total)
     bbs = fetch_other(i)
-    print "   %B#{i}...%G#{bbs.name}"
+    print "   %B%#{i}...%G%#{bbs.name}"
+  end
   end
   print
 end
@@ -134,13 +134,13 @@ def bbs(parameters)
   if t == 0 then
     displaybbs if !existfileout('bbs',0,true)
     while true
-      prompt = "\r\n%WBBS #[1-#{o_total}] (?/list): %Y<--^%W to quit:  "
+      prompt = "\r\n%W%BBS #[1-#{o_total}] (?/list): #{RET} to quit:  "
       getinp(prompt) {|inp|
         happy = inp.upcase
         t = happy.to_i
         case happy
         when "";   return
-	when "Q"; return
+        when "Q"; return
         when "CR"; crerror
         when "?";  displaybbs if !existfileout('bbs',0,true)
         else

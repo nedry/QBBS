@@ -3,20 +3,20 @@
 require "../misc.rb"
 
 BBS_COLORTABLE = {
-	'%R' => "<span style='color: #fc5454'>", 
-	'%G' => "<span style='color: #54fc54'>",
-	'%Y' => "<span style='color: #fcfc54'>",
-	'%B' => "<span style='color: #5454fc'>",
-	'%M' => "<span style='color: #fc54fc'>",
-	'%C' => "<span style='color: #54fcfc'>",
-	'%W' =>"<span style='color: white'>",
-	'%r' => "<span style='color: #a80000'>",
-	'%g' => "<span style='color: #00a800'>",
-	'%y' => "<span style='color: #a85400'>",
-	'%b' => "<span style='color: #0000a8'>", 
-	'%m' => "<span style='color: #a800a8'>",
-	'%c' => "<span style='color: #00a8a8'>", 
-	'%w' => "<span style='color: #a8a8a8'>"}
+	'%R%' => "<span style='color: #fc5454'>", 
+	'%G%' => "<span style='color: #54fc54'>",
+	'%Y%' => "<span style='color: #fcfc54'>",
+	'%B%' => "<span style='color: #5454fc'>",
+	'%M%' => "<span style='color: #fc54fc'>",
+	'%C%' => "<span style='color: #54fcfc'>",
+	'%W%' =>"<span style='color: white'>",
+	'%r%' => "<span style='color: #a80000'>",
+	'%g%' => "<span style='color: #00a800'>",
+	'%y%' => "<span style='color: #a85400'>",
+	'%b%' => "<span style='color: #0000a8'>", 
+	'%m%' => "<span style='color: #a800a8'>",
+	'%c%' => "<span style='color: #00a8a8'>", 
+	'%w%' => "<span style='color: #a8a8a8'>"}
 
  BOLD_ANSI_FG_TABLE = {"0" => "color: #545454;",  # grey
 					"1" => "color: #fc5454;",  # bright red

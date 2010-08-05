@@ -1,10 +1,10 @@
 
-             %WSYSOP COMMANDS
+             %W%SYSOP COMMANDS
 
-%W[%YAM%W]%GArea Maintenance %W[%YBM%W]%GBulletin Maintenance
-%W[%YDM%W]%GDoor Maintenance %W[%YGM%W]%GGroup Maintenance
-%W[%YKL%W]%GKill User Log    %W[%YKU%W]%GKill User (punt) 
-%W[%YUM%W]%GUser Maintenance 
+%W%[%Y%AM%W%]%G%Area Maintenance %W%[%Y%BM%W%]%G%Bulletin Maintenance
+%W%[%Y%DM%W%]%G%Door Maintenance %W%[%Y%G%M%W%]%G%Group Maintenance
+%W%[%Y%KL%W%]%G%Kill User Log    %W%[%Y%KU%W%]%G%Kill User (punt) 
+%W%[%Y%UM%W%]%G%User Maintenance 
 
 
 Use a ; to stack commands together (I.E., %;a;q)

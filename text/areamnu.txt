@@ -1,12 +1,12 @@
 
-%C     AREA MAINTENANCE COMMANDS
+%C%%     AREA MAINTENANCE COMMANDS
 
-%W[%YA%W]%Gdd an Area        %W[%YD%W]%Gefault Access
-%W[%YK%W]%Gill               %W[%YN%W]%Game
-%W[%YPU%W]%GPage User        %W[%YS%W]%Gecuire (lock)
-%W[%YV%W]%Galidate Access    %W[%YW%W]%Gho's Online
-%W[%YQ%W]%Guit               %W[%Y/%W]%GRedisplay
-%W[%Y?%W]%GThis Menu
+%W%%[%Y%%A%W%%]%G%%dd an Area        %W%%[%Y%%D%W%%]%G%%efault Access
+%W%[%Y%K%W%]%G%ill               %W%[%Y%N%W%]%G%ame
+%W%[%Y%PU%W%]%G%Page User        %W%[%Y%S%W%]%G%ecuire (lock)
+%W%[%Y%V%W%]%G%alidate Access    %W%[%Y%W%W%]%G%ho's Online
+%W%[%Y%Q%W%]%G%uit               %W%[%Y%/%W%]%G%R%edisplay
+%W%[%Y%?%W%]%G%This Menu
 
-%CUse a %R; %Cto stack commands together %W(%CI.E., %R%;a;q%W)
-%CSome commands take parameters %W(%CI.E., %Ra2%W)
+%C%Use a %R%; %C%to stack commands together %W%(%C%I.E., %R%%;a;q%W%)
+%C%Some commands take parameters %W%(%C%I.E., %R%a2%W%)

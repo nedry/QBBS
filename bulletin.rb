@@ -5,8 +5,8 @@ class Session
   def displaybull(number)
     bulletin = fetch_bulletin(number)
     print
-    print "%R#%W#{number} %G #{bulletin.name}"
-    print "%CPath: %G#{bulletin.path}"
+    print "%R%#%W#{number} %G% #{bulletin.name}"
+    print "%C%Path: %G%#{bulletin.path}"
   end 
 
   def bullmaint
@@ -14,7 +14,7 @@ class Session
     readmenu(
       :initval => 1,
       :range => 1..(b_total),
-      :prompt => '"%W#{sdir}Bulletin [%p] (1-#{b_total}): "'
+      :prompt => '"%W%#{sdir}Bulletin [%p] (1-#{b_total}): "'
     ) {|sel, bpointer, moved|
       if !sel.integer?
         parameters = Parse.parse(sel)
@@ -46,7 +46,7 @@ class Session
     if yes("Are you sure #{YESNO}", false, false,true)
       add_bulletin(name, path)
     else
-      print "%RAborted."
+      print "%R%Aborted."
     end
     print
   end
@@ -59,7 +59,7 @@ class Session
       bulletin.name = name
       update_bulletin(bulletin)
     else 
-      print "%RNot Changed." 
+      print "%R%Not Changed." 
     end
     print
   end
@@ -74,7 +74,7 @@ class Session
       update_bulletin(bulletin)
       print
     else
-      print "%RNot Changed."
+      print "%R%Not Changed."
     end
   end
 
@@ -93,7 +93,7 @@ class Session
       displaybull(bpointer)
     else 
       print
-      print "#%RNo bulletins.  Why not add one?" 
+      print "#%R%No bulletins.  Why not add one?" 
     end
   end
 
@@ -118,7 +118,7 @@ class Session
 
     if t == 0 then
       displaybullet  if !existfileout('bulletins',0,true)
-      prompt = "\r\n%WBulletin #[1-#{b_total}] ? %Y<--^%W to quit: " 
+      prompt = "\r\n%W%Bulletin #[1-#{b_total}] ? #{RET} to quit: " 
       while true
       #  getinp(prompt, :nonempty) {|inp|    <-- removed :nonempty which prevents the loop from exiting on <return>
           getinp(prompt) {|inp|

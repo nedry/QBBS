@@ -197,13 +197,14 @@ class Session
     cont = true
 
     if !wall_empty  then
-      cols = %w(Y G R).map {|i| "%"+i}
+      hcols = %w(WY WG WR).map {|i| "%"+i +"%"}
+      cols = %w(Y G R).map {|i| "%"+i +"%"}
       headings = %w(Name Time-On Connection)
       widths = [30,20,10]
-      header = cols.zip(headings).map {|a,b| a+b}.formatrow(widths)
-      underscore = cols.zip(['-'*30]*5).map{|a,b| a+b}.formatrow(widths)
+      header = hcols.zip(headings).map {|a,b| a+b}.formatrow(widths) +"%W%"
+      underscore = cols.zip(['-'*30]*5).map{|a,b| a+b}.formatrow(widths) 
       print header
-      print underscore
+      print underscore if !@c_user.ansi
       fetch_wall.each {|x|
         t= Time.parse(x.timeposted.to_s).strftime("%m/%d/%y %I:%M%p")
         temp = cols.zip([x.user.name,t,x.l_type]).map{|a,b| "#{a}#{b}"}.formatrow(widths) #fix for 1.9
@@ -236,23 +237,23 @@ class Session
     @c_user.laston = Time.now
     if @c_user.fastlogon
       print
-      print "%RFast User Logon Mode %YOn%R.  Skipping Logon Information."
+      print "%R%Fast User Logon Mode %Y%On%R%.  Skipping Logon Information."
       print "This may be changed at the User Configuration Menu."
       print
     end
     if !QOTD.nil? and !@c_user.fastlogon then
-      yes("Press %Y<--^%W: ",true,false,true)
+      yes("Press #{RET} ",true,false,true)
       print
       print "Quote of the Day: " if !existfileout('qotdhdr',0,true)
       door_do("#{QOTD}","")
       existfileout('quote',0,true)
-      yes("Press %Y<--^%W: ",true,false,true)
+      yes("Press #{RET} ",true,false,true)
       add_user_to_wall
       if !@c_user.fastlogon then
         display_wall
-        yes("Press %Y<--^%W: ",true,false,true) 
+        yes("Press #{RET} ",true,false,true) 
        displaywho
-        yes("Press %Y<--^%W: ",true,false,true)
+        yes("Press #{RET} ",true,false,true)
         bullets(0)
       end
     end

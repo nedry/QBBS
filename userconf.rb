@@ -1,15 +1,15 @@
 class Session
   def usersettingsmenu
     existfileout('usersethdr',0,true)
-    print "%G[%YC%G]hat Alias: %Y#{@c_user.alias}"
-    print "%GFull Screen [%YE%G]ditor: %Y#{@c_user.fullscreen ? "On" : "Off"}"
-    print "%G[%YG%G]raphics (ANSI): %Y#{@c_user.ansi ? "On" : "Off"}"          
-    print "%G[%YF%G]ast Logon: %Y#{@c_user.fastlogon ? "On" : "Off"}" 
-    print "%G[%YL%G]ines per Page: %Y#{@c_user.length}"    
-    print "%G[%YM%G]ore Prompt: %Y#{@c_user.more ? "On" : "Off"}"
-    print "%G[%YW%G]idth: %Y#{@c_user.width}"
-    print "%G[%YP%G]assword"                        
-    print "%G[%YZ%G]ip Read Settings"
+    print "%G%[%W% C %G%]hat Alias: %W%#{@c_user.alias}"
+    print "%G%[%W% E %G%]Full Screen Editor: %W%#{@c_user.fullscreen ? "On" : "Off"}"
+    print "%G%[%W% G %G%]raphics (ANSI): %W%#{@c_user.ansi ? "On" : "Off"}"          
+    print "%G%[%W% F %G%]ast Logon: %W%#{@c_user.fastlogon ? "On" : "Off"}" 
+    print "%G%[%W% L %G%]ines per Page: %W%#{@c_user.length}"    
+    print "%G%[%W% M %G%]ore Prompt: %W%#{@c_user.more ? "On" : "Off"}"
+    print "%G%[%W% W %G%]idth: %W%#{@c_user.width}"
+    print "%G%[%W% P %G%]assword"                        
+    print "%G%[%W% Z %G%]ip Read Settings"
     print
   end
 
@@ -28,7 +28,7 @@ class Session
 
   def usersettings
     usersettingsmenu	
-    prompt = "%WChange Which User Setting ? %Y<--^%W to quit: " 
+    prompt = "%W%Change Which User Setting ? #{RET} to quit: " 
     getinp(prompt) {|inp|
 
       if !inp.integer?
@@ -60,7 +60,7 @@ class Session
 end #class Session
 
 def changelength
-  print "Screen Length is %R#{@c_user.length}%G lines."
+  print "Screen Length is %R#{@c_user.length}%G% lines."
   prompt = "Screen length? (10-60) [default=40]: "
   @c_user.length = getnum(prompt,10,60) || 40
   update_user(@c_user)
@@ -68,7 +68,7 @@ def changelength
 end
 
 def changewidth
-  print "Screen Width is %R#{@c_user.width}%G characters."
+  print "Screen Width is %R#{@c_user.width}%G% characters."
   prompt = "Screen width? (22-80) [default=40]: "
   @c_user.width = getnum(prompt,22,80) || 40
   update_user(@c_user)
@@ -103,13 +103,13 @@ def changenick
   No Spaces are allowed. If you enter a space, it will be removed.  
   No inappropriate names please.
 
-  Your current Chat Alias is %Y#{@c_user.alias}%G.
+  Your current Chat Alias is %W%#{@c_user.alias}%G%.
   here
 
-  prompt = "Enter Chat Alias (Max 15 Characters): %Y"
+  prompt = "Enter Chat Alias (Max 15 Characters): %W%"
   tempstr = getinp(prompt)
   if tempstr == '' then
-    print "%RNot Changed%G" 
+    print "%RNot Changed%G%" 
     return
   end
   newname = tempstr.gsub(/\W/,"").slice(0..14)
@@ -119,7 +119,7 @@ def changenick
     update_user(@c_user)
     usersettingsmenu
   else 
-    print "%RThat alias is in use by another user.%G" 
+    print "%RThat alias is in use by another user.%G%" 
   end
 end
 
@@ -193,7 +193,7 @@ def changezip(parameters)
 
   while true
     if tempint.nil?  then
-      prompt = CRLF+"%WArea to toggle (1-#{(a_total - 1)}) ? %Y<--^%W to quit:  " 
+      prompt = CRLF+"%WArea to toggle (1-#{(a_total - 1)}) ? %W%<--^%W to quit:  " 
       happy = getinp(prompt).upcase
       tempint = happy.to_i
     end
@@ -214,7 +214,7 @@ def changezip(parameters)
         out = "will not"
         out = "will" if pointer.zipread
         print
-        print "%GArea #{area.name} %R#{out}%G be automatically read in Zipread."
+        print "%G%Area #{area.name} %R#{out}%G% be automatically read in Zipread."
         print
         tempint = nil
       else

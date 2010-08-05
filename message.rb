@@ -12,24 +12,27 @@ class Session
     user = @c_user
     more = 0
     groups = fetch_groups
-    prompt = "%WMore #{YESNO} or Area #? "
-    prompt2 = "Which, or %Y<--^ for all: "
+    prompt = "%W%More #{YESNO} or Area #? "
+    prompt2 = "Which, or #{RET} for all: "
     print
-    print "%GMessage Groups:"
+    print "%G%Message Groups:"
     groups.each_index {|j| print "#{j}: #{groups[j].groupname}"}
     print
     tempint = getnum(prompt2,-1,groups.length - 1)
     print
-    cols = %w(W G R Y C).map {|i| "%"+i}
-    headings = %w(# New Access Group Description)
-    widths = [3,4,7,20,40]
-    header = cols.zip(headings).map {|a,b| a+b}.formatrow(widths)
+    cols = %w(B C R Y G).map {|i| "%"+i +"%"}
+    hcols = %w(WB WC WR WY WG).map {|i| "%"+i+"%"}
+    headings = %w(# New Access Network Description)
+
+    widths = [3,4,7,20,38]
+    header = hcols.zip(headings).map {|a,b| a+b}.formatrow(widths) + "%W%"
+        puts header
     underscore = cols.zip(['-'*30]*5).map{|a,b| a+b}.formatrow(widths)
 
     grp = nil
     grp = groups[tempint].grp if !tempint.nil?
     print header
-    print underscore
+    print underscore if !@c_user.ansi
     temp = fetch_area_list(grp)
     fetch_area_list(grp).each_with_index {|area,i|
       pointer = get_pointer(@c_user,area.number)
@@ -51,7 +54,7 @@ class Session
         break if !cont or cont.kind_of?(Fixnum)
         print
         print header
-        print underscore
+        print underscore if !@c_user.ansi
       end
 
     }
@@ -72,7 +75,7 @@ class Session
 
     while true
       if tempint == - 1 then
-        prompt = CRLF+"%WArea #[#{@c_area}] (1-#{(a_total - 1)}) ? %Y<--^%W to quit: "
+        prompt = CRLF+"%W%Area #[#{@c_area}] (1-#{(a_total - 1)}) ? #{RET} to quit: "
         happy = getinp(prompt).upcase
         tempint = happy.to_i
       end
@@ -95,9 +98,9 @@ class Session
           break
         else
           if t == "N" then
-            print "%RYou do not have access"
+            print "%WR%You do not have access%W%"
           else
-            print "%RThat area does not exist."
+            print "%WR%That area does not exist.%W%"
           end
           break
           tempint = -1
@@ -137,7 +140,7 @@ class Session
         if l_read > 0 then
           if pointer.zipread and (t !~ /[NI]/ or @c_user.level == 255) and (!a_list[i].delete) then
             @c_area = a_list[i].number
-            print "%GChanging to the #{a_list[i].group}: #{a_list[i].name} sub-board"+CRLF
+            print "%G%Changing to the #{a_list[i].group}: #{a_list[i].name} sub-board"+CRLF
             mpointer = p_msg
             sleep (0.5)
             mpointer = h_msg if mpointer > h_msg
@@ -164,7 +167,7 @@ class Session
         to = r_message.m_from
         to.strip! if r_message.network #strip for qwk/rep but not for fido. Why?
         while true
-          prompt = "%GPrivate (y,N,x - abort)? "
+          prompt = "%G%Private (y,N,x - abort)? "
           reptype = getinp(prompt).upcase
           if (r_message.network or r_message.f_network) and reptype == "Y"
             replyemail(mpointer,@c_area)
@@ -181,8 +184,8 @@ class Session
 
         title = r_message.subject
 
-        print "%GTitle: #{title}"
-        title = get_or_cr("%REnter Title (<CR> for old): ", title)
+        print "%G%Title: #{title}"
+        title = get_or_cr("%C%Enter Title (<CR> for old):%W% ", title)
         reply_text = []
         reply_text.push(">--- #{to} wrote ---")
         r_message.msg_text.each_line(DLIM) {|line| reply_text.push("> #{line.chop!}")}
@@ -208,7 +211,7 @@ class Session
           savecurmessage(x, to, title, false,true,nil,nil,nil,nil)
           print private ? "Sending Private Mail..." : "%GSaving Message.."
         else
-          print "%RMessage Cancelled."
+          print "%WR%Message Cancelled.%W%"
         end
       end
     end
@@ -286,18 +289,18 @@ class Session
       pointer = get_pointer(@c_user,area.number)
 
       if pointer.access[@c_area] =~ /[RN]/
-        print "%RYou do not have write access."
+        print "%WR%You do not have write access.%W%"
         return
       end
 
       print
-      to = get_or_cr("%CTo (<CR> for All): ", "ALL")
-      prompt = "%GTitle: "
+      to = get_or_cr("%C%To (<CR> for All):%W% ", "ALL")
+      prompt = "%G%Title:%W% "
       title = getinp(prompt)
       return if title == ""
       reply_text = ["***No Message to Quote***"]
       if @c_user.fullscreen then
-        write "%W"
+        write "%W%"
         msg_file = write_quote_msg(nil)
         launch_editor(msg_file)
         suck_in_text(msg_file)
@@ -324,10 +327,10 @@ class Session
         u = @c_user
         fidomessage = fetch_msg(absolute_message(@c_area,mpointer))
         print
-        print "%COrg:%G #{fidomessage.orgnet}/#{fidomessage.orgnode}"
-        print "%CDest:%G #{fidomessage.destnet}/#{fidomessage.destnode}"
+        print "%C%Org:%G% #{fidomessage.orgnet}/#{fidomessage.orgnode}"
+        print "%C%Dest:%G% #{fidomessage.destnet}/#{fidomessage.destnode}"
         print" i'm here"
-        print "%Cq_msgid:%G #{fidomessage.q_msgid}"
+        print "%C%q_msgid:%G% #{fidomessage.q_msgid}"
         # [[field, attr], ....]. if attr is missing, it is field.downcase
         fields = [ "Attribute", "Cost", ["Date Time", :msg_date], ["To", :m_to],
           ["From", :m_from], "Subject", "Area", "Msgid", "Path",
@@ -338,13 +341,13 @@ class Session
         fields.each do |f|
           field, attr = (f.is_a? Array) ? f : [f, f.downcase]
           val = fidomessage.send(attr)
-          print "%C#{field}:%G #{val}" if val
+          print "%C%#{field}:%G% #{val}" if val
         end
 
         print
       else
-        print "\r\n%YThis message area is empty. Why not %G[P]ost%Y a Message?" if h_msg == 0
-        print "\r\n%RYou haven't read any messages yet." if mpointer == 0 and h_msg > 0
+        print "\r\n%YThis message area is empty. Why not %G%[P]ost%Y% a Message?" if h_msg == 0
+        print "\r\n%R%You haven't read any messages yet." if mpointer == 0 and h_msg > 0
       end
     end
 
@@ -412,22 +415,25 @@ class Session
         tempmsg.each_line(DLIM) {|line| message.push(line.chop!)} #changed from .each for ruby 1.9
 
 
-        write "%W##{mpointer} %G[%C#{curmessage.absolute}%G] %M#{curmessage.msg_date.strftime("%A the %d#{time_thingie(curmessage.msg_date)} of %B, %Y at %I:%M%p")}"
+        write "%W%##{mpointer} %G%[%C%#{curmessage.absolute}%G%] " 
+     
         if curmessage.network then
           if !curmessage.q_tz.nil? then
             out = TIME_TABLE[curmessage.q_tz.upcase]
             out = non_standard_zone(curmessage.q_tz) if out.nil?
-            write " %W(%G#{out}%W)"
+            write " %W%(%G#{out}%W%)"
           end
         end
-        write "%G [QWK]" if curmessage.network
-        write "%G [SMTP]" if curmessage.smtp
-        write "%G [FIDONET]" if curmessage.f_network
-        write "%Y [EXPORTED]" if curmessage.exported and !curmessage.f_network and !curmessage.network
-        write "%B [REPLY]" if curmessage.reply
+        write "%G% [QWK]" if curmessage.network
+        write "%G% [SMTP]" if curmessage.smtp
+        write "%G% [FIDONET]" if curmessage.f_network
+        write "%Y% [EXPORTED]" if curmessage.exported and !curmessage.f_network and !curmessage.network
+        write "%B% [REPLY]" if curmessage.reply
         print ""
-        print "%CTo: %G#{curmessage.m_to}"
-        write "%CFrom: %G#{curmessage.m_from.strip}"
+        write "%C%Date: "
+        print"%M%#{curmessage.msg_date.strftime("%A the %d#{time_thingie(curmessage.msg_date)} of %B, %Y at %I:%M%p")}"
+        print "%C%To: %G%#{curmessage.m_to}"
+        write "%C%From: %G%#{curmessage.m_from.strip}"
         if curmessage.f_network then
           out = "UNKNOWN"
           if !curmessage.intl.nil? then
@@ -438,16 +444,16 @@ class Session
               out << ".#{point}" if !point.nil?
             end
           else out = get_orig_address(curmessage.msgid) end
-          write " %G(%C#{out}%G)"
+          write " %G%(%C%#{out}%G%)"
         end
         if curmessage.network then
           out = bbsid
           out = curmessage.q_via if !curmessage.q_via.nil?
         end
-        write " %G(%C#{out}%G)"
+        write " %G%(%C%#{out}%G%)"
         #  end
         print
-        print "%CTitle: %G#{curmessage.subject}%Y"
+        print "%C%Title: %G%#{curmessage.subject}%Y%"
         j =5
         cont = true
 
@@ -467,7 +473,7 @@ class Session
           }
           print
         else
-          print "%ROut of Range"
+          print "%WR%Out of Range%W%"
         end
       end #displaymesasge
 
@@ -496,7 +502,7 @@ class Session
         :out => out,
         :initval => p_msg,
         :range => 1..h_msg,
-        :prompt => '"%M[Area #{@c_area}]%C #{sdir} #{out}[%p] '+
+        :prompt => '"%M%[Area #{@c_area}]%C% #{sdir} #{out}[%p] '+
         '(1-#{h_msg}): "'
         ) {|sel, mpointer, moved, out|
 
@@ -542,7 +548,7 @@ class Session
           d_msg = fetch_msg(abs) #modified for db change
 
           if d_msg.locked == true then
-            print CRLF + "%RCannot Delete. Message Locked."
+            print CRLF + "%WR%Cannot Delete. Message Locked.%W%"
             return
           end
 
@@ -554,12 +560,12 @@ class Session
 
             if h_msg > 0
               delete_msg(abs)
-              print "%RMessage ##{mpointer} [#{abs}] deleted."
+              print "%WR%Message ##{mpointer} [#{abs}] deleted.%W%"
             else
-              print CRLF+"%RNo Messages"
+              print CRLF+"%WR%No Messages%W%"
             end
           else
-            print CRLF+"%RYou can't delete message 0, because it doesn't exist!"
+            print CRLF+"%WR%You can't delete message 0, because it doesn't exist!%W%"
           end
         end
 
@@ -570,7 +576,7 @@ class Session
           pointer = get_pointer(@c_user,@c_area)
 
           if (start < 1) or (start > h_msg) or (stop < 1) or (stop > h_msg) then
-            print "%ROut of Range dude!"
+            print "%WR%Out of Range dude!%W%"
             return
           end
 
@@ -581,7 +587,7 @@ class Session
 
           first = absolute_message(area.number,start)  #this need rewriting for the new db format
           last = absolute_message(area.number,stop)
-          prompt = "%RDelete messages #{start} to #{stop} #{YESNO}"
+          prompt = "%WR%Delete messages #{start} to #{stop}%W% #{YESNO}"
           delete_msgs(area.number,first,last) if yes(prompt, true, false,true)
         end
 
@@ -589,7 +595,7 @@ class Session
           if mpointer > 0 then
             reply(mpointer)
           else
-            print "%GYou haven't read a message yet."
+            print "%WR%You haven't read a message yet.%W%"
           end
         end
 
@@ -599,8 +605,8 @@ class Session
           if (h_msg > 0) and (mpointer > 0) then
             displaymessage(mpointer,area.number,false)
           else
-            print "\r\n%YThis message area is empty. Why not %G[P]ost%Y a Message?" if h_msg == 0
-            print "\r\n%RYou haven't read any messages yet." if mpointer == 0
+            print "\r\n%Y%This message area is empty. Why not %G%[P]ost%Y% a Message?" if h_msg == 0
+            print "\r\n%R%You haven't read any messages yet." if mpointer == 0
           end
         end
 
@@ -608,9 +614,9 @@ class Session
 
         def displayarea(number)
           area = fetch_area(number)
-          write "\r\n%R#%W#{number} %G #{area.name}"
-          write "%R [DELETED]" if area.delete
-          write "%R [LOCKED]" if area.locked
+          write "\r\n%R%#%W%#{number} %G #{area.name}"
+          write "%R% [DELETED]" if area.delete
+          write "%R% [LOCKED]" if area.locked
           print ""
           if area.netnum > -1 then
             out = area.netnum
@@ -634,7 +640,7 @@ class Session
           readmenu(
           :initval => 0,
           :range => 0..(a_total - 1),
-          :prompt => '"%W#{sdir} Area [%p] (0-#{a_total - 1}): "'
+          :prompt => '"%W%#{sdir} Area [%p] (0-#{a_total - 1}): "'
           ) {|sel, apointer, moved|
             displayarea(apointer) if moved
             case sel
@@ -661,7 +667,7 @@ class Session
 
         def deletearea(apointer)
           if apointer <= 1
-            print "%RYou cannot delete area 0 or 1."
+            print "%WR%You cannot delete area 0 or 1.%W%"
             return
           end
 
@@ -702,7 +708,7 @@ class Session
             print "Board #{apointer} validated access changed to #{tempstr2}"
             update_area(area)
           else
-            print "%RInvalid Selection"
+            print "%WR%Invalid Selection%W%"
           end
         end
 
@@ -732,7 +738,7 @@ class Session
             print "Board #{apointer} default access changed to #{tempstr2}"
             update_area(area)
           else
-            print "%RInvalid Selection"
+            print "%WR%Invalid Selection%W%"
           end
         end
 
@@ -743,7 +749,7 @@ class Session
             prompt = "Enter new area name: "
             name = getinp(prompt) {|n| n != ""}
             if name.length > 40 then
-              print "%RName too long. 40 Character Maximum"
+              print "%WR%Name too long. 40 Character Maximum%W%"
             else
               break
             end
@@ -754,7 +760,7 @@ class Session
             add_area(name,"W","W",nil,nil,nil)
             apointer = a_total - 1
           else
-            print "%RCancelled."
+            print "%WR%Cancelled.%W%"
             apointer = a_total - 1
             return
           end

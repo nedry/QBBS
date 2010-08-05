@@ -3,23 +3,23 @@ class Session
 def version
 
  print	
- print "%C#{VER} (C) Copyright 1985 - 2010 by Fly-By-Night Software"
+ print "%C%#{VER} (C) Copyright 1985 - 2010 by Fly-By-Night Software"
  print
- print "%GProgrammers:"
+ print "%G%Programmers:"
  print
- print "     %CMark Firestone   %GMartin DeMello    %RJohn Lorance"
+ print "     %WC%Mark Firestone%W%   %WG%Martin DeMello%W%    %WR%John Lorance%W%"
  print 			     
- print "%GThanks to:"
+ print "%G%Thanks to:"
  print		
- print "           %MWayne Conrad          %RRob Swindell"
+ print "           %WB%Wayne Conrad%W%          %WY%Rob Swindell%W%"
  print			
- print "%CFor all their help and encouragement."
+ print "%C%For all their help and encouragement."
  print			
- print "%GAPIs by:"
+ print "%G%APIs by:"
  print		       
- print "      %MDatamapper (Database)...........%WThe Datamapper Team"
- print "      %MNatter (IRC)....................%WJohnathan Perkins "
- print "      %MRubyMail (SMTP Email)...........%WMatt Armstrong      "
+ print "      %M%Datamapper (Database)...........%W%The Datamapper Team"
+ print "      %M%Natter (IRC)....................%W%Johnathan Perkins "
+ print "      %M%RubyMail (SMTP Email)...........%W%Matt Armstrong      "
  print
 end
 
@@ -35,14 +35,14 @@ end
 
 def questionaire
 	print <<-EOP
-		%G\r\nThis Questionaire has ceased to be!  It's expired and
+		%G%\r\nThis Questionaire has ceased to be!  It's expired and
 		gone to meet it's maker!\r\n
-		%MIt's a stiff!  Bereft of life, it rests in peace!  If you
+		%M%It's a stiff!  Bereft of life, it rests in peace!  If you
 		hadn't pressed 'Q' it'd be pushing up the daisies!
 		It's metabolic processes are now 'istory!  It's off the twig!
 		It's kicked the bucket, It's shuffled off it's mortal coil, run 
 		down the curtain and joined the bleedin' choir invisibile!!\r\n
-		%RTHIS IS AN EX-QUESTIONAIRE!!\r\n
+		%R%THIS IS AN EX-QUESTIONAIRE!!\r\n
 	EOP
 end
 
