@@ -277,7 +277,7 @@ def w_display_message(mpointer,user,m_area,email,dir,total)
   m_out << "</td></tr>"
   m_out << "<tr><td><span style='color:#54fcfc'>Title: </span></td><td><span style='color:#54fc54'>#{curmessage.subject}</span></td></tr></table><br>"
   m_out << "<div id='msg'>"
-  m_out << "#{parse_webcolor(convert_to_ascii(message))}"
+  m_out << "#{(parse_webcolor(wordwrap(convert_to_ascii(message))))}"
   m_out << "</div></div>"
   m_out << "<BR>"
   return [curmessage.m_from.strip,curmessage.subject.strip,m_out]

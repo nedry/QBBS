@@ -81,7 +81,7 @@ EXTENDED_ANSI_TABLE = {
 	 29.chr => "&harr", # left right arrow 
 	 30.chr => "&#9650", # black up-pointing triangle 
 	 31.chr => "&#9660",  #] black down-pointing triangle 
-        227.chr => "<br>",
+        227.chr => "<br/>",
 	32.chr => "&nbsp;",
 	128.chr => "&Ccedil;",	#128 C, cedilla (199)
 	129.chr => "&uuml;",	#129 u, umlaut (252)
@@ -405,3 +405,33 @@ def parse_ansi(str)
   out = parse_bbs_color(out)
   return out
 end
+
+# some systems don't like to make sure lines are less than 80 characters.  Nice one.  
+
+def wordwrap(s, len=80)    
+
+  result = ""
+  line_length = 0
+  s.split("<br/>").each {|line|
+    l_temp = line.gsub(/\e\[(\d+)(?:;(\d+)(?:;(\d+))?)?(\D)/) #lines may contain ansi codes, we need the length without ansi codes 
+    l_length = line.length - l_temp.to_a.join.length
+
+    if l_length >= len then                                                
+      line.split.each{ |word|    
+      temp = word.gsub(/\e\[(\d+)(?:;(\d+)(?:;(\d+))?)?(\D)/)    #words may contain ansi codes, we need the length 
+      t_length = word.length - temp.to_a.join.length              #without the ansi codes, or we will wrap too soon!
+      if line_length + t_length + 1  < len  then
+        line_length += t_length  + 1 
+        result << word  << ' '
+      else
+        result <<"<br\>" << word << ' '
+        line_length =t_length + 1
+      end 
+    }
+   else
+    result << line << "<br/>"
+   end
+ }
+  return result
+end
+

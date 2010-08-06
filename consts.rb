@@ -1,6 +1,6 @@
 DEBUG = true
 LISTENPORT = 2323
-QWK = false
+QWK = true
 QWK_DEBUG = true
 FIDO = false
 SMTP = false
