@@ -15,7 +15,7 @@ You have connected from IP Address: %IP%.
 \___\_\____/_/  |_/_/ |_/_/ |_/____/\___/|___/\___/_/ /_/ 
                                                           
 %W%  QUARKware 7.x BBS for Linux 
-%g%  Copyright %G%1993%g-%G2010 %g%Fly By Night Software - http://www.cortex-media.info
+%g%  Copyright %G%1993%g%-%G%2010 %g%Fly By Night Software - http://www.cortex-media.info
 
 
 New features in this version:  %W%o%G% Ruby 1.9 Compatable

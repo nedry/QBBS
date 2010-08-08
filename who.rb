@@ -29,6 +29,7 @@ class Session
     i = 0
     if @irc_who.len > 0 then
       cols = %w(Y G C).map {|i| "%"+i +"%"}
+      hcols = %w(YW GW CW).map {|i| "%"+i +"%"}
       headings = %w(Node User Channel)
       widths = [5,26,20]
       header = hcols.zip(headings).map {|a,b| a+b}.formatrow(widths)
