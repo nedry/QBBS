@@ -1,0 +1,20 @@
+%G%System Information for %C%%BBSNAME%...
+
+%G%Fidonet Address:         %C%%FIDOADDR%
+%G%Software Version:        %C%%VER%
+%G%Webserver Version:       %C%%WEBVER%
+%G%Telnet Nodes:            %C%%TNODES%
+%G%Sysop Name:              %C%%SYSOP%
+%G%System Time:             %C%%STIME%
+%G%System Date:             %C%%SDATE%
+%G%Location:                %C%%SYSLOC%
+%G%Total Logons:            %C%%TLOGON%
+%G%Logons Today:            %C%%LOGONS%
+%G%Posts Today:             %C%%POSTS%
+%G%Emails Today:            %C%%EMAILS%
+%G%Feedback Today:          %C%%FEEDBACK%
+%G%New Users Today:         %C%%NEWUSERS%
+
+%G%Ruby Version:            %C%%RVERSION%
+%G%Platform:                %C%%PLATFORM%
+%G%PID:                     %C%%PID%

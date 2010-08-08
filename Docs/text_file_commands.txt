@@ -1,0 +1,42 @@
+ 
+User Variables
+
+      %NODE%		Current Telnet Node
+      %TIMEOFDAY%  	Morning, Afternoon or Evening
+      %USERNAME%  	Current User's Name
+      %U_LDATE%  	Current User's Last On Date
+      %U_LTIME%  	Current User's Last On Time
+      %U_LEVEL%  	Current User's Level
+      %U_LOGONS% 	Current User's Number of Logons
+      %U_POSTS% 	Current User's Total Messages Posted (not including email)
+      %U_RATIO%  	Current User's Post / Logon Ratio (not including email)     
+      %U_ADDR%  	Current User's Address
+      %U_CITYSTATE%  	Current User's City and State
+      %U_ALIAS%  	Current User's Chat Alias
+      %IP%  		Current User's IP Address
+
+System Variables
+
+      %BBSNAME%  	BBS Name
+      %FIDOADDR%  	Fidonet Address
+      %VER%  		Software Version
+      %WEBVER%  	Sinatra Version
+      %TNODES%  	Total Telnet Nodes
+      %SYSOP%  	Sysop's Name
+      %RVERSION%  	Ruby Version
+      %PLATFORM%  	Platform
+      %PID%  		Current PID
+      %STIME%  		Current System Time
+      %SDATE%  	Current System Date
+      %SYSLOC%  	System Location
+      %TLOGON%  	Total Logons
+      %LOGONS%  	Logons Today
+      %POSTS%   	Posts Today
+      %EMAILS%   	Emails Today
+      %FEEDBACK%   	Feedback Today
+      %NEWUSERS%   	New Users Registered Today
+
+Flow Control
+
+       %PAUSE%	Insert a Pause Prompt
+       %NOMORE%	Disable More Prompt

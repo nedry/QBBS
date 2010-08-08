@@ -1,0 +1,13 @@
+%G%System Information for %C%%USERNAME%...
+
+%G%Address:                  %C%%U_ADDR%
+                          %C%%U_CITYSTATE%
+
+%G%Alias:                    %C%%U_ALIAS%
+%G%Level:                    %C%%U_LEVEL%
+%G%Node:                     %C%%NODE%
+%G%last logged on:           %C%%U_LDATE% %Wat %C%%U_LTIME%
+%G%IP Address:               %C%%IP%
+%G%Total Logons:             %C%%U_LOGONS%
+%G%Messages Posted:          %C%%U_POSTS%
+%G%Post/Call Ratio:          %C%%U_RATIO%

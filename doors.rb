@@ -115,23 +115,23 @@ def writedoorfile(outfile)
     doorfile.write("255\r\n")
     doorfile.close
   rescue
-    add_log_entry(8,Time.now,"No path for door file %R#{outfile}")
-    print "%RCould not write door info file... Please tell sysop."
+    add_log_entry(8,Time.now,"No path for door file #{outfile}")
+    print "%WR%Could not write door info file... Please tell sysop.%W%"
   end 
 end
 
 def showdoor(number)
   if d_total > 0 then 
     door = fetch_door(number)
-    print "%R#%W#{number} %G #{door.name}"
-    print "%CPath:      %G#{door.path}"
-    print "%CType:      %G#{door.d_type}"
-    print "%CDrop Path: %G#{door.d_path}"
-    print "%CDrop Type: %G#{door.droptype}"
-    print "%CLevel:     %G#{door.level}"
+    print "%R%#%W#{number} %G #{door.name}"
+    print "%C%Path:      %G#{door.path}"
+    print "%C%Type:      %G#{door.d_type}"
+    print "%C%Drop Path: %G#{door.d_path}"
+    print "%C%Drop Type: %G#{door.droptype}"
+    print "%C%Level:     %G#{door.level}"
     print
   else 
-    print "%RNo Doors"
+    print "%WR%No Doors%W%"
   end
 end
 
@@ -139,7 +139,7 @@ def doormaint
   readmenu(
     :initval => 1,
     :range => 1..(d_total),
-    :prompt => '"%W#{sdir}Door [%p] (1-#{d_total}): "'
+    :prompt => '"%G%#{sdir}Door [%p] (1-#{d_total}): %W%"'
   ) {|sel, dpointer, moved|
     if !sel.integer?
       parameters = Parse.parse(sel)
@@ -177,7 +177,7 @@ def adddoor
   if yes("Are you sure #{YESNO}", false, false,true)
     add_door(name,path)
   else
-    print "%RAborted."
+    print "%WR%Aborted.%W%"
   end
   print
 end
@@ -191,7 +191,7 @@ def changedoorname(dpointer)
     door.name = name
     update_door(door)
   else
-    print "%RNot Changed."
+    print "%WR%Not Changed.%W%"
   end
   print
 end
@@ -253,16 +253,19 @@ end
 
 def displaydoors
   i = 0
+  ogfileout("doorhdr",0,true)
+  if !existfileout('door',0,true)
   if d_total < 1 then
-    print "No External Programs."
+    print "%WR%No External Programs.%W%"
     return
   end
-  print "%GGames Available:"
+  print "%G%Games Available:"
   for i in 1..(d_total)
     door = fetch_door(i)
-    print "   %B#{i}...%G#{door.name}"
+    print "   %B%#{i}...%G%#{door.name}"
   end
   print
+  end
 end
 
 def find_RSTS_account
@@ -286,25 +289,7 @@ def find_RSTS_account
     return i
 end
 
-def irc_do(channel,d_type)
-  if d_type == "GD" then 
-    existfileout('gdmenu',0,true)
-    while true
-      prompt = "\r\n%WWhat is your choice? [P, H, I, Q]: "
-      getinp(prompt) {|inp|
-        happy = inp.upcase
-        t = happy.to_i
-        case happy
-        when "Q";   return
-        when "P"; teleconference(channel)
-        when "I"; existfileout('gd_intro',0,true)
-        when "H"; existfileout('gd_score',0,true)
-        when "?";  existfileout('gdmenu',0,true)
-        end #of case
-      }
-    end
-  end
-end
+
 
 def rundoor(number)
   puts "number: #{number}"
@@ -344,7 +329,7 @@ def rundoor(number)
       door_do(door.path,door.d_type)
     end
   else
-    print "You do not have access."
+    print "%WR%You do not have access.%W%"
   end
   @who.user(@c_user.name).where = "Main Menu"
   update_who_t(@c_user.name,"Main Menu")
@@ -356,14 +341,14 @@ def doors(parameters)
   if t == 0 then
     displaydoors  if !existfileout('doors',0,true)
     while true
-      prompt = "\r\n%WGame #[1-#{d_total}] ? %Y<--^%W to quit: "
+      prompt = "\r\n%W%Game #[1-#{d_total}] ? #{RET} to quit: "
       getinp(prompt) {|inp|
         happy = inp.upcase
         t = happy.to_i
         case happy
         when "";   return
         when "CR"; crerror
-        when "?";  displaydoors  if !existfileout('doors',0,true)
+        when "?";  displaydoors  
         else
           rundoor(t) if (t) > 0 and (t) <= d_total
         end #of case
