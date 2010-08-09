@@ -414,26 +414,25 @@ class Session
 
         tempmsg.each_line(DLIM) {|line| message.push(line.chop!)} #changed from .each for ruby 1.9
 
-
+        print
         write "%W%##{mpointer} %G%[%C%#{curmessage.absolute}%G%] " 
      
         if curmessage.network then
           if !curmessage.q_tz.nil? then
-            out = TIME_TABLE[curmessage.q_tz.upcase]
-            out = non_standard_zone(curmessage.q_tz) if out.nil?
-            write " %W%(%G#{out}%W%)"
+            tzout = TIME_TABLE[curmessage.q_tz.upcase]
+            tzout = non_standard_zone(curmessage.q_tz) if tzout.nil?
           end
         end
-        write "%G% [QWK]" if curmessage.network
-        write "%G% [SMTP]" if curmessage.smtp
-        write "%G% [FIDONET]" if curmessage.f_network
-        write "%Y% [EXPORTED]" if curmessage.exported and !curmessage.f_network and !curmessage.network
-        write "%B% [REPLY]" if curmessage.reply
+        write " %WG%|QWK|%W%" if curmessage.network
+        write " %WB%|SMTP|%W%" if curmessage.smtp
+        write " %WC%|FIDONET|%W%" if curmessage.f_network
+        write " %WY%|EXPORTED|%W%" if curmessage.exported and !curmessage.f_network and !curmessage.network
+        write " %WB%|REPLY|%W%" if curmessage.reply
         print ""
         write "%C%Date: "
-        print"%M%#{curmessage.msg_date.strftime("%A the %d#{time_thingie(curmessage.msg_date)} of %B, %Y at %I:%M%p")}"
-        print "%C%To: %G%#{curmessage.m_to}"
-        write "%C%From: %G%#{curmessage.m_from.strip}"
+        print"%M%#{curmessage.msg_date.strftime("%A the %d#{time_thingie(curmessage.msg_date)} of %B, %Y at %I:%M%p")} %W%(%G%#{tzout}%W%)"
+        print "%C%To: %G%#{curmessage.m_to}%W%" # reset colors in case ansi is embedded in fields
+        write "%C%From: %G%#{curmessage.m_from.strip}%W%" # reset colors in case ansi is embedded in fields
         if curmessage.f_network then
           out = "UNKNOWN"
           if !curmessage.intl.nil? then
@@ -454,7 +453,10 @@ class Session
         #  end
         print
         print "%C%Title: %G%#{curmessage.subject}%Y%"
-        j =5
+        print
+        print "%WG% #{"MESSAGE TEXT".center(@c_user.width - 2)}%W%"
+        print
+        j =7
         cont = true
 
 
@@ -469,9 +471,10 @@ class Session
             break if !cont
           else
 
-            print end
+            print
+            end
           }
-          print
+          print "%W%" # reset colors at end of message display
         else
           print "%WR%Out of Range%W%"
         end

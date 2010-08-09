@@ -4,7 +4,7 @@ class Ulog
   property :id, Serial
   property :subsystem, Integer
   property :ent_date, DateTime
-  property :message, String, :length => 60
+  property :message, String, :length => 255
   
    belongs_to :subsys, :child_key => [:subsystem]
 end

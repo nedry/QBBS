@@ -100,16 +100,22 @@ class Session
   #-------------------Bulletin Section-------------------
 
   def displaybullet
+   
+   
+
     i = 0
     if b_total < 1 then
-      print "No Bulletins"
+      print "%WR%No Bulletins%W%"
       return
     end
-    print "%GBulletins Available:"#
+   ogfileout("bullethdr",0,true)
+   if !existfileout('bulletins',0,true)
+    print "%G%Bulletins Available:"
     for i in 1..(b_total)
       bulletin = fetch_bulletin(i)
-      print "   %B#{i}...%G#{bulletin.name}"
+      print "   %B%#{i}...%G%#{bulletin.name}"
     end
+  end
     print
   end
 
@@ -128,7 +134,7 @@ class Session
           when "CR"; crerror
 	  when "Q" ; return
 	   when ""; return
-          when "?";  displaybullet  if !existfileout('bulletins',0,true)
+          when "?";  displaybullet  
           else
             if t > 0 and t <= b_total then 
               bulletin = fetch_bulletin(t)

@@ -10,6 +10,7 @@ class Session
     print "%G%[%W% W %G%]idth: %W%#{@c_user.width}"
     print "%G%[%W% P %G%]assword"                        
     print "%G%[%W% Z %G%]ip Read Settings"
+    print "%G%[%W% T %G%]heme"
     print
   end
 
@@ -45,6 +46,7 @@ class Session
       when "E"; togglefull
       when "F"; togglefast
       when "Z"; changezip(parameters)
+      when "T";  themes(parameters)
       when "?" 
         if !existfileout('usersethdr',0,true)
 	  print "User Settings:"

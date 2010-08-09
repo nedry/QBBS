@@ -10,17 +10,18 @@ class Session
 		if yes("Log off now #{YESNO}", true, false,false) then
 			write "%W%"
 			gfileout('bye')
-			print "NO CARRIER"
+			print "%WR%NO CARRIER%W%"
 			sleep (1)
 			hangup
 		end
 	end
 
 	def youreoutahere
-		prompt = "%RW%Boot which user number?: %W%"
+		prompt = "%WR%Boot which user number?: %W%"
 		which = getnum(prompt,0,@who.len)
 		if which > 0 then
-			print "%GW%Booting User ##{which} from system.%W%"
+			print "%WG%Booting User ##{which} from system.%W%"
+                        puts "thread.kill: #{@who[which-1].threadn}"
 			Thread.kill(@who[which-1].threadn)
 		else
                   print "%RW%Aborted%W%"
@@ -116,6 +117,7 @@ class Session
 			when "Q"; questionaire
 			when "ZZ"; new_displaylist
 			when "E"; emailmenu
+                        when "TM";  thememaint if ulevel == 255
 			when "DM"; doormaint if ulevel == 255
 			when "TM"; telnetmaint if ulevel ==255
 			when "TR" ; print (find_RSTS_account)
@@ -134,7 +136,7 @@ class Session
 			when "X"; ogfileout("sysopmnu",1,true) if ulevel == 255
 			when "?"
 			        gfileout("mainmnu")
-				print "%R%X%W% - %WG%eXtended Sysop Menu%W%" if ulevel == 255
+				print "%WG%e%WR%X%WG%tended Sysop Menu%W%" if ulevel == 255
 			end
 		
 		end

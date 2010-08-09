@@ -101,7 +101,7 @@ class Session
         password = getpwd("Enter password for user #{username}: ")
 
         break if check_password(username.upcase, password)
-        checkmaxpwdmiss(count)
+        checkmaxpwdmiss(count,username)
       else
         print "User IDs must be between 3 and 25 characters, and may not contain"
         print "the characters : * @ , ' "
@@ -261,10 +261,10 @@ class Session
     update_system(system)
   end
 
-  def checkmaxpwdmiss(count)
+  def checkmaxpwdmiss(count,username)
     if count == MAXPASSWORDMISS then
       fileout(TEXTPATH + "missed.txt")
-      add_log_entry(7,Time.now,"#{username} missed his password more than #{MAXPASSWORDMISS} times, and was disconnected.")
+      add_log_entry(7,Time.now,"#{username} password missed: #{MAXPASSWORDMISS} -- disconnected.")
       sleep(10)
       hangup
     end

@@ -1,3 +1,5 @@
+require 'models/theme'
+
 class User
   include DataMapper::Resource
     storage_names[:default] = 'users'
@@ -25,9 +27,11 @@ class User
   property :fullscreen, Boolean
   property :signature, Text
   property :fastlogon, Boolean
+  property :theme_key, Integer
 
     has 1, :who, :child_key => [:number]
     has n, :pointers, :child_key => [:number]
+    has 1, :theme, :child_key => [:theme_key]
     has n, :pages, :child_key => [:number]
     has 1, :who, :child_key => [:number] 
 end

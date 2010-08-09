@@ -7,37 +7,37 @@ class Session
   def displayuser(number)
     user = fetch_user(number)
     ldate = user.laston.strftime("%A %B %d, %Y / %I:%M%p (%Z)") 
-    write "%R#%W#{number} %G #{user.name}"
-    write "%R [DELETED]" if user.deleted 
-    write "%R [LOCKED]" if user.locked
+    write "%R%#%W%#{number} %G% #{user.name}"
+    write "%WR% [DELETED]%W%" if user.deleted 
+    write "%RR% [LOCKED]%W%" if user.locked
     print ""
     print <<-here
-    %CLast IP:       %G#{user.ip}
-    %CEmail Address: %G#{user.address}
-    %CLocation:      %G#{user.citystate}
-    %CLast On:       %G#{ldate}
-    %CPassword:      %G********   %CLevel: %G#{user.level}
-    %CRSTS Password: %G#{user.rsts_pw}
-    %CRSTS Account:  %G#{RSTS_BASE},#{user.rsts_acc}
+    %C%Last IP:       %G%#{user.ip}
+    %C%Email Address: %G%#{user.address}
+    %C%Location:      %G%#{user.citystate}
+    %C%Last On:       %G%#{ldate}
+    %C%Password:      %G%********   %C%Level: %G%#{user.level}
+    %C%RSTS Password: %G%#{user.rsts_pw}
+    %C%RSTS Account:  %G%#{RSTS_BASE},#{user.rsts_acc}
     here
-    print "%Y                         1         2         3         4" 
-    print "%YArea#:         01234567890123456789012345678901234567890"
+    print "%Y%                         1         2         3         4" 
+    print "%Y%Area#:         01234567890123456789012345678901234567890"
 
-    write "%YAccess:%W        "
+    write "%Y%Access:%W%        "
 
     
     for i in 0..40
       pointers = get_all_pointers(user)
       if i <  pointers.length then 
 	case pointers[i].access
-	  when "N"; write "%rN"	
-	  when "I"; write "%RI"
-	  when "R"; write "%YR"
-	  when "W"; write "%GW"
-	  when "C"; write "%MC"
-	  when "M"; write "%gM"
+	  when "N"; write "%WR%N"	
+	  when "I"; write "%WR%I"
+	  when "R"; write "%W%R"
+	  when "W"; write "%WG%W"
+	  when "C"; write "%WM%C"
+	  when "M"; write "%WC%M"
 	end
-      else write "%W-" 
+      else write "%W%-" 
       end
     end
     print 
@@ -47,7 +47,7 @@ class Session
 
   def usermenu 
     total = u_total
-    oprompt = '"%W#{sdir}User [%p] (1-#{u_total}): "'
+    oprompt = '"%W%#{sdir}User [%p] (1-#{u_total}): "'
     readmenu(
       :initval => 1,
       :range => 1..(u_total ),
@@ -106,7 +106,7 @@ class Session
     u_scanforaccess(upointer)
     user = fetch_user(upointer)
    
-    prompt = "%WMessage Area to Change (0 - #{(a_total)})<?: list, Q: Quit>: "
+    prompt = "%W%Message Area to Change (0 - #{(a_total)})<?: list, Q: Quit>: "
     tempstr = ''
     getinp(prompt) {|inp|
       tempstr = inp.upcase
@@ -122,14 +122,14 @@ class Session
 
     if tempstr != "Q" then
       if (0..a_total).include?(tempint2)
-        prompt = "%GEnter new access level for area #{tempint2}: "
+        prompt = "%G%Enter new access level for area #{tempint2}%W%: "
         tempstr2 = getinp(prompt).upcase
         if tempstr2 =~ /[NIWRMC]/
           pointer.access = tempstr2
           print "Area #{tempint2} access changed to #{tempstr2}"
 	   update_pointer(pointer)
         else
-          print "%ROut of Range"
+          print "%WR%Out of Range%W%"
         end
       end
     end
@@ -137,24 +137,24 @@ class Session
 
   def changeuserlevel(upointer)
     user = fetch_user(upointer)
-    prompt = "%WUser Level? (1-255): "
+    prompt = "%W%User Level? (1-255): "
     if upointer != 0 then
       tempint = getnum(prompt,1,255)
       if !tempint.nil? then
         user.level = tempint
         update_user(user)
       else
-        print "%RCancelled."
+        print "%WR%Cancelled.%W%"
         return
       end
     else
-      print "%RYou cannot change the access of the SYSOP"
+      print "%WR%You cannot change the access of the SYSOP%W%"
     end
   end
 
   def changersts_acc(upointer)
     user = fetch_user(upointer)
-    prompt = "%WRSTS Account? (1-254): "
+    prompt = "%W%RSTS Account? (1-254): "
 
     user.rsts_acc = getnum(prompt,0,254)
     puts user.rsts_acc
@@ -163,18 +163,18 @@ class Session
 
   def changeusername(upointer)
     user = fetch_user(upointer)
-    prompt = "%WUser Name?: "
+    prompt = "%W%User Name?: "
     if upointer != 0 then
       user.name = getinp(prompt).slice(0..24)
       update_user(user)
     else 
-      print "%RYou cannot change the name of the SYSOP" 
+      print "%WR%You cannot change the name of the SYSOP%W%" 
     end
   end
 
   def changelocation(upointer)
     user = fetch_user(upointer)
-    prompt = "%WLocation?: "
+    prompt = "%W%Location?: "
 
     user.citystate = getinp(prompt).slice(0..40)
     update_user(user)
@@ -197,14 +197,14 @@ class Session
     if upointer > 0 then
       if users.deleted then
         users.deleted = false
-        print "%GUser ##{upointer} UNdeleted"
+        print "%WG%User ##{upointer} UNdeleted%W%"
       else 
         users.deleted = true
-        print "%RUser ##{upointer} deleted."
+        print "%WR%User ##{upointer} deleted.%W%"
       end
       update_user(user)
     else
-      print "%RYou cannot delete the SYSOP." 
+      print "%WR%You cannot delete the SYSOP.%W%" 
     end
   end
 
@@ -212,24 +212,24 @@ class Session
     user = fetch_user(upointer)
     if user.locked then
       users.locked = false
-      print "%GUser ##{upointer} UNlocked"
+      print "%WG%User ##{upointer} UNlocked%W%"
     else 
       users.locked = true
-      print "%RUser ##{upointer} locked."
+      print "%WR%User ##{upointer} locked.%W%"
     end
     update_user(user)
   end
 
   def changepass(upointer)
     user = fetch_user(upointer)
-    pswd = getpwd("%WEnter new password: ").strip.upcase 
+    pswd = getpwd("%W%Enter new password: ").strip.upcase 
     pswd2 = getpwd("Enter again to confirm: ").strip.upcase 
     if pswd == pswd2
-      print "Password Changed."
+      print "%WG%Password Changed.%W%"
       user.password = pswd2
       update_user(user)
     else 
-      print "%RPasswords don't match.  Try again." 
+      print "%WR%Passwords don't match.  Try again.%W%" 
     end
   end
 
