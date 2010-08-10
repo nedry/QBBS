@@ -25,23 +25,16 @@ def renumber_themes
 end
 
 def add_theme_to_user(user,theme)
-  #user.themes = theme
-  if  !Theme.first(user).nil? then
-    puts user.theme.all.count
-    puts "found a theme! "#{Theme.get(user).count}"
-    Theme.first(theme).users.(:number => user.number)
-    x = Theme.first(theme).users(:number => user.number).clear
-    x.save
-  end
-  puts "theme.theme_key #{theme.theme_key}"
-  happy = Theme.first(:theme_key => theme.theme_key).users << user
-  happy.save!
- # Theme.errors.each{|x| puts x}
   
+  user.theme_key = theme.theme_key
+  user.save!
+ 
 end
 
 def get_user_theme(user)
-  Theme.first(user)
+
+  Theme.first(:theme_key => user.theme_key)
+  
 end
 
 def add_theme(name, description)
@@ -50,6 +43,7 @@ def add_theme(name, description)
     :number => number,
     :name => name,
     :description => description,
+    :text_directory => TEXT_DIRECTORY,
     :main_prompt => MAIN_PROMPT
   )
 end

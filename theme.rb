@@ -27,6 +27,7 @@ class Session
     print '%WG%Main Prompt Parameters%W%'
     print '%G%@sys@%C%    System Name'
     print '%G%@area@%C%   Number of Current Board'
+    print '%G%@aname@%C%  Name of Current Board'
     print '%G%@total@%C%  Number of Total Messages on Current Board'
     print '%G%@new@%C%    Number of New Messages on Current Board'
     print '%G%@left@%C%   Current User`s Remaining Time'
@@ -46,6 +47,7 @@ class Session
  "#{message_prompt(prompt,system,marea,left,nmessages,tmessages,aname)}"
 
   end
+ 
 
 
   def displaytheme(number)
@@ -81,6 +83,7 @@ class Session
       when "A"; addtheme
       when "N"; changethemename(tpointer)
       when "MP"; changethemainprompt(tpointer)
+      when "T"; changepath(tpointer)
       when "K"; deletetheme(tpointer)
       when "G"; leave
       when "?"; gfileout ("thememnu")
@@ -115,7 +118,7 @@ class Session
     print
   end
 
-  def changethemename(bpointer)
+  def changethemename(tpointer)
 
     theme = fetch_theme(tpointer)
     name = getinp("Enter new theme name: ")
@@ -127,7 +130,19 @@ class Session
     end
     print
   end
+  
+  def changepath(tpointer)
 
+    theme = fetch_theme(tpointer)
+    path = getinp("Enter new text path: ")
+    if path !='' then
+      theme.text_directory = path
+      update_theme(theme)
+    else
+      print "%WR%Not Changed.%W%"
+    end
+    print
+  end
 
   def deletetheme(tpointer)
     if tpointer > 0 then
@@ -154,7 +169,7 @@ class Session
     puts "theme: #{theme}"
     if theme.nil? then
       puts "resetting theme"
-      theme = fetch_theme(1) #change to get default theme
+      theme = fetch_theme(2) #change to get default theme
       add_theme_to_user(@c_user,theme)
     end
   end
