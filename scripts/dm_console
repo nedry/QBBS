@@ -1,0 +1,1 @@
+dm -P dm-aggregates -l foo postgres://localhost/qbbs
