@@ -335,4 +335,4 @@ L_MESSAGE = 9
 #Theme Defaults
 
 MAIN_PROMPT = "%G%-=%M%:%C%@aname@%M%:%C%New - @new@%M%:%W%? for Menu%G%:=-%W%"
-TEXT_PATH = "text"
+TEXT_PATH = "text/"

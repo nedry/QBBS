@@ -98,13 +98,8 @@ class Session
               
 		@who.user(@c_user.name).where="Main Menu"
 		update_who_t(@c_user.name,"Main Menu")
-		#o_prompt = "%G%-=%p%W%:? for menu%G%:=-"
-                o_prompt =  message_prompt(theme.main_prompt,SYSTEMNAME,@c_area,0,l_read,h_msg,area.name)
+    o_prompt =  message_prompt(theme.main_prompt,SYSTEMNAME,@c_area,0,l_read,h_msg,area.name)
 		area = fetch_area(@c_area)
-		#prompt = o_prompt.gsub("%p","#{area.name}")
-                #imp = getcmd(o_prompt, ECHO, 0, false, false)
-                #imp = _getinputlen(o_prompt, true, 75, false)
-                puts "looping"
 		imp = getinp(o_prompt,false)
 			sel = imp.upcase.strip
 			parameters = Parse.parse(sel)

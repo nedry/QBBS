@@ -3,6 +3,7 @@ require 'rubygems'
 require 'socket'
 require 'sinatra'
 require "db/db_system.rb"
+require 'db/db_themes'
 
 class GraphFile
   attr_accessor :session, :filename, :override
@@ -16,8 +17,9 @@ class GraphFile
   end
 
   def outfile
-    graphfile = TEXTPATH + filename + ".gra"
-    plainfile = TEXTPATH + filename + ".txt"
+     theme = get_user_theme(@session.c_user)
+    graphfile =  theme.text_directory + filename + ".gra"
+    plainfile =  theme.text_directory + filename + ".txt"
     if override then
       return File.exists?(graphfile) ? graphfile : plainfile
     else
@@ -77,8 +79,9 @@ class GraphFile
   end
 
   def gfileout
-    graphfile = TEXTPATH + filename + ".gra"
-    plainfile = TEXTPATH + filename + ".txt"
+    theme = get_user_theme(@session.c_user)
+    graphfile =  theme.text_directory + filename + ".gra"
+    plainfile =  theme.text_directory + filename + ".txt"
     if @session.c_user.ansi == TRUE and File.exists?(graphfile)
       fileout(graphfile)
     else
