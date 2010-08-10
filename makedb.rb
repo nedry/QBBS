@@ -51,6 +51,9 @@ Subsys.new(:subsystem => 8, :name => 'ERROR').save!
 Subsys.new(:subsystem => 9, :name => 'MESSAGE').save!
 Subsys.new(:subsystem => 1, :name => 'SCHEDULE').save!
 
+Theme.new(:number => 1, :name => "QBBS", :description => "Default Theme", :main_prompt => MAIN_PROMPT).save!
+Theme.new(:number => 2, :name => "WBBS", :description => "Fuck off Theme", :main_prompt => MAIN_PROMPT).save!
+
 
 t = 
 

@@ -332,4 +332,6 @@ L_SECURITY = 7
 L_ERROR = 8
 L_MESSAGE = 9
 
+#Theme Defaults
 
+MAIN_PROMPT = "%W%Main Menu [@aname@]: "

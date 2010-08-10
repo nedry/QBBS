@@ -31,7 +31,9 @@ class User
 
     has 1, :who, :child_key => [:number]
     has n, :pointers, :child_key => [:number]
-    has 1, :theme, :child_key => [:theme_key]
+    belongs_to :theme,  :child_key =>[:theme_key]
+
+   
     has n, :pages, :child_key => [:number]
     has 1, :who, :child_key => [:number] 
 end

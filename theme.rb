@@ -2,11 +2,61 @@
 
 class Session
 
+  def message_prompt(prompt,system,marea,left,nmessages,tmessages,aname)
+
+    main_prompt = {'@sys@' => system,
+      '@area@' => marea.to_s,
+      '@left@' => left.to_s,
+      '@new@' => nmessages.to_s,
+      '@total@' => tmessages.to_s,
+    '@aname@' => aname}
+
+
+    if !prompt.nil?
+      main_prompt.each_pair {|inp, result|
+        prompt.gsub!(inp,result)
+      }
+    else
+      prompt = "%WR%NO PROMPT DEFINED%W%"
+    end
+    return prompt
+  end
+
+  def main_prompt_help
+    print
+    print '%WG%Main Prompt Parameters%W%'
+    print '%G%@sys@%C%    System Name'
+    print '%G%@area@%C%   Number of Current Board'
+    print '%G%@total@%C%  Number of Total Messages on Current Board'
+    print '%G%@new@%C%    Number of New Messages on Current Board'
+    print '%G%@left@%C%   Current User`s Remaining Time'
+    print '%G%@name@%C%   Current User`s Name'
+    print
+  end
+
+  def display_test_prompt(prompt)
+
+    system = "Happy BBS"
+    marea = "1"
+    left = "10"
+    nmessages = "5"
+    tmessages = "60"
+    aname = "General Chat"
+
+ "#{message_prompt(prompt,system,marea,left,nmessages,tmessages,aname)}"
+
+  end
+
+
   def displaytheme(number)
     theme = fetch_theme(number)
     print
     print "%R%#%W%#{number} %G% #{theme.name}"
     print "%C%Description: %G%#{theme.description}"
+    print "%C%Text Directory: %G%#{theme.text_directory}"
+    print "%C%Main Prompt: "
+    out = display_test_prompt(theme.main_prompt)
+    print "   %G%#{out}"
   end
 
   def thememaint
@@ -21,7 +71,7 @@ class Session
         sel.gsub!(/[-\d]/,"")
       end
 
-      displaytell(tpointer) if moved
+      displaytheme(tpointer) if moved
 
       case sel
       when "/"; showtheme(tpointer)
@@ -30,9 +80,10 @@ class Session
       when "PU";page
       when "A"; addtheme
       when "N"; changethemename(tpointer)
+      when "MP"; changethemainprompt(tpointer)
       when "K"; deletetheme(tpointer)
       when "G"; leave
-      when "?"; gfileout ("bullmnu")
+      when "?"; gfileout ("thememnu")
       end # of case
       p_return = [tpointer,(t_total)]
     }
@@ -47,6 +98,19 @@ class Session
       add_theme(name,desc)
     else
       print "%WR%Aborted.%W%"
+    end
+    print
+  end
+
+  def changethemainprompt(tpointer)
+    main_prompt_help
+    theme = fetch_theme(tpointer)
+    prompt = getinp("Enter a new main prompt: ")
+    if !prompt.empty? then
+      theme.main_prompt = prompt
+      update_theme(theme)
+    else
+      print "%WR%Not Changed.%W%"
     end
     print
   end
@@ -85,6 +149,15 @@ class Session
   end
 
   #-------------------Theme Section-------------------
+  def defaulttheme
+    theme = get_user_theme(@c_user)
+    puts "theme: #{theme}"
+    if theme.nil? then
+      puts "resetting theme"
+      theme = fetch_theme(1) #change to get default theme
+      add_theme_to_user(@c_user,theme)
+    end
+  end
 
   def displaythemes
 
@@ -107,10 +180,14 @@ class Session
   end
 
   def themes(parameters)
-    t = (parameters[0] > 0) ? parameters[0] : 0
-
+    t = 0
+    if !parameters.nil?
+      t = (parameters[0] > 0) ? parameters[0] : 0
+    end
     if t == 0 then
       displaythemes
+
+      defaulttheme
       prompt = "\r\n%W%Theme #[1-#{t_total}] ? #{RET} to quit: "
       while true
         #  getinp(prompt, :nonempty) {|inp|    <-- removed :nonempty which prevents the loop from exiting on <return>

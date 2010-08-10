@@ -87,13 +87,25 @@ class Session
 
 
 	def commandLoop
+          scanforaccess(@c_user)
              while true
+               theme = get_user_theme(@c_user)
+               area = fetch_area(@c_area)
+               puts "area.name #{area.name}"
+               pointer = get_pointer(@c_user,@c_area)
+               l_read = new_messages(area.number,pointer.lastread)
+
+              
 		@who.user(@c_user.name).where="Main Menu"
 		update_who_t(@c_user.name,"Main Menu")
-		o_prompt = "%G%-=%p%W%:? for menu%G%:=-"
+		#o_prompt = "%G%-=%p%W%:? for menu%G%:=-"
+                o_prompt =  message_prompt(theme.main_prompt,SYSTEMNAME,@c_area,0,l_read,h_msg,area.name)
 		area = fetch_area(@c_area)
-		prompt = o_prompt.gsub("%p","#{area.name}")
-		imp = getinp(prompt,false)
+		#prompt = o_prompt.gsub("%p","#{area.name}")
+                #imp = getcmd(o_prompt, ECHO, 0, false, false)
+                #imp = _getinputlen(o_prompt, true, 75, false)
+                puts "looping"
+		imp = getinp(o_prompt,false)
 			sel = imp.upcase.strip
 			parameters = Parse.parse(sel)
 			sel.gsub!(/[-\d]/,"")

@@ -14,5 +14,5 @@ class Theme
   property :email_prompt, String, :length => 80
   property :text_directory, String, :length => 80
   has n, :commands, :child_key => [:theme_key]
-  belongs_to :user, :child_key =>[:theme_key]
-end
+   has n, :users, :child_key => [:theme_key]
+   end

@@ -156,11 +156,13 @@ class Session
     add_user(username,ip,password,location,address,24,80,ansi, more, DEFLEVEL, fullscreen)
     @c_user = fetch_user(get_uid(username))
     add_log_entry(5,Time.now,"New user #{@c_user.name} created.")
+    @logged_on = true
     ogfileout("newuser",2,true)
     yes("Press <--^: ",true,false,true)
     system = fetch_system
     system.newu_today += 1
     update_system(system)
+    themes(nil)  #set a theme for the user
   end
 
   def checkkillfile(username)
@@ -227,6 +229,7 @@ class Session
     system = fetch_system
     system.total_logons += 1
     system.logons_today += 1
+   defaulttheme  #prevent crash in case user has no theme
     add_log_entry(5,Time.now,"#{@c_user.name} logged on sucessfully.")
     @logged_on = true
     puts "-SA: Logon - #{@c_user.name}"

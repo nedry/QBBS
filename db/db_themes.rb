@@ -2,11 +2,16 @@ require 'models/theme'
 require 'models/command'
 require 'models/user'
 require 'db/db_user'
+require 'consts'
 
 def t_total
   Theme.count
 end
 
+def delete_theme(r)
+   r.destroy!
+ end
+ 
 def update_theme(r)
   r.save
 end
@@ -20,12 +25,23 @@ def renumber_themes
 end
 
 def add_theme_to_user(user,theme)
-  user.theme = theme
-  user.save
+  #user.themes = theme
+  if  !Theme.first(user).nil? then
+    puts user.theme.all.count
+    puts "found a theme! "#{Theme.get(user).count}"
+    Theme.first(theme).users.(:number => user.number)
+    x = Theme.first(theme).users(:number => user.number).clear
+    x.save
+  end
+  puts "theme.theme_key #{theme.theme_key}"
+  happy = Theme.first(:theme_key => theme.theme_key).users << user
+  happy.save!
+ # Theme.errors.each{|x| puts x}
+  
 end
 
 def get_user_theme(user)
-  user.theme
+  Theme.first(user)
 end
 
 def add_theme(name, description)
@@ -33,7 +49,8 @@ def add_theme(name, description)
   Theme.create(
     :number => number,
     :name => name,
-    :description => description
+    :description => description,
+    :main_prompt => MAIN_PROMPT
   )
 end
 
