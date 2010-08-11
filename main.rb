@@ -107,7 +107,7 @@ class Session
 			ulevel = @c_user.level
 
 			case sel
-			when "G" ; leave
+			when @cmd_hash["leave"] ; leave
 			when "UM"; run_if_ulevel {usermenu}
 			when "KL"; run_if_ulevel {clearlog}
 			when "AM"; run_if_ulevel {areamaintmenu}
@@ -124,9 +124,9 @@ class Session
 			when "Q"; questionaire
 			when "ZZ"; new_displaylist
 			when "E"; emailmenu
-                        when "TM";  thememaint if ulevel == 255
+      when "TM";  thememaint if ulevel == 255
 			when "DM"; doormaint if ulevel == 255
-			when "TM"; telnetmaint if ulevel ==255
+			when "OM"; telnetmaint if ulevel ==255
 			when "TR" ; print (find_RSTS_account)
 			when "GAME" ; doors(parameters)
 			when "O"; bbs(parameters)

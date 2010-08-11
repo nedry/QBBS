@@ -56,6 +56,18 @@ class GraphFile
         if !out.gsub!("%PAUSE%","").nil? and @session.logged_on  then
           @session.yes("%W%Press #{RET}",true,false,true)
         end
+        if !out.gsub!("%WHOLIST%","").nil? and @session.logged_on  then
+          @session.displaywho
+        end
+        if !out.gsub!("%LASTCALL%","").nil? and @session.logged_on  then
+          @session.display_wall
+        end
+        if !out.gsub!("%QOTD%","").nil? and @session.logged_on  then
+          @session.qotd
+        end
+        if !out.gsub!("%BULLET%","").nil? and @session.logged_on  then
+          @session.bullets(0)
+        end
         nomore = true if !out.gsub!("%NOMORE%","").nil?   #disable more prompt for this file
         @session.write out + "\r"
       }

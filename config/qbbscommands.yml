@@ -1,0 +1,133 @@
+- cmd: areachange
+  theme_key: 1
+  ulevel: 0
+  menu_item: A
+
+- cmd: leave
+  theme_key: 1
+  ulevel: 0
+  menu_item: G
+
+- cmd: umaint
+  theme_key: 1
+  ulevel: 255
+  menu_item: UM
+
+- cmd: kill_log
+  theme_key: 1
+  ulevel: 255
+  menu_item: KL
+
+- cmd: amaint
+  theme_key: 1
+  ulevel: 255
+  menu_item: AM
+
+- cmd: bmaint
+  theme_key: 1
+  ulevel: 255
+  menu_item: BM
+
+- cmd: bulletins
+  theme_key: 1
+  ulevel: 0
+  menu_item: B
+  
+- cmd: teleconference
+  theme_key: 1
+  ulevel: 0
+  menu_item: T
+
+- cmd: kick
+  theme_key: 1
+  ulevel: 255
+  menu_item: KU
+
+- cmd: questionaire
+  theme_key: 1
+  ulevel: 0
+  menu_item: Q
+
+- cmd: email
+  theme_key: 1
+  ulevel: 0
+  menu_item: E
+
+- cmd: dmaint
+  theme_key: 1
+  ulevel: 255
+  menu_item: DM
+
+- cmd: tmaint
+  theme_key: 1
+  ulevel: 255
+  menu_item: TM
+
+- cmd: omaint
+  theme_key: 1
+  ulevel: 255
+  menu_item: OM
+
+- cmd: doors
+  theme_key: 1
+  ulevel: 0
+  menu_item: GAME
+
+- cmd: other
+  theme_key: 1
+  ulevel: 0
+  menu_item: O
+
+- cmd: feedback
+  theme_key: 1
+  ulevel: 0
+  menu_item: F
+
+- cmd: post
+  theme_key: 1
+  ulevel: 0 
+  menu_item: P
+
+- cmd: usrsetting
+  theme_key: 1
+  ulevel: 0
+  menu_item: %
+
+- cmd: readmnu
+  theme_key: 1
+  ulevel: 0
+  menu_item: R
+
+- cmd: zipread
+  theme_key: 1
+  ulevel: 0
+  menu_item: Z
+
+- cmd: page
+  theme_key: 1
+  ulevel: 0
+  menu_item: PU
+
+- cmd: info
+  theme_key: 1
+  ulevel: 0
+  menu_item: S
+- cmd: version
+  theme_key: 1
+  ulevel: 0
+  menu_item: V
+
+- cmd: who
+  theme_key: 1
+  ulevel: 0
+  menu_item: W
+
+- cmd: sysopmenu
+  theme_key: 1
+  ulevel: 255
+  menu_item: X
+
+
+
+
+

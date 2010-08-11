@@ -122,7 +122,7 @@ class Session
 
     theme = fetch_theme(tpointer)
     name = getinp("Enter new theme name: ")
-    if name !='' then
+    if !name.empty? then
       theme.name = name
       update_theme(theme)
     else
@@ -135,7 +135,7 @@ class Session
 
     theme = fetch_theme(tpointer)
     path = getinp("Enter new text path: ")
-    if path !='' then
+    if !path.empty? then
       theme.text_directory = path
       update_theme(theme)
     else

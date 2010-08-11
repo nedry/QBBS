@@ -37,6 +37,24 @@ def get_user_theme(user)
   
 end
 
+def add_command(command,theme,ulevel,menu_item)
+  Command.new(:command => command, 
+                          :theme_key => theme.theme_key, 
+                          :ulevel => ulevel, 
+                          :menu_item => menu_item)
+end
+
+def hash_commands (theme_key)
+  puts "theme_key: #{theme_key}"
+  command_list = Command.all(:theme_key => theme_key)
+  command_hash = {}
+  command_list.each {|cmd| command_hash[cmd.cmd] = cmd.menu_item}
+  puts command_hash["areachange"]
+  puts command_hash["who"]
+  command_hash
+end
+
+
 def add_theme(name, description)
   number = t_total + 1
   Theme.create(

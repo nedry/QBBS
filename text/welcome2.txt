@@ -24,4 +24,14 @@ New features in this version:  %W%o%G% Ruby 1.9 Compatable
                                %W%o%G% A full screen editor that works!
 
 
+%PAUSE%
+%WHOLIST%
+%PAUSE%
 
+%WG%                            Last 10 Callers                               %W%
+
+%LASTCALL%
+%PAUSE%
+%QOTD%
+%PAUSE%
+%BULLET%

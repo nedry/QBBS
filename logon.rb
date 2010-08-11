@@ -112,7 +112,7 @@ class Session
     checkmultiplelogon
     #puts @message.class
     @message.push("*** #{@c_user.name} has just logged into the system.")
-
+    defaulttheme
     logandgreetuser(username, ip)
 
 
@@ -163,6 +163,7 @@ class Session
     system.newu_today += 1
     update_system(system)
     themes(nil)  #set a theme for the user
+
   end
 
   def checkkillfile(username)
@@ -229,41 +230,41 @@ class Session
     system = fetch_system
     system.total_logons += 1
     system.logons_today += 1
-   defaulttheme  #prevent crash in case user has no theme
+    defaulttheme  #prevent crash in case user has no theme, set the default.
     add_log_entry(5,Time.now,"#{@c_user.name} logged on sucessfully.")
     @logged_on = true
     puts "-SA: Logon - #{@c_user.name}"
     @node = addtowholist
     @c_user.logons = @c_user.logons.succ
     @c_user.ip = ip
-    ogfileout("welcome2",4,true)
+    add_user_to_wall
+    update_user(@c_user)
+    update_system(system)
+    ogfileout("welcome2",4,true) if !@c_user.fastlogon
     @c_user.laston = Time.now
+        @cmd_hash = hash_commands(1)
     if @c_user.fastlogon
       print
       print "%R%Fast User Logon Mode %Y%On%R%.  Skipping Logon Information."
       print "This may be changed at the User Configuration Menu."
       print
     end
-    if !QOTD.nil? and !@c_user.fastlogon then
-      yes("Press #{RET} ",true,false,true)
-      print
+    
+
+  end
+
+  def qotd
+      if !QOTD.nil? then
       print "Quote of the Day: " if !existfileout('qotdhdr',0,true)
       door_do("#{QOTD}","")
       existfileout('quote',0,true)
-      yes("Press #{RET} ",true,false,true)
-      add_user_to_wall
-      if !@c_user.fastlogon then
-        display_wall
-        yes("Press #{RET} ",true,false,true) 
-       displaywho
-        yes("Press #{RET} ",true,false,true)
-        bullets(0)
-      end
+    else
+      print
+      print "%WR%Quote of the Day is disabled%W%"
+      print
     end
-    update_user(@c_user)
-    update_system(system)
   end
-
+  
   def checkmaxpwdmiss(count,username)
     if count == MAXPASSWORDMISS then
       fileout(TEXTPATH + "missed.txt")

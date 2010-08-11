@@ -138,7 +138,7 @@ class Session
           else
             if t > 0 and t <= b_total then 
               bulletin = fetch_bulletin(t)
-              gfileout(bulletin.path) #if @bulletins.has_index?(t)
+              ogfileout(bulletin.path,1,true) #if @bulletins.has_index?(t)
             end
           end #of case
         }

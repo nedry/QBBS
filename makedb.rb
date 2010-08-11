@@ -51,12 +51,26 @@ Subsys.new(:subsystem => 8, :name => 'ERROR').save!
 Subsys.new(:subsystem => 9, :name => 'MESSAGE').save!
 Subsys.new(:subsystem => 1, :name => 'SCHEDULE').save!
 
-Theme.new(:number => 1, :name => "QBBS", :description => "Default Theme", :main_prompt => MAIN_PROMPT).save!
-Theme.new(:number => 2, :name => "WBBS", :description => "Fuck off Theme", :main_prompt => MAIN_PROMPT).save!
+Theme.new(:number => 1,
+                   :name => "QBBS", 
+                   :description => "Default Theme", 
+                   :main_prompt => MAIN_PROMPT, 
+                   :text_directory => "text/").save!
+                   
+Theme.new(:number => 2, 
+                   :name => "WBBS", 
+                   :description => "WBBS Theme", 
+                   :main_prompt => MAIN_PROMPT,
+                   :text_directory => "text/wbbs/").save!
+
 
 
 t = 
 
+YAML.load(IO.read('config/qbbscommands.yml')).each {|cmd|
+  h = Command.new(cmd).save!
+
+}
 
 # initial users
 YAML.load(IO.read('config/initusers.yml')).each {|u|

@@ -27,16 +27,23 @@ System Variables
       %PLATFORM%  	Platform
       %PID%  		Current PID
       %STIME%  		Current System Time
-      %SDATE%  	Current System Date
+      %SDATE%  	        Current System Date
       %SYSLOC%  	System Location
       %TLOGON%  	Total Logons
       %LOGONS%  	Logons Today
       %POSTS%   	Posts Today
       %EMAILS%   	Emails Today
       %FEEDBACK%   	Feedback Today
-      %NEWUSERS%   	New Users Registered Today
+      %NEWUSERS%         New Users Registered Today
 
 Flow Control
 
-       %PAUSE%	Insert a Pause Prompt
-       %NOMORE%	Disable More Prompt
+       %PAUSE%	        Insert a Pause Prompt
+       %NOMORE%	        Disable More Prompt
+       
+Display 
+
+      %WHOLIST%         Display the Who is Online list
+      %LASTCALL%        Last X callers list
+      %QOTD%            The Quote of the Day
+      %BULLET%          Bulletins
