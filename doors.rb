@@ -348,7 +348,8 @@ def doors(parameters)
         case happy
         when "";   return
         when "CR"; crerror
-        when "?";  displaydoors  
+        when @cmd_hash["doormenu"] ; run_if_ulevel("readquit") {displaydoors}
+        when @cmd_hash["doorquit"] ; run_if_ulevel("readquit") {return}
         else
           rundoor(t) if (t) > 0 and (t) <= d_total
         end #of case

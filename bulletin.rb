@@ -132,9 +132,9 @@ class Session
           t = happy.to_i
           case happy
           when "CR"; crerror
-	  when "Q" ; return
-	   when ""; return
-          when "?";  displaybullet  
+          when @cmd_hash["bullquit"] ; run_if_ulevel("bullquit") {mpointer = true}
+          when @cmd_hash["bullmenu"] ; run_if_ulevel("bullmenu") {displaybullet}
+	        when ""; return
           else
             if t > 0 and t <= b_total then 
               bulletin = fetch_bulletin(t)

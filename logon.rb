@@ -157,6 +157,7 @@ class Session
     @c_user = fetch_user(get_uid(username))
     add_log_entry(5,Time.now,"New user #{@c_user.name} created.")
     @logged_on = true
+    defaulttheme
     ogfileout("newuser",2,true)
     yes("Press <--^: ",true,false,true)
     system = fetch_system
@@ -242,7 +243,7 @@ class Session
     update_system(system)
     ogfileout("welcome2",4,true) if !@c_user.fastlogon
     @c_user.laston = Time.now
-        @cmd_hash = hash_commands(1)
+    @cmd_hash = hash_commands(@c_user.theme_key)
     if @c_user.fastlogon
       print
       print "%R%Fast User Logon Mode %Y%On%R%.  Skipping Logon Information."

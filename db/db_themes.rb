@@ -49,12 +49,13 @@ def hash_commands (theme_key)
   command_list = Command.all(:theme_key => theme_key)
   command_hash = {}
   command_list.each {|cmd| command_hash[cmd.cmd] = cmd.menu_item}
-  puts command_hash["areachange"]
-  puts command_hash["who"]
   command_hash
 end
 
-
+def get_command(theme_key,cmd)
+   Command.first(:theme_key => theme_key, :cmd => cmd)
+ end
+ 
 def add_theme(name, description)
   number = t_total + 1
   Theme.create(

@@ -26,7 +26,7 @@ class Session
 
     widths = [3,4,7,20,38]
     header = hcols.zip(headings).map {|a,b| a+b}.formatrow(widths) + "%W%"
-    puts header
+        puts header
     underscore = cols.zip(['-'*30]*5).map{|a,b| a+b}.formatrow(widths)
 
     grp = nil
@@ -415,8 +415,8 @@ class Session
         tempmsg.each_line(DLIM) {|line| message.push(line.chop!)} #changed from .each for ruby 1.9
 
         print
-        write "%W%##{mpointer} %G%[%C%#{curmessage.absolute}%G%] "
-
+        write "%W%##{mpointer} %G%[%C%#{curmessage.absolute}%G%] " 
+     
         if curmessage.network then
           if !curmessage.q_tz.nil? then
             tzout = TIME_TABLE[curmessage.q_tz.upcase]
@@ -472,377 +472,377 @@ class Session
           else
 
             print
-          end
-        }
-        print "%W%" # reset colors at end of message display
-      else
-        print "%WR%Out of Range%W%"
-      end
-    end #displaymesasge
-
-    def h_msg
-      area = fetch_area(@c_area)
-      h_msg = m_total(area.number)
-    end
-
-    def p_msg
-      user = @c_user
-      area = fetch_area(@c_area)
-      pointer = get_pointer(@c_user,area.number)
-      p_msg = m_total(area.number) - new_messages(area.number,pointer.lastread) # modified for db change
-    end
-
-    def messagemenu(zipread)
-      scanforaccess(@c_user)
-      @who.user(@c_user.name).where="Message Menu"
-      update_who_t(@c_user.name,"Reading Messages")
-      out = "Read"
-      if zipread then
-        out = "ZIPread"
-        return if !zipscan(1)
-      end
-      readmenu(
-      :out => out,
-      :initval => p_msg,
-      :range => 1..h_msg,
-      :prompt => '"%M%[Area #{@c_area}]%C% #{sdir} #{out}[%p] '+
-      '(1-#{h_msg}): "'
-      ) {|sel, mpointer, moved, out|
-
-        mpointer = h_msg if mpointer.nil?
-        mpointer = h_msg if mpointer > h_msg
-
-        if !sel.integer?
-          parameters = Parse.parse(sel)
-          sel.gsub!(/[-\d]/,"")
+            end
+          }
+          print "%W%" # reset colors at end of message display
+        else
+          print "%WR%Out of Range%W%"
         end
+      end #displaymesasge
 
-        if moved
-          if (mpointer > 0) and (mpointer <= h_msg) then # range check
-            showmessage(mpointer)
-          end
-
-        end
-        case sel
-        when @cmd_hash["email"] ; run_if_ulevel("email") {emailmenu}
-        when @cmd_hash["post"] ; run_if_ulevel("post") {post}
-        when @cmd_hash["page"] ; run_if_ulevel("page") {page}
-        when @cmd_hash["leave"] ; run_if_ulevel("leave") {leave}
-        when @cmd_hash["who"] ; run_if_ulevel("who") {displaywho}
-        when @cmd_hash["areachange"] ; run_if_ulevel("areachange") {mpointer = areachange(parameters)}
-        when @cmd_hash["reread"] ; run_if_ulevel("reread") {showmessage(mpointer)}
-        when @cmd_hash["killmsg"] ; run_if_ulevel("killmsg") {killmessage(mpointer)}
-        when @cmd_hash["replymsg"] ; run_if_ulevel("replymsg") {replytomessage(mpointer)}
-        when @cmd_hash["fullheader"] ; run_if_ulevel("fullheader") {display_fido_header(mpointer)}
-        when @cmd_hash["masskill"] ; run_if_ulevel("masskill") {mass_kill(parameters)}
-        when @cmd_hash["readmenu"] ; run_if_ulevel("readmenu") { gfileout ("readmnu")}
-        when @cmd_hash["readquit"] ; run_if_ulevel("readquit") {mpointer = true}
-
-        end
-        p_return = [mpointer,h_msg,out] # evaluate so this is the value that is returned
-
-      }
-    end
-
-    def killmessage(mpointer)
-
-      if mpointer > 0 then
+      def h_msg
         area = fetch_area(@c_area)
-        abs = absolute_message(area.number,mpointer) #modified for db change
-        d_msg = fetch_msg(abs) #modified for db change
+        h_msg = m_total(area.number)
+      end
 
-        if d_msg.locked == true then
-          print CRLF + "%WR%Cannot Delete. Message Locked.%W%"
-          return
+      def p_msg
+        user = @c_user
+        area = fetch_area(@c_area)
+        pointer = get_pointer(@c_user,area.number)
+        p_msg = m_total(area.number) - new_messages(area.number,pointer.lastread) # modified for db change
+      end
+
+      def messagemenu(zipread)
+        scanforaccess(@c_user)
+        @who.user(@c_user.name).where="Message Menu"
+        update_who_t(@c_user.name,"Reading Messages")
+        out = "Read"
+        if zipread then
+          out = "ZIPread"
+          return if !zipscan(1)
+        end
+        readmenu(
+        :out => out,
+        :initval => p_msg,
+        :range => 1..h_msg,
+        :prompt => '"%M%[Area #{@c_area}]%C% #{sdir} #{out}[%p] '+
+        '(1-#{h_msg}): "'
+        ) {|sel, mpointer, moved, out|
+
+          mpointer = h_msg if mpointer.nil?
+          mpointer = h_msg if mpointer > h_msg
+
+          if !sel.integer?
+            parameters = Parse.parse(sel)
+            sel.gsub!(/[-\d]/,"")
+          end
+
+          if moved
+            if (mpointer > 0) and (mpointer <= h_msg) then # range check
+              showmessage(mpointer)
+            end
+
+          end
+          case sel
+                when @cmd_hash["email"] ; run_if_ulevel("email") {emailmenu}
+                      when @cmd_hash["post"] ; run_if_ulevel("post") {post}
+      when @cmd_hash["page"] ; run_if_ulevel("page") {page}
+when @cmd_hash["leave"] ; run_if_ulevel("leave") {leave}
+    when @cmd_hash["who"] ; run_if_ulevel("who") {displaywho}
+          when @cmd_hash["areachange"] ; run_if_ulevel("areachange") {mpointer = areachange(parameters)}
+
+          when "/"; showmessage(mpointer)
+          when "K"; killmessage(mpointer)
+          when "Q"; mpointer = true # passing back true tells the other block to exit
+          when "R"; replytomessage(mpointer)
+          when "FH"; display_fido_header(mpointer)
+          when "MK"; mass_kill(parameters)
+          when "?"; gfileout ("readmnu")
+          end
+          p_return = [mpointer,h_msg,out] # evaluate so this is the value that is returned
+
+        }
+      end
+
+      def killmessage(mpointer)
+
+        if mpointer > 0 then
+          area = fetch_area(@c_area)
+          abs = absolute_message(area.number,mpointer) #modified for db change
+          d_msg = fetch_msg(abs) #modified for db change
+
+          if d_msg.locked == true then
+            print CRLF + "%WR%Cannot Delete. Message Locked.%W%"
+            return
+          end
+
+          if !((@c_user.areaaccess[@c_area] =~ /[CM]/) or
+            (@c_user.level == 255) ) then
+              print CANNOTKILLMESSAGESERROR
+              return
+            end
+
+            if h_msg > 0
+              delete_msg(abs)
+              print "%WR%Message ##{mpointer} [#{abs}] deleted.%W%"
+            else
+              print CRLF+"%WR%No Messages%W%"
+            end
+          else
+            print CRLF+"%WR%You can't delete message 0, because it doesn't exist!%W%"
+          end
         end
 
-        if !((@c_user.areaaccess[@c_area] =~ /[CM]/) or
-          (@c_user.level == 255) ) then
+        def mass_kill(parameters)
+
+          area = fetch_area(@c_area)
+          start,stop = parameters[0..1]
+          pointer = get_pointer(@c_user,@c_area)
+
+          if (start < 1) or (start > h_msg) or (stop < 1) or (stop > h_msg) then
+            print "%WR%Out of Range dude!%W%"
+            return
+          end
+
+          if !((pointer.access =~ /[CM]/) or (@c_user.level == 255) ) then
             print CANNOTKILLMESSAGESERROR
             return
           end
 
-          if h_msg > 0
-            delete_msg(abs)
-            print "%WR%Message ##{mpointer} [#{abs}] deleted.%W%"
+          first = absolute_message(area.number,start)  #this need rewriting for the new db format
+          last = absolute_message(area.number,stop)
+          prompt = "%WR%Delete messages #{start} to #{stop}%W% #{YESNO}"
+          delete_msgs(area.number,first,last) if yes(prompt, true, false,true)
+        end
+
+        def replytomessage(mpointer)
+          if mpointer > 0 then
+            reply(mpointer)
           else
-            print CRLF+"%WR%No Messages%W%"
+            print "%WR%You haven't read a message yet.%W%"
           end
-        else
-          print CRLF+"%WR%You can't delete message 0, because it doesn't exist!%W%"
-        end
-      end
-
-      def mass_kill(parameters)
-
-        area = fetch_area(@c_area)
-        start,stop = parameters[0..1]
-        pointer = get_pointer(@c_user,@c_area)
-
-        if (start < 1) or (start > h_msg) or (stop < 1) or (stop > h_msg) then
-          print "%WR%Out of Range dude!%W%"
-          return
         end
 
-        if !((pointer.access =~ /[CM]/) or (@c_user.level == 255) ) then
-          print CANNOTKILLMESSAGESERROR
-          return
+        def showmessage(mpointer)
+
+          area = fetch_area(@c_area)
+          if (h_msg > 0) and (mpointer > 0) then
+            displaymessage(mpointer,area.number,false)
+          else
+            print "\r\n%Y%This message area is empty. Why not %G%[P]ost%Y% a Message?" if h_msg == 0
+            print "\r\n%R%You haven't read any messages yet." if mpointer == 0
+          end
         end
 
-        first = absolute_message(area.number,start)  #this need rewriting for the new db format
-        last = absolute_message(area.number,stop)
-        prompt = "%WR%Delete messages #{start} to #{stop}%W% #{YESNO}"
-        delete_msgs(area.number,first,last) if yes(prompt, true, false,true)
-      end
+        #----------------Area Maintaince Section---------------------------
 
-      def replytomessage(mpointer)
-        if mpointer > 0 then
-          reply(mpointer)
-        else
-          print "%WR%You haven't read a message yet.%W%"
-        end
-      end
+        def displayarea(number)
+          area = fetch_area(number)
+          write "\r\n%R%#%W%#{number} %G #{area.name}"
+          write "%R% [DELETED]" if area.delete
+          write "%R% [LOCKED]" if area.locked
+          print ""
+          if area.netnum > -1 then
+            out = area.netnum
+          else
+            out = "NONE"
+          end
 
-      def showmessage(mpointer)
+          print <<-here
+          %CDefault Access: %G#{area.d_access}
+          %CValidated Access: %G#{area.v_access}
+          %CQWK/REP Net # %G#{out}
+          %CFidoNet Area: %G#{area.fido_net}
+          %CLast Modified: %G#{area.modify_date.strftime("%A the %d#{time_thingie(area.modify_date)} of %B, %Y at %I:%M%p")}
+          %CTotal Messages: %G#{m_total(area.number)}
+          %CGroup: %G#{area.group.groupname}
+          here
 
-        area = fetch_area(@c_area)
-        if (h_msg > 0) and (mpointer > 0) then
-          displaymessage(mpointer,area.number,false)
-        else
-          print "\r\n%Y%This message area is empty. Why not %G%[P]ost%Y% a Message?" if h_msg == 0
-          print "\r\n%R%You haven't read any messages yet." if mpointer == 0
-        end
-      end
+        end #displayarea
 
-      #----------------Area Maintaince Section---------------------------
-
-      def displayarea(number)
-        area = fetch_area(number)
-        write "\r\n%R%#%W%#{number} %G #{area.name}"
-        write "%R% [DELETED]" if area.delete
-        write "%R% [LOCKED]" if area.locked
-        print ""
-        if area.netnum > -1 then
-          out = area.netnum
-        else
-          out = "NONE"
-        end
-
-        print <<-here
-        %CDefault Access: %G#{area.d_access}
-        %CValidated Access: %G#{area.v_access}
-        %CQWK/REP Net # %G#{out}
-        %CFidoNet Area: %G#{area.fido_net}
-        %CLast Modified: %G#{area.modify_date.strftime("%A the %d#{time_thingie(area.modify_date)} of %B, %Y at %I:%M%p")}
-        %CTotal Messages: %G#{m_total(area.number)}
-        %CGroup: %G#{area.group.groupname}
-        here
-
-      end #displayarea
-
-      def areamaintmenu
-        readmenu(
-        :initval => 0,
-        :range => 0..(a_total - 1),
-        :prompt => '"%W%#{sdir} Area [%p] (0-#{a_total - 1}): "'
-        ) {|sel, apointer, moved|
-          displayarea(apointer) if moved
-          case sel
-          when "/"; displayarea(apointer)
-          when "Q"; apointer = true
-          when "A"; apointer = addarea
-          when "NN"; changeqwkrep(apointer)
-          when "FN"; changefidoarea(apointer)
-          when "CF"; clearfidoarea(apointer)
-          when "W"; displaywho
-          when "PU"; page
-          when "N"; changeareaname(apointer)
-          when "D"; changedefaultaccess(apointer)
-          when "V"; changevalidatedaccess(apointer)
-          when "K"; deletearea(apointer)
-          when "S"; lockarea(apointer)
-          when "G"; leave
-          when "CG"; changegroup(apointer)
-          when "?"; gfileout ("areamnu")
-          end # of case
-          p_return = [apointer,(a_total - 1)]
-        }
-      end
-
-      def deletearea(apointer)
-        if apointer <= 1
-          print "%WR%You cannot delete area 0 or 1.%W%"
-          return
+        def areamaintmenu
+          readmenu(
+          :initval => 0,
+          :range => 0..(a_total - 1),
+          :prompt => '"%W%#{sdir} Area [%p] (0-#{a_total - 1}): "'
+          ) {|sel, apointer, moved|
+            displayarea(apointer) if moved
+            case sel
+            when "/"; displayarea(apointer)
+            when "Q"; apointer = true
+            when "A"; apointer = addarea
+            when "NN"; changeqwkrep(apointer)
+            when "FN"; changefidoarea(apointer)
+            when "CF"; clearfidoarea(apointer)
+            when "W"; displaywho
+            when "PU"; page
+            when "N"; changeareaname(apointer)
+            when "D"; changedefaultaccess(apointer)
+            when "V"; changevalidatedaccess(apointer)
+            when "K"; deletearea(apointer)
+            when "S"; lockarea(apointer)
+            when "G"; leave
+            when "CG"; changegroup(apointer)
+            when "?"; gfileout ("areamnu")
+            end # of case
+            p_return = [apointer,(a_total - 1)]
+          }
         end
 
-        area = fetch_area(apointer)
+        def deletearea(apointer)
+          if apointer <= 1
+            print "%WR%You cannot delete area 0 or 1.%W%"
+            return
+          end
 
-        if area.delete
-          area.delete = false
-          print "Area ##{apointer} UNdeleted"
-        else
-          area.delete = true
-          print "Area ##{apointer} deleted."
-        end
-        update_area(area)
-      end
+          area = fetch_area(apointer)
 
-      def lockarea(apointer)
-
-        area = fetch_area(apointer)
-
-        if area.locked then
-          area.locked = false
-          print "Area ##{apointer} UNlocked"
-        else
-          area.locked = true
-          print "Area ##{apointer} locked."
-        end
-        update_area(area)
-      end
-
-      def changevalidatedaccess(apointer)
-
-        area = fetch_area(apointer)
-
-        prompt = "Enter new validated access level for board #{apointer}: "
-        tempstr2 = getinp(prompt).upcase
-        if tempstr2 =~ /[NIWRMC]/
-          area.v_access = tempstr2
-          print "Board #{apointer} validated access changed to #{tempstr2}"
+          if area.delete
+            area.delete = false
+            print "Area ##{apointer} UNdeleted"
+          else
+            area.delete = true
+            print "Area ##{apointer} deleted."
+          end
           update_area(area)
-        else
-          print "%WR%Invalid Selection%W%"
         end
-      end
 
+        def lockarea(apointer)
 
-      def changegroup(apointer)
+          area = fetch_area(apointer)
 
-        area = fetch_area(apointer)
-        groups = fetch_groups
-        print
-        print "Select New Group #"
-        groups.each_index {|j| print "#{j}: #{groups[j].groupname}"}
-        prompt = "Enter new group number for board #{apointer}: "
-        tempint = getnum(prompt,0,groups.length - 1)
-        area.grp = groups[tempint].grp
-        update_group(area)
-        print "Area Updated"
-      end
-
-      def changedefaultaccess(apointer)
-
-        area = fetch_area(apointer)
-
-        prompt = "Enter new default access level for board #{apointer}: "
-        tempstr2 = getinp(prompt).upcase
-        if tempstr2 =~ /[NIWRMC]/
-          area.d_access = tempstr2
-          print "Board #{apointer} default access changed to #{tempstr2}"
+          if area.locked then
+            area.locked = false
+            print "Area ##{apointer} UNlocked"
+          else
+            area.locked = true
+            print "Area ##{apointer} locked."
+          end
           update_area(area)
-        else
-          print "%WR%Invalid Selection%W%"
         end
-      end
 
-      def addarea
+        def changevalidatedaccess(apointer)
 
-        print ADDAREAWARNING
-        while true
-          prompt = "Enter new area name: "
-          name = getinp(prompt) {|n| n != ""}
-          if name.length > 40 then
-            print "%WR%Name too long. 40 Character Maximum%W%"
+          area = fetch_area(apointer)
+
+          prompt = "Enter new validated access level for board #{apointer}: "
+          tempstr2 = getinp(prompt).upcase
+          if tempstr2 =~ /[NIWRMC]/
+            area.v_access = tempstr2
+            print "Board #{apointer} validated access changed to #{tempstr2}"
+            update_area(area)
           else
-            break
+            print "%WR%Invalid Selection%W%"
           end
         end
 
-        commit = yes("Are you sure #{YESNO}",true,false,true)
-        if commit then
-          add_area(name,"W","W",nil,nil,nil)
-          apointer = a_total - 1
-        else
-          print "%WR%Cancelled.%W%"
-          apointer = a_total - 1
-          return
+
+        def changegroup(apointer)
+
+          area = fetch_area(apointer)
+          groups = fetch_groups
+          print
+          print "Select New Group #"
+          groups.each_index {|j| print "#{j}: #{groups[j].groupname}"}
+          prompt = "Enter new group number for board #{apointer}: "
+          tempint = getnum(prompt,0,groups.length - 1)
+          area.grp = groups[tempint].grp
+          update_group(area)
+          print "Area Updated"
         end
 
-      end
+        def changedefaultaccess(apointer)
 
-      def changeqwkrep(apointer)
+          area = fetch_area(apointer)
 
-        area = fetch_area(apointer)
-
-        print QWKREPWARNING
-
-        while true
-          prompt = "Enter new QWK/REP number (N / no mapping): "
-          netnum = getinp(prompt) {|n| n != ""}
-          if netnum =="N" or netnum == "n"
-            area.netnum = -1
-            break
-          end
-          if netnum.to_i > -1 and netnum.to_i < 10000 then
-            area.netnum = netnum.to_i
-            break
-          end
-        end
-        update_area(area)
-        print
-      end
-
-
-      def changeareaname(apointer)
-
-        area = fetch_area(apointer)
-
-        while true
-          prompt = "Enter new area name: "
-          name = getinp(prompt) {|n| n != ""}
-          if name.length > 40 then
-            print "Name too long. 40 Character Maximum"
+          prompt = "Enter new default access level for board #{apointer}: "
+          tempstr2 = getinp(prompt).upcase
+          if tempstr2 =~ /[NIWRMC]/
+            area.d_access = tempstr2
+            print "Board #{apointer} default access changed to #{tempstr2}"
+            update_area(area)
           else
-            break
+            print "%WR%Invalid Selection%W%"
           end
         end
-        area.name = name
-        update_area(area)
-        print
-      end
 
-      def changefidoarea(apointer)
+        def addarea
 
-        area = fetch_area(apointer)
+          print ADDAREAWARNING
+          while true
+            prompt = "Enter new area name: "
+            name = getinp(prompt) {|n| n != ""}
+            if name.length > 40 then
+              print "%WR%Name too long. 40 Character Maximum%W%"
+            else
+              break
+            end
+          end
 
-        while true
-          prompt = "Enter new FidoNet Area Mapping: "
-          fido_net= getinp(prompt) {|n| n != ""}
-          if fido_net.length > 40 then
-            print "Area too long. 40 Character Maximum"
+          commit = yes("Are you sure #{YESNO}",true,false,true)
+          if commit then
+            add_area(name,"W","W",nil,nil,nil)
+            apointer = a_total - 1
           else
-            break
+            print "%WR%Cancelled.%W%"
+            apointer = a_total - 1
+            return
           end
+
         end
-        area.fido_net = fido_net.upcase
-        update_area(area)
-      end
 
-      def clearfidoarea(apointer)
+        def changeqwkrep(apointer)
 
-        area = fetch_area(apointer)
-        commit = yes("Clear Fidonet Area Mapping. Are you sure #{YESNO}",false,false,true)
+          area = fetch_area(apointer)
 
-        if commit then
-          area.fido_net = nil
+          print QWKREPWARNING
+
+          while true
+            prompt = "Enter new QWK/REP number (N / no mapping): "
+            netnum = getinp(prompt) {|n| n != ""}
+            if netnum =="N" or netnum == "n"
+              area.netnum = -1
+              break
+            end
+            if netnum.to_i > -1 and netnum.to_i < 10000 then
+              area.netnum = netnum.to_i
+              break
+            end
+          end
           update_area(area)
           print
-          print "Cleared Fido Mapping"
-        else
-          print
-          print "Not Cleared."
         end
-      end
-    end # class Session
+
+
+        def changeareaname(apointer)
+
+          area = fetch_area(apointer)
+
+          while true
+            prompt = "Enter new area name: "
+            name = getinp(prompt) {|n| n != ""}
+            if name.length > 40 then
+              print "Name too long. 40 Character Maximum"
+            else
+              break
+            end
+          end
+          area.name = name
+          update_area(area)
+          print
+        end
+
+        def changefidoarea(apointer)
+
+          area = fetch_area(apointer)
+
+          while true
+            prompt = "Enter new FidoNet Area Mapping: "
+            fido_net= getinp(prompt) {|n| n != ""}
+            if fido_net.length > 40 then
+              print "Area too long. 40 Character Maximum"
+            else
+              break
+            end
+          end
+          area.fido_net = fido_net.upcase
+          update_area(area)
+        end
+
+        def clearfidoarea(apointer)
+
+          area = fetch_area(apointer)
+          commit = yes("Clear Fidonet Area Mapping. Are you sure #{YESNO}",false,false,true)
+
+          if commit then
+            area.fido_net = nil
+            update_area(area)
+            print
+            print "Cleared Fido Mapping"
+          else
+            print
+            print "Not Cleared."
+          end
+        end
+      end # class Session
 

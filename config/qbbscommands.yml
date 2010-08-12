@@ -3,6 +3,11 @@
   ulevel: 0
   menu_item: A
 
+- cmd: gmaint
+  theme_key: 1
+  ulevel: 0
+  menu_item: GM
+
 - cmd: leave
   theme_key: 1
   ulevel: 0
@@ -23,6 +28,16 @@
   ulevel: 255
   menu_item: AM
 
+- cmd: log
+  theme_key: 1
+  ulevel: 0
+  menu_item: L
+  
+- cmd: sysopmnu
+  theme_key: 1
+  ulevel: 255
+  menu_item: X
+  
 - cmd: bmaint
   theme_key: 1
   ulevel: 255
@@ -112,6 +127,7 @@
   theme_key: 1
   ulevel: 0
   menu_item: S
+  
 - cmd: version
   theme_key: 1
   ulevel: 0
@@ -127,7 +143,62 @@
   ulevel: 255
   menu_item: X
 
+- cmd: mainmnu
+  theme_key: 1
+  ulevel: 0
+  menu_item: '?'
 
+- cmd: reread
+  theme_key: 1
+  ulevel: 0
+  menu_item: '/'
+  
+- cmd: killmsg
+  theme_key: 1
+  ulevel: 0
+  menu_item: K
+  
+- cmd: replymsg
+  theme_key: 1
+  ulevel: 0
+  menu_item: R
+  
+- cmd: fullheader
+  theme_key: 1
+  ulevel: 0
+  menu_item: FH
 
+- cmd: sysopmenu
+  theme_key: 1
+  ulevel: 255
+  menu_item: X
 
+- cmd: readmenu
+  theme_key: 1
+  ulevel: 0
+  menu_item: '?'
 
+- cmd: readquit
+  theme_key: 1
+  ulevel: 0
+  menu_item: Q
+    
+- cmd: bullquit
+  theme_key: 1
+  ulevel: 0
+  menu_item: Q
+
+- cmd: bullmenu
+  theme_key: 1
+  ulevel: 0
+  menu_item: '?'
+  
+cmd: doormenu
+  theme_key: 1
+  ulevel: 0
+  menu_item: '?'
+
+- cmd: doorquit
+  theme_key: 1
+  ulevel: 0
+  menu_item: Q

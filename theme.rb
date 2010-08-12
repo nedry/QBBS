@@ -169,7 +169,7 @@ class Session
     puts "theme: #{theme}"
     if theme.nil? then
       puts "resetting theme"
-      theme = fetch_theme(2) #change to get default theme
+      theme = fetch_theme(1) #change to get default theme
       add_theme_to_user(@c_user,theme)
     end
   end
@@ -220,7 +220,7 @@ class Session
               print "%WG%Setting the #{theme.name} theme.%W%"
               add_theme_to_user(@c_user,theme)
               theme = get_user_theme(@c_user)
-              print "#{theme.name} theme set."
+              @cmd_hash = hash_commands(@c_user.theme_key)
               return
             end
           end #of case
