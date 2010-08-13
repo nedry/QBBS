@@ -189,8 +189,6 @@ class Session
   end
 
   def add_user_to_wall
-    print "Last #{MAX_L_CALLERS} Callers."
-    print ""
     add_wall(@c_user.number,"","Telnet")
     wall_cull
   end
@@ -228,6 +226,7 @@ class Session
   end
 
   def logandgreetuser(username, ip)
+    puts "here i am"
     system = fetch_system
     system.total_logons += 1
     system.logons_today += 1
@@ -241,9 +240,10 @@ class Session
     add_user_to_wall
     update_user(@c_user)
     update_system(system)
+    @cmd_hash = hash_commands(@c_user.theme_key)
     ogfileout("welcome2",4,true) if !@c_user.fastlogon
     @c_user.laston = Time.now
-    @cmd_hash = hash_commands(@c_user.theme_key)
+
     if @c_user.fastlogon
       print
       print "%R%Fast User Logon Mode %Y%On%R%.  Skipping Logon Information."

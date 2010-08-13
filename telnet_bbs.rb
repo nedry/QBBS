@@ -18,7 +18,7 @@ def telnetmaint
   readmenu(
   :initval => 1,
   :range => 1..(o_total),
-  :prompt => '"%W%#{sdir}BBS System [%p] (1-#{o_total}): "'
+  :loc => OTHER
   ) {|sel, bpointer, moved|
     if !sel.integer?
       parameters = Parse.parse(sel)

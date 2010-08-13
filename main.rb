@@ -89,16 +89,15 @@ class Session
   def commandLoop
     scanforaccess(@c_user)
     while true
-      theme = get_user_theme(@c_user)
+      theme = get_user_theme(@c_user) 
       area = fetch_area(@c_area)
-      puts "area.name #{area.name}"
       pointer = get_pointer(@c_user,@c_area)
       l_read = new_messages(area.number,pointer.lastread)
-
+      messagemenu(false) if theme.nomainmenu #wbbs mode
 
       @who.user(@c_user.name).where="Main Menu"
       update_who_t(@c_user.name,"Main Menu")
-      o_prompt =  message_prompt(theme.main_prompt,SYSTEMNAME,@c_area,0,l_read,h_msg,area.name)
+      o_prompt =  message_prompt(theme.main_prompt,SYSTEMNAME,@c_area,0,l_read,h_msg,area.name,"")
       area = fetch_area(@c_area)
       imp = getinp(o_prompt,false)
       sel = imp.upcase.strip
@@ -140,7 +139,7 @@ class Session
       when @cmd_hash["who"] ; run_if_ulevel("who") {displaywho}
       when @cmd_hash["log"] ; run_if_ulevel("log") {displaylog}
       when @cmd_hash["sysopmnu"] ; run_if_ulevel("sysopmnu") {ogfileout("sysopmnu",1,true)}
-      when @cmd_hash["mainmnu"] ; run_if_ulevel("mainmnu") {gfileout("mainmnu")}
+      when @cmd_hash["mainmnu"] ; run_if_ulevel("mainmnu") {ogfileout("mainmnu",1,true)}
       end
     end
   end

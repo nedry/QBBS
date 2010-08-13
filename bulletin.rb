@@ -14,7 +14,7 @@ class Session
     readmenu(
       :initval => 1,
       :range => 1..(b_total),
-      :prompt => '"%W%#{sdir}Bulletin [%p] (1-#{b_total}): "'
+      :loc => BULLETIN
     ) {|sel, bpointer, moved|
       if !sel.integer?
         parameters = Parse.parse(sel)
@@ -132,9 +132,9 @@ class Session
           t = happy.to_i
           case happy
           when "CR"; crerror
-          when @cmd_hash["bullquit"] ; run_if_ulevel("bullquit") {mpointer = true}
+          when @cmd_hash["bullquit"] ; run_if_ulevel("bullquit") {return}
           when @cmd_hash["bullmenu"] ; run_if_ulevel("bullmenu") {displaybullet}
-	        when ""; return
+          when ""; return
           else
             if t > 0 and t <= b_total then 
               bulletin = fetch_bulletin(t)

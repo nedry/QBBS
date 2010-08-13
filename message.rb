@@ -501,12 +501,18 @@ class Session
         out = "ZIPread"
         return if !zipscan(1)
       end
+      theme = get_user_theme(@c_user) 
+      pointer = get_pointer(@c_user,@c_area)
+      area = fetch_area(@c_area)
+      l_read = new_messages(area.number,pointer.lastread)
       readmenu(
       :out => out,
       :initval => p_msg,
       :range => 1..h_msg,
-      :prompt => '"%M%[Area #{@c_area}]%C% #{sdir} #{out}[%p] '+
-      '(1-#{h_msg}): "'
+      :theme => theme,
+      :l_read => l_read,
+      :loc => READ
+
       ) {|sel, mpointer, moved, out|
 
         mpointer = h_msg if mpointer.nil?
@@ -523,6 +529,7 @@ class Session
           end
 
         end
+        theme = get_user_theme(@c_user) 
         case sel
         when @cmd_hash["email"] ; run_if_ulevel("email") {emailmenu}
         when @cmd_hash["post"] ; run_if_ulevel("post") {post}
@@ -535,10 +542,47 @@ class Session
         when @cmd_hash["replymsg"] ; run_if_ulevel("replymsg") {replytomessage(mpointer)}
         when @cmd_hash["fullheader"] ; run_if_ulevel("fullheader") {display_fido_header(mpointer)}
         when @cmd_hash["masskill"] ; run_if_ulevel("masskill") {mass_kill(parameters)}
-        when @cmd_hash["readmenu"] ; run_if_ulevel("readmenu") { gfileout ("readmnu")}
-        when @cmd_hash["readquit"] ; run_if_ulevel("readquit") {mpointer = true}
-
+        when @cmd_hash["readmenu"] ; run_if_ulevel("readmenu") {ogfileout("readmnu",1,true)}
+        when @cmd_hash["readquit"] ; run_if_ulevel("readquit") {mpointer = true if !theme.nomainmenu}
         end
+     if theme.nomainmenu  #wbbs mode
+      case sel
+      when @cmd_hash["leave"] ; run_if_ulevel("leave") {leave}
+      when @cmd_hash["umaint"] ; run_if_ulevel("umaint") {usermenu}
+      when @cmd_hash["kill_log"] ; run_if_ulevel("kill_log") {clearlog}
+      when @cmd_hash["amaint"] ; run_if_ulevel("amaint") {areamaintmenu}
+      when @cmd_hash["bmaint"] ; run_if_ulevel("bmaint") {bullmaint}
+      when @cmd_hash["gmaint"] ; run_if_ulevel("gmaint") {groupmaintmenu}
+      when @cmd_hash["tmaint"] ; run_if_ulevel("tmaint") {thememaint}
+      when @cmd_hash["dmaint"] ; run_if_ulevel("dmaint") {doormaint}
+      when @cmd_hash["omaint"] ; run_if_ulevel("omaint") {telnetmaint}
+      when @cmd_hash["areachange"] ; run_if_ulevel("areachange") {areachange(parameters)}
+      when @cmd_hash["bulletins"] ; run_if_ulevel("bulletins") {bullets(parameters)}
+      when @cmd_hash["teleconference"]
+        if IRC_ON then
+          run_if_ulevel("teleconference") {teleconference(nil)}
+        else
+          print "%WR%Teleconference is disabled!%W%\r\n"
+        end
+        
+      when @cmd_hash["kick"] ; run_if_ulevel("kick") {youreoutahere}
+      when @cmd_hash["questionaire"] ; run_if_ulevel("questionaire") {questionaire}
+      when @cmd_hash["email"] ; run_if_ulevel("email") {emailmenu}
+      when @cmd_hash["doors"] ; run_if_ulevel("doors") {doors(parameters)}
+      when @cmd_hash["other"] ; run_if_ulevel("other") {bbs(parameters)}
+      when @cmd_hash["email"] ; run_if_ulevel("email") {sendemail(true)}
+      when @cmd_hash["usrsetting"] ; run_if_ulevel("usrsetting") {usersettings}
+      when @cmd_hash["readmnu"] ; run_if_ulevel("readmnu") {messagemenu(false)}
+      when @cmd_hash["zipread"] ; run_if_ulevel("zipread") {messagemenu(true)}
+      when @cmd_hash["page"] ; run_if_ulevel("page") {page}
+      when @cmd_hash["info"] ; run_if_ulevel("info") {ogfileout("user_information",1,true)}
+      when @cmd_hash["version"] ; run_if_ulevel("version") {version}
+      when @cmd_hash["who"] ; run_if_ulevel("who") {displaywho}
+      when @cmd_hash["log"] ; run_if_ulevel("log") {displaylog}
+      when @cmd_hash["sysopmnu"] ; run_if_ulevel("sysopmnu") {ogfileout("sysopmnu",1,true)}
+
+    end
+    end
         p_return = [mpointer,h_msg,out] # evaluate so this is the value that is returned
 
       }
@@ -644,7 +688,7 @@ class Session
         readmenu(
         :initval => 0,
         :range => 0..(a_total - 1),
-        :prompt => '"%W%#{sdir} Area [%p] (0-#{a_total - 1}): "'
+        :loc => AREA
         ) {|sel, apointer, moved|
           displayarea(apointer) if moved
           case sel

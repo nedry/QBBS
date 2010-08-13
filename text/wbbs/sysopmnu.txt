@@ -1,0 +1,7 @@
+EXTENDED COMMANDS:
+
+  UU-Show log       UK-Kill log     DOS-Drop to DOS
+
+  AS-Board status   AP-Pack board   AL -List all boards   M-Move message
+
+  UM-User maintainance

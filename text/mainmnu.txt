@@ -17,3 +17,5 @@
   %W%[%Y% S %W%]%G%User Statistics
           %C%Use a %R%;%C% to stack commands together %W%(%C%I.E., %R%%;a;q%W%)
               %C%Some commands take parameters %W%(%C%I.E., %R%a2%W%)
+  %SYS%
+  %C%X%W%-%G%Sysop Menu

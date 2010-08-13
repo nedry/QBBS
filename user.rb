@@ -47,11 +47,10 @@ class Session
 
   def usermenu 
     total = u_total
-    oprompt = '"%W%#{sdir}User [%p] (1-#{u_total}): "'
     readmenu(
       :initval => 1,
       :range => 1..(u_total ),
-      :prompt => oprompt
+      :loc => USER
     ) {|sel, upointer, moved|
       if !sel.integer?
         sel.gsub!(/[-\d+]/,"")

@@ -43,9 +43,10 @@ class GraphFile
     j = offset
     cont = true
     nomore = false
+    display = true
     if File.exists?(outfile)
       IO.foreach(outfile) { |line|
-        j = j + 1
+        j = j + 1 if display
         user = @session.c_user
         if j == user.length and user.more and !nomore then
           cont = @session.moreprompt
@@ -68,8 +69,15 @@ class GraphFile
         if !out.gsub!("%BULLET%","").nil? and @session.logged_on  then
           @session.bullets(0)
         end
+        if !out.gsub!("%SYS%","").nil? and @session.logged_on  then
+          display = false
+          display = true if @session.c_user.level == 255
+        end
+         if !out.gsub!("%REGUSER%","").nil? and @session.logged_on  then
+          display = true
+        end
         nomore = true if !out.gsub!("%NOMORE%","").nil?   #disable more prompt for this file
-        @session.write out + "\r"
+        @session.write out + "\r" if display
       }
     else
       @session.print "\n#{outfile} has run away...please tell sysop!\n"
@@ -111,6 +119,7 @@ def parse_text_commands(line)
     calls =  @session.c_user.logons.to_f
     ualias = "<NONE>" if @session.c_user.alias.nil?
     ratio = (posts  / calls) * 100
+    ratio = 0 if calls == 0
     text_commands = {
       "%NODE%"  => @session.node.to_s,
       "%TIMEOFDAY%" => @session.timeofday,

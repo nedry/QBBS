@@ -7,6 +7,7 @@ class Theme
   property :name, String, :length => 40
   property :delete, Boolean, :default => false
   property :locked, Boolean, :default => false
+  property :nomainmenu, Boolean, :default => false
   property :modify_date, DateTime, :default => Time.now
   property :description, String, :length => 80
   property :main_prompt, String, :length => 80

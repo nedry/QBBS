@@ -139,7 +139,7 @@ def doormaint
   readmenu(
     :initval => 1,
     :range => 1..(d_total),
-    :prompt => '"%G%#{sdir}Door [%p] (1-#{d_total}): %W%"'
+    :loc => DOOR
   ) {|sel, dpointer, moved|
     if !sel.integer?
       parameters = Parse.parse(sel)

@@ -2,29 +2,33 @@
 
 class Session
 
-  def message_prompt(prompt,system,marea,left,nmessages,tmessages,aname)
+  def message_prompt(prompt,system,marea,left,nmessages,tmessages,aname,dir)
+   work_prompt = nil
+   work_prompt = prompt.dup if !prompt.nil?
 
     main_prompt = {'@sys@' => system,
       '@area@' => marea.to_s,
       '@left@' => left.to_s,
       '@new@' => nmessages.to_s,
       '@total@' => tmessages.to_s,
-    '@aname@' => aname}
+      '@aname@' => aname,
+      '@dir@' => dir}
 
 
-    if !prompt.nil?
+    if !work_prompt.nil?
       main_prompt.each_pair {|inp, result|
-        prompt.gsub!(inp,result)
+        work_prompt.gsub!(inp,result)
       }
+
     else
-      prompt = "%WR%NO PROMPT DEFINED%W%"
+      work_prompt = "%WR%NO PROMPT DEFINED%W%"
     end
-    return prompt
+    return work_prompt
   end
 
-  def main_prompt_help
+  def prompt_help(prompt)
     print
-    print '%WG%Main Prompt Parameters%W%'
+    print "%WG%#{prompt} Prompt Parameters%W%"
     print '%G%@sys@%C%    System Name'
     print '%G%@area@%C%   Number of Current Board'
     print '%G%@aname@%C%  Name of Current Board'
@@ -32,6 +36,10 @@ class Session
     print '%G%@new@%C%    Number of New Messages on Current Board'
     print '%G%@left@%C%   Current User`s Remaining Time'
     print '%G%@name@%C%   Current User`s Name'
+    if prompt == "Read" then
+      print '%G%@dir@%C%    Read Direction'
+      print "%G%%p%C%       Message Pointer" 
+    end
     print
   end
 
@@ -43,8 +51,9 @@ class Session
     nmessages = "5"
     tmessages = "60"
     aname = "General Chat"
+    sdir = "+"
 
- "#{message_prompt(prompt,system,marea,left,nmessages,tmessages,aname)}"
+ "#{message_prompt(prompt,system,marea,left,nmessages,tmessages,aname,sdir)}"
 
   end
  
@@ -56,9 +65,10 @@ class Session
     print "%R%#%W%#{number} %G% #{theme.name}"
     print "%C%Description: %G%#{theme.description}"
     print "%C%Text Directory: %G%#{theme.text_directory}"
-    print "%C%Main Prompt: "
-    out = display_test_prompt(theme.main_prompt)
-    print "   %G%#{out}"
+    print "%C%No Main Menu:  %W%#{theme.nomainmenu ? "On" : "Off"}"
+    print "%C%Main Prompt: #{display_test_prompt(theme.main_prompt)}"
+    print "%C%Read Prompt: #{display_test_prompt(theme.read_prompt)}"
+
   end
 
   def thememaint
@@ -66,7 +76,7 @@ class Session
     readmenu(
     :initval => 1,
     :range => 1..(t_total),
-    :prompt => '"%W%#{sdir}Theme [%p] (1-#{t_total}): "'
+    :loc => THEME
     ) {|sel, tpointer, moved|
       if !sel.integer?
         parameters = Parse.parse(sel)
@@ -82,6 +92,7 @@ class Session
       when "PU";page
       when "A"; addtheme
       when "N"; changethemename(tpointer)
+      when "RP"; changethereadprompt(tpointer)
       when "MP"; changethemainprompt(tpointer)
       when "T"; changepath(tpointer)
       when "K"; deletetheme(tpointer)
@@ -106,8 +117,9 @@ class Session
   end
 
   def changethemainprompt(tpointer)
-    main_prompt_help
+    prompt_help("Main")
     theme = fetch_theme(tpointer)
+    print "Current: #{theme.main_prompt}"
     prompt = getinp("Enter a new main prompt: ")
     if !prompt.empty? then
       theme.main_prompt = prompt
@@ -118,6 +130,21 @@ class Session
     print
   end
 
+
+  def changethereadprompt(tpointer)
+    prompt_help("Read")
+    theme = fetch_theme(tpointer)
+    print "Current: #{theme.read_prompt}"
+    prompt = getinp("Enter a new read prompt: ")
+    if !prompt.empty? then
+      theme.read_prompt = prompt
+      update_theme(theme)
+    else
+      print "%WR%Not Changed.%W%"
+    end
+    print
+  end
+  
   def changethemename(tpointer)
 
     theme = fetch_theme(tpointer)
@@ -168,7 +195,6 @@ class Session
     theme = get_user_theme(@c_user)
     puts "theme: #{theme}"
     if theme.nil? then
-      puts "resetting theme"
       theme = fetch_theme(1) #change to get default theme
       add_theme_to_user(@c_user,theme)
     end

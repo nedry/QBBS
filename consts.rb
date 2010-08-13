@@ -332,7 +332,19 @@ L_SECURITY = 7
 L_ERROR = 8
 L_MESSAGE = 9
 
+#Menu Locations
+
+USER =1
+BULLETIN = 2
+READ = 3
+OTHER = 4
+DOOR = 5
+THEME = 6
+AREA = 7
+
+
 #Theme Defaults
 
 MAIN_PROMPT = "%G%-=%M%:%C%@aname@%M%:%C%New - @new@%M%:%W%? for Menu%G%:=-%W%"
 TEXT_PATH = "text/"
+#READ_PROMPT = "%M%[Area #{@c_area}]%C% #{sdir} #{out}[%p] #'(1-#{h_msg}): "

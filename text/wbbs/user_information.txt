@@ -1,0 +1,11 @@
+%G%%USERNAME%,%C% level %G%%U_LEVEL%
+%G%Address             %W%= %C%%U_ADDR%
+                      %C%%U_CITYSTATE%
+
+%G%Alias               %W%= %C%%U_ALIAS%
+%G%Node                %W%= %C%%NODE%
+%G%last logged on      %W%= %C%%U_LDATE% %W%at %C%%U_LTIME%
+%G%IP Address          %W%= %C%%IP%
+%G%Total Logons        %W%= %C%%U_LOGONS%
+%G%Messages Posted     %W%= %C%%U_POSTS%
+%G%Post/Call Ratio     %W%= %C%%U_RATIO%
