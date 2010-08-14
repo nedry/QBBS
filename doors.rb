@@ -253,7 +253,7 @@ end
 
 def displaydoors
   i = 0
-  ogfileout("doorhdr",0,true)
+  existfileout("doorhdr",0,true)
   if !existfileout('door',0,true)
   if d_total < 1 then
     print "%WR%No External Programs.%W%"

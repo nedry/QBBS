@@ -86,7 +86,7 @@
 - cmd: doors
   theme_key: 2
   ulevel: 0
-  menu_item: GAME
+  menu_item: D
 
 - cmd: other
   theme_key: 2

@@ -567,17 +567,14 @@ class Session
         
       when @cmd_hash["kick"] ; run_if_ulevel("kick") {youreoutahere}
       when @cmd_hash["questionaire"] ; run_if_ulevel("questionaire") {questionaire}
-      when @cmd_hash["email"] ; run_if_ulevel("email") {emailmenu}
       when @cmd_hash["doors"] ; run_if_ulevel("doors") {doors(parameters)}
       when @cmd_hash["other"] ; run_if_ulevel("other") {bbs(parameters)}
       when @cmd_hash["email"] ; run_if_ulevel("email") {sendemail(true)}
       when @cmd_hash["usrsetting"] ; run_if_ulevel("usrsetting") {usersettings}
       when @cmd_hash["readmnu"] ; run_if_ulevel("readmnu") {messagemenu(false)}
       when @cmd_hash["zipread"] ; run_if_ulevel("zipread") {messagemenu(true)}
-      when @cmd_hash["page"] ; run_if_ulevel("page") {page}
       when @cmd_hash["info"] ; run_if_ulevel("info") {ogfileout("user_information",1,true)}
       when @cmd_hash["version"] ; run_if_ulevel("version") {version}
-      when @cmd_hash["who"] ; run_if_ulevel("who") {displaywho}
       when @cmd_hash["log"] ; run_if_ulevel("log") {displaylog}
       when @cmd_hash["sysopmnu"] ; run_if_ulevel("sysopmnu") {ogfileout("sysopmnu",1,true)}
 
