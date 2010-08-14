@@ -244,7 +244,7 @@ class Session
       path = "#{FULLSCREENDIR}/#{outfile}"
       quotefile = File.new(path, File::CREAT|File::APPEND|File::RDWR, 0666)
       quotefile.puts "#{CRLF}"
-      reply_text.each_line {|line| quotefile.puts "#{line.chop![0..75]}#{CRLF}"} if reply_text != nil
+      reply_text.each {|line| quotefile.puts "#{line.chop![0..75]}#{CRLF}"} if reply_text != nil
       quotefile.close
       return outfile
     end
