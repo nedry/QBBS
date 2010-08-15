@@ -1,0 +1,19 @@
+Asciiquarium is a modified version of the ascii aquarium for use with QBBS.
+
+This is a perl script, and therefore requires:
+
+Perl
+the perl curses library
+the perl terminal animation library.
+
+You must turn it on in costs.rb.  Change the setting
+
+SCREENSAVER = false 
+
+..to..
+
+SCREENSAVER = true
+
+That's it.  If it doesn't work, you've probably not got it's dependencies installed.
+
+apt-get install libcurses-perl
