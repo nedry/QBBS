@@ -13,10 +13,9 @@ def door_do (path,d_type)
   started = false
 
 
-
   begin
     PTY.spawn(path) do |read, w, p|
-
+   
 
       w.putc(13.chr) if d_type == "DOS" #we want to put a ENTER in so dosemu won't pause at intro
       exit = false
@@ -98,20 +97,20 @@ def writedoorfile(outfile)
     doorfile.write("COM0\r\n")  # always com0, as we are using telnet 
     doorfile.write("0 BAUD,N,8,1\r\n") # See above
     doorfile.write("0\r\n")  #Nobody seems to know what this does
-    user_out = @users[@c_user].name.split
+    user_out = @users.name.split
     doorfile.puts("#{user_out[0]}\r\n")
     if user_out.length > 1 then
       doorfile.write("#{user_out[1]}\r\n")
     else
       doorfile.write("\r\n")
     end
-    doorfile.write("#{@users[@c_user].location}\r\n")
-    if @users[@c_user].ansi then 
+    doorfile.write("#{@users.location}\r\n")
+    if @users.ansi then 
       doorfile.write("1\r\n")
     else
       doorfile.write("0\r\n")
     end
-    doorfile.write("#{@users[@c_user].level}\r\n")  
+    doorfile.write("#{@users.level}\r\n")  
     doorfile.write("255\r\n")
     doorfile.close
   rescue
@@ -267,28 +266,6 @@ def displaydoors
   print
   end
 end
-
-#def find_RSTS_account
-
-#  acclist = []
-#  @users.each {|u| 
- #   if u.rsts_acc != nil then 
-  #    if u.rsts_acc > 0 then
-   #     acclist.push(u.rsts_acc)
-    #  end
-  #  end}
-
- #   puts "acclist.len #{acclist.length}"
-  #  puts "RSTS_MAX #{RSTS_MAX}"
- #   return 1 if acclist.length == 0 
-  #  return 0 if acclist.length >= RSTS_MAX
-
- #   for i in 1..RSTS_MAX
-  #    break if acclist.index(i) == nil
- #   end 
- #   return i
-#end
-
 
 
 def rundoor(number)

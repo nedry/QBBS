@@ -42,7 +42,8 @@ SYSTEMLOCATION = "The TARDIS"
 NODES = 10
 ROOT_PATH = "/home/mark/qbbs/"
 
-
+SCREENSAVER = true
+SCREENSAVER_PATH = "perl external/aquarium"
 
 #QOTD location (or nil for disabled)
 
@@ -144,10 +145,10 @@ MAXSESSIONS = 40
 
 MAXPASSWORDMISS = 3
 
-LIDLEWARN = 2
-LIDLELIMIT = 3
+LIDLEWARN = 5
+LIDLELIMIT = 10
 
-RIDLEWARN = 10
+RIDLEWARN = 5
 RIDLELIMIT = 15
 
 WEB_IDLE_MAX = 30

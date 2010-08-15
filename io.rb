@@ -254,18 +254,28 @@ class Session
   def warntimeout(idle, warn, warned, limit, todotime, prompt)
     if (idle >= limit)
       print; print "%WR%Idle time limit exceeded.  Disconnecting!%W%"
-      print "%WNO CARRIER"
+      print "%WR%NO CARRIER%W%"
       sleep(5)
       hangup
     end
 
     if (idle >= warn) and (!warned) 
+      if SCREENSAVER  and @logged_on then
+        print "%WR%Activating Screen Saver...%W%"
+        sleep(1)
+        door_do(SCREENSAVER_PATH,"")
+        print (CLS)
+        print (HOME)
+        idle = 0
+        warned = true
+        write prompt
+      else
       if todotime > 1 then tempstr = "minutes" else tempstr = "minute" end
-      print; print "%WR%You have #{todotime} #{tempstr} in which to do something!%W%"
-      write prompt
-      warned = true
+        print; print "%WR%You have #{todotime} #{tempstr} in which to do something!%W%"
+        write prompt
+        warned = true
+      end
     end
-
     return warned
   end
 
