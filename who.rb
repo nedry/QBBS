@@ -15,11 +15,6 @@ class Session
     (1..max).detect(max) {|i| list.index(i) == nil }
   end
 
-  def find_RSTS_account
-    acclist = @users.map {|u| u.rsts_acc}.compact.select {|r| r > 0}
-    find_free(acclist, RSTS_MAX)
-  end
-
   def find_node
     nodelst = @who.map {|w| w.node}
     find_free(nodelst, NODES)

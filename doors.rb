@@ -34,11 +34,11 @@ def door_do (path,d_type)
                 char = read.getc
                 if d_type == "RSTS" and char.chr == ":" and !send_init then
                   puts "char: #{char}"
-                  account = "#{RSTS_BASE},#{@users[@c_user].rsts_acc}"
+                  account = "#{RSTS_BASE},#{@c_user.rsts_acc}"
                   sleep(2)
                   w.puts(account)
                   sleep (2)
-                  w.puts(@users[@c_user].rsts_pw)
+                  w.puts(@c_user.rsts_pw)
                   send_init = true
                 end
                 started = true
@@ -123,12 +123,12 @@ end
 def showdoor(number)
   if d_total > 0 then 
     door = fetch_door(number)
-    print "%R%#%W#{number} %G #{door.name}"
-    print "%C%Path:      %G#{door.path}"
-    print "%C%Type:      %G#{door.d_type}"
-    print "%C%Drop Path: %G#{door.d_path}"
-    print "%C%Drop Type: %G#{door.droptype}"
-    print "%C%Level:     %G#{door.level}"
+    print "%R%#%W%#{number} %G% #{door.name}"
+    print "%C%Path:      %G%#{door.path}"
+    print "%C%Type:      %G%#{door.d_type}"
+    print "%C%Drop Path: %G%#{door.d_path}"
+    print "%C%Drop Type: %G%#{door.droptype}"
+    print "%C%Level:     %G%#{door.level}"
     print
   else 
     print "%WR%No Doors%W%"
@@ -268,26 +268,26 @@ def displaydoors
   end
 end
 
-def find_RSTS_account
+#def find_RSTS_account
 
-  acclist = []
-  @users.each {|u| 
-    if u.rsts_acc != nil then 
-      if u.rsts_acc > 0 then
-        acclist.push(u.rsts_acc)
-      end
-    end}
+#  acclist = []
+#  @users.each {|u| 
+ #   if u.rsts_acc != nil then 
+  #    if u.rsts_acc > 0 then
+   #     acclist.push(u.rsts_acc)
+    #  end
+  #  end}
 
-    puts "acclist.len #{acclist.length}"
-    puts "RSTS_MAX #{RSTS_MAX}"
-    return 1 if acclist.length == 0 
-    return 0 if acclist.length >= RSTS_MAX
+ #   puts "acclist.len #{acclist.length}"
+  #  puts "RSTS_MAX #{RSTS_MAX}"
+ #   return 1 if acclist.length == 0 
+  #  return 0 if acclist.length >= RSTS_MAX
 
-    for i in 1..RSTS_MAX
-      break if acclist.index(i) == nil
-    end 
-    return i
-end
+ #   for i in 1..RSTS_MAX
+  #    break if acclist.index(i) == nil
+ #   end 
+ #   return i
+#end
 
 
 
@@ -311,13 +311,14 @@ def rundoor(number)
       if @c_user.rsts_acc == 0 or @c_user.rsts_acc == nil then
         print "\r\nFinding a RSTS/E Account for you..."
         account = find_RSTS_account
+        puts "account: #{account}"
         if account != 0 then
           @c_user.rsts_acc = account
           @c_user.rsts_pw = RSTS_DEFAULT_PSWD
-          update_user(@c_user,get_uid(@c_user.name))
+          update_user(@c_user)
         else
           print "\r\nSorry... out of accounts.  Please tell sysop!"
-          add_log_entry(8,Time.now,"{@c_user} Out of RSTS/E Accounts Error.")
+          add_log_entry(8,Time.now,"#{@c_user.name} Out of RSTS/E Accounts Error.")
         end
       end
     end
@@ -325,7 +326,7 @@ def rundoor(number)
     if door.d_type =="GD" then
       irc_do(door.path,door.d_type)
     else
-      add_log_entry(5,Time.now,"#{@c_user} Ran External program #{door.name}")
+      add_log_entry(5,Time.now,"#{@c_user.name} Ran External program #{door.name}")
       door_do(door.path,door.d_type)
     end
   else

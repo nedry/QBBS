@@ -40,6 +40,7 @@ class Session
       else write "%W%-" 
       end
     end
+    write  "%W%"
     print 
     print 
     print 

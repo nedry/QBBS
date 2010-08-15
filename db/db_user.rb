@@ -6,6 +6,16 @@ def u_total
   User.count
 end
 
+def find_RSTS_account
+   act_rec = User.all( :rsts_acc.gt => 0,  :order => [ :rsts_acc.asc])
+   if act_rec.length > 0 then
+     next_acc = act_rec.last.rsts_acc + 1
+   else
+     next_acc = 1
+   end
+   next_acc = 0 if next_acc > RSTS_MAX
+   next_acc
+end
 
 def user_exists(uname)
   User.all(:conditions => ["upper(name) = ?", uname.upcase]).count > 0
