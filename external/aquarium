@@ -79,7 +79,7 @@ main();
 ####################### MAIN #######################
 
 sub main {
-
+  $ENV{'TERM'} ='ansi.sys';
 	my $anim = Term::Animation->new();
 
 	# set the wait time for getch

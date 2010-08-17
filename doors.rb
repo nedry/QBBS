@@ -15,9 +15,8 @@ def door_do (path,d_type)
 
   begin
     PTY.spawn(path) do |read, w, p|
-   
 
-      w.putc(13.chr) if d_type == "DOS" #we want to put a ENTER in so dosemu won't pause at intro
+  w.putc(13.chr) if d_type == "DOS" #we want to put a ENTER in so dosemu won't pause at intro
       exit = false
       while !exit
 
@@ -30,6 +29,7 @@ def door_do (path,d_type)
           if r != nil then
             if r.include?(read)
               begin
+             
                 char = read.getc
                 if d_type == "RSTS" and char.chr == ":" and !send_init then
                   puts "char: #{char}"
