@@ -6,6 +6,8 @@ Requires:
 
 gem install dm-aggregates
 
+apt-get install sox
+
 
 
 TODO:

@@ -71,6 +71,20 @@ Theme.new(:number => 2,
 
 t = 
 
+  Screensaver.create(
+    :number => 1,
+    :name => "Fish Tank",
+    :path => "perl external/aquarium",
+    :modify_date => Time.now
+  ).save!
+
+  Screensaver.create(
+    :number => 2,
+    :name => "Local Weather",
+    :path => "perl external/weatherspect",
+    :modify_date => Time.now
+  ).save!
+  
 YAML.load(IO.read('config/qbbscommands.yml')).each {|cmd|
   h = Command.new(cmd).save!
 

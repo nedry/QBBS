@@ -5,6 +5,7 @@ QWK_DEBUG = true
 FIDO = false
 SMTP = false
 IRC_ON =  false
+SCREENSAVER = true
 
 BS = 8
 ESC = 27
@@ -42,8 +43,8 @@ SYSTEMLOCATION = "The TARDIS"
 NODES = 10
 ROOT_PATH = "/home/mark/qbbs/"
 
-SCREENSAVER = true
-SCREENSAVER_PATH = "perl external/aquarium"
+
+
 
 #QOTD location (or nil for disabled)
 
@@ -148,7 +149,8 @@ MAXPASSWORDMISS = 3
 LIDLEWARN = 5
 LIDLELIMIT = 10
 
-RIDLEWARN = 5
+#RIDLEWARN = 5
+RIDLEWARN = 1
 RIDLELIMIT = 15
 
 WEB_IDLE_MAX = 30
@@ -342,6 +344,7 @@ OTHER = 4
 DOOR = 5
 THEME = 6
 AREA = 7
+SCREEN = 8
 
 
 #Theme Defaults

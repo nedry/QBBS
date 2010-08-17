@@ -31,6 +31,8 @@ def readmenu(args)
         o_prompt = eval('"%W%#{sdir}BBS System [%p] (1-#{o_total}): "').gsub("%p","#{ptr}")
       when DOOR
         o_prompt = eval('"%G%#{sdir}Door [%p] (1-#{d_total}): %W%"').gsub("%p","#{ptr}")
+      when SCREEN
+        o_prompt = eval('"%G%#{sdir}Screen [%p] (1-#{s_total}): %W%"').gsub("%p","#{ptr}")
     end
 
    inp  = getinp (o_prompt)

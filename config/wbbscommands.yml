@@ -2,7 +2,12 @@
   theme_key: 2
   ulevel: 0
   menu_item: A
-
+  
+- cmd: smaint
+  theme_key: 1
+  ulevel: 255
+  menu_item: SM
+  
 - cmd: gmaint
   theme_key: 2
   ulevel: 0
@@ -200,5 +205,15 @@
 
 - cmd: doorquit
   theme_key: 2
+  ulevel: 0
+  menu_item: Q
+
+- cmd: screenmenu
+  theme_key: 1
+  ulevel: 0
+  menu_item: '?'
+
+- cmd: screenquit
+  theme_key: 1
   ulevel: 0
   menu_item: Q

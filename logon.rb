@@ -157,7 +157,12 @@ class Session
     @c_user = fetch_user(get_uid(username))
     add_log_entry(5,Time.now,"New user #{@c_user.name} created.")
     @logged_on = true
-    defaulttheme
+    defaulttheme   # set default screensaver if there are any screensavers defined.
+    if s_total > 0 then
+       screen = fetch_screen(1)
+       add_screen_to_user(@c_user,screen)    
+    end
+      
     ogfileout("newuser",2,true)
     yes("Press <--^: ",true,false,true)
     system = fetch_system

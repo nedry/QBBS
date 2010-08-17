@@ -11,6 +11,11 @@ class Session
     print "%G%[%W% P %G%]assword"                        
     print "%G%[%W% Z %G%]ip Read Settings"
     print "%G%[%W% T %G%]heme"
+    if SCREENSAVER
+      saver = "NONE"
+      saver = get_user_screen(@c_user).name if !get_user_screen(@c_user).nil?
+      print "%G%[%W% S %G%]creen Saver:  %W%#{saver}"
+    end
     print
   end
 
@@ -47,6 +52,7 @@ class Session
       when "F"; togglefast
       when "Z"; changezip(parameters)
       when "T";  themes(parameters)
+      when "S"; screensaver(parameters)
       when "?" 
         if !existfileout('usersethdr',0,true)
 	  print "User Settings:"

@@ -556,6 +556,7 @@ class Session
       when @cmd_hash["tmaint"] ; run_if_ulevel("tmaint") {thememaint}
       when @cmd_hash["dmaint"] ; run_if_ulevel("dmaint") {doormaint}
       when @cmd_hash["omaint"] ; run_if_ulevel("omaint") {telnetmaint}
+      when @cmd_hash["smaint"] ; run_if_ulevel("smaint") {screenmaint}
       when @cmd_hash["areachange"] ; run_if_ulevel("areachange") {areachange(parameters)}
       when @cmd_hash["bulletins"] ; run_if_ulevel("bulletins") {bullets(parameters)}
       when @cmd_hash["teleconference"]

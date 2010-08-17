@@ -28,11 +28,12 @@ class User
   property :signature, Text
   property :fastlogon, Boolean
   property :theme_key, Integer
+  property :screen_key, Integer
 
     has 1, :who, :child_key => [:number]
     has n, :pointers, :child_key => [:number]
     belongs_to :theme,  :child_key =>[:theme_key]
-
+    belongs_to :theme,  :child_key =>[:screen_key]
    
     has n, :pages, :child_key => [:number]
     has 1, :who, :child_key => [:number] 

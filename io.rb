@@ -260,10 +260,12 @@ class Session
     end
 
     if (idle >= warn) and (!warned) 
-      if SCREENSAVER  and @logged_on then
+      screen = get_user_screen(@c_user)
+      if SCREENSAVER  and @logged_on and !screen.nil? then
         print "%WR%Activating Screen Saver...%W%"
         sleep(1)
-        door_do(SCREENSAVER_PATH,"")
+        puts "screen.path #{screen.path}"
+        door_do(screen.path,"")
         print (CLS)
         print (HOME)
         idle = 0
