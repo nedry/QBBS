@@ -45,6 +45,9 @@ def door_do (path,d_type)
               rescue 
                 sleep (5)
                 puts "boom"
+                print (CLS)
+                print (HOME)
+
                 @who.user(@c_user).where = "Main Menu"
                 return
               end

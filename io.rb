@@ -254,6 +254,7 @@ class Session
   def warntimeout(idle, warn, warned, limit, todotime, prompt)
     if (idle >= limit)
       print; print "%WR%Idle time limit exceeded.  Disconnecting!%W%"
+      print
       print "%WR%NO CARRIER%W%"
       sleep(5)
       hangup
@@ -264,7 +265,6 @@ class Session
       if SCREENSAVER  and @logged_on and !screen.nil? then
         print "%WR%Activating Screen Saver...%W%"
         sleep(1)
-        puts "screen.path #{screen.path}"
         door_do(screen.path,"")
         print (CLS)
         print (HOME)

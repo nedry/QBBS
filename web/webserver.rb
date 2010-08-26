@@ -113,11 +113,12 @@ def text_to_html (f_name,user)
   output = ""
 
   if File.exists?(filename)
-    output << "\n"
+    output << "\n<pre>"
     IO.foreach(filename, :external_encoding=>"ASCII-8BIT") { |line| #line=line+"\n"
       line = parse_text_commands(line,user) if !user.nil?
       line = parse_webcolor(line)
     output << line }
+    output <<"</pre>"
   else
     output =  "<br>#{filename} has run away...please tell sysop!<br>"
   end
