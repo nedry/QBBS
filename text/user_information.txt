@@ -6,7 +6,7 @@
 %G;Alias:                    %C;%U_ALIAS%
 %G;Level:                    %C;%U_LEVEL%
 %G;Node:                     %C;%NODE%
-%G;last logged on:           %C;%U_LDATE% %Wat %C%%U_LTIME%
+%G;last logged on:           %C;%U_LDATE% %W;at %C;%U_LTIME%
 %G;IP Address:               %C;%IP%
 %G;Total Logons:             %C;%U_LOGONS%
 %G;Messages Posted:          %C;%U_POSTS%

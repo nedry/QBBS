@@ -55,7 +55,7 @@ class GraphFile
         break if !cont
         out = parse_text_commands(line)
         if !out.gsub!("%PAUSE%","").nil? and @session.logged_on  then
-          @session.yes("%W%Press #{RET}",true,false,true)
+          @session.yes("%W;Press #{RET}",true,false,true)
         end
         if !out.gsub!("%WHOLIST%","").nil? and @session.logged_on  then
           @session.displaywho

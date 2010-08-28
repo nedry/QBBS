@@ -1,16 +1,16 @@
-%G% 
+%G; 
  __      __  ____     ____     ____       
 /\ \  __/\ \/\  _`\  /\  _`\  /\  _`\     
 \ \ \/\ \ \ \ \ \L\ \\ \ \L\ \\ \,\L\_\   
  \ \ \ \ \ \ \ \  _ <'\ \  _ <'\/_\__ \   
   \ \ \_/ \_\ \ \ \L\ \\ \ \L\ \ /\ \L\ \ 
    \ `\___x___/\ \____/ \ \____/ \ `\____\
-    '\/__//__/  \/___/   \/___/   \/_____/ %C%Theme
+    '\/__//__/  \/___/   \/___/   \/_____/ %C;Theme
     
-     %W%WBBS, version 4.50 (IBM-PC), 11/1/96
+     %W;WBBS, version 4.50 (IBM-PC), 11/1/96
       Copyright (C) 1986 by Wayne Conrad
 
-%W%Good %TIMEOFDAY% %USERNAME% and welcome to node: %NODE%
-%G%You were last logged on: %B%%U_LDATE% at %C%%U_LTIME%
+%W;Good %TIMEOFDAY% %USERNAME% and welcome to node: %NODE%
+%G;You were last logged on: %B;%U_LDATE% at %C;%U_LTIME%
 
 You have connected from IP Address: %IP%.

@@ -1,10 +1,10 @@
-DEBUG = true
+DEBUG = false
 LISTENPORT = 2323
-QWK = false
-QWK_DEBUG = true
-FIDO = false
+QWK = true
+QWK_DEBUG = false
+FIDO = true
 SMTP = false
-IRC_ON =  false
+IRC_ON =  true
 SCREENSAVER = true
 
 BS = 8
@@ -60,7 +60,7 @@ FULLSCREENDIR = "/home/mark/qbbs/quote"
 IRCSERVER = "irc.larryniven.net"
 IRCPORT = 6667
 IRCCHANNEL = "#knownspace"
-IRCBOTUSER = "HAL9000-test"
+IRCBOTUSER = "HAL9000"
 IRCTOPIC = "Knownspace and RetroBBS Chat"
 
 IRCOPERID = "HAL9000"
@@ -150,7 +150,7 @@ LIDLEWARN = 5
 LIDLELIMIT = 10
 
 #RIDLEWARN = 5
-RIDLEWARN = 1
+RIDLEWARN = 5
 RIDLELIMIT = 15
 
 WEB_IDLE_MAX = 30

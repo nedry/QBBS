@@ -1,7 +1,7 @@
 %W;MESSAGE COMMANDS:
-  %C;A%W;-%G;Area     %C;R %W;-%G%Reply          %C;-%W;-%G;Previous   %C;L%W;-%G;List
-  %C;E%W;-%G;Enter    %C;K %W;-%G%Kill           %C;+%W;-%G;Next       %C;\%W;-%G;Last
-  %C;/%W;-%G;Reread   %C;Z%W;-%G%Zip read   
+  %C;A%W;-%G;Area     %C;R %W;-%G;Reply          %C;-%W;-%G;Previous   %C;L%W;-%G;List
+  %C;E%W;-%G;Enter    %C;K %W;-%G;Kill           %C;+%W;-%G;Next       %C;\%W;-%G;Last
+  %C;/%W;-%G;Reread   %C;Z%W;-%G;Zip read   
 
 %W;To read the next message you haven't seen, just press RETURN (or ENTER).
 
@@ -11,8 +11,8 @@ To read multiple messages, enter two message numbers separated by a dash
 (example: "1-40", "20-", "-30").
 
 OTHER COMMANDS:
-  %C;G %W;-%G;Goodbye    %C;C%W;-%G;Configure    %C;F%W;-%G;Feedback   %C;U%W;-%G;User log     %C; B%W;-%G%Bulletin
-  %C;CR%W;-%G;Credits    %C;S%W;-%G;Status      %C; Y%W;-%G;Yell       %C;V%W;-%G;Private mail  %C;Q%W;-%G%Questionaire
+  %C;G %W;-%G;Goodbye    %C;C%W;-%G;Configure    %C;F%W;-%G;Feedback   %C;U%W;-%G;User log     %C; B%W;-%G;Bulletin
+  %C;CR%W;-%G;Credits    %C;S%W;-%G;Status      %C; Y%W;-%G;Yell       %C;V%W;-%G;Private mail  %C;Q%W;-%G;Questionaire
   %C;PU%W;-%G;Page User  %C;W%W;-%G;Who's Online %C;D%W;-%G;Doors      %C;T%W;-%G;Teleconfernce
 %SYS%
   %C;X%W;-%G%Sysop Menu

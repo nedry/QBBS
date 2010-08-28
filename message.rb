@@ -15,17 +15,17 @@ class Session
     prompt = "%W%More #{YESNO} or Area #? "
     prompt2 = "Which, or #{RET} for all: "
     print
-    print "%G%Message Groups:"
+    print "%G;Message Groups:"
     groups.each_index {|j| print "#{j}: #{groups[j].groupname}"}
     print
     tempint = getnum(prompt2,-1,groups.length - 1)
     print
-    cols = %w(B C R Y G).map {|i| "%"+i +"%"}
-    hcols = %w(WB WC WR WY WG).map {|i| "%"+i+"%"}
+    cols = %w(B C R Y G).map {|i| "%"+i +";"}
+    hcols = %w(WB WC WR WY WG).map {|i| "%"+i+";"}
     headings = %w(# New Access Network Description)
 
     widths = [3,4,7,20,38]
-    header = hcols.zip(headings).map {|a,b| a+b}.formatrow(widths) + "%W%"
+    header = hcols.zip(headings).map {|a,b| a+b}.formatrow(widths) + "%W;"
     puts header
     underscore = cols.zip(['-'*30]*5).map{|a,b| a+b}.formatrow(widths)
 
@@ -75,7 +75,7 @@ class Session
 
     while true
       if tempint == - 1 then
-        prompt = CRLF+"%W%Area #[#{@c_area}] (1-#{(a_total - 1)}) ? #{RET} to quit: "
+        prompt = CRLF+"%W;Area #[#{@c_area}] (1-#{(a_total - 1)}) ? #{RET} to quit: "
         happy = getinp(prompt).upcase
         tempint = happy.to_i
       end
@@ -94,13 +94,13 @@ class Session
         area = fetch_area(tempint)
         if t !~ /[NI]/ or (@c_user.level == 255) and (!area.delete)
           @c_area = tempint
-          print "%GChanging to #{area.group.groupname}: #{area.name} area"+CRLF
+          print "%G;Changing to #{area.group.groupname}: #{area.name} area"+CRLF
           break
         else
           if t == "N" then
-            print "%WR%You do not have access%W%"
+            print "%WR;You do not have access%W;"
           else
-            print "%WR%That area does not exist.%W%"
+            print "%WR;That area does not exist.%W;"
           end
           break
           tempint = -1
@@ -140,7 +140,7 @@ class Session
         if l_read > 0 then
           if pointer.zipread and (t !~ /[NI]/ or @c_user.level == 255) and (!a_list[i].delete) then
             @c_area = a_list[i].number
-            print "%G%Changing to the #{a_list[i].group}: #{a_list[i].name} sub-board"+CRLF
+            print "%G;Changing to the #{a_list[i].group.groupname}: #{a_list[i].name} sub-board"+CRLF
             mpointer = p_msg
             sleep (0.5)
             mpointer = h_msg if mpointer > h_msg
