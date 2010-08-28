@@ -10,42 +10,42 @@ class Session
     if yes("Log off now #{YESNO}", true, false,false) then
       write "%W%"
       gfileout('bye')
-      print "%WR%NO CARRIER%W%"
+      print "%WR;NO CARRIER%W;"
       sleep (1)
       hangup
     end
   end
 
   def youreoutahere
-    prompt = "%WR%Boot which user number?: %W%"
+    prompt = "%WR;Boot which user number?: %W;"
     which = getnum(prompt,0,@who.len)
     if which > 0 then
-      print "%WG%Booting User ##{which} from system.%W%"
+      print "%WG;Booting User ##{which} from system.%W;"
       puts "thread.kill: #{@who[which-1].threadn}"
       Thread.kill(@who[which-1].threadn)
     else
-      print "%RW%Aborted%W%"
+      print "%RW;Aborted%W;"
     end
   end
 
 
   def page
-    to = getinp("%G%User to Page: %W%")
+    to = getinp("%G;User to Page: %W;")
     exists = get_uid(to)
     if exists.nil? then
-      print "%WR%That user does not exist.%W%"
+      print "%WR;That user does not exist.%W;"
       print
       return
     end
     return if to.empty?
     if @who.user(to).nil? and  !who_exists(exists) then
-      print "%WR%#{to} is not online... %WG%they will get the message when they log in.%W%"
+      print "%WR;#{to} is not online... %WG;they will get the message when they log in.%W;"
       print
     end
-    message = getinp("%C%Message: %W%")
+    message = getinp("%C;Message: %W;")
     return if message.empty?
     add_page(@c_user.number,to,message,false)
-    print "%WG%Message Sent.%W%"
+    print "%WG;Message Sent.%W;"
   end
 
   def displaylog
@@ -53,8 +53,8 @@ class Session
     j = 0
     cont = true
     if !log_empty  then
-      cols = %w(Y G C).map {|i| "%"+i +"%"}
-      hcols = %w(WY WG WC).map {|i| "%"+i +"%"}
+      cols = %w(Y G C).map {|i| "%"+i +";"}
+      hcols = %w(WY WG WC).map {|i| "%"+i +";"}
       headings = %w(Date System Message)
       widths = [18,10,50]
       header = hcols.zip(headings).map {|a,b| a+b}.formatrow(widths) +"%W%"
@@ -81,7 +81,7 @@ class Session
       }
 
     else
-      print "%WR%System Log Empty%W%"
+      print "%WR;System Log Empty%W;"
     end
   end
 
@@ -152,7 +152,7 @@ class Session
       if  @c_user.level >= command.ulevel
         yield
       else
-        print "%WR%You do not have access!%W%"
+        print "%WR;You do not have access!%W;"
       end
     end
   end

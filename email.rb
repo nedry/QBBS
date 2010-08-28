@@ -12,7 +12,7 @@ class Session
     if new > 0 then
       m = "message"
       m = "messages" if new > 1
-      print "%G%#{new} new #{m} found."
+      print "%G;#{new} new #{m} found."
       return true
     end
     print "none."
@@ -41,8 +41,8 @@ class Session
     if (e_total(u.name) > 0) and (epointer > 0) then
       displaymessage(epointer,area.number,true)
     else
-      print "\r\n%Y%You have no email.  You have to send some to get some." if e_total(u.name) == 0
-      print "\r\n%R%You haven't read any email yet." if epointer == 0
+      print "\r\n%Y;You have no email.  You have to send some to get some." if e_total(u.name) == 0
+      print "\r\n%R;You haven't read any email yet." if epointer == 0
     end
   end
 
@@ -62,7 +62,7 @@ class Session
     done = false
 
     while true
-      o_prompt = "%M%[Email]%C% #{sdir} Read[#{epointer}] (1-#{e_total(u.name)}):%W% "
+      o_prompt = "%M;[Email]%C; #{sdir} Read[#{epointer}] (1-#{e_total(u.name)}):%W; "
       inp = getinp(o_prompt)
 
       happy = inp.upcase
@@ -86,9 +86,9 @@ class Session
         if epointer > 0 then
           replyemail(epointer,0)
         else
-          print "%WR%Nothing to reply to!%W%"
+          print "%WR;Nothing to reply to!%W;"
         end
-      when "?"; write "%W%"; gfileout ("emailmnu")
+      when "?"; write "%W;"; gfileout ("emailmnu")
       when "/";  showemail(epointer)
       when "QR"; display_qwk_routing_tables
       when "K"; deletemessage(epointer)
@@ -96,7 +96,7 @@ class Session
       when "S"; gfileout ("emailsnd");sendemail(false)
       when "Q"; break # exit input loop
       when /\d+/; epointer = jumpemail(happy.to_i,epointer,e_total(u.name)+1)
-      else; print "Out of Range."
+      else; print "%WR;Out of Range.%W;"
       end #of case
       done
     end
@@ -115,7 +115,7 @@ class Session
       puts "epointer: #{epointer}"
       displaymessage(epointer,area.number,true)
     else 
-      print "%WR%Out of Range%W%" 
+      print "%WR;Out of Range%W;" 
       end
     epointer
   end
@@ -131,7 +131,7 @@ class Session
       epointer +=1
       displaymessage(epointer,area.number,true)
     else
-      print("%WR%No More Email%W%")
+      print("%WR;No More Email%W;")
     end
     return epointer
   end
@@ -147,7 +147,7 @@ class Session
       epointer -=1
       displaymessage(epointer,area.tbl,true)
     else
-      print("%WR%No More Email%W%")
+      print("%WR;No More Email%W;")
     end
     return epointer
   end
@@ -162,7 +162,7 @@ class Session
 
     if total > 0 then
       delete_msg(del)
-      print "%WR%Email ##{epointer} [#{del}] deleted.%W%"
+      print "%WR;Email ##{epointer} [#{del}] deleted.%W;"
       ptr_check
     else
       print; print "No Messages"
@@ -233,14 +233,14 @@ class Session
     to = nil;zone = nil;net = nil;node = nil;point = nil
     pointer = get_pointer(@c_user,0)
     if pointer.access =~ /[RN]/
-      print "%RW%You do not have permission to send Email.%W%"
+      print "%RW;You do not have permission to send Email.%W;"
       return
     end
     print
     if !feedback then
 
       while true
-        inp = getinp("%C%To:%W% ")
+        inp = getinp("%C;To:%W; ")
         to,zone,net,node,point = netmailadr(inp)
         return if inp == ""
         if !to.nil? then
@@ -255,7 +255,7 @@ class Session
           if !area.nil? then
             print "Sending a QWK Netmail Message to: #{inp}"
           else
-            print "%RW%No route to that host found.  Type %G%QR%R% for a list of known hosts.%W%"
+            print "%RW;No route to that host found.  Type %G;QR%R; for a list of known hosts.%W;"
             return
           end
           m_type = Q_NETMAIL
@@ -270,7 +270,7 @@ class Session
           break
         end
         if !findlocal(inp) then
-          print "%WR%Local User not found...%W%"
+          print "%WR;Local User not found...%W;"
         else
           to = inp
           m_type = LOCAL
@@ -282,12 +282,12 @@ class Session
       to = SYSOPNAME # because it's feedback.
     end
     to.strip!
-    title = getinp("%G%Title:%W% ")
+    title = getinp("%G;Title:%W; ")
     return false if title == ""
     reply_text = ["***No Message to Quote***"]
     # m_type = LOCAL
     if @c_user.fullscreen then
-      write "%W%"
+      write "%W;"
       msg_file = write_quote_msg("")
       launch_editor(msg_file)
       suck_in_text(msg_file)
@@ -359,7 +359,7 @@ class Session
     done = false
     print
     if %w(R N).include?(pointer.access)
-      print "%RYou do not have write access."
+      print "%WR;You do not have write access.%W;"
       return false
     end
     m_type = LOCAL
@@ -391,12 +391,12 @@ class Session
     for x in 0..msg_text.length - 1 do
       msg_text[x] = "> #{msg_text[x].chop!}"
     end
-    print "%G%Title:%W% #{title}"
-    prompt = "%C%Enter New Subject or #{RET}:%W% "
+    print "%G;Title:%W; #{title}"
+    prompt = "%C;Enter New Subject or #{RET}:%W; "
     tempstr = getinp(prompt) {|inp| inp.upcase == "CR" ? crerror : true }
     title = tempstr if tempstr != ""
     if @c_user.fullscreen then
-      write "%W%"
+      write "%W;"
       msg_file = write_quote_msg(msg_text)
       launch_editor(msg_file)
       suck_in_text(msg_file)

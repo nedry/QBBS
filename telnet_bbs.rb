@@ -6,11 +6,11 @@ require 'messagestrings.rb'
 def showbbs(num)
   if o_total > 0 then
     bbs = fetch_other(num)
-    print "%R%#%W%#{num} %G% #{bbs.name}"
-    print "%C%Address:      %G%#{bbs.address}"
+    print "%R;#%W%#{num} %G;#{bbs.name}"
+    print "%C;Address:      %G;#{bbs.address}"
     print
   else
-    print "%WR%No Other BBS Systems%W%"
+    print "%WR;No Other BBS Systems%W;"
   end
 end
 
@@ -55,7 +55,7 @@ def addbbs
   if yes("Are you sure #{YESNO}", false, false)
     add_other(name,address)
   else
-    print "%WR%Aborted.%W%"
+    print "%WR;Aborted.%W;"
   end
   print
 end
@@ -70,7 +70,7 @@ def changebbsname(bpointer)
     bbs.name = name
     update_other(bbs)
   else
-    print "%WR%Not Changed.%W%"
+    print "%WR;Not Changed.%W;"
   end
   print
 end
@@ -84,7 +84,7 @@ def changebbsaddress(bpointer)
     bbs.address = address
     update_other(bbs)
   else
-    print "%WR%Not Changed.%W%"
+    print "%WR;Not Changed.%W;"
   end
   print
 end
@@ -104,12 +104,12 @@ end
 def displaybbs
   i = 0
   if o_total <= 0 then
-    print "%WR%No External BBS Systems.%W%"
+    print "%WR;No External BBS Systems.%W;"
    else
-  print "%G%Systems Available:"
+  print "%G;Systems Available:"
   for i in 1..(o_total)
     bbs = fetch_other(i)
-    print "   %B%#{i}...%G%#{bbs.name}"
+    print "   %B;#{i}...%G;#{bbs.name}"
   end
   end
   print
@@ -134,7 +134,7 @@ def bbs(parameters)
   if t == 0 then
     displaybbs if !existfileout('bbs',0,true)
     while true
-      prompt = "\r\n%W%BBS #[1-#{o_total}] (?/list): #{RET} to quit:  "
+      prompt = "\r\n%W;BBS #[1-#{o_total}] (?/list): #{RET} to quit:  %W;"
       getinp(prompt) {|inp|
         happy = inp.upcase
         t = happy.to_i

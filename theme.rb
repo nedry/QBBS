@@ -21,24 +21,24 @@ class Session
       }
 
     else
-      work_prompt = "%WR%NO PROMPT DEFINED%W%"
+      work_prompt = "%WR;NO PROMPT DEFINED%W;"
     end
     return work_prompt
   end
 
   def prompt_help(prompt)
     print
-    print "%WG%#{prompt} Prompt Parameters%W%"
-    print '%G%@sys@%C%    System Name'
-    print '%G%@area@%C%   Number of Current Board'
-    print '%G%@aname@%C%  Name of Current Board'
-    print '%G%@total@%C%  Number of Total Messages on Current Board'
-    print '%G%@new@%C%    Number of New Messages on Current Board'
-    print '%G%@left@%C%   Current User`s Remaining Time'
-    print '%G%@name@%C%   Current User`s Name'
+    print "%WG;#{prompt} Prompt Parameters%W;"
+    print '%G;@sys@%C;    System Name'
+    print '%G;@area@%C;   Number of Current Board'
+    print '%G;@aname@%C;  Name of Current Board'
+    print '%G;@total@%C;  Number of Total Messages on Current Board'
+    print '%G;@new@%C;    Number of New Messages on Current Board'
+    print '%G;@left@%C;   Current User`s Remaining Time'
+    print '%G;@name@%C;   Current User`s Name'
     if prompt == "Read" then
-      print '%G%@dir@%C%    Read Direction'
-      print "%G%%p%C%       Message Pointer" 
+      print '%G;@dir@%C;    Read Direction'
+      print "%G;%p%C;       Message Pointer" 
     end
     print
   end
@@ -62,12 +62,12 @@ class Session
   def displaytheme(number)
     theme = fetch_theme(number)
     print
-    print "%R%#%W%#{number} %G% #{theme.name}"
-    print "%C%Description: %G%#{theme.description}"
-    print "%C%Text Directory: %G%#{theme.text_directory}"
-    print "%C%No Main Menu:  %W%#{theme.nomainmenu ? "On" : "Off"}"
-    print "%C%Main Prompt: #{display_test_prompt(theme.main_prompt)}"
-    print "%C%Read Prompt: #{display_test_prompt(theme.read_prompt)}"
+    print "%R;#%W%#{number} %G; #{theme.name}"
+    print "%C;Description: %G;#{theme.description}"
+    print "%C;Text Directory: %G;#{theme.text_directory}"
+    print "%C;No Main Menu:  %W;#{theme.nomainmenu ? "On" : "Off"}"
+    print "%C;Main Prompt: #{display_test_prompt(theme.main_prompt)}"
+    print "%C;Read Prompt: #{display_test_prompt(theme.read_prompt)}"
 
   end
 
@@ -111,7 +111,7 @@ class Session
     if yes("Are you sure #{YESNO}", false, false,true)
       add_theme(name,desc)
     else
-      print "%WR%Aborted.%W%"
+      print "%WR;Aborted.%W;"
     end
     print
   end
@@ -125,7 +125,7 @@ class Session
       theme.main_prompt = prompt
       update_theme(theme)
     else
-      print "%WR%Not Changed.%W%"
+      print "%WR;Not Changed.%W;"
     end
     print
   end
@@ -140,7 +140,7 @@ class Session
       theme.read_prompt = prompt
       update_theme(theme)
     else
-      print "%WR%Not Changed.%W%"
+      print "%WR;Not Changed.%W;"
     end
     print
   end
@@ -153,7 +153,7 @@ class Session
       theme.name = name
       update_theme(theme)
     else
-      print "%WR%Not Changed.%W%"
+      print "%WR;Not Changed.%W;"
     end
     print
   end
@@ -166,7 +166,7 @@ class Session
       theme.text_directory = path
       update_theme(theme)
     else
-      print "%WR%Not Changed.%W%"
+      print "%WR;Not Changed.%W;"
     end
     print
   end
@@ -186,7 +186,7 @@ class Session
       displaytheme(tpointer)
     else
       print
-      print "%WR%No themes.  That's a crash for sure.%W%"
+      print "%WR;No themes.  That's a crash for sure.%W;"
     end
   end
 
@@ -206,15 +206,15 @@ class Session
 
     i = 0
     if t_total < 1 then
-      print "%WR%No Themes.  That's a crash!%W%"
+      print "%WR;No Themes.  That's a crash!%W;"
       return
     end
     existfileout("themehdr",0,true)
     if !existfileout('themes',0,true)
-      print "%G%Available Themes:"
+      print "%G;Available Themes:"
       for i in 1..(t_total)
         theme = fetch_theme(i)
-        print "   %B%#{i}...%G%#{theme.name}: %C%#{theme.description}"
+        print "   %B;#{i}...%G;#{theme.name}: %C;#{theme.description}"
       end
     end
     print
@@ -229,7 +229,7 @@ class Session
       displaythemes
 
       defaulttheme
-      prompt = "\r\n%W%Theme #[1-#{t_total}] ? #{RET} to quit: "
+      prompt = "\r\n%W;Theme #[1-#{t_total}] ? #{RET} to quit: "
       while true
         #  getinp(prompt, :nonempty) {|inp|    <-- removed :nonempty which prevents the loop from exiting on <return>
         getinp(prompt) {|inp|
@@ -243,7 +243,7 @@ class Session
           else
             if t > 0 and t <= t_total then
               theme = fetch_theme(t)
-              print "%WG%Setting the #{theme.name} theme.%W%"
+              print "%WG;Setting the #{theme.name} theme.%W;"
               add_theme_to_user(@c_user,theme)
               theme = get_user_theme(@c_user)
               @cmd_hash = hash_commands(@c_user.theme_key)

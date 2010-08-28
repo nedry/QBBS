@@ -23,8 +23,8 @@ class Session
   def displayirc
     i = 0
     if @irc_who.len > 0 then
-      cols = %w(Y G C).map {|i| "%"+i +"%"}
-      hcols = %w(YW GW CW).map {|i| "%"+i +"%"}
+      cols = %w(Y G C).map {|i| "%"+i +";"}
+      hcols = %w(YW GW CW).map {|i| "%"+i +";"}
       headings = %w(Node User Channel)
       widths = [5,26,20]
       header = hcols.zip(headings).map {|a,b| a+b}.formatrow(widths)
@@ -36,14 +36,14 @@ class Session
 
     end
     print
-    print "   %Y%*%R% = IRC user (who may also be logged in via telnet).  %Y%W%R% = Web user."
+    print "   %Y;*%R; = IRC user (who may also be logged in via telnet).  %Y;W%R; = Web user."
     print
   end
 
   def displayweb
     i = 0
     if w_total > 0 then
-      cols = %w(Y G C M).map {|i| "%"+i + "%" }
+      cols = %w(Y G C M).map {|i| "%"+i + ";" }
       headings = %w(Node User Location Where)
       widths = [5,26,20,16]
       header = cols.zip(headings).map {|a,b| a+b}.formatrow(widths)
@@ -63,11 +63,11 @@ class Session
         print "Telnet Users Online:"
         print
       end
-      cols = %w(Y G C M).map {|i| "%"+i +"%"}
-      hcols = %w(WY WG WC WM).map {|i| "%"+i +"%"}
+      cols = %w(Y G C M).map {|i| "%"+i +";"}
+      hcols = %w(WY WG WC WM).map {|i| "%"+i +";"}
       headings = %w(Node User Location From)
       widths = [5,26,20,16]
-      header = hcols.zip(headings).map {|a,b| a+b}.formatrow(widths) + "%W%"
+      header = hcols.zip(headings).map {|a,b| a+b}.formatrow(widths) + "%W;"
       test= cols.zip(headings).map {|a,b| a+b}
       underscore = cols.zip(['-'*30]*5).map{|a,b| a+b}.formatrow(widths)
       print header

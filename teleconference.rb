@@ -13,8 +13,8 @@ class Session
 
   def header
     print ""
-    print "%GWelcome to QUARKirc v1.0 You are in the %C#{@irc_channel} %Gchannel."
-    print "%GType %Y? %Gfor Help  %Y/QUIT %Gto Quit\r\n"
+    print "%G;Welcome to QUARKirc v1.0 You are in the %C;#{@irc_channel} %G;channel."
+    print "%G;Type %Y;? %G;for Help  %Y;/QUIT %G;to Quit\r\n"
   end
 
 
@@ -50,7 +50,7 @@ class Session
       if m then
         puts "i've reached the server notice get"
         if m.kind_of? IRC::Message::ServerNotice then
-          print "%Y#{m.params}"
+          print "%Y;#{m.params}"
 
         elsif m.kind_of? IRC::Message::Numeric then
           puts m.message
@@ -62,19 +62,19 @@ class Session
             @irc_client.login(new_alias, @c_user.alias, "8", "*", "Telnet User")
           when IRC::RPL_CREATED
             (/^:(.*):(.*):(.*)/) =~ m.message
-            print "%Y*** #{$2}:#{$3}"
+            print "%Y;*** #{$2}:#{$3}"
           when IRC::RPL_LUSEROP
             (/^:(\S*)\s(\d*)\s(\S*)\s(\d*)\s:(.*)/) =~ m.message
-            print "%Y*** There are #{$4} #{$5}"
+            print "%Y;*** There are #{$4} #{$5}"
           when IRC::RPL_LUSERCHANNELS
             (/^:(\S*)\s(\d*)\s(\S*)\s(\d*)\s:(.*)/) =~ m.message
-            print "%Y*** There are #{$4} #{$5}"
+            print "%Y;*** There are #{$4} #{$5}"
           else
             (/^:(\S*)\s(\S*)\s(\S*)\s(.*)/) =~ m.message
             out = $4
             hippy = (/^:(.*)/) =~ out
             out = $1 if !hippy.nil?
-            print "%Y*** #{out}"
+            print "%Y;*** #{out}"
           end
         end
 
@@ -92,7 +92,7 @@ class Session
     end
 
     print ""
-    prompt = "%G>%W"
+    prompt = "%G;>%W;"
     if game then ogfileout("gd_enter",1,true) else header end
 
     while true
@@ -167,9 +167,9 @@ class Session
       @c_user.alias = defaultalias(@c_user.name)
       update_user(@c_user)
       print <<-here
-      %RYou have not selected a chat alias!
-      %GYou have been assigned the default alias of %Y#{@c_user.alias}
-      %GThis can be changed from the user configuration menu [#%Y%%G]
+      %R;You have not selected a chat alias!
+      %G;You have been assigned the default alias of %Y;#{@c_user.alias}
+      %G;This can be changed from the user configuration menu [#%Y;%%G;]
       here
       return false
     end

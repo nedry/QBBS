@@ -5,8 +5,8 @@ class Session
   def displaybull(number)
     bulletin = fetch_bulletin(number)
     print
-    print "%R%#%W#{number} %G% #{bulletin.name}"
-    print "%C%Path: %G%#{bulletin.path}"
+    print "%R;#%W#{number} %G; #{bulletin.name}"
+    print "%C;Path: %G;#{bulletin.path}"
   end 
 
   def bullmaint
@@ -46,7 +46,7 @@ class Session
     if yes("Are you sure #{YESNO}", false, false,true)
       add_bulletin(name, path)
     else
-      print "%R%Aborted."
+      print "%WR;Aborted.%W;"
     end
     print
   end
@@ -59,7 +59,7 @@ class Session
       bulletin.name = name
       update_bulletin(bulletin)
     else 
-      print "%R%Not Changed." 
+      print "%WR;Not Changed.%W;" 
     end
     print
   end
@@ -74,7 +74,7 @@ class Session
       update_bulletin(bulletin)
       print
     else
-      print "%R%Not Changed."
+      print "%WR;Not Changed.%W;"
     end
   end
 
@@ -93,7 +93,7 @@ class Session
       displaybull(bpointer)
     else 
       print
-      print "#%R%No bulletins.  Why not add one?" 
+      print "#%WR;No bulletins.  Why not add one?%W;" 
     end
   end
 
@@ -105,15 +105,15 @@ class Session
 
     i = 0
     if b_total < 1 then
-      print "%WR%No Bulletins%W%"
+      print "%WR;No Bulletins%W;"
       return
     end
    ogfileout("bullethdr",0,true)
    if !existfileout('bulletins',0,true)
-    print "%G%Bulletins Available:"
+    print "%G;Bulletins Available:"
     for i in 1..(b_total)
       bulletin = fetch_bulletin(i)
-      print "   %B%#{i}...%G%#{bulletin.name}"
+      print "   %B;#{i}...%G;#{bulletin.name}"
     end
   end
     print
@@ -124,7 +124,7 @@ class Session
 
     if t == 0 then
       displaybullet  if !existfileout('bulletins',0,true)
-      prompt = "\r\n%W%Bulletin #[1-#{b_total}] ? #{RET} to quit: " 
+      prompt = "\r\n%W;Bulletin #[1-#{b_total}] ? #{RET} to quit: " 
       while true
       #  getinp(prompt, :nonempty) {|inp|    <-- removed :nonempty which prevents the loop from exiting on <return>
           getinp(prompt) {|inp|

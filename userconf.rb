@@ -1,20 +1,20 @@
 class Session
   def usersettingsmenu
     existfileout('usersethdr',0,true)
-    print "%G%[%W% C %G%]hat Alias: %W%#{@c_user.alias}"
-    print "%G%[%W% E %G%]Full Screen Editor: %W%#{@c_user.fullscreen ? "On" : "Off"}"
-    print "%G%[%W% G %G%]raphics (ANSI): %W%#{@c_user.ansi ? "On" : "Off"}"          
-    print "%G%[%W% F %G%]ast Logon: %W%#{@c_user.fastlogon ? "On" : "Off"}" 
-    print "%G%[%W% L %G%]ines per Page: %W%#{@c_user.length}"    
-    print "%G%[%W% M %G%]ore Prompt: %W%#{@c_user.more ? "On" : "Off"}"
-    print "%G%[%W% W %G%]idth: %W%#{@c_user.width}"
-    print "%G%[%W% P %G%]assword"                        
-    print "%G%[%W% Z %G%]ip Read Settings"
-    print "%G%[%W% T %G%]heme"
+    print "%G;[%W;C%G;]hat Alias: %W;#{@c_user.alias}"
+    print "%G;[%W;E%G;]Full Screen Editor: %W;#{@c_user.fullscreen ? "On" : "Off"}"
+    print "%G;[%W;G%G;]raphics (ANSI): %W;#{@c_user.ansi ? "On" : "Off"}"          
+    print "%G;[%W;F%G;]ast Logon: %W;#{@c_user.fastlogon ? "On" : "Off"}" 
+    print "%G;[%W;L%G;]ines per Page: %W;#{@c_user.length}"    
+    print "%G;[%W;M%G;]ore Prompt: %W;#{@c_user.more ? "On" : "Off"}"
+    print "%G;[%W;W%G;]idth: %W;#{@c_user.width}"
+    print "%G;[%W;P%G;]assword"                        
+    print "%G;[%W;Z%G;]ip Read Settings"
+    print "%G;[%W;T%G;]heme"
     if SCREENSAVER
       saver = "NONE"
       saver = get_user_screen(@c_user).name if !get_user_screen(@c_user).nil?
-      print "%G%[%W% S %G%]creen Saver:  %W%#{saver}"
+      print "%G;[%W;S%G;]creen Saver:  %W;#{saver}"
     end
     print
   end

@@ -1,13 +1,13 @@
 
 
-%C%                   GROUPS MENU
+%C;                   GROUPS MENU
 
-%W%[%Y%A%W%]%Gdd a Group        %W%[%Y%NQ%W%]%GAdd a QWK/REP network     
-%W%[%Y%N%W%]%Game               %W%[%Y%S%W%]%Gecure (lock)
-%W%[%Y%PU%W%]%GPage User        %W%[%Y%QR%W%]%GRemove a QWK/REP network
-%W%[%Y%W%W%]%Gho's Online       %W%[%Y%D%W%]%GRemove a Group
-%W%[%Y%Q%W%]%Guit               %W%[%Y%/%W%]%GRedisplay
-%W%[%Y%?%W%]%GThis Menu
+%W;[%Y;A%W;]%G;dd a Group        %W;[%Y;NQ%W;]%G;Add a QWK/REP network     
+%W;[%Y;N%W;]%G;ame               %W;[%Y;S%W;]%G;ecure (lock)
+%W;[%Y;PU%W;]%G;Page User        %W;[%Y;QR%W;]%G;Remove a QWK/REP network
+%W;[%Y;W%W;]%G;ho's Online       %W;[%Y;D%W;]%G;Remove a Group
+%W;[%Y;Q%W;]%G;uit               %W;[%Y;/%W;]%G;Redisplay
+%W;[%Y;?%W;]%G;This Menu
 
-%C%Use a %R%; %C%to stack commands together %W%(%C%I.E., %R%%;a;q%W%)
-%C%Some commands take parameters %W%(%C%I.E., %R%a2%W%)
+%C;Use a %R%; %C%to stack commands together %W;(%C;I.E., %R;%;a;q%W;)
+%C;Some commands take parameters %W;(%C;I.E., %R;a2%W;)

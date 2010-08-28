@@ -5,14 +5,14 @@ require "messagestrings.rb"
 def showscreen(number)
   if s_total > 0 then 
     screen = fetch_screen(number)
-    print "%R%#%W%#{number} %G% #{screen.name}"
-    print "%C%Path:      %G%#{screen.path}"
-    print "%C%Type:      %G%#{screen.d_type}"
-    print "%C%Drop Path: %G%#{screen.d_path}"
-    print "%C%Drop Type: %G%#{screen.droptype}"
+    print "%R;#%W;#{number} %G; #{screen.name}"
+    print "%C;Path:      %G;#{screen.path}"
+    print "%C;Type:      %G;#{screen.d_type}"
+    print "%C;Drop Path: %G;#{screen.d_path}"
+    print "%C;Drop Type: %G;#{screen.droptype}"
     print
   else 
-    print "%WR%No Screen Savers%W%"
+    print "%WR;No Screen Savers%W;"
   end
 end
 
@@ -57,7 +57,7 @@ def addscreen
   if yes("Are you sure #{YESNO}", false, false,true)
     add_screen(name,path)
   else
-    print "%WR%Aborted.%W%"
+    print "%WR;Aborted.%W;"
   end
   print
 end
@@ -71,7 +71,7 @@ def changescreenname(dpointer)
     screen.name = name
     update_screen(screen)
   else
-    print "%WR%Not Changed.%W%"
+    print "%WR;Not Changed.%W;"
   end
   print
 end
@@ -128,15 +128,15 @@ def displayscreens
   existfileout("screenhdr",0,true)
   if !existfileout('screen',0,true)
   if s_total < 1 then
-    print "%WR%No Screensavers.  Sorry!.%W%"
+    print "%WR;No Screensavers.  Sorry!.%W;"
     return
   end
-  print "%G%Screensavers Available:"
+  print "%G;Screensavers Available:"
   for i in 1..(s_total)
     screen = fetch_screen(i)
-    print "   %B%#{i}...%G%#{screen.name}"
+    print "   %B;#{i}...%G;#{screen.name}"
   end
-    print "   %B%N...%G%No Screen Savers"
+    print "   %B;N...%G;No Screen Savers"
    print
   end
 end
@@ -150,7 +150,7 @@ def screensaver(parameters)
   if t == 0 then
     displayscreens  if !existfileout('screens',0,true)
     while true
-      prompt = "\r\n%W%Screensaver #[1-#{s_total}] ? #{RET} to quit: "
+      prompt = "\r\n%W;Screensaver #[1-#{s_total}] ? #{RET} to quit: "
       getinp(prompt) {|inp|
         happy = inp.upcase
         t = happy.to_i
@@ -163,7 +163,7 @@ def screensaver(parameters)
         else
                if t > 0 and t <= t_total then
               screen = fetch_screen(t)
-              print "%WG%Setting the #{screen.name} Screensaver.%W%"
+              print "%WG;Setting the #{screen.name} Screensaver.%W;"
               add_screen_to_user(@c_user,screen)            
               return
             end

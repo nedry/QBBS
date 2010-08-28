@@ -154,7 +154,7 @@ module IOUtils
     while true
       temp = getinp(prompt).strip
       if temp.length > len then
-        print "%R#{msg} too long.  40 Character Maximum"
+        print "%WR;#{msg} too long.  40 Character Maximum%W;"
       else break end
     end
     return temp
@@ -192,7 +192,7 @@ class Session
       else 
         if !@c_user.nil? and new_pages(@c_user) > 0 then
           pages = get_all_pages(@c_user)
-          print; pages.each {|x| print "%W%PAGE %W%(%C%#{fetch_user(x.from).name}%W%): %WY%#{x.message}%W%"}
+          print; pages.each {|x| print "%W;PAGE %W;(%C;#{fetch_user(x.from).name}%W;): %WY;#{x.message}%W;"}
           prompt += whole if !prompt.nil? 
            write prompt
            clear_pages(@c_user)
@@ -253,9 +253,9 @@ class Session
 
   def warntimeout(idle, warn, warned, limit, todotime, prompt)
     if (idle >= limit)
-      print; print "%WR%Idle time limit exceeded.  Disconnecting!%W%"
+      print; print "%WR;Idle time limit exceeded.  Disconnecting!%W;"
       print
-      print "%WR%NO CARRIER%W%"
+      print "%WR;NO CARRIER%W;"
       sleep(5)
       hangup
     end
@@ -263,7 +263,7 @@ class Session
     if (idle >= warn) and (!warned) 
       screen = get_user_screen(@c_user)
       if SCREENSAVER  and @logged_on and !screen.nil? then
-        print "%WR%Activating Screen Saver...%W%"
+        print "%WR;Activating Screen Saver...%W;"
         sleep(1)
         door_do(screen.path,"")
         print (CLS)
@@ -273,7 +273,7 @@ class Session
         write prompt
       else
       if todotime > 1 then tempstr = "minutes" else tempstr = "minute" end
-        print; print "%WR%You have #{todotime} #{tempstr} in which to do something!%W%"
+        print; print "%WR;You have #{todotime} #{tempstr} in which to do something!%W;"
         write prompt
         warned = true
       end

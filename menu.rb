@@ -20,19 +20,19 @@ def readmenu(args)
      when READ
          o_prompt = message_prompt(theme.read_prompt,SYSTEMNAME,@c_area,0,l_read,h_msg,area.name,sdir).gsub("%p","#{ptr}")
       when BULLETIN
-        o_prompt = eval('"%W%#{sdir}Bulletin [%p] (1-#{b_total}): "').gsub("%p","#{ptr}")
+        o_prompt = eval('"%W;#{sdir}Bulletin [%p] (1-#{b_total}): "').gsub("%p","#{ptr}")
       when USER
-        o_prompt = eval('"%W%#{sdir}User [%p] (1-#{u_total}): "').gsub("%p","#{ptr}")
+        o_prompt = eval('"%W;#{sdir}User [%p] (1-#{u_total}): "').gsub("%p","#{ptr}")
       when THEME
-        o_prompt = eval('"%W%#{sdir}Theme [%p] (1-#{t_total}): "').gsub("%p","#{ptr}")
+        o_prompt = eval('"%W;#{sdir}Theme [%p] (1-#{t_total}): "').gsub("%p","#{ptr}")
       when AREA
-        o_prompt = eval('"%W%#{sdir} Area [%p] (0-#{a_total - 1}): "').gsub("%p","#{ptr}")
+        o_prompt = eval('"%W;#{sdir} Area [%p] (0-#{a_total - 1}): "').gsub("%p","#{ptr}")
       when OTHER
-        o_prompt = eval('"%W%#{sdir}BBS System [%p] (1-#{o_total}): "').gsub("%p","#{ptr}")
+        o_prompt = eval('"%W;#{sdir}BBS System [%p] (1-#{o_total}): "').gsub("%p","#{ptr}")
       when DOOR
-        o_prompt = eval('"%G%#{sdir}Door [%p] (1-#{d_total}): %W%"').gsub("%p","#{ptr}")
+        o_prompt = eval('"%G;#{sdir}Door [%p] (1-#{d_total}): %W;"').gsub("%p","#{ptr}")
       when SCREEN
-        o_prompt = eval('"%G%#{sdir}Screen [%p] (1-#{s_total}): %W%"').gsub("%p","#{ptr}")
+        o_prompt = eval('"%G;#{sdir}Screen [%p] (1-#{s_total}): %W;"').gsub("%p","#{ptr}")
     end
 
    inp  = getinp (o_prompt)
@@ -65,7 +65,7 @@ def up(ptr, high, out)
       stop = zipscan(@c_area)
       if stop.nil? then return else ptr = stop end
     else
-      print("%WR%Can't go higher%W%")
+      print("%WR;Can't go higher%W;")
     end
   end
   ptr
@@ -75,7 +75,7 @@ def down(ptr, low)
   if ptr > low then
     ptr = ptr - 1
   else
-    print("%WG%Can't go lower%W%")
+    print("%WG;Can't go lower%W;")
   end
   ptr
 end
@@ -84,7 +84,7 @@ def jumpto(ptr, newptr, low, high)
   if (newptr >= low) and (newptr <= high) then 
     newptr
   else
-    print "%WR%Out of Range.%W%"
+    print "%WR;Out of Range.%W;"
     ptr
   end
 end

@@ -204,11 +204,11 @@ class Session
     cont = true
 
     if !wall_empty  then
-      hcols = %w(WY WG WR).map {|i| "%"+i +"%"}
-      cols = %w(Y G R).map {|i| "%"+i +"%"}
+      hcols = %w(WY WG WR).map {|i| "%"+i +";"}
+      cols = %w(Y G R).map {|i| "%"+i +";"}
       headings = %w(Name Time-On Connection)
       widths = [30,20,10]
-      header = hcols.zip(headings).map {|a,b| a+b}.formatrow(widths) +"%W%"
+      header = hcols.zip(headings).map {|a,b| a+b}.formatrow(widths) +"%W;"
       underscore = cols.zip(['-'*30]*5).map{|a,b| a+b}.formatrow(widths) 
       print header
       print underscore if !@c_user.ansi
@@ -251,7 +251,7 @@ class Session
 
     if @c_user.fastlogon
       print
-      print "%R%Fast User Logon Mode %Y%On%R%.  Skipping Logon Information."
+      print "%WR;Fast User Logon Mode %Y%On%R%.  Skipping Logon Information.%w;"
       print "This may be changed at the User Configuration Menu."
       print
     end
@@ -266,7 +266,7 @@ class Session
       existfileout('quote',0,true)
     else
       print
-      print "%WR%Quote of the Day is disabled%W%"
+      print "%WG;Quote of the Day is disabled%W;"
       print
     end
   end

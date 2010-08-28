@@ -1,15 +1,14 @@
- %C%
-    __  ___                                   __  ___                
+ %C;    __  ___                                   __  ___                
    /  |/  /__  ______________ _____ ____     /  |/  /__  ____  __  __
   / /|_/ / _ \/ ___/ ___/ __ `/ __ `/ _ \   / /|_/ / _ \/ __ \/ / / /
  / /  / /  __(__  |__  ) /_/ / /_/ /  __/  / /  / /  __/ / / / /_/ / 
 /_/  /_/\___/____/____/\__,_/\__, /\___/  /_/  /_/\___/_/ /_/\__,_/  
                             /____/                                   
 
-    %W%[ %Y%A %W%]%G%rea Change          %W%[ %Y%E %W%]%G%-Mail              %W%[ %Y%K %W%]%G%ill Message%W%(%G%s%W%)     
-    %W%[ %Y%P %W%]%G%ost a Message       %W%[ %Y%PU %W%]%G%Page User         %W%[ %Y%R %W%]%G%eply     
-    %W%[ %Y%Q %W%]%G%uit to Main Menu    %W%[ %Y%W %W%]%G%ho is Online       %W%[ %Y%+ %W%]%G%Forward Read     
-    %W%[ %Y%- %W%]%G%Backward Read       %W%[ %Y%/ %W%]%G% Re-Read Message   %W%[ %Y%FH %W%]%G%Full Header
-    %W%[ %Y%? %W%]%G%This Menu
-          %C%Enter a  %W%<%C%RETURN %W%> %C%to read the Next %W%/%C% Previous Msg.
-         %R%; %C%Between Commands Stacks then  %W%(%CI.E., %R%pu;sysop;hi %W%)
+    %W;[%Y;A%W;]%G;rea Change          %W;[%Y;E%W;]%G;-Mail              %W;[%Y;K%W;]%G;ill Message%W%(%G%s%W%)     
+    %W;[%Y;P%W;]%G;ost a Message       %W;[%Y;PU%W;]%G;Page User         %W;[%Y;R%W;]%G;eply     
+    %W;[%Y;Q%W;]%G;uit to Main Menu    %W;[%Y;W%W;]%G;ho is Online       %W;[%Y;+%W;]%G;Forward Read     
+    %W;[%Y;-%W;]%G;Backward Read       %W;[%Y;/%W;]%G; Re-Read Message   %W;[%Y;FH%W;]%G;Full Header
+    %W;[%Y;?%W;]%G;This Menu
+          %C;Enter a  %W%<%C%RETURN %W%> %C%to read the Next %W%/%C% Previous Msg.
+         %R;; %C;Between Commands Stacks then  %W;(%CI.E., %R;pu;sysop;hi %W;)

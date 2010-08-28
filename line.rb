@@ -23,7 +23,7 @@ class Session
           j = 0
           len = reply_text ? reply_text.length : 0
           start, stop = getlinerange(len, parameters,true)
-          write "%W%"
+          write "%W;"
 
           if !start.nil?  and !stop.nil? then
             for i in start..stop do
@@ -31,7 +31,7 @@ class Session
               j +=1
               if j == u.length and u.more then
                 cont = moreprompt
-                write "%W%"
+                write "%W;"
                 j = 1
               end
               break if !cont
@@ -49,7 +49,7 @@ class Session
             len = (@lineeditor.msgtext.nil?) ? 0 : @lineeditor.msgtext.length
             @lineeditor.line = len + 1
           else
-            print "%RW%Aborted.%W%"
+            print "%RW;Aborted.%W;"
           end
         when "R"
           return
@@ -83,37 +83,37 @@ class Session
   end
 
   def displaycolors
-    write "%Y%"
+    write "%Y;"
     @socket.write "Color Codes: "
-    write "%R%"; @socket.write "%R% "
-    write "%r%"; @socket.write "%r% "
-    write "%G%"; @socket.write "%G% "
-    write "%g%"; @socket.write "%g% "
-    write "%Y%"; @socket.write "%Y% "
-    write "%y%"; @socket.write "%y% "
-    write "%B%"; @socket.write "%B% "
-    write "%b%"; @socket.write "%b% "
-    write "%M%"; @socket.write "%M% "
-    write "%m%"; @socket.write "%m% "
-    write "%C%"; @socket.write "%C% "
-    write "%c%"; @socket.write "%c% "
-    write "%W%"; @socket.write "%W% "
-    write "%w%"; @socket.write "%w%"
+    write "%R;"; @socket.write "%R; "
+    write "%r;"; @socket.write "%r; "
+    write "%G;"; @socket.write "%G; "
+    write "%g;"; @socket.write "%g; "
+    write "%Y;"; @socket.write "%Y; "
+    write "%y;"; @socket.write "%y; "
+    write "%B;"; @socket.write "%B; "
+    write "%b;"; @socket.write "%b; "
+    write "%M;"; @socket.write "%M; "
+    write "%m;"; @socket.write "%m; "
+    write "%C;"; @socket.write "%C; "
+    write "%c;"; @socket.write "%c; "
+    write "%W;"; @socket.write "%W; "
+    write "%w;"; @socket.write "%w;"
     print
-    print "%G%Background Codes follow Forground Codes: "
-    write "%WR% "; @socket.write "%WR% "
-    write "%W% %wr%"; @socket.write "%wr%"
-    write "%W% %WG%"; @socket.write "%WG%"
-    write "%W% %wg%"; @socket.write "%wg%"
-    write "%W% %WY%"; @socket.write "%WY%"
-    write "%W% %wy%"; @socket.write "%wy%"
-    write "%W% %WB%"; @socket.write "%WB%"
-    write "%W% %wb%"; @socket.write "%wb%"
-    write "%W% %WM%"; @socket.write "%WM%"
-    write "%W% %wm%"; @socket.write "%wm%"
-    write "%W% %WC%"; @socket.write "%WC%"
-    write "%W% %wc%"; @socket.write "%wc%"
-    write "%W% %W%"
+    print "%G;Background Codes follow Forground Codes: "
+    write "%WR; "; @socket.write "%WR% "
+    write "%W; %wr;"; @socket.write "%wr;"
+    write "%W; %WG;"; @socket.write "%WG;"
+    write "%W; %wg;"; @socket.write "%wg;"
+    write "%W; %WY;"; @socket.write "%WY;"
+    write "%W; %wy;"; @socket.write "%wy;"
+    write "%W; %WB;"; @socket.write "%WB;"
+    write "%W; %wb;"; @socket.write "%wb;"
+    write "%W; %WM;"; @socket.write "%WM;"
+    write "%W; %wm;"; @socket.write "%wm;"
+    write "%W; %WC;"; @socket.write "%WC;"
+    write "%W; %wc;"; @socket.write "%wc;"
+    write "%W; %W;"
     print
   end
 
@@ -163,7 +163,7 @@ class Session
       @lineeditor.line = (insertline)
       return true
     else
-      print "%WR%Invalid input!%W%"
+      print "%WR;Invalid input!%W;"
     end
   end
 
@@ -232,15 +232,15 @@ class Session
 
   def lineedit(startline,reply_text)
 
-    print "%G%Enter message text.  %Y%#{MAXMESSAGESIZE}%G% lines maximum."
+    print "%G;Enter message text.  %Y;#{MAXMESSAGESIZE}%G; lines maximum."
     if @c_user.ansi
       then
         displaycolors
       end
       print
-      print "%WR%/EX for editor prompt, /S to save, /Q to quote, /A to abort.%W%"
+      print "%WG;/EX for editor prompt, /S to save, /Q to quote, /A to abort.%W;"
 
-      write "%C%"
+      write "%C;"
 
       len 		= 0
       done 		= false
@@ -267,7 +267,7 @@ class Session
             offset = @lineeditor.line < len ? 2 : 0
             @lineeditor.msgtext[@lineeditor.line - offset,0] = workingline
             len = @lineeditor.msgtext.length
-            if len == (MAXMESSAGESIZE - 2) then print "%WR%Two Lines Left!%W%" end
+            if len == (MAXMESSAGESIZE - 2) then print "%WR;Two Lines Left!%W;" end
           end # of Case
 
         end # of Inner Until

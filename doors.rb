@@ -118,19 +118,19 @@ def writedoorfile(outfile)
     doorfile.close
   rescue
     add_log_entry(8,Time.now,"No path for door file #{outfile}")
-    print "%WR%Could not write door info file... Please tell sysop.%W%"
+    print "%WR;Could not write door info file... Please tell sysop.%W;"
   end 
 end
 
 def showdoor(number)
   if d_total > 0 then 
     door = fetch_door(number)
-    print "%R%#%W%#{number} %G% #{door.name}"
-    print "%C%Path:      %G%#{door.path}"
-    print "%C%Type:      %G%#{door.d_type}"
-    print "%C%Drop Path: %G%#{door.d_path}"
-    print "%C%Drop Type: %G%#{door.droptype}"
-    print "%C%Level:     %G%#{door.level}"
+    print "%R;#%W%#{number} %G; #{door.name}"
+    print "%C;Path:      %G;#{door.path}"
+    print "%C;Type:      %G;#{door.d_type}"
+    print "%C;Drop Path: %G;#{door.d_path}"
+    print "%C;Drop Type: %G;#{door.droptype}"
+    print "%C;Level:     %G;#{door.level}"
     print
   else 
     print "%WR%No Doors%W%"
@@ -179,7 +179,7 @@ def adddoor
   if yes("Are you sure #{YESNO}", false, false,true)
     add_door(name,path)
   else
-    print "%WR%Aborted.%W%"
+    print "%WR;Aborted.%W;"
   end
   print
 end
@@ -193,7 +193,7 @@ def changedoorname(dpointer)
     door.name = name
     update_door(door)
   else
-    print "%WR%Not Changed.%W%"
+    print "%WR;Not Changed.%W;"
   end
   print
 end
@@ -258,13 +258,13 @@ def displaydoors
   existfileout("doorhdr",0,true)
   if !existfileout('door',0,true)
   if d_total < 1 then
-    print "%WR%No External Programs.%W%"
+    print "%WR;No External Programs.%W;"
     return
   end
-  print "%G%Games Available:"
+  print "%G;Games Available:"
   for i in 1..(d_total)
     door = fetch_door(i)
-    print "   %B%#{i}...%G%#{door.name}"
+    print "   %B;#{i}...%G;#{door.name}"
   end
   print
   end
@@ -297,7 +297,7 @@ def rundoor(number)
           @c_user.rsts_pw = RSTS_DEFAULT_PSWD
           update_user(@c_user)
         else
-          print "\r\nSorry... out of accounts.  Please tell sysop!"
+          print "\r\n%WR;Sorry... out of accounts.  Please tell sysop!%W;"
           add_log_entry(8,Time.now,"#{@c_user.name} Out of RSTS/E Accounts Error.")
         end
       end
@@ -310,7 +310,7 @@ def rundoor(number)
       door_do(door.path,door.d_type)
     end
   else
-    print "%WR%You do not have access.%W%"
+    print "%WR;You do not have access.%W;"
   end
   @who.user(@c_user.name).where = "Main Menu"
   update_who_t(@c_user.name,"Main Menu")
