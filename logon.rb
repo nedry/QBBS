@@ -231,7 +231,6 @@ class Session
   end
 
   def logandgreetuser(username, ip)
-    puts "here i am"
     system = fetch_system
     system.total_logons += 1
     system.logons_today += 1

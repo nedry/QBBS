@@ -23,14 +23,13 @@ New features in this version:  %W;o%G; Ruby 1.9 Compatable
                                %W;o%G; Screen Savers
                                %W;o%G; Themes
                                %W;o%G; Multiple QWK networks
-                               %W;o%G; A full screen editor that is broken.  Still using pico %WR;):%W;
 
 
 %PAUSE%
 %WHOLIST%
 %PAUSE%
 
-%WG%                            Last 10 Callers                               %W%
+%WG;                            Last 10 Callers                               %W;
 
 %LASTCALL%
 %PAUSE%

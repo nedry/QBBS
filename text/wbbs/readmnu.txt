@@ -15,4 +15,4 @@ OTHER COMMANDS:
   %C;CR%W;-%G;Credits    %C;S%W;-%G;Status      %C; Y%W;-%G;Yell       %C;V%W;-%G;Private mail  %C;Q%W;-%G;Questionaire
   %C;PU%W;-%G;Page User  %C;W%W;-%G;Who's Online %C;D%W;-%G;Doors      %C;T%W;-%G;Teleconfernce
 %SYS%
-  %C;X%W;-%G%Sysop Menu
+  %C;X%W;-%G;Sysop Menu

@@ -7,7 +7,7 @@ class Session
   def displayuser(number)
     user = fetch_user(number)
     ldate = user.laston.strftime("%A %B %d, %Y / %I:%M%p (%Z)") 
-    write "%R;#%W%#{number} %G% #{user.name}"
+    write "%R;#%W;#{number} %G; #{user.name}"
     write "%WR; [DELETED]%W;" if user.deleted 
     write "%WG; [LOCKED]%W;" if user.locked
     print ""

@@ -22,6 +22,11 @@
   theme_key: 1
   ulevel: 255
   menu_item: KL
+  
+  cmd: masskill
+  theme_key: 1
+  ulevel: 255
+  menu_item: MK
 
 - cmd: amaint
   theme_key: 1

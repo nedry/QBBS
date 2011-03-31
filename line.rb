@@ -207,7 +207,7 @@ class Session
     end
   end
 
-  def editprompt
+  def editprompt(reply_text)
     @lineeditor.msgtext.compact!
 
     while true
@@ -225,7 +225,7 @@ class Session
       when "R"; replace_line(parameters)
       when "I"; return false if insert_lines(parameters)
       when "?"; editmenu
-      when "Q"; quoter
+      when "Q"; quoter(reply_text)
       end #of case
     end # of until
   end # of def
@@ -272,7 +272,7 @@ class Session
 
         end # of Inner Until
         if !done then
-          done = editprompt
+          done = editprompt(reply_text)
         end
       end #of Outer until
       return @lineeditor.save

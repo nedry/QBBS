@@ -3,7 +3,7 @@ class Session
 def version
 
  print	
- print "%C;#{VER} (C) Copyright 1985 - 2010 by Fly-By-Night Software"
+ print "%C;#{VER} (C) Copyright 1985 - 2011 by Fly-By-Night Software"
  print
  print "%G;Programmers:"
  print

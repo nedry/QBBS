@@ -34,7 +34,7 @@ class Session
 
   def usersettings
     usersettingsmenu	
-    prompt = "%W%Change Which User Setting ? #{RET} to quit: " 
+    prompt = "%W;Change Which User Setting ? #{RET} to quit: " 
     getinp(prompt) {|inp|
 
       if !inp.integer?
@@ -68,7 +68,7 @@ class Session
 end #class Session
 
 def changelength
-  print "Screen Length is %R#{@c_user.length}%G% lines."
+  print "Screen Length is %R;#{@c_user.length}%G; lines."
   prompt = "Screen length? (10-60) [default=40]: "
   @c_user.length = getnum(prompt,10,60) || 40
   update_user(@c_user)
@@ -76,7 +76,7 @@ def changelength
 end
 
 def changewidth
-  print "Screen Width is %R#{@c_user.width}%G% characters."
+  print "Screen Width is %R;#{@c_user.width}%G; characters."
   prompt = "Screen width? (22-80) [default=40]: "
   @c_user.width = getnum(prompt,22,80) || 40
   update_user(@c_user)
@@ -111,13 +111,13 @@ def changenick
   No Spaces are allowed. If you enter a space, it will be removed.  
   No inappropriate names please.
 
-  Your current Chat Alias is %W%#{@c_user.alias}%G%.
+  Your current Chat Alias is %W;#{@c_user.alias}%G;.
   here
 
-  prompt = "Enter Chat Alias (Max 15 Characters): %W%"
+  prompt = "Enter Chat Alias (Max 15 Characters): %W;"
   tempstr = getinp(prompt)
   if tempstr == '' then
-    print "%RNot Changed%G%" 
+    print "%R;Not Changed%G;" 
     return
   end
   newname = tempstr.gsub(/\W/,"").slice(0..14)
@@ -127,7 +127,7 @@ def changenick
     update_user(@c_user)
     usersettingsmenu
   else 
-    print "%RThat alias is in use by another user.%G%" 
+    print "%R;That alias is in use by another user.%G;" 
   end
 end
 
@@ -156,8 +156,8 @@ def togglemore
 end
 
 def displayzipheader
-  print "%W#      %BBoard Description                    %WInclude?"
-  print "%W--     %B-----------------                    %W--------"
+  print "%W;#      %B;Board Description                    %W;Include?"
+  print "%W;--     %B;-----------------                    %W;--------"
 end
 
 def displayziplist
@@ -171,7 +171,7 @@ def displayziplist
     area = fetch_area(i)
     l_read = 0
     a_name = area.name
-    prompt = "%WMore (Y,n) or Toggle #? "
+    prompt = "%W;More (Y,n) or Toggle #? "
     user = @c_user
     pointer = get_pointer(@c_user,i)
     if (pointer.access[i] != "I") or (user.level == 255)
@@ -201,7 +201,7 @@ def changezip(parameters)
 
   while true
     if tempint.nil?  then
-      prompt = CRLF+"%WArea to toggle (1-#{(a_total - 1)}) ? %W%<--^%W to quit:  " 
+      prompt = CRLF+"%W;Area to toggle (1-#{(a_total - 1)}) ? %W;<--^%W; to quit:  " 
       happy = getinp(prompt).upcase
       tempint = happy.to_i
     end
@@ -222,12 +222,12 @@ def changezip(parameters)
         out = "will not"
         out = "will" if pointer.zipread
         print
-        print "%G%Area #{area.name} %R#{out}%G% be automatically read in Zipread."
+        print "%G;Area #{area.name} %R;#{out}%G; be automatically read in Zipread."
         print
         tempint = nil
       else
         if t == "N" then 
-          print "%RYou do not have access." 
+          print "%R;You do not have access." 
           break
         end
         tempint = nil

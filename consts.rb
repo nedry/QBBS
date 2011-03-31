@@ -1,10 +1,10 @@
-DEBUG = false
+DEBUG = true
 LISTENPORT = 2323
-QWK = true
+QWK = false
 QWK_DEBUG = false
-FIDO = true
+FIDO = false
 SMTP = false
-IRC_ON =  true
+IRC_ON =  false
 SCREENSAVER = true
 
 BS = 8

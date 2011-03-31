@@ -8,7 +8,7 @@ class Session
     @who.user(@c_user.name).where="Goodbye"
     update_who_t(@c_user.name,"Goodbye")
     if yes("Log off now #{YESNO}", true, false,false) then
-      write "%W%"
+      write "%W;"
       gfileout('bye')
       print "%WR;NO CARRIER%W;"
       sleep (1)
@@ -57,7 +57,7 @@ class Session
       hcols = %w(WY WG WC).map {|i| "%"+i +";"}
       headings = %w(Date System Message)
       widths = [18,10,50]
-      header = hcols.zip(headings).map {|a,b| a+b}.formatrow(widths) +"%W%"
+      header = hcols.zip(headings).map {|a,b| a+b}.formatrow(widths) +"%W;"
       underscore = cols.zip(['-'*30]*5).map{|a,b| a+b}.formatrow(widths)
 
       print header
@@ -122,7 +122,7 @@ class Session
         if IRC_ON then
           run_if_ulevel("teleconference") {teleconference(nil)}
         else
-          print "%WR%Teleconference is disabled!%W%\r\n"
+          print "%WR;Teleconference is disabled!%W;\r\n"
         end
       when @cmd_hash["kick"] ; run_if_ulevel("kick") {youreoutahere}
       when @cmd_hash["questionaire"] ; run_if_ulevel("questionaire") {questionaire}

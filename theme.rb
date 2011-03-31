@@ -62,7 +62,7 @@ class Session
   def displaytheme(number)
     theme = fetch_theme(number)
     print
-    print "%R;#%W%#{number} %G; #{theme.name}"
+    print "%R;#%W;#{number} %G; #{theme.name}"
     print "%C;Description: %G;#{theme.description}"
     print "%C;Text Directory: %G;#{theme.text_directory}"
     print "%C;No Main Menu:  %W;#{theme.nomainmenu ? "On" : "Off"}"
@@ -120,7 +120,8 @@ class Session
     prompt_help("Main")
     theme = fetch_theme(tpointer)
     print "Current: #{theme.main_prompt}"
-    prompt = getinp("Enter a new main prompt: ")
+    prompt = getstr(true,NOWRAP,80,"Enter a new main prompt: ",false,true).strip
+
     if !prompt.empty? then
       theme.main_prompt = prompt
       update_theme(theme)
@@ -135,7 +136,7 @@ class Session
     prompt_help("Read")
     theme = fetch_theme(tpointer)
     print "Current: #{theme.read_prompt}"
-    prompt = getinp("Enter a new read prompt: ")
+    prompt = getstr(true,NOWRAP,80,"Enter a new read prompt: ",false,true).strip
     if !prompt.empty? then
       theme.read_prompt = prompt
       update_theme(theme)
