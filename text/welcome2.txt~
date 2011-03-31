@@ -1,0 +1,39 @@
+%NOMORE%
+Good %TIMEOFDAY% %USERNAME% and welcome to node: %NODE%
+%G;You were last logged on: %B;%U_LDATE% at %C;%U_LTIME%
+
+You have connected from IP Address: %IP%.
+
+%PAUSE%
+
+%R;Welcome to...
+%C;
+   ____  __  _____    ____  __ __                         
+  / __ \/ / / /   |  / __ \/ //_/________ _   _____  ____ 
+ / / / / / / / /| | / /_/ / ,<  / ___/ _ \ | / / _ \/ __ \
+/ /_/ / /_/ / ___ |/ _, _/ /| |(__  )  __/ |/ /  __/ / / /
+\___\_\____/_/  |_/_/ |_/_/ |_/____/\___/|___/\___/_/ /_/ 
+                                                          
+%W;  QUARKware 7.x BBS for Linux 
+%g;  Copyright %G;1985%g;-%G;2010 %g;Fly By Night Software - http://www.cortex-media.info
+
+
+New features in this version:  %W;o%G; Ruby 1.9 Compatable
+                               %W;o%G; Web Interface
+                               %W;o%G; Screen Savers
+                               %W;o%G; Themes
+                               %W;o%G; Multiple QWK networks
+                               %W;o%G; A full screen editor that is broken.  Still using pico %WR;):%W;
+
+
+%PAUSE%
+%WHOLIST%
+%PAUSE%
+
+%WG;                            Last 10 Callers                               %W;
+
+%LASTCALL%
+%PAUSE%
+%QOTD%
+%PAUSE%
+%BULLET%

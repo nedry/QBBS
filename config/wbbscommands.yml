@@ -3,6 +3,11 @@
   ulevel: 0
   menu_item: A
   
+- cmd: masskill
+  theme_key: 1
+  ulevel: 255
+  menu_item: MK
+  
 - cmd: smaint
   theme_key: 1
   ulevel: 255
