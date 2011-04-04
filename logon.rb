@@ -110,8 +110,7 @@ class Session
 
     checkkillfile(username)
     checkmultiplelogon
-    #puts @message.class
-    @message.push("*** #{@c_user.name} has just logged into the system.")
+    @who.each {|who| add_page(get_uid("SYSTEM"),who.name,"*** #{@c_user.name} has just logged into the system.",true)}
     defaulttheme
     logandgreetuser(username, ip)
 

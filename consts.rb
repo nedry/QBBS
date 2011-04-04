@@ -1,4 +1,4 @@
-DEBUG = true
+DEBUG = false
 LISTENPORT = 2323
 QWK = false
 QWK_DEBUG = false

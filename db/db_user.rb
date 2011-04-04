@@ -49,6 +49,7 @@ def add_page(uid_from,to,message,system)
  page = user.pages.new(:message => message, :system => system, :from => uid)
  
  page.save
+ puts page.errors.each {|e| puts e}
 end
 
 def delete_page(id)

@@ -2,7 +2,19 @@
   ip: '000.000.000.000'
   password: STUPID
   citystate: 'Tempe, AZ'
-  address: '600 E. Solana Drive'
+  address: '123 Sample Street'
+  length: 24
+  width: 80
+  ansi: true
+  more: true
+  level: 255
+  fullscreen: false
+  
+- name: SYSTEM
+  ip: '000.000.000.000'
+  password: STUPID
+  citystate: 'Tempe, AZ'
+  address: '123 Sample Street'
   length: 24
   width: 80
   ansi: true

@@ -192,7 +192,7 @@ class Session
       else 
         if !@c_user.nil? and new_pages(@c_user) > 0 then
           pages = get_all_pages(@c_user)
-          print; pages.each {|x| print "%W;PAGE %W;(%C;#{fetch_user(x.from).name}%W;): %WY;#{x.message}%W;"}
+          print; pages.each {|x| print "%W;PAGE %W;(%C;#{fetch_user(x.from).name}%W;): %WB;#{x.message}%W;"}
           prompt += whole if !prompt.nil? 
            write prompt
            clear_pages(@c_user)

@@ -248,12 +248,12 @@ class Happythread
   end
 
   def run
+    begin
     hit = false
     curthread = Array.new
     while true
       sleep (4)
       curthread = Thread.list
-      #  puts Thread.list.each {|x| puts x.to_s}
       each_name_with_index {|name, i|
         if !curthread.any? {|thr| @who[i].threadn == thr}
           puts "-SA: User #{i}:#{name} has disconnected."
@@ -262,12 +262,21 @@ class Happythread
           @who.delete(i)
           who_delete_t(name) if who_t_exists(name)
           m = "%C#{name} %Ghas just disconnected from the system."
-          @message.push("*** #{name} has just disconnected from the system.")
-          each_who {|u| u.who.push(m)}
+          @who.each {|who| add_page(get_uid("SYSTEM"),who.name,"*** #{name} has just disconnected from the system.",true)}
         end
       }
     end
+      rescue Exception => e
+      add_log_entry(8,Time.now,"Who Thread Crash! #{$!}")
+      puts "-ERROR: Who Thread Crash.  #{$!}"
+      print $!
+      print e.backtrace.map { |x| x.match(/^(.+?):(\d+)(|:in `(.+)')$/);
+      [$1,$2,$3]
+      }
+      
+      end
   end
+
 end #of class happythread
 
 class ServerSocket
