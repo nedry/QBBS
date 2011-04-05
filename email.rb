@@ -112,7 +112,6 @@ class Session
 
     if inp > 0 and inp < max and total > 0 then
       epointer = inp
-      puts "epointer: #{epointer}"
       displaymessage(epointer,area.number,true)
     else 
       print "%WR;Out of Range%W;" 
@@ -295,8 +294,6 @@ class Session
       saveit = yes(prompt, true, false,true)
     else
       saveit = lineedit(1,reply_text)
-      puts saveit
-      puts "m_type=#{m_type}"
     end
     if saveit then
 

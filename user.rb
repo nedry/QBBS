@@ -114,8 +114,6 @@ class Session
       ((tempstr =~ /[0Q]/) or (tempstr.to_i > 0)) ? true : false
     }
     tempint2 = tempstr.to_i
-    puts user.number
-    puts tempint2
      pointer = get_pointer(user,tempint2)
     
      
@@ -157,7 +155,6 @@ class Session
     prompt = "%W;RSTS Account? (1-254): "
 
     user.rsts_acc = getnum(prompt,0,254)
-    puts user.rsts_acc
     update_user(user)
   end
 

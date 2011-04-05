@@ -336,7 +336,7 @@ def process_packet(path) 		#this is a shell for what will be the inbound packet 
       total +=1
       #process the message we got.  
     end
-    add_log_entry(2,Time.now,"#{total} Fido messages imported")
+    add_log_entry(4,Time.now,"#{total} Fido messages imported")
     puts "-FIDO: Import Complete.  #{total} messages imported."
   end
 

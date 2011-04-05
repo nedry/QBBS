@@ -45,7 +45,6 @@ def add_command(command,theme,ulevel,menu_item)
 end
 
 def hash_commands (theme_key)
-  puts "theme_key: #{theme_key}"
   command_list = Command.all(:theme_key => theme_key)
   command_hash = {}
   command_list.each {|cmd| command_hash[cmd.cmd] = cmd.menu_item}

@@ -249,7 +249,7 @@ class Session
 
     if @c_user.fastlogon
       print
-      print "%WR;Fast User Logon Mode %Y%On%R%.  Skipping Logon Information.%w;"
+      print "%WR;Fast User Logon Mode %YR;On%WR;.  Skipping Logon Information.%W;"
       print "This may be changed at the User Configuration Menu."
       print
     end

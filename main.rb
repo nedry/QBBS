@@ -17,14 +17,13 @@ class Session
   end
 
   def youreoutahere
-    prompt = "%WR;Boot which user number?: %W;"
+    prompt = "%WR;Disconnect which user number?: %W;"
     which = getnum(prompt,0,@who.len)
     if which > 0 then
-      print "%WG;Booting User ##{which} from system.%W;"
-      puts "thread.kill: #{@who[which-1].threadn}"
+      print "%WG;Disconnecting User ##{which} from the system.%W;"
       Thread.kill(@who[which-1].threadn)
     else
-      print "%RW;Aborted%W;"
+      print "%RW; Aborted %W;"
     end
   end
 
@@ -33,7 +32,7 @@ class Session
     to = getinp("%G;User to Page: %W;")
     exists = get_uid(to)
     if exists.nil? then
-      print "%WR;That user does not exist.%W;"
+      print "%WR; That user does not exist. %W;"
       print
       return
     end
@@ -48,7 +47,7 @@ class Session
     print "%WG;Message Sent.%W;"
   end
 
-  def displaylog
+  def displaylog(log)
     i = 0
     j = 0
     cont = true
@@ -62,8 +61,8 @@ class Session
 
       print header
       print underscore if !@c_user.ansi
-      fetch_log(0)
-      fetch_log(0).each {|x|
+
+      fetch_log(log).each {|x|
         t= Time.parse(x.ent_date.to_s).strftime("%m/%d/%y %I:%M%p")
         temp = cols.zip([t,x.subsys.name,x.message]).map{|a,b| "#{a}#{b}"}.formatrow(widths) #fix for 1.9
         j = j + 1
@@ -81,10 +80,17 @@ class Session
       }
 
     else
-      print "%WR;System Log Empty%W;"
+      print "%WR; System Log Empty %W;"
     end
   end
 
+def picklog
+  fetch_subsystems.each{|sub| print "#{sub.subsystem}: #{sub.name}"}
+    print
+    prompt2 = "Enter Subsystem or #{RET} for all: "
+    temp = getnum(prompt2,1,fetch_subsystems.length)
+    displaylog(temp)
+end
 
   def commandLoop
     scanforaccess(@c_user)
@@ -122,7 +128,7 @@ class Session
         if IRC_ON then
           run_if_ulevel("teleconference") {teleconference(nil)}
         else
-          print "%WR;Teleconference is disabled!%W;\r\n"
+          print "%WR; Teleconference is disabled! %W;\r\n"
         end
       when @cmd_hash["kick"] ; run_if_ulevel("kick") {youreoutahere}
       when @cmd_hash["questionaire"] ; run_if_ulevel("questionaire") {questionaire}
@@ -138,7 +144,7 @@ class Session
       when @cmd_hash["info"] ; run_if_ulevel("info") {ogfileout("user_information",1,true)}
       when @cmd_hash["version"] ; run_if_ulevel("version") {version}
       when @cmd_hash["who"] ; run_if_ulevel("who") {displaywho}
-      when @cmd_hash["log"] ; run_if_ulevel("log") {displaylog}
+      when @cmd_hash["log"] ; run_if_ulevel("log") {picklog}
       when @cmd_hash["sysopmnu"] ; run_if_ulevel("sysopmnu") {ogfileout("sysopmnu",1,true)}
       when @cmd_hash["mainmnu"] ; run_if_ulevel("mainmnu") {ogfileout("mainmnu",1,true)}
       end
@@ -146,7 +152,6 @@ class Session
   end
 
     def run_if_ulevel(cmd)
-      puts @c_user.theme_key
       command= get_command(@c_user.theme_key,cmd)
 
       if  @c_user.level >= command.ulevel

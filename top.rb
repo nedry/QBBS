@@ -211,7 +211,7 @@ class MailSchedulethread
         tick = Time.now.min.to_i
       end
 
-      puts "Idle Time:  #{idle}"
+    #  puts "Idle Time:  #{idle}"
       if idle >= QWKREPINTERVAL then
         qwk_loop(idle)
         doit(idle)

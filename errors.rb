@@ -7,11 +7,11 @@ def version
  print
  print "%G;Programmers:"
  print
- print "     %WC;Mark Firestone%W;   %WG;Martin DeMello%W;    %WR;John Lorance%W;"
+ print "     %WC; Mark Firestone %W;   %WG; Martin DeMello %W;    %WR; John Lorance %W;"
  print 			     
  print "%G;Thanks to:"
  print		
- print "           %WB;Wayne Conrad%W;          %WY;Rob Swindell%W;"
+ print "           %WB; Wayne Conrad %W;          %WY; Rob Swindell %W;"
  print			
  print "%C;For all their help and encouragement."
  print			

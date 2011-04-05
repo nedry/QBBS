@@ -194,7 +194,6 @@ class Session
   #-------------------Theme Section-------------------
   def defaulttheme
     theme = get_user_theme(@c_user)
-    puts "theme: #{theme}"
     if theme.nil? then
       theme = fetch_theme(1) #change to get default theme
       add_theme_to_user(@c_user,theme)

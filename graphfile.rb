@@ -117,8 +117,11 @@ def parse_text_commands(line)
     system = fetch_system
     posts = @session.c_user.posted.to_f
     calls =  @session.c_user.logons.to_f
-    ualias = "<NONE>" if @session.c_user.alias.nil?
+    ualias = @session.c_user.alias
+    ualias = "<NONE>" if ualias.nil?
     ratio = (posts  / calls) * 100
+    ip= @session.c_user.ip
+    ip= "UNKNOWN" if ip.nil?
     ratio = 0 if calls == 0
     text_commands = {
       "%NODE%"  => @session.node.to_s,
@@ -133,7 +136,7 @@ def parse_text_commands(line)
       "%U_ADDR%" => @session.c_user.address,   
       "%U_CITYSTATE%" => @session.c_user.citystate,  
       "%U_ALIAS%" => ualias,
-      "%IP%" => @session.c_user.ip,
+      "%IP%" => ip,
       "%BBSNAME%" => SYSTEMNAME,
       "%FIDOADDR%" => "#{FIDOZONE}:#{FIDONET}/#{FIDONODE}.#{FIDOPOINT}",
       "%VER%" => VER,
@@ -155,10 +158,14 @@ def parse_text_commands(line)
     }
 
     #line = line.to_s.gsub("\t",'')
-  
+  begin
     text_commands.each_pair {|code, result|
-      line.gsub!(code,result)
+    line.gsub!(code,result)
     }
+  rescue
+    puts "-ERROR: in graphfile.rb: #{$!}"
+    add_log_entry(8,Time.now,"Error in graphfile.rb: #{$!}")
+    end
   end
   return line
 end

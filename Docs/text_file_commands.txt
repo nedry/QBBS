@@ -22,7 +22,7 @@ System Variables
       %VER%  		Software Version
       %WEBVER%  	Sinatra Version
       %TNODES%  	Total Telnet Nodes
-      %SYSOP%  	Sysop's Name
+      %SYSOP%  	        Sysop's Name
       %RVERSION%  	Ruby Version
       %PLATFORM%  	Platform
       %PID%  		Current PID

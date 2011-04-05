@@ -40,7 +40,7 @@ Group.new(:groupname => 'Dove.net', :number => 1 ).save!
 Group.new(:groupname => 'Fidonet', :number => 2 ).save!
 Group.new(:groupname => 'Paranormal Net', :number =>  3 ).save!
 
-
+Subsys.new(:subsystem => 1, :name => 'SCHEDULE').save!
 Subsys.new(:subsystem => 2, :name => 'FIDO').save!
 Subsys.new(:subsystem => 3, :name => 'EXPORT').save!
 Subsys.new(:subsystem => 4, :name => 'IMPORT').save!
@@ -49,7 +49,7 @@ Subsys.new(:subsystem => 6, :name => 'CONNECT').save!
 Subsys.new(:subsystem => 7, :name => 'SECURITY').save!
 Subsys.new(:subsystem => 8, :name => 'ERROR').save!
 Subsys.new(:subsystem => 9, :name => 'MESSAGE').save!
-Subsys.new(:subsystem => 1, :name => 'SCHEDULE').save!
+
 
 Theme.new(:number => 1,
                    :name => "QBBS", 
