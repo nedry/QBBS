@@ -324,6 +324,7 @@ DOOR = 5
 THEME = 6
 AREA = 7
 SCREEN = 8
+GROUP = 9
 
 
 #Theme Defaults

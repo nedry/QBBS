@@ -125,7 +125,7 @@ end
 def showdoor(number)
   if d_total > 0 then 
     door = fetch_door(number)
-    print "%R;#%W%#{number} %G; #{door.name}"
+    print "%R;#%W;#{number} %G; #{door.name}"
     print "%C;Path:      %G;#{door.path}"
     print "%C;Type:      %G;#{door.d_type}"
     print "%C;Drop Path: %G;#{door.d_path}"
@@ -133,7 +133,7 @@ def showdoor(number)
     print "%C;Level:     %G;#{door.level}"
     print
   else 
-    print "%WR%No Doors%W%"
+    print "%WR; No Doors %W;"
   end
 end
 
@@ -176,10 +176,10 @@ def adddoor
   path = get_max_length("Enter new door path (script file): ",40,"Door path") 
   path.strip! if path != ""
 
-  if yes("Are you sure #{YESNO}", false, false,true)
+  if yes("Are you sure #{YESNO}", true, false,true)
     add_door(name,path)
   else
-    print "%WR;Aborted.%W;"
+    print "%WR; Aborted. %W;"
   end
   print
 end
@@ -193,7 +193,7 @@ def changedoorname(dpointer)
     door.name = name
     update_door(door)
   else
-    print "%WR;Not Changed.%W;"
+    print "%WR; Not Changed. %W;"
   end
   print
 end
@@ -258,7 +258,7 @@ def displaydoors
   existfileout("doorhdr",0,true)
   if !existfileout('door',0,true)
   if d_total < 1 then
-    print "%WR;No External Programs.%W;"
+    print "%WR; No External Programs. %W;"
     return
   end
   print "%G;Games Available:"
@@ -322,7 +322,7 @@ def doors(parameters)
   if t == 0 then
     displaydoors  if !existfileout('doors',0,true)
     while true
-      prompt = "\r\n%W%Game #[1-#{d_total}] ? #{RET} to quit: "
+      prompt = "\r\n%G;Game #[1-#{d_total}] ? #{RET} %G;to quit: %W;"
       getinp(prompt) {|inp|
         happy = inp.upcase
         t = happy.to_i

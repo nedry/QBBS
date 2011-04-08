@@ -287,7 +287,7 @@ class Session
     # m_type = LOCAL
     if @c_user.fullscreen then
       write "%W;"
-      msg_file = write_quote_msg("")
+      msg_file = write_quote_msg([])
       launch_editor(msg_file)
       suck_in_text(msg_file)
       prompt = "Send email #{YESNO}"

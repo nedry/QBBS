@@ -1,31 +1,31 @@
 class Session
   def displaygroup(number)
     group = fetch_group(number)
-    write "\r\n%R#%W#{number} %G #{group.groupname}"
-    write "%R [DELETED]" if group.delete
+    write "\r\n%R;#%W;#{number} %G; #{group.groupname}"
+    write "%R; [DELETED]" if group.delete
     print ""
-    print "%CQWK/REP Mapping:"
+    print "%C;QWK/REP Mapping:"
     print 
     if !get_qwknet(group).nil? then
       qwknet = get_qwknet(group)
 
-      print " %G[%YQN%G]ame: %Y#{qwknet.name}"
-      print " %G[%YQU%G]Local QWK account: %Y#{qwknet.qwkuser}"
-      print " %G[%YB%G]BSid: %Y#{qwknet.bbsid}"
-      print " %G[%YRD%G]Rep Directory: %Y#{qwknet.repdir}"
-      print " %G[%YRP%G]Rep Packet: %Y#{qwknet.reppacket}"
-      print " %G[%YRP%G]Rep Datafile: %Y#{qwknet.repdata}"
-      print " %G[%YQP%G]QWK Directory: %Y#{qwknet.qwkdir}"
-      print " %G[%YQP%G]QWK Packet: %Y#{qwknet.qwkpacket}"
-      print " %G[%YQT%G]QWK Tag:"
-      print "  %Y#{qwknet.qwktag}"
-      print " %G[%YFA%G]FTP Address: %Y#{qwknet.ftpaddress}"
-      print " %G[%YFC%G]FTP User: %Y#{qwknet.ftpaccount}"
-      print " %G[%YFP%G]FTP Password: %Y#{qwknet.ftppassword}"
-      print " %G[%Y?%G]More Options"
+      print " %G;[%Y;QN%G;]ame: %Y;#{qwknet.name}"
+      print " %G;[%Y;QU%G;]Local QWK account: %Y;#{qwknet.qwkuser}"
+      print " %G;[%Y;B%G;]BSid: %Y;#{qwknet.bbsid}"
+      print " %G;[%Y;RD%G;]Rep Directory: %Y;#{qwknet.repdir}"
+      print " %G;[%Y;RP%G;]Rep Packet: %Y;#{qwknet.reppacket}"
+      print " %G;[%Y;RP%G;]Rep Datafile: %Y;#{qwknet.repdata}"
+      print " %G;[%Y;QP%G;]QWK Directory: %Y;#{qwknet.qwkdir}"
+      print " %G;[%Y;QP%G;]QWK Packet: %Y;#{qwknet.qwkpacket}"
+      print " %G;[%Y;QT%G;]QWK Tag:"
+      print "  %Y;#{qwknet.qwktag}"
+      print " %G;[%Y;FA%G;]FTP Address: %Y;#{qwknet.ftpaddress}"
+      print " %G;[%Y;FC%G;]FTP User: %Y;#{qwknet.ftpaccount}"
+      print " %G;[%Y;FP%G;]FTP Password: %Y;#{qwknet.ftppassword}"
+      print " %G;[%Y;?%G;]More Options"
       print
     else
-      print " %CNo QWK network assigned.%W"
+      print " %WR; No QWK network assigned.%W;"
     end
   end #displaygroup
 
@@ -33,7 +33,7 @@ class Session
     readmenu(
       :initval => 0,
       :range => 0..(g_total - 1),
-      :prompt => '"%W#{sdir} Group [%p] (0-#{g_total - 1}): "'
+    :loc => GROUP
     ) {|sel, gpointer, moved|
       displaygroup(gpointer) if moved
       case sel
@@ -76,18 +76,18 @@ class Session
         yield [qwknet, new_val]
       end
     else
-      print "No QWK/NET Network defined."
+      print "%WR; No QWK/NET Network defined. %W;"
     end
     displaygroup(number)
   end
 
   def changeftppassword(number)
-    prompt = "%WEnter the FTP Password:%G  "
+    prompt = "%W;Enter the FTP Password:%G;  "
     change_group(number, prompt) do |qwknet, inp|
       ftppassword = inp
 
       if ftppassword.length > 40 then
-        print "%RPassword too long. 40 Character Maximum"
+        print "%%WR; Password too long. 40 Character Maximum %W;"
       else
         qwknet.ftppassword = ftppassword
         update_qwknet(qwknet)
@@ -96,12 +96,12 @@ class Session
   end
 
   def changeftpaddress(number)
-    prompt = "%WEnter the FTP Address:%G  "
+    prompt = "%W;Enter the FTP Address:%G;  "
     change_group(number, prompt) do |qwknet, inp|
       ftpaddress = inp
 
       if ftpaddress.length > 40 then
-        print "%RAddress too long. 40 Character Maximum"
+        print "%WR; Address too long. 40 Character Maximum%W;"
       else
         qwknet.ftpaddress = ftpaddress
         update_qwknet(qwknet)
@@ -113,9 +113,9 @@ class Session
     group = fetch_group(number)
 
     if  get_qwknet(group).nil? then
-      print "%RNo QWK network to delete"
+      print "%WR; No QWK network to delete %W;"
     else
-      print "%RWARNING: %YThis action is permenent and may cause damage.%W"
+      print "%WR; WARNING: %YThis action is permenent and may cause damage.%W;"
       commit = yes("Are you sure #{YESNO}",true,false,true)
       if commit then
         remove_qwknet(group)
@@ -126,7 +126,7 @@ class Session
   end 
 
   def changeftpaccount(number)
-    prompt = "%WEnter the FTP UserID:%G  "
+    prompt = "%W;Enter the FTP UserID:%G;  "
     change_group(number, prompt) do |qwknet, inp|
       ftpaccount = inp
 
@@ -145,7 +145,7 @@ class Session
       qwktag = inp
 
       if qwktag.length > 78 then
-        print "%RTag too long. 78 Character Maximum"
+        print "%WR; Tag too long. 78 Character Maximum %W;"
       else
         qwknet.qwktag =  convert_to_utf8(qwktag)
         update_qwknet(qwknet)
@@ -154,12 +154,12 @@ class Session
   end
 
   def changebbsid(number)
-    prompt = "%WEnter the BBSID of the remote system:%G "
+    prompt = "%W;Enter the BBSID of the remote system:%G; "
     change_group(number, prompt) do |qwknet, inp|
       bbsid = inp
 
       if bbsid.length > 40 then
-        print "%RName too long. 40 Character Maximum"
+        print "%WR; Name too long. 40 Character Maximum %W;"
       else
         bbsid.upcase!
         qwknet.bbsid = bbsid
@@ -169,12 +169,12 @@ class Session
   end
 
   def changeqwkdirectory(number)
-    prompt = "%WEnter the path for QWK packets:%G "
+    prompt = "%W;Enter the path for QWK packets:%G; "
     change_group(number, prompt) do |qwknet, inp|
       qwkdir = inp
 
       if qwkdir.length > 40 then
-        print "%RPath too long. 40 Character Maximum"
+        print "%WR; Path too long. 40 Character Maximum %W;"
       else
         qwknet.qwkdir = qwkdir
         update_qwknet(qwknet)
@@ -183,12 +183,12 @@ class Session
   end
 
   def changeqwkpacket(number)
-    prompt = "%WEnter the file name for QWK packets:%G "
+    prompt = "%W;Enter the file name for QWK packets:%G; "
     change_group(number, prompt) do |qwknet, inp|
       qwkpacket = inp
 
       if qwkpacket.length > 40 then
-        print "%RFilename too long. 40 Character Maximum"
+        print "%WR; Filename too long. 40 Character Maximum %W;"
       else
         qwknet.qwkpacket = qwkpacket
         update_qwknet(qwknet)
@@ -197,12 +197,12 @@ class Session
   end
 
   def changerepdirectory(number)
-    prompt = "%WEnter the path for REP packets:%G "
+    prompt = "%W;Enter the path for REP packets:%G; "
     change_group(number, prompt) do |qwknet, inp|
       repdir = inp
 
       if repdir.length > 40 then
-        print "%RPath too long. 40 Character Maximum"
+        print "%WR; Path too long. 40 Character Maximum %W;"
       else
         qwknet.repdir = repdir
         update_qwknet(qwknet)
@@ -211,12 +211,12 @@ class Session
   end
 
   def changerepdata(number)
-    prompt = "%WEnter the name for REP data packets:%G "
+    prompt = "%W;Enter the name for REP data packets:%G; "
     change_group(number, prompt) do |qwknet, inp|
       repdata = inp
 
       if repdata.length > 40 then
-        print "%RName too long. 40 Character Maximum"
+        print "%WR; Name too long. 40 Character Maximum %W;"
       else
         qwknet.repdata = repdata
         update_qwknet(qwknet)
@@ -225,12 +225,12 @@ class Session
   end
 
   def changereppacket(number)
-    prompt = "%WEnter the file name for REP packets:%G "
+    prompt = "%W;Enter the file name for REP packets:%G; "
     change_group(number, prompt) do |qwknet, inp|
       reppacket = inp
 
       if reppacket.length > 40 then
-        print "%RFilename too long. 40 Character Maximum"
+        print "%WR; Filename too long. 40 Character Maximum %W;"
       else
         qwknet.reppacket = reppacket
         update_qwknet(qwknet)
@@ -239,12 +239,12 @@ class Session
   end
 
   def changeqwkname(number)
-    prompt = "%WEnter QWK/REP network name:%G "
+    prompt = "%W;Enter QWK/REP network name:%G; "
     change_group(number, prompt) do |qwknet, inp|
       name = inp
 
       if name.length > 40 then
-        print "%RName too long. 40 Character Maximum"
+        print "%WR; Name too long. 40 Character Maximum %W;"
       else
         qwknet.name = name
         update_qwknet(qwknet)
@@ -253,15 +253,15 @@ class Session
   end
 
   def changeqwklocalaccount(number)
-    prompt = "%WEnter the User ID of QWK/REP service account on the LOCAL system:%G "
+    prompt = "%W;Enter the User ID of QWK/REP service account on the LOCAL system:%G; "
     change_group(number, prompt) do |qwknet, inp|
       account = inp
 
       if account.length > 40 then
-        print "%RAccount too long. 40 Character Maximum"
+        print "%WR; Account too long. 40 Character Maximum %W;"
       else
         if !user_exists(account) then
-          print "%RLocal user does not exist.  Try again..."
+          print "%WR; Local user does not exist.  Try again... %W;"
         else
           qwknet.qwkuser = account
           update_qwknet(qwknet)
@@ -274,33 +274,33 @@ class Session
     group = fetch_group(number)
     if get_qwknet(group).nil? then
       while true
-        prompt = "Enter QWK/REP network name:%G "
+        prompt = "%W;Enter QWK/REP network name:%G "
         name = getinp(prompt)
         if name == "" then
-          print "%RCancelled"
+          print "%WR; Cancelled %W;"
           return [gpointer,(g_total - 1)]
         end
         if name.length > 40 then
-          print "%RName too long. 40 Character Maximum"
+          print "%WR; Name too long. 40 Character Maximum %W;"
         else break end
       end
 
       while true
-        prompt = "%WEnter the BBSID of the remote system:%G "
+        prompt = "%W;Enter the BBSID of the remote system:%G; "
         bbsid = getinp(prompt) {|n| n != ""}
         if bbsid.length > 40 then
-          print "%RName too long. 40 Character Maximum"
+          print "%WR; Name too long. 40 Character Maximum %W;"
         else break end
       end
 
       while true
-        prompt = "%WEnter the User ID of QWK/REP service account on the LOCAL system:%G "
+        prompt = "%W;Enter the User ID of QWK/REP service account on the LOCAL system:%G; "
         qwkuser = getinp(prompt) {|n| n != ""}
         if qwkuser.length > 40 then
-          print "%RName too long. 40 Character Maximum"
+          print "%WR; Name too long. 40 Character Maximum %W;"
         else
           if !user_exists(qwkuser) then
-            print "%RLocal user does not exist.  Try again..."
+            print "%WR; Local user does not exist.  Try again... %W;"
           else
             break 
           end
@@ -316,18 +316,18 @@ class Session
       end
 
       while true
-        prompt = "%WEnter the ftp account UserID on the REMOTE system:%G "
+        prompt = "%W;Enter the ftp account UserID on the REMOTE system:%G; "
         ftpaddress = getinp(prompt) {|n| n != ""}
         if ftpaddress.length > 40 then
-          print "%RName too long. 40 Character Maximum"
+          print "%WR; Name too long. 40 Character Maximum %W:"
         else break end
       end
 
       while true
-        prompt = "%WEnter the ftp account password on the REMOTE system:%G "
+        prompt = "%W;Enter the ftp account password on the REMOTE system:%G; "
         ftppassword = getinp(prompt) {|n| n != ""}
         if ftppassword.length > 40 then
-          print "%RName too long. 40 Character Maximum"
+          print "%WR; Name too long. 40 Character Maximum %W;"
         else break end
       end
 
@@ -335,17 +335,17 @@ class Session
       if commit then
         add_qwknet(group,name,bbsid,qwkuser,ftpaddress,ftpaccount,ftppassword)
       else
-        print "%RCancelled."
+        print "%WR; Cancelled. %W;"
         return
       end
     else
-      print "%RYou may only have one QWK network per message group."
+      print "%WR; You may only have one QWK network per message group. %W;"
     end
   end
 
   def deletegroup(gpointer)
     if gpointer <= 1
-      print "%RYou cannot delete group 0 or 1."
+      print "%WR; You cannot delete group 0 or 1. %W;"
       return
     end
 
@@ -353,10 +353,10 @@ class Session
 
     if group.delete
       area.delete = false
-      print "Group ##{gpointer} UNdeleted"
+      print "%WG; Group ##{gpointer} UNdeleted %W;"
     else
       group.delete = true
-      print "Group ##{gpointer} deleted."
+      print "%WR; Group ##{gpointer} deleted. %W;"
     end
     update_group(group)
   end
@@ -367,11 +367,11 @@ class Session
       prompt = "Enter new group name: "
       name = getinp(prompt) 
       if name == "" then
-        print "%RCancelled"
+        print "%WR; Cancelled %W;"
         return
       end
       if name.length > 40 then
-        print "%RName too long. 40 Character Maximum"
+        print "%WR; Name too long. 40 Character Maximum %W;"
       else break end
     end
 
@@ -380,7 +380,7 @@ class Session
       add_group(name)
       gpointer = g_total - 1
     else
-      print "%RCancelled."
+      print "%WR; Cancelled. %W;"
       gpointer = g_total - 1
       return
     end
@@ -392,7 +392,7 @@ class Session
     prompt = "Enter new group name: "
     name = getinp(prompt) 
     if name == "" then
-      print "%RCancelled"
+      print "%WR; Cancelled %W;" 
     else
       if name.length > 40 then
         print "Name too long. 40 Character Maximum"

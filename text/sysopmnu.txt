@@ -7,5 +7,5 @@
 %W%[%Y%UM%W%]%G%User Maintenance 
 
 
-Use a ; to stack commands together (I.E., %;a;q)
-Some commands take parameters (I.E., a2)
+          %C;Use a %R;;%C; to stack commands together %W;(%C;I.E., %R;%;a;q%W;)
+              %C;Some commands take parameters %W;(%C;I.E., %R;a2%W;)

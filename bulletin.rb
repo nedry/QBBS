@@ -5,7 +5,7 @@ class Session
   def displaybull(number)
     bulletin = fetch_bulletin(number)
     print
-    print "%R;#%W#{number} %G; #{bulletin.name}"
+    print "%R;#%W;#{number} %G; #{bulletin.name}"
     print "%C;Path: %G;#{bulletin.path}"
   end 
 
@@ -43,10 +43,10 @@ class Session
 
     name = getinp("Enter new bulletin name: ",:nonempty) 
     path = getinp("Enter new bulletin path: ",:nonempty)
-    if yes("Are you sure #{YESNO}", false, false,true)
+    if yes("Are you sure #{YESNO}", true, false,true)
       add_bulletin(name, path)
     else
-      print "%WR;Aborted.%W;"
+      print "%WR; Aborted. %W;"
     end
     print
   end
@@ -74,7 +74,7 @@ class Session
       update_bulletin(bulletin)
       print
     else
-      print "%WR;Not Changed.%W;"
+      print "%WR; Not Changed. %W;"
     end
   end
 
@@ -93,7 +93,7 @@ class Session
       displaybull(bpointer)
     else 
       print
-      print "#%WR;No bulletins.  Why not add one?%W;" 
+      print "%WR; No bulletins.  Why not add one? %W;" 
     end
   end
 
@@ -105,7 +105,7 @@ class Session
 
     i = 0
     if b_total < 1 then
-      print "%WR;No Bulletins%W;"
+      print "%WR; No Bulletins %W;"
       return
     end
    ogfileout("bullethdr",0,true)

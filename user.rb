@@ -16,7 +16,7 @@ class Session
     %C;Email Address: %G;#{user.address}
     %C;Location:      %G;#{user.citystate}
     %C;Last On:       %G;#{ldate}
-    %C;Password:      %G;********   %C%Level: %G%#{user.level}
+    %C;Password:      %G;********   %C;Level: %G;#{user.level}
     %C;RSTS Password: %G;#{user.rsts_pw}
     %C;RSTS Account:  %G;#{RSTS_BASE},#{user.rsts_acc}
     here
