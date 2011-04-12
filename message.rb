@@ -680,7 +680,7 @@ class Session
     %C;Last Modified: %G;#{area.modify_date.strftime("%A the %d#{time_thingie(area.modify_date)} of %B, %Y at %I:%M%p")}
     %C;Total Messages: %G;#{m_total(area.number)}
     %C;Group: %G;#{area.group.groupname}
-    %C;Prune Level: 
+    %C;Prune Level: %G;#{area.prune}
 here
 
       end #displayarea
@@ -697,6 +697,7 @@ here
           when "Q"; apointer = true
           when "A"; apointer = addarea
           when "NN"; changeqwkrep(apointer)
+          when "P"; changepurge(apointer)
           when "FN"; changefidoarea(apointer)
           when "CF"; clearfidoarea(apointer)
           when "W"; displaywho
@@ -713,6 +714,18 @@ here
           p_return = [apointer,(a_total - 1)]
         }
       end
+
+  def changepurge(apointer)
+
+        area = fetch_area(apointer)
+        print
+
+        prompt = "Select New message limit (to be enforced at maintenance time or 0 for none: "
+        area.prune = getnum(prompt,0,999999)
+        update_area(area)
+        print "Area Updated"
+      end
+
 
       def deletearea(apointer)
         if apointer <= 1
@@ -837,6 +850,8 @@ here
         update_area(area)
         print
       end
+    
+    
 
 
       def changeareaname(apointer)

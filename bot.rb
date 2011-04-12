@@ -76,7 +76,9 @@ class Botthread
   end
 
   def run
+    begin
     puts "-SA: Starting IRC Thread"
+    add_log_entry(8,Time.now,"Bot thread starting.")
     @irc_bot = IrcBot.new(IRCSERVER, IRCPORT)
 
     IRC::Event::Ping.new(@irc_bot)
@@ -156,5 +158,19 @@ class Botthread
         end
       end
     end # loop do
+    rescue Exception => e
+      add_log_entry(8,Time.now,"Bot Thread Crash! Possible Disconnect. #{$!}")
+      puts "-ERROR: Bot Thread Crash.  #{$!}"
+      print $!
+      print e.backtrace.map { |x| x.match(/^(.+?):(\d+)(|:in `(.+)')$/);
+      [$1,$2,$3]
+      }
+      if BOT_RECONNECT_DELAY > 0 then
+         add_log_entry(8,Time.now,"Bot Attempting to reconnect in #{BOT_RECONNECT_DELAY} seconds.")
+         sleep(BOT_RECONNECT_DELAY)
+         retry
+      end
+      end
+      
   end #IRC.run
 end

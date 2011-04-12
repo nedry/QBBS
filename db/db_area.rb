@@ -54,7 +54,8 @@ def add_area(name, d_access,v_access,netnum,fido_net,group)
     :modify_date => Time.now,
     :grp => group,
     :netnum => netnum,
-    :fido_net => fido_net
+    :fido_net => fido_net,
+    :prune => 0
   )
 end
 

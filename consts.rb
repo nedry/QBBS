@@ -4,9 +4,11 @@ QWK = false
 QWK_DEBUG = false
 FIDO = false
 SMTP = false
-IRC_ON =  false
+IRC_ON =  true
 SCREENSAVER = true
 
+#how long to wait between IRC reconnect attempts.  Set to 0 to not reconnect.
+BOT_RECONNECT_DELAY = 60 
 BS = 8
 ESC = 27
 DBS =127

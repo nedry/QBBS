@@ -205,6 +205,24 @@ class MailSchedulethread
         system.newu_today = 0
         update_system(system)
         current_day = new_day
+        puts "-SA: Pruning message areas"
+        fetch_area_list(nil).each_with_index {|area,i|
+
+              if area.prune > 0 then
+                puts "-SA: checking message area: #{area.name}"
+               if m_total(area.number) > area.prune then
+                 puts "-SA: area has #{m_total(area.number)} messages."
+                 puts "-SA: prune limit is #{area.prune}"
+                 stop = m_total(area.number) - area.prune
+                 puts "-SA: deleteing #{stop} messages."
+                 first = absolute_message(area.number,1)  
+                 last = absolute_message(area.number,stop)
+                 add_log_entry(9,Time.now,"%WR;Deleting #{stop} messages #{first} to #{last}%W; on #{area.name}")
+                 delete_msgs(area.number,first,last) 
+               end
+             end
+        }
+        
       end
       if Time.now.min.to_i != tick then
         idle = idle + 1
