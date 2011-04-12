@@ -34,7 +34,6 @@ class Session
     puts "@irc_alias; #{@irc_alias}"
     if channel then
       ircchannel = channel
-      game = true
     else
       ircchannel = IRCCHANNEL
     end
@@ -93,32 +92,13 @@ class Session
 
     print ""
     prompt = "%G;>%W;"
-    if game then ogfileout("gd_enter",1,true) else header end
+     header
 
     while true
-      getinp(nil,true) {|l|
+      getinp(nil,:chat) {|l|
         line = l.strip
         puts line
-        if game
-          if line and line.upcase == "HIGH" then
-            ogfileout("gd_score",1,true)
-            line = nil
-          end
-          help = line.to_s.upcase.split
-
-          if help[0] == "HELP"  and help.length > 1 then
-            proceed = GD_HELP_TABLE[help[1]]
-            if !proceed.nil? then
-              ogfileout("#{GD_HELP_TABLE[help[1]]}",1,true)
-              line = nil
-            end
-          else
-            if help[0] == "HELP"
-              ogfileout("gd_main",1,true)
-              line = nil
-            end
-          end
-        end
+     
         test = (/^\/(.*)/) =~ line
         if test then
           out = $1.to_s.upcase

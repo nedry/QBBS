@@ -14,32 +14,9 @@ module IrcConference
     if happy then
       out = "* #{m.sourcenick}#{$2}#{CRLF}%W;"
     else
-      if m.sourcenick == GD_IRCUSER
-        if m.dest == @irc_alias
-          @gd_mode = true if params == "+++"
-          @gd_mode = false if params == "---"
-
-          if @gd_game
-            out = "%C;#{m.params}#{CRLF}%W;"
-          else
-            out = "%R;PM:%B;<%G;#{m.sourcenick}%B>%C #{m.params}#{CRLF}%W;"
-          end
-        else
-          @gd_game = true if params == "***GAME START"
-          @gd_game = false if params == "***GAME STOP"
-
-          if @gd_game
-            if m.params[0..2] != "-+-"
-              out = "%C#{m.params}#{CRLF}%W"
-            else
-              out = nil
-            end
-          else
-            out = "%B;<#{m.sourcenick}>%C; #{m.params}#{CRLF}%W;"
-          end
-        end
-      end
+      out = "%B;<#{m.sourcenick}>%C; #{m.params}#{CRLF}%W;"
     end
+
     return out
   end
 
@@ -74,6 +51,7 @@ module IrcConference
   end
 
   def handle_numeric(m)
+    puts m.command
     case m.command
 
     when IRC::RPL_NAMREPLY
