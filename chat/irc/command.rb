@@ -151,7 +151,7 @@ module IRC
     end
     
   def topic(channel,params)
-     return "TOPIC #{channel} :#{params}"
+     return "TOPIC #{channel} #{params}"
     end
     
  def part(channel)

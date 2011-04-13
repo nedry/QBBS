@@ -98,33 +98,49 @@ class Session
       getinp(nil,:chat) {|l|
         line = l.strip
         puts line
-     
+        out =  line.gsub("/","").to_s.upcase
         test = (/^\/(.*)/) =~ line
         if test then
-          out = $1.to_s.upcase
           happy = (/^\/(\S*)\s(.*)/) =~ line
-          if happy then out = $1.to_s.upcase end
-          if ["NICK" "JOIN", "MOTD", "VERSION", "TIME", "NAMES", "LIST", "WHOIS"].include? out
-            @irc_client.send(out.downcase, $2)
-          elsif ["TOPIC", "ME"].include? out
-            @irc_client.send(out.downcase, channel, $2)
-          else
-            case out.upcase
-            when "PAGE"
-              page
-            when "U"
-              displaywho
-            when "MSG"
-              doit = (/^\/(\S*)\s(\S*)\s(.*)/) =~ line
-              @irc_client.privmsg($2,$3) if doit
-            when "QUIT"
-              @irc_client.quit($2)
-              @irc_client.shutdown
-              @irc_cleint = nil
-              return
-            end
-          end
-        else
+          out = $1.to_s.upcase if happy
+            case out 
+              when "NICK"
+                 @irc_client.nick($2)
+               when "JOIN"
+                 @irc_client.join($2)
+               when "MOTD"
+                 #@irc_client.motd(@irc_channel)
+                 @irc_client.send("MOTD")  #irc system motd command seems to be broken.  fix me!
+               when "VERSION"
+                 @irc_client.version(IRCSERVER)
+               when "TIME"
+                 #@irc_client.time(IRCSERVER)
+                 @irc_client.send("TIME")
+              when "TOPIC"
+                 @irc_client.topic(ircchannel,$2 )
+               when "NAMES"
+                  @irc_client.send("NAMES")
+               when "LIST"
+                  @irc_client.send("LIST")
+                when "ME"
+                  @irc_client.me(ircchannel,$2)
+                  print "%Y;*** Action Sent%W;"
+                when "WHOIS"
+                  @irc_client.whois($2)
+               when "PAGE"
+                  page
+               when "U"
+                 displaywho
+               when "MSG"
+                 doit = (/^\/(\S*)\s(\S*)\s(.*)/) =~ line
+                 @irc_client.privmsg($2,$3) if doit
+                when "QUIT"
+                  @irc_client.quit($2)
+                  @irc_client.shutdown
+                  @irc_cleint = nil
+                  return
+              end #of case
+       else
           if line =="?" then
             gfileout("chatmnu")
           else
@@ -133,10 +149,10 @@ class Session
               cmd = g_test ? $1.upcase : ""
               @irc_client.privmsg(@irc_channel,line)
             end
-          end
         end
+      end
 
-        @chatbuff.each {|x| print parse_ircc(x)}
+        @chatbuff.each {|x| print parse_ircc(x,@c_user.ansi,true)}
         @chatbuff.clear
       }
     end
