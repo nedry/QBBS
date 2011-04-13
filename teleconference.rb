@@ -38,8 +38,7 @@ class Session
       ircchannel = IRCCHANNEL
     end
     @irc_channel = ircchannel
-    puts " @irc_channel: #{ @irc_channel}"
-    puts "attemping to log in"
+
     @irc_client.login(@c_user.alias, @c_user.alias, "8", "*", "Telnet User")
     loop do
       count +=1
@@ -47,7 +46,6 @@ class Session
 
       m = @irc_client.isdata ? @irc_client.getline : nil
       if m then
-        puts "i've reached the server notice get"
         if m.kind_of? IRC::Message::ServerNotice then
           print "%Y;#{m.params}"
 
@@ -90,14 +88,13 @@ class Session
       end
     end
 
-    print ""
+
     prompt = "%G;>%W;"
      header
-
+    print "%W;"
     while true
       getinp(nil,:chat) {|l|
         line = l.strip
-        puts line
         out =  line.gsub("/","").to_s.upcase
         test = (/^\/(.*)/) =~ line
         if test then
@@ -117,13 +114,14 @@ class Session
                  #@irc_client.time(IRCSERVER)
                  @irc_client.send("TIME")
               when "TOPIC"
-                 @irc_client.topic(ircchannel,$2 )
+                 @irc_client.topic(@irc_channel,$2 )
+                  print "%Y;*** Topic Changed%W;"
                when "NAMES"
                   @irc_client.send("NAMES")
                when "LIST"
                   @irc_client.send("LIST")
                 when "ME"
-                  @irc_client.me(ircchannel,$2)
+                  @irc_client.me(@irc_channel,$2)
                   print "%Y;*** Action Sent%W;"
                 when "WHOIS"
                   @irc_client.whois($2)
@@ -151,9 +149,12 @@ class Session
             end
         end
       end
-
-        @chatbuff.each {|x| print parse_ircc(x,@c_user.ansi,true)}
+       if !@chatbuff.empty? then
+        @chatbuff.each {|x| print parse_ircc(x.strip,@c_user.ansi,true) if !x.strip.nil?
+        }
         @chatbuff.clear
+
+      end
       }
     end
   end

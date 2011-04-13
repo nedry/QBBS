@@ -151,8 +151,12 @@ module IRC
     end
     
   def topic(channel,params)
-     return "TOPIC #{channel} #{params}"
-    end
+    if !params.nil? then
+     return "TOPIC #{channel} :#{params}"
+    else
+       return "TOPIC #{channel}"
+     end
+  end
     
  def part(channel)
      return "PART #{channel}"

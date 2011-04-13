@@ -51,7 +51,7 @@ module IrcConference
   end
 
   def handle_numeric(m)
-    puts m.command
+    puts "m command: #{m.command}"
     case m.command
 
     when IRC::RPL_NAMREPLY
@@ -72,12 +72,16 @@ module IrcConference
       out = "%Y;*** #{$4} has been idle for #{idle_minutes} minute(s).#{CRLF}%W;"
 
     when IRC::RPL_WHOISCHANNELS
-      (/^:(.*):(.*)/) =~ m.message
+      (/:(.*):(.*)/) =~ m.message
       out ="%Y;*** on channels: #{$2}#{CRLF}%W;"
 
     when IRC::RPL_WHOISSERVER
       (/^:(\S*)\s(\d*)\s(\S*)\s(\S*)\s(.*):(.*)/) =~ m.message
-      out ="%Y*** on irc via server #{$5}(#{$6})#{CRLF}%W;"
+      out ="%Y;*** on irc via server #{$5}(#{$6})#{CRLF}%W;"
+      
+    when IRC::RPL_TIME
+       (/^:(\w*\s\w*\s\w*\s\w*)\s:(.*)/) =~ m.message
+      out ="%Y;*** #{$2}#{CRLF}%W;"
 
     when IRC::RPL_VERSION
       (/^:(\S*)\s(\d*)\s(\S*)\s(.*)/) =~ m.message
@@ -105,7 +109,7 @@ module IrcConference
     if @irc_client and @irc_client.isdata then
       out = nil
       m = @irc_client.getline
-      params = m.params.strip
+      params = m.params.strip if !m.nil?
       if m.kind_of? IRC::Message::Private 
         out = handle_privmsg(m)
       elsif m.kind_of? IRC::Message::Nick 

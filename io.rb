@@ -59,7 +59,7 @@ module IOUtils
       break if yield t
       print errmsg
     end
-    print
+    print if !chat
     return t
   end
 
@@ -78,7 +78,7 @@ module IOUtils
           break if yield t
         end
       end
-      print
+      print if !chat
       return t
     else
       getcmd(prompt, ECHO, 0, chat, false)
