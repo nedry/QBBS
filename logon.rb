@@ -44,7 +44,7 @@ class Session
     ip= figureip(@socket.getpeername)
     print
     ddate = Time.now.strftime("%m/%d/%Y at %I:%M%p")
-    add_log_entry(6,Time.now,"IP: #{ip}.")
+    add_log_entry(L_CONNECT,Time.now,"Connect from IP: #{ip}.")
     if detect_ansi then
       sleep(1)
       print "ANSI Detected"
@@ -120,7 +120,7 @@ class Session
   def checkmaxsessions
     toomany = @who.len
     if toomany >= NODES then
-      add_log_entry(7,Time.now,"Maximum Sessions Exceeded!")
+      add_log_entry(L_SECURITY ,Time.now,"Maximum Sessions Exceeded!")
 
       fileout(TEXTPATH + "toomany.txt")
       sleep(10)
@@ -154,7 +154,7 @@ class Session
     more =yes(prompt,true,false,true)
     add_user(username,ip,password,location,address,24,80,ansi, more, DEFLEVEL, fullscreen)
     @c_user = fetch_user(get_uid(username))
-    add_log_entry(5,Time.now,"New user #{@c_user.name} created.")
+    add_log_entry(L_USER,Time.now,"New user #{@c_user.name} created.")
     @logged_on = true
     defaulttheme   # set default screensaver if there are any screensavers defined.
     if s_total > 0 then
@@ -174,7 +174,7 @@ class Session
   def checkkillfile(username)
     @c_user = fetch_user(get_uid(username))
     if @c_user.deleted then
-      add_log_entry(7,Time.now,"#{@c_user.name} tried to log on, but is in the kill file!")
+      add_log_entry(L_SECURITY,Time.now,"#{@c_user.name} tried to log on, but is in the kill file!")
       gfileout("killfile")
       sleep(10)
       hangup
@@ -184,7 +184,7 @@ class Session
   def checkmultiplelogon
     for x in 0..(@who.len - 1)
       if @who[x].name.upcase == @c_user.name.upcase then
-        add_log_entry(7,Time.now,"#{@c_user.name} multiple logon attempt.")
+        add_log_entry(L_SECURITY,Time.now,"#{@c_user.name} multiple logon attempt.")
         gfileout("already")
         sleep(10)
         hangup
@@ -234,7 +234,7 @@ class Session
     system.total_logons += 1
     system.logons_today += 1
     defaulttheme  #prevent crash in case user has no theme, set the default.
-    add_log_entry(5,Time.now,"#{@c_user.name} logged on sucessfully.")
+    add_log_entry(L_USER,Time.now,"#{@c_user.name} logged on sucessfully.")
     @logged_on = true
     puts "-SA: Logon - #{@c_user.name}"
     @node = addtowholist
@@ -272,7 +272,7 @@ class Session
   def checkmaxpwdmiss(count,username)
     if count == MAXPASSWORDMISS then
       fileout(TEXTPATH + "missed.txt")
-      add_log_entry(7,Time.now,"#{username} password missed: #{MAXPASSWORDMISS} -- disconnected.")
+      add_log_entry(L_SECURITY,Time.now,"#{username} password missed: #{MAXPASSWORDMISS} -- disconnected.")
       sleep(10)
       hangup
     end

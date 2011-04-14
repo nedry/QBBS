@@ -13,7 +13,7 @@ class Session
 
   def header
     print ""
-    print "%G;Welcome to QUARKirc v1.0 You are in the %C;#{@irc_channel} %G;channel."
+    print "%G;Welcome to QUARKirc v1.1 You are in the %C;#{@irc_channel} %G;channel."
     print "%G;Type %Y;? %G;for Help  %Y;/QUIT %G;to Quit\r\n"
   end
 
@@ -31,7 +31,6 @@ class Session
     check_user_alias
 
     @irc_alias = @c_user.alias
-    puts "@irc_alias; #{@irc_alias}"
     if channel then
       ircchannel = channel
     else
@@ -50,12 +49,11 @@ class Session
           print "%Y;#{m.params}"
 
         elsif m.kind_of? IRC::Message::Numeric then
-          puts m.message
           case m.command
           when IRC::ERR_NICKNAMEINUSE
-            print "*** Nickname already in use."
+            print "%Y;*** Nickname already in use."
             new_alias = "#{@c_user.alias}#{random(1..999)}"
-            print "*** Trying #{new_alias}"
+            print "%Y;*** Trying #{new_alias}"
             @irc_client.login(new_alias, @c_user.alias, "8", "*", "Telnet User")
           when IRC::RPL_CREATED
             (/^:(.*):(.*):(.*)/) =~ m.message
@@ -149,8 +147,9 @@ class Session
             end
         end
       end
+      #i changed this from print to write to prevent an extra cr.  I don't know why this should be?
        if !@chatbuff.empty? then
-        @chatbuff.each {|x| print parse_ircc(x.strip,@c_user.ansi,true) if !x.strip.nil?
+        @chatbuff.each {|x| write parse_ircc(x.strip,@c_user.ansi,true) 
         }
         @chatbuff.clear
 

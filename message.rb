@@ -26,7 +26,6 @@ class Session
 
     widths = [3,4,7,20,38]
     header = hcols.zip(headings).map {|a,b| a+b}.formatrow(widths) + "%W;"
-    puts header
     underscore = cols.zip(['-'*30]*5).map{|a,b| a+b}.formatrow(widths)
 
     grp = nil
@@ -272,11 +271,11 @@ class Session
       print (CLS)
       print (HOME)
       sleep(1)
-      puts "launch: #{launch}"
-      puts "msg_file: #{msg_file}"
-      puts "fullscreendir: #{FULLSCREENDIR}"
+      #puts "launch: #{launch}"
+      #puts "msg_file: #{msg_file}"
+      #puts "fullscreendir: #{FULLSCREENDIR}"
 
-      puts "string: #{launch} #{FULLSCREENDIR}/#{msg_file}"
+      #puts "string: #{launch} #{FULLSCREENDIR}/#{msg_file}"
       door_do("#{launch} #{FULLSCREENDIR}/#{msg_file}","")
       print (CLS)
       print (HOME)

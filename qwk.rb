@@ -170,7 +170,7 @@ end
         return IO.readlines(filename)
       else 
         puts "-QWK: Invalid packet. Control.dat not found."
-        add_log_entry(8,Time.now,"Invalid QWK packet or Control.dat.")
+        add_log_entry(L_IMPORT,Time.now,"Invalid QWK packet or Control.dat.")
         return []
       end
     end
@@ -302,7 +302,7 @@ end
       if happy then 
         puts "-Success" 
       else 
-        add_log_entry(4,Time.now,"No old packets to delete.")
+        add_log_entry(L_IMPORT,Time.now,"No old packets to delete.")
         puts "-QWK: No old packets to delete." 
       end
     end
@@ -314,7 +314,7 @@ end
 
     def unzippacket
       happy = system("unzip #{@qwknet.qwkdir}/#{@qwknet.qwkpacket} -d #{@qwknet.qwkdir}")
-      add_log_entry(8,Time.now,"Could not unzip QWK Packet.") if !happy
+      add_log_entry(L_IMPORT,Time.now,"Could not unzip QWK Packet.") if !happy
     end
 
     def read_messages(index)
@@ -340,7 +340,7 @@ end
       #relog.write
       ddate = Time.now.strftime("%m/%d/%Y at %I:%M%p") 
       puts "-QWK: Starting import."
-      add_log_entry(4,Time.now,"Starting QWK message import")
+      add_log_entry(L_IMPORT,Time.now,"Starting QWK message import")
       if !QWK_DEBUG then
        clearoldqwk
        ftppacketdown
@@ -384,12 +384,12 @@ end
           puts
           putslog "ERROR: No mapping found for area #{idx}"
           puts
-          add_log_entry(8,Time.now,"No QWK mapping for area #{idx}")
+          add_log_entry(L_ERROR,Time.now,"No QWK mapping for area #{idx}")
         end
         puts
 
       end
-      add_log_entry(4,Time.now,"Import Complete. #{tmsgimport} message(s) imported.")
+      add_log_entry(L_IMPORT,Time.now,"Import Complete. #{tmsgimport} message(s) imported.")
       puts "-QWK: Import complete."
     end #of def Qwkimport
 

@@ -10,11 +10,20 @@ module IrcConference
   end
 
   def handle_privmsg(m)
+    private = false
+    sad =(/.*PRIVMSG\s(\S*).*/)  =~ m.message
+    if sad then
+      private = true if $1.upcase == @irc_alias.upcase
+    end
     happy = (/^[\x1](ACTION)(.*)[\x1]/) =~ m.params
     if happy then
       out = "* #{m.sourcenick}#{$2}#{CRLF}%W;"
     else
+      if private then
+         out = "%WC;PrivM: %B;<#{m.sourcenick}>%C; #{m.params}#{CRLF}%W;"
+       else
       out = "%B;<#{m.sourcenick}>%C; #{m.params}#{CRLF}%W;"
+      end
     end
 
     return out
