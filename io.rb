@@ -186,10 +186,15 @@ class Session
     @socket.write whole
 
     while true do
+    #  puts @socket.eof?
       char = 0
       if select([@socket],nil,nil,0.1) != nil then 
+        puts "-SA:#{@c_user.name} Dropped Carrier!" if @socket.eof? #testing for eof seems to force the thead to stop on disconnect.  has to be before the getc.  odd
         char = @socket.getc.ord  #this is a 1.9 hack... 1.8 behaviour returned the ascii value without the .ord
+
       else 
+      #  puts "loop"
+       
         if !@c_user.nil? and new_pages(@c_user) > 0 then
           pages = get_all_pages(@c_user)
           print; pages.each {|x| print "%W;PAGE %W;(%C;#{fetch_user(x.from).name}%W;): %WB;#{x.message}%W;"}

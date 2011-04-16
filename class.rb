@@ -132,7 +132,7 @@ end
 
 
 
-Awho = Struct.new('Awho', :irc, :node, :level, :location,:where, :threadn, :date, :name, :page)
+Awho = Struct.new('Awho', :irc, :node, :level, :location,:where, :threadn, :date, :name, :page, :ping)
 class Awho
   private :initialize
   class << self
@@ -147,6 +147,7 @@ class Awho
       a.level		= level
       a.where		= where
       a.page    = []
+      a.ping =0
       return a
     end
   end

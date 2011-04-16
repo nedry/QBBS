@@ -272,6 +272,7 @@ class Happythread
     while true
       sleep (4)
       curthread = Thread.list
+      
       each_name_with_index {|name, i|
         if !curthread.any? {|thr| @who[i].threadn == thr}
           puts "-SA: User #{i}:#{name} has disconnected."
