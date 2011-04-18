@@ -52,10 +52,10 @@ def addbbs
   address = get_max_length("Enter new BBS telnet address: ",40,"BBS address")
   address.strip! if address != ""
 
-  if yes("Are you sure #{YESNO}", false, false)
+  if yes("Are you sure #{YESNO}", false, false,false)
     add_other(name,address)
   else
-    print "%WR;Aborted.%W;"
+    print "%WR; Aborted. %W;"
   end
   print
 end
@@ -84,7 +84,7 @@ def changebbsaddress(bpointer)
     bbs.address = address
     update_other(bbs)
   else
-    print "%WR;Not Changed.%W;"
+    print "%WR; Not Changed. %W;"
   end
   print
 end
@@ -104,7 +104,7 @@ end
 def displaybbs
   i = 0
   if o_total <= 0 then
-    print "%WR;No External BBS Systems.%W;"
+    print "%WR; No External BBS Systems. %W;"
    else
   print "%G;Systems Available:"
   for i in 1..(o_total)
@@ -119,13 +119,13 @@ def runbbs(number)
 
   bbs = fetch_other(number)
 
-  if @users[@c_user].level >= bbs.level then
-    @who.user(@c_user).where = "External BBS System"
+  if @c_user.level >= bbs.level then
+    @who.user(@c_user.name).where = "External BBS System"
     door_do("telnet -E #{bbs.address}","LINUX")
   else
-    print "You do not have access."
+    print "%WR; You do not have access. %W;"
   end
-  @who.user(@c_user).where = "Main Menu"
+  @who.user(@c_user.name).where = "Main Menu"
 end
 
 def bbs(parameters)

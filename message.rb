@@ -148,7 +148,8 @@ class Session
         end
       end
       print "No more messages"
-      return nil
+      #return nil
+      return false
     end
 
     #-----------------Message Section-------------------

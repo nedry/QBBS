@@ -5,21 +5,24 @@
 |__/|__/\___/_/\___/\____/_/ /_/ /_/\___(_|_|_)
                                          
 
-to the RetroCOMPUTING BBS.  RetroCOMPUTING BBS (formerly Tardis BBS)
-was originally brought on line in 1985, with custom software written by the 
-sysop at that time, John Lorance.  
+to the Tardis BBS.  The BBS was originally brought on line in 1985, 
+more than 25 years ago, with custom software written by the sysop at 
+that time, John Lorance.  
 
-Now the system is back, as a multi-threaded BBS.  For more information
-see the [B]ulletin section.  
+We're back, after a few years off-line.
 
-There is one common sense rule on this system, respect your fellow users.
+I would really like to develop a local community here.  For that we need
+people to participate and post messages!
+
+There are several door games available as well, including the Global
+Destruction chat game (the Nuclear War card game in chat) and a real PDP
+11 to play with.  You can play Dungeon on that system, or go into the
+system itself to explore.
+
+We also offer Tradewars.
 
 The software is currently under development.  We have a real IRC server as
 as a teleconference and a working QWK/REP and FidoNEt networking connectors.
-
-We also offer Tradewars and you can play the original text adventures, Dungeon
-and Adventure (Dungeon is what became Zork I,II, and III) on a *real* PDP 11/70
-that is connected to the BBS.  
  
 If you would like to help develop the system, or have other comments, please 
 send [F]eedback to the SYSOP.
