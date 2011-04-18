@@ -498,6 +498,7 @@ class Session
       update_who_t(@c_user.name,"Reading Messages")
 
       if zip then
+        @c_area = 1
         if !zipscan(1) then
           zip = false
           return 
