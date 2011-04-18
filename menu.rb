@@ -4,7 +4,7 @@ def readmenu(args)
   ptr = args[:initval] || 1
 
   range = args[:range]
-  out = args[:out]
+  zip = args[:zip]
   done = false
  # o_prompt = args[:prompt]
   theme = args[:theme]
@@ -13,12 +13,13 @@ def readmenu(args)
   high = args[:range].last
   loc = args[:loc]
 
-  while true
+  while !done
   area = fetch_area(@c_area)
    o_prompt = "Not Found: "
    case loc
      when READ
          o_prompt = message_prompt(theme.read_prompt,SYSTEMNAME,@c_area,0,l_read,h_msg,area.name,sdir).gsub("%p","#{ptr}")
+         o_prompt = "%G;ZIP: " + o_prompt if zip
       when BULLETIN
         o_prompt = eval('"%W;#{sdir}Bulletin [%p] (1-#{b_total}): "').gsub("%p","#{ptr}")
       when USER
@@ -33,7 +34,7 @@ def readmenu(args)
         o_prompt = eval('"%G;#{sdir}Door [%p] (1-#{d_total}): %W;"').gsub("%p","#{ptr}")
       when SCREEN
         o_prompt = eval('"%G;#{sdir}Screen [%p] (1-#{s_total}): %W;"').gsub("%p","#{ptr}")
-      when GROUP
+      when GRO 
         o_prompt = eval('"%G;#{sdir}Group [%p] (1-#{g_total}): %W;"').gsub("%p","#{ptr}")
     end
 
@@ -46,9 +47,9 @@ def readmenu(args)
     ptr ||= 0 if ptr.nil?
 
     case sel
-    when ""; ptr = (dir == 1) ? up(ptr, high, out) : down(ptr, low)
+    when ""; ptr,done = (dir == 1) ? up(ptr, high, zip) : down(ptr, low)
     when "-"; dir = -1; ptr = down(ptr, low)
-    when "+"; dir = +1; ptr = up(ptr, high, out)
+    when "+"; dir = +1; ptr,done = up(ptr, high, zip)
     when /\d+/
       ptr = jumpto(ptr, sel.to_i, low, high) if sel.to_i != 0
     end 
@@ -59,18 +60,23 @@ def readmenu(args)
   end
 end
 
-def up(ptr, high, out)
+def up(ptr, high, zip)
   if ptr < high
     ptr = ptr + 1
   else
-    if out == "ZIPread" then
+    if zip then
       stop = zipscan(@c_area)
-      if stop.nil? then return else ptr = stop end
+      if stop.nil? then 
+
+        return [ptr,true]
+       
+      else ptr = stop 
+      end
     else
       print("%WR; Can't go higher %W;")
     end
   end
-  ptr
+ return [ptr,false]
 end
 
 def down(ptr, low)

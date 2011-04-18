@@ -147,9 +147,8 @@ class Session
           end
         end
       end
-      print "No more messages"
-      #return nil
-      return false
+      print "%WG; Zip Scan Complete! %W;"
+      return nil
     end
 
     #-----------------Message Section-------------------
@@ -422,11 +421,11 @@ class Session
             tzout = non_standard_zone(curmessage.q_tz) if tzout.nil?
           end
         end
-        write " %WG;*QWK*%W;" if curmessage.network
-        write " %WB;*SMTP*%W;" if curmessage.smtp
-        write " %WC;*FIDONET*%W;" if curmessage.f_network
-        write " %WY;*EXPORTED*%W;" if curmessage.exported and !curmessage.f_network and !curmessage.network
-        write " %WB;*REPLY*%W;" if curmessage.reply
+        write " %WG; *QWK* %W;" if curmessage.network
+        write " %WB; *SMTP* %W;" if curmessage.smtp
+        write " %WC; *FIDONET* %W;" if curmessage.f_network
+        write " %WY; *EXPORTED* %W;" if curmessage.exported and !curmessage.f_network and !curmessage.network
+        write " %WB; *REPLY *%W;" if curmessage.reply
         print ""
         write "%C;Date: "
         write"%M;#{curmessage.msg_date.strftime("%A the %d#{time_thingie(curmessage.msg_date)} of %B, %Y at %I:%M%p")}"
@@ -493,28 +492,30 @@ class Session
       p_msg = m_total(area.number) - new_messages(area.number,pointer.lastread) # modified for db change
     end
 
-    def messagemenu(zipread)
+    def messagemenu(zip)
       scanforaccess(@c_user)
       @who.user(@c_user.name).where="Message Menu"
       update_who_t(@c_user.name,"Reading Messages")
-      out = "Read"
-      if zipread then
-        out = "ZIPread"
-        return if !zipscan(1)
+
+      if zip then
+        if !zipscan(1) then
+          zip = false
+          return 
+        end
       end
       theme = get_user_theme(@c_user) 
       pointer = get_pointer(@c_user,@c_area)
       area = fetch_area(@c_area)
       l_read = new_messages(area.number,pointer.lastread)
       readmenu(
-      :out => out,
+      :zip => zip,
       :initval => p_msg,
       :range => 1..h_msg,
       :theme => theme,
       :l_read => l_read,
       :loc => READ
 
-      ) {|sel, mpointer, moved, out|
+      ) {|sel, mpointer, moved, zip|
 
         mpointer = h_msg if mpointer.nil?
         mpointer = h_msg if mpointer > h_msg
@@ -523,7 +524,7 @@ class Session
           parameters = Parse.parse(sel)
           sel.gsub!(/[-\d]/,"")
         end
-
+        print "zip: #{zip}"
         if moved
           if (mpointer > 0) and (mpointer <= h_msg) then # range check
             showmessage(mpointer)
@@ -564,7 +565,7 @@ class Session
         if IRC_ON then
           run_if_ulevel("teleconference") {teleconference(nil)}
         else
-          print "%WR;Teleconference is disabled!%W;\r\n"
+          print "%WR; Teleconference is disabled! %W;\r\n"
         end
         
       when @cmd_hash["kick"] ; run_if_ulevel("kick") {youreoutahere}
@@ -582,7 +583,7 @@ class Session
 
     end
     end
-        p_return = [mpointer,h_msg,out] # evaluate so this is the value that is returned
+        p_return = [mpointer,h_msg,zip] # evaluate so this is the value that is returned
 
       }
     end
