@@ -147,7 +147,7 @@ class Session
           end
         end
       end
-      print "%WG; Zip Scan Complete! %W;"
+      print "%WG; ZipRead Complete! %W;"
       return nil
     end
 
@@ -525,7 +525,7 @@ class Session
           parameters = Parse.parse(sel)
           sel.gsub!(/[-\d]/,"")
         end
-        print "zip: #{zip}"
+
         if moved
           if (mpointer > 0) and (mpointer <= h_msg) then # range check
             showmessage(mpointer)
@@ -562,6 +562,7 @@ class Session
       when @cmd_hash["smaint"] ; run_if_ulevel("smaint") {screenmaint}
       when @cmd_hash["areachange"] ; run_if_ulevel("areachange") {areachange(parameters)}
       when @cmd_hash["bulletins"] ; run_if_ulevel("bulletins") {bullets(parameters)}
+      when @cmd_hash["feedback"] ; run_if_ulevel("feedback") { sendemail(true)}
       when @cmd_hash["teleconference"]
         if IRC_ON then
           run_if_ulevel("teleconference") {teleconference(nil)}

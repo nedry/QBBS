@@ -10,7 +10,7 @@ class Session
     if yes("Log off now #{YESNO}", true, false,false) then
       write "%W;"
       gfileout('bye')
-      print "%WR;NO CARRIER%W;"
+      print "%WR; NO CARRIER %W;"
       sleep (1)
       hangup
     end
@@ -124,6 +124,7 @@ end
       when @cmd_hash["smaint"] ; run_if_ulevel("smaint") {screenmaint}
       when @cmd_hash["areachange"] ; run_if_ulevel("areachange") {areachange(parameters)}
       when @cmd_hash["bulletins"] ; run_if_ulevel("bulletins") {bullets(parameters)}
+      when @cmd_hash["feedback"] ; run_if_ulevel("feedback") { sendemail(true)}
       when @cmd_hash["teleconference"]
         if IRC_ON then
           run_if_ulevel("teleconference") {teleconference(nil)}

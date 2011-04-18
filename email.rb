@@ -130,7 +130,7 @@ class Session
       epointer +=1
       displaymessage(epointer,area.number,true)
     else
-      print("%WR;No More Email%W;")
+      print("%WR; No More Email %W;")
     end
     return epointer
   end
@@ -146,7 +146,7 @@ class Session
       epointer -=1
       displaymessage(epointer,area.tbl,true)
     else
-      print("%WR;No More Email%W;")
+      print("%WR; No More Email %W;")
     end
     return epointer
   end
@@ -161,10 +161,10 @@ class Session
 
     if total > 0 then
       delete_msg(del)
-      print "%WR;Email ##{epointer} [#{del}] deleted.%W;"
+      print "%WR; Email ##{epointer} [#{del}] deleted. %W;"
       ptr_check
     else
-      print; print "No Messages"
+      print; print "%WR; No Messages %W;"
     end
   end
 
@@ -278,7 +278,8 @@ class Session
       end
 
     else
-      to = SYSOPNAME # because it's feedback.
+      to = FEEDBACK_TO # because it's feedback.
+      m_type = LOCAL
     end
     to.strip!
     title = getinp("%G;Title:%W; ")

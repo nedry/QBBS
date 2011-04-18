@@ -37,12 +37,12 @@ def questionaire
 	print <<-EOP
 		%G;\r\nThis Questionaire has ceased to be!  It's expired and
 		gone to meet it's maker!\r\n
-		%M%It's a stiff!  Bereft of life, it rests in peace!  If you
+		%M;It's a stiff!  Bereft of life, it rests in peace!  If you
 		hadn't pressed 'Q' it'd be pushing up the daisies!
 		It's metabolic processes are now 'istory!  It's off the twig!
 		It's kicked the bucket, It's shuffled off it's mortal coil, run 
 		down the curtain and joined the bleedin' choir invisibile!!\r\n
-		%R%THIS IS AN EX-QUESTIONAIRE!!\r\n
+		%R;THIS IS AN EX-QUESTIONAIRE!!\r\n
 	EOP
 end
 
