@@ -1,10 +1,10 @@
 You are already logged in under this account. For your comfort and 
-convenience, duplicate logons are not allowed.  In the unlikely event 
-that your user id is "stuck online", please contact a system 
-administrator so he can reset your account.  
+convenience, duplicate logons are not allowed.
 
+Sometimes, if you don't log out correctly, the system doesn't notice you disconnected
+for a few minutes.  Please try to log in again in a few minutes.
 
-You could try e-mailing mark@cortex-media.info or contacting me on the 
+If all else fails you could try e-mailing mark@cortex-media.info or contacting me on the 
 following IM accounts:
 
   ICQ: 115177365

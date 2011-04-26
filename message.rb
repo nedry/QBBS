@@ -421,11 +421,11 @@ class Session
             tzout = non_standard_zone(curmessage.q_tz) if tzout.nil?
           end
         end
-        write " %WG; *QWK* %W;" if curmessage.network
-        write " %WB; *SMTP* %W;" if curmessage.smtp
-        write " %WC; *FIDONET* %W;" if curmessage.f_network
-        write " %WY; *EXPORTED* %W;" if curmessage.exported and !curmessage.f_network and !curmessage.network
-        write " %WB; *REPLY *%W;" if curmessage.reply
+        write " %WG; QWK %W;" if curmessage.network
+        write " %WB; SMTP %W;" if curmessage.smtp
+        write " %WC; FIDONET %W;" if curmessage.f_network
+        write " %WY; EXPORTED %W;" if curmessage.exported and !curmessage.f_network and !curmessage.network
+        write " %WB; REPLY %W;" if curmessage.reply
         print ""
         write "%C;Date: "
         write"%M;#{curmessage.msg_date.strftime("%A the %d#{time_thingie(curmessage.msg_date)} of %B, %Y at %I:%M%p")}"

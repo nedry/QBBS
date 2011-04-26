@@ -68,6 +68,11 @@ def clear_pages(user)
    kill.destroy! if kill
  end
  
+ def clear_system_pages(user)
+   kill = user.pages.all(:system => true)
+   kill.destroy! if kill
+ end
+ 
 def get_all_pages(user)
   
   pages = user.pages.all(:order => [:left_at])

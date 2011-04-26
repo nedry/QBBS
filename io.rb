@@ -173,8 +173,8 @@ class Session
     idle = 0
     tick = Time.now.min.to_i
 
-    warn  = @c_user ? RIDLEWARN : LIDLEWARN
-    limit = @c_user ? RIDLELIMIT : LIDLELIMIT
+    warn  = IDLEWARN
+    limit =  IDLELIMIT
 
     todotime = limit - warn
     warned = false
@@ -207,8 +207,12 @@ class Session
         tick = 0 if time.min.to_i == 0 
 
         if time.min.to_i > tick then 
-          idle = idle + 1
+         
           tick = time.min.to_i 
+          teatime = Time.now
+           puts "writing ping: #{teatime.to_i}"
+          @who.user(@c_user.name).ping = teatime.to_i if !@c_user.nil?
+          idle = idle + 1
         end
 
         if !chat

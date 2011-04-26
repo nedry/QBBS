@@ -208,10 +208,10 @@ class Session
   def lockuser(upointer)
     user = fetch_user(upointer)
     if user.locked then
-      users.locked = false
+      user.locked = false
       print "%WG;User ##{upointer} UNlocked%W;"
     else 
-      users.locked = true
+      user.locked = true
       print "%WR;User ##{upointer} locked.%W;"
     end
     update_user(user)

@@ -56,9 +56,10 @@ def door_do (path,d_type)
             end
 
             if r.include?(@socket)
-              idle = 0
               char = @socket.getc
-              # return if char == nil
+              time = Time.now
+              @who.user(@c_user.name).ping =  time.to_i if !@c_user.nil?
+
               if d_type == DOS then
                 w.putc(char.chr) if (char != 3) and (char != 27) #we want to block ctrl-c and esc
               else

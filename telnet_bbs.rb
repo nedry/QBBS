@@ -52,7 +52,7 @@ def addbbs
   address = get_max_length("Enter new BBS telnet address: ",40,"BBS address")
   address.strip! if address != ""
 
-  if yes("Are you sure #{YESNO}", false, false,false)
+  if yes("Are you sure #{YESNO}", true, false,true)
     add_other(name,address)
   else
     print "%WR; Aborted. %W;"
