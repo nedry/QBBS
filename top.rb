@@ -167,7 +167,7 @@ class MailSchedulethread
 
 
   def qwk_loop(idle)
-  
+
     if QWK
       fetch_groups.each {|group| qwknet = get_qwknet(group)
                                                 if !qwknet.nil? then
@@ -181,7 +181,7 @@ class MailSchedulethread
   end
   
   def run
-    # begin
+     begin
    
     puts "-SCHED: Starting Message Transfer Thread."
     idle = 0
@@ -205,6 +205,15 @@ class MailSchedulethread
         system.newu_today = 0
         update_system(system)
         current_day = new_day
+        print "-SA: Deleting DB Log..."
+         happy = system("rm #{ROOT_PATH}/log/*")
+          if happy then
+            puts "Success!"
+            add_log_entry(L_MESSAGE ,Time.now,"DB Log Deleted.")
+          else
+             puts "Failed!"
+             add_log_entry(L_ERROR,Time.now,"DB Log Delete Failure.")
+           end
         puts "-SA: Pruning message areas"
         fetch_area_list(nil).each_with_index {|area,i|
 
@@ -217,7 +226,7 @@ class MailSchedulethread
                  puts "-SA: deleteing #{stop} messages."
                  first = absolute_message(area.number,1)  
                  last = absolute_message(area.number,stop)
-                 add_log_entry(9,Time.now,"%WR;Deleting #{stop} messages #{first} to #{last}%W; on #{area.name}")
+                 add_log_entry(L_MESSAGE ,Time.now,"%WR;Deleting #{stop} messages on #{area.name}")
                  delete_msgs(area.number,first,last) 
                end
              end
@@ -237,11 +246,13 @@ class MailSchedulethread
       end
 
     end
-    # rescue
-    #  puts "ERROR: An error occurred in QWK/REP scheduler thread died: ",$!, "\n" 
-    #  @log.line.push("%RERROR   %G: %R An error occurred in QWK/REP scheduler thread died: #{$!}")
+     rescue Exception => e
+      puts "ERROR: An error occurred in QWK/REP scheduler thread died: ",$!, "\n" 
+      add_log_entry(L_ERROR,"An error occurred in QWK/REP scheduler thread died: #{$!}")
+      print e.backtrace.map { |x| x.match(/^(.+?):(\d+)(|:in `(.+)')$/);
+      [$1,$2,$3]}
 
-    # end
+     end
   end #of def run
 end #of class Schedulethread
 
