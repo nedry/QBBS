@@ -124,6 +124,11 @@ def parse_text_commands(line)
     ip= "UNKNOWN" if ip.nil?
     ratio = 0 if calls == 0
     text_commands = {
+
+      "%U_SPACE%" => disk_used_space(ROOT_PATH).to_s,
+      "%F_SPACE%" => disk_free_space(ROOT_PATH).to_s,
+      "%T_SPACE%" => disk_total_space(ROOT_PATH).to_s,
+      "%PF_SPACE%" =>  disk_percent_free(ROOT_PATH),
       "%NODE%"  => @session.node.to_s,
       "%TIMEOFDAY%" => @session.timeofday,
       "%USERNAME%" => @session.c_user.name,

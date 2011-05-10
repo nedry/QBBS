@@ -14,3 +14,20 @@ class Session
 		)
 	end
 end
+
+def disk_used_space( path )
+  `df -Pk #{path} |grep ^/ | awk '{print $3;}'`.to_i * 1024
+end
+
+def disk_free_space( path )
+  `df -Pk #{path} |grep ^/ | awk '{print $4;}'`.to_i * 1024
+  end
+  
+  def disk_total_space( path )
+  `df -Pk #{path} |grep ^/ | awk '{print $2;}'`.to_i * 1024
+  end
+  
+   def disk_percent_free( path )
+  `df -Pk #{path} |grep ^/ | awk '{print $5;}'`
+  
+end
