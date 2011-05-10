@@ -19,7 +19,7 @@
 %G;Platform:                %C;%PLATFORM%
 %G;PID:                     %C;%PID%
 
-%G;Used Disk Space:         %C;%U_SPACE% %W;1k blocks
-%G;Free Disk Space:         %C;%F_SPACE% %W;1k blocks
-%G;Total Disk Space:        %C;%T_SPACE% %W;1k blocks
-%G;Percent Free:            %C;%PF_SPACE% 
+%G;Used Disk Space:         %C;%U_SPACE% %W;bytes
+%G;Free Disk Space:         %C;%F_SPACE% %W;bytes
+%G;Total Disk Space:        %C;%T_SPACE% %W;bytes
+%G;Percent Free:            %C;%PF_SPACE%%

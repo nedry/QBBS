@@ -28,6 +28,6 @@ def disk_free_space( path )
   end
   
    def disk_percent_free( path )
-  `df -Pk #{path} |grep ^/ | awk '{print $5;}'`
+  `df -Pk #{path} |grep ^/ | awk '{print $5;}'`.chop!.to_i
   
 end
