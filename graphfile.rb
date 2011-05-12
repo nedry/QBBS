@@ -44,6 +44,10 @@ class GraphFile
     cont = true
     nomore = false
     display = true
+    u_space = disk_used_space(ROOT_PATH).to_s
+    f_space = disk_free_space(ROOT_PATH).to_s
+    t_space =  disk_total_space(ROOT_PATH).to_s
+    pf_space = disk_percent_free(ROOT_PATH).to_s
     if File.exists?(outfile)
       IO.foreach(outfile) { |line|
         j = j + 1 if display
@@ -53,7 +57,7 @@ class GraphFile
           j = 1
         end
         break if !cont
-        out = parse_text_commands(line)
+        out = parse_text_commands(line,u_space,f_space,t_space,pf_space)
         if !out.gsub!("%PAUSE%","").nil? and @session.logged_on  then
           @session.yes("%W;Press #{RET}",true,false,true)
         end
@@ -86,9 +90,13 @@ class GraphFile
   end
 
   def fileout(fname)
+    u_space = disk_used_space(ROOT_PATH).to_s
+    f_space = disk_free_space(ROOT_PATH).to_s
+    t_space =  disk_total_space(ROOT_PATH).to_s
+    pf_space = disk_percent_free(ROOT_PATH).to_s
     if File.exists?(fname)
       IO.foreach(fname) { |line|
-        out = parse_text_commands(line)
+        out = parse_text_commands(line,u_space,f_space,t_space,pf_space)
 
         @session.write out + "\r"
       }
@@ -112,7 +120,7 @@ end
 
 
 
-def parse_text_commands(line)
+def parse_text_commands(line,u_space,f_space,t_space,pf_space)
   if @session.logged_on then
     system = fetch_system
     posts = @session.c_user.posted.to_f
@@ -120,15 +128,16 @@ def parse_text_commands(line)
     ualias = @session.c_user.alias
     ualias = "<NONE>" if ualias.nil?
     ratio = (posts  / calls) * 100
+
     ip= @session.c_user.ip
     ip= "UNKNOWN" if ip.nil?
     ratio = 0 if calls == 0
     text_commands = {
 
-      "%U_SPACE%" => disk_used_space(ROOT_PATH).to_s,
-      "%F_SPACE%" => disk_free_space(ROOT_PATH).to_s,
-      "%T_SPACE%" => disk_total_space(ROOT_PATH).to_s,
-      "%PF_SPACE%" =>  disk_percent_free(ROOT_PATH).to_s,
+      "%U_SPACE%" => u_space,
+      "%F_SPACE%" => f_space,
+      "%T_SPACE%" => t_space,
+      "%PF_SPACE%" =>  pf_space,
       "%NODE%"  => @session.node.to_s,
       "%TIMEOFDAY%" => @session.timeofday,
       "%USERNAME%" => @session.c_user.name,
