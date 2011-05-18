@@ -11,7 +11,7 @@ require 'rmail'
 require "consts.rb"
 require "db/db_message.rb"
 require "db/db_area.rb"
-require "db.rb"
+
 
 def part_type(part)
   type = nil
@@ -151,7 +151,6 @@ end
 
 def do_smtp
   puts "-SMTP: Starting a email import"
-  #open_database
   continue = move_mail
   if continue == SMTP_SUCCESS then
     read_mailbox

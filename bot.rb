@@ -88,7 +88,6 @@ class Botthread
 
     names = false
     tick = 0
-    #open_database
 
     loop do
       sleep(1) if !@irc_bot.isdata

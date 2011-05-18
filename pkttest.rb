@@ -11,7 +11,6 @@ require "t_class.rb"
 require "t_const.rb"
 require "db/db_area"
 require "db/db_message"
-require "db"
 
 def nul_delimited(buffer,pointer,max) #reads in a field delimited by nulls with a maximum length
 
@@ -372,7 +371,6 @@ def process_packet(path) 		#this is a shell for what will be the inbound packet 
 end #process_packet
 
 
-#open_database
 #process_packet ("00000002.pkt")
 #@db.close
 #read_pkt_header("00000001.pkt")

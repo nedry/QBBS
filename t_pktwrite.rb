@@ -12,7 +12,7 @@ require "t_class.rb"
 require "t_const.rb"
 require "db/db_area"
 require "db/db_message"
-require "db"
+
 
 
 require 'fidomail_packet_writer.rb'
