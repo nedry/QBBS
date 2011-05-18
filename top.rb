@@ -332,7 +332,7 @@ class ServerSocket
   end
 
   def run
-    set_up_database
+#    set_up_database
     
     add_log_entry(L_MESSAGE,Time.now,"#{VER} Server Starting.")
     if DEBUG then

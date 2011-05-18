@@ -1,3 +1,5 @@
+
+$LOAD_PATH << "."
 require 'top.rb'
 require 'consts.rb'
 

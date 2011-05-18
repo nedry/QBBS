@@ -1,6 +1,6 @@
 # TODO: replace this with a rake task
-
-require 'datamapper'
+$LOAD_PATH << "/home/mark/qbbs/"
+require 'data_mapper'
 require "dm-validations"
 require 'yaml'
 require 'consts'

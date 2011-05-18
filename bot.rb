@@ -88,7 +88,7 @@ class Botthread
 
     names = false
     tick = 0
-    open_database
+    #open_database
 
     loop do
       sleep(1) if !@irc_bot.isdata
@@ -161,6 +161,10 @@ class Botthread
     rescue Exception => e
       add_log_entry(L_ERROR,Time.now,"Bot Thread Crash! Disconnect? E:#{$!}")
       puts "-ERROR: Bot Thread Crash. Disconnect? #{$!}"
+      print e.backtrace.map { |x| x.match(/^(.+?):(\d+)(|:in `(.+)')$/);
+      [$1,$2,$3]
+      }
+
       if BOT_RECONNECT_DELAY > 0 then
          add_log_entry(L_MESSAGE,Time.now,"Bot thread restart in #{BOT_RECONNECT_DELAY} seconds.")
          sleep(BOT_RECONNECT_DELAY)
