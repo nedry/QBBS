@@ -137,7 +137,7 @@ def parse_text_commands(line,u_space,f_space,t_space,pf_space)
       "%U_SPACE%" => u_space,
       "%F_SPACE%" => f_space,
       "%T_SPACE%" => t_space,
-      "%PF_SPACE%" =>  pf_space,
+      "%PU_SPACE%" =>  pf_space,
       "%NODE%"  => @session.node.to_s,
       "%TIMEOFDAY%" => @session.timeofday,
       "%USERNAME%" => @session.c_user.name,

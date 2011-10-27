@@ -230,7 +230,7 @@ class Session
     end # of until
   end # of def
 
-  def lineedit(startline,reply_text)
+  def lineedit(startline,reply_text,file)
 
     print "%G;Enter message text.  %Y;#{MAXMESSAGESIZE}%G; lines maximum."
     if @c_user.ansi
@@ -249,6 +249,15 @@ class Session
 
       @cmdstack.cmd.clear			#clear the command buffer
       @lineeditor.msgtext.clear			#clear the message buffer
+      
+      if file then
+          File.open(file, "r").each_line {|line| temp = line
+          temp = temp.gsub(/\r/," ")
+          temp = temp.gsub(/\n/," ")
+          @lineeditor.msgtext << temp}
+          @lineeditor.line = @lineeditor.msgtext.length + 1
+     end
+
 
       until (done)
 

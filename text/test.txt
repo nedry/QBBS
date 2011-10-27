@@ -1,1 +1,15 @@
-%QOTD%
+%:qQOTD% 
+ 
+Dude... 
+ 
+this is a test of the word wrap this is a test fo the word wrap this is a test  
+of the word wrap 
+ 
+this is a test of the editor.thisisatest  
+  
+ test 
+ test 
+ test 
+
+
+wow

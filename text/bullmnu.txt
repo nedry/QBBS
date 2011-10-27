@@ -1,11 +1,12 @@
 
 TARDIS BBS
 
-        BULLETIN MAINT. COMMANDS
+        BULLETIN MAINTENANCE COMMANDS
 
-    %W;[%Y;A%W;]%G;dd an Bulletin     %W;[%Y;K%W;]%G;ill (Delete)
-    %W;[%Y;N%W;]%G;ame                %W;[%Y;PU%W;]%G;Page User
-    %W;[%Y;Q%W;]%G;uit                %W;[%Y;W%W;]%G;ho's Online
+    %W;[%Y;A%W;]%G;dd a Bulletin      %W;[%Y;C%W;]%G;reate a Bulletin
+    %W;[%Y;E%W;]%G;dit a Bulletin     %W;[%Y;K%W;]%G;ill (Delete) 
+    %W;[%Y;N%W;]%G;ame                %W;[%Y;PU%W;]%G;Page User         
+    %W;[%Y;Q%W;]%G;uit                %W;[%Y;W%W;]%G;ho's Online        
     %W;[%Y;/%W;]%G;Redisplay          %W;[%Y;?%W;]%G;This Menu
 
 %C;Use a %R;;%C; to stack commands together %W;(%C;I.E., %R;%;a;q%W;)

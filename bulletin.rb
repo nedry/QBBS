@@ -29,6 +29,8 @@ class Session
       when "W"; displaywho
       when "PU";page
       when "A"; addbulletin
+      when "C"; createbulletin
+      when "E"; editbulletinname(bpointer)
       when "P"; changebulletinpath(bpointer)
       when "N"; changebulletinname(bpointer)
       when "K"; deletebulletin(bpointer)
@@ -42,7 +44,7 @@ class Session
   def addbulletin
 
     name = getinp("Enter new bulletin name: ",:nonempty) 
-    path = getinp("Enter new bulletin path: ",:nonempty)
+    path = getinp("Enter new bulletin filename (without extension): ",:nonempty)
     if yes("Are you sure #{YESNO}", true, false,true)
       add_bulletin(name, path)
     else
@@ -50,6 +52,56 @@ class Session
     end
     print
   end
+
+def writefromlineeditor(file)
+  
+   File.open(file, "w") do |f|
+     @lineeditor.msgtext.each {|line| f.write "#{line}\n" }
+   end
+ end
+ 
+ def invokeeditor(path,edit)
+       if @c_user.fullscreen then
+        launch = FULLSCREENPROG
+        launch.gsub!("%a","#{ROOT_PATH}#{TEXT_PATH}")
+        print (CLS)
+        print (HOME)
+        sleep(1)
+        puts "#{launch} #{ROOT_PATH}#{TEXT_PATH}#{path}.txt"
+        door_do("#{launch} #{ROOT_PATH}#{TEXT_PATH}#{path}.txt","")
+        else
+          file = nil
+          file = "#{ROOT_PATH}#{TEXT_PATH}#{path}.txt" if edit
+          saveit = lineedit(1,"",file)
+          if saveit then
+          writefromlineeditor("#{ROOT_PATH}#{TEXT_PATH}#{path}.txt")
+          end
+      end
+   
+   end
+
+  def editbulletinname(bpointer)
+
+    bulletin = fetch_bulletin(bpointer)
+     if yes("Are you sure #{YESNO}", true, false,true)
+        invokeeditor(bulletin.path,true)
+     end
+    print
+  end
+  
+def createbulletin
+
+    name = getinp("Enter new bulletin name: ",:nonempty) 
+    path = getinp("Enter new bulletin filename (without extension): ",:nonempty)
+    invokeeditor(path,false)
+    if yes("Are you sure #{YESNO}", true, false,true)
+      add_bulletin(name, path)
+    else
+      print "%WR; Aborted. %W;"
+    end
+    print
+  end
+
 
   def changebulletinname(bpointer)
 
@@ -68,7 +120,7 @@ class Session
 
     bulletin = fetch_bulletin(bpointer)
     print CHANGEBULLETINPATHWARNING
-    path = getinp("Enter new bulletin path: ")
+    path = getinp("Enter new bulletin filename (no extension): ")
     if path != ""
       bulletin.path = path
       update_bulletin(bulletin)

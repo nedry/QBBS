@@ -210,7 +210,7 @@ class Session
          
           tick = time.min.to_i 
           teatime = Time.now
-           puts "writing ping: #{teatime.to_i}"
+          # puts "writing ping: #{teatime.to_i}"
           @who.user(@c_user.name).ping = teatime.to_i if !@c_user.nil?
           idle = idle + 1
         end

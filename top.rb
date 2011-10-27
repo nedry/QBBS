@@ -283,11 +283,11 @@ class Happythread
       sleep (4)
       curthread = Thread.list
      
-      @who.each {|w| puts "#{w.name}: #{w.ping}"
+      @who.each {|w| #puts "#{w.name}: #{w.ping}"
                             time = Time.now
-                            puts "time: #{time.to_i }"
+                            #puts "time: #{time.to_i }"
                             idle_time =   time.to_i - (w.ping)
-                            puts "idle_time: #{idle_time}"
+                            #puts "idle_time: #{idle_time}"
                             if (idle_time > (IDLELIMIT * 60)) and (w.ping != 0) then
                               puts "-SA Thread timeout.  Resetting account: #{w.name} thread: #{w.threadn}"
                               add_log_entry(8,Time.now,"Thread timeout.  Resetting account: #{w.name} thread: #{w.threadn}")

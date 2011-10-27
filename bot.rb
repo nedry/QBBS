@@ -144,21 +144,21 @@ class Botthread
             instr = $1 if happy
             case instr
             when "?"
-              @ircbot.help(from)
+              @irc_bot.help(from)
             when "USERS"
-              @ircbot.display_telnet_users(from, @who)
+              @irc_bot.display_telnet_users(from, @who)
             when "PAGE"
               happy = /^(\S*)\s(.*),(.*)/ =~ m.params
-              @ircbot.telnet_page(@who, from, $2, $3) if happy
+              @irc_bot.telnet_page(@who, from, $2, $3) if happy
             else
-              @ircbot.handle_unknown_command(from)
+              @irc_bot.handle_unknown_command(from)
             end
           end
         end
       end
     end # loop do
     rescue Exception => e
-      add_log_entry(L_ERROR,Time.now,"Bot Thread Crash! Disconnect? E:#{$!}")
+      add_log_entry(L_ERROR,Time.now,"Bot TC E:#{$!}")
       puts "-ERROR: Bot Thread Crash. Disconnect? #{$!}"
       print e.backtrace.map { |x| x.match(/^(.+?):(\d+)(|:in `(.+)')$/);
       [$1,$2,$3]

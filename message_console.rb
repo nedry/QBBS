@@ -296,7 +296,7 @@ class MessageConsole < Console
       prompt = "Post message #{YESNO}"
       saveit = yes(prompt, true, false,true)
     else
-      saveit = lineedit(1,reply_text)
+      saveit = lineedit(1,reply_text,false)
     end
   end
 

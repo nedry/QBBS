@@ -34,8 +34,8 @@ def readmenu(args)
         o_prompt = eval('"%G;#{sdir}Door [%p] (1-#{d_total}): %W;"').gsub("%p","#{ptr}")
       when SCREEN
         o_prompt = eval('"%G;#{sdir}Screen [%p] (1-#{s_total}): %W;"').gsub("%p","#{ptr}")
-      when GRO 
-        o_prompt = eval('"%G;#{sdir}Group [%p] (1-#{g_total}): %W;"').gsub("%p","#{ptr}")
+      when GROUP 
+        o_prompt = eval('"%G;#{sdir}Group [%p] (0-#{g_total-1}): %W;"').gsub("%p","#{ptr}")
     end
 
    inp  = getinp (o_prompt)

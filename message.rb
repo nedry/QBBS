@@ -196,7 +196,7 @@ class Session
           prompt = "Post message #{YESNO}"
           saveit = yes(prompt, true, false,true)
         else
-          saveit = lineedit(1,reply_text)
+          saveit = lineedit(1,reply_text,false)
         end
         if (saveit) then
           system = fetch_system
@@ -271,11 +271,6 @@ class Session
       print (CLS)
       print (HOME)
       sleep(1)
-      #puts "launch: #{launch}"
-      #puts "msg_file: #{msg_file}"
-      #puts "fullscreendir: #{FULLSCREENDIR}"
-
-      #puts "string: #{launch} #{FULLSCREENDIR}/#{msg_file}"
       door_do("#{launch} #{FULLSCREENDIR}/#{msg_file}","")
       print (CLS)
       print (HOME)
@@ -306,7 +301,7 @@ class Session
         prompt = "Post message #{YESNO}"
         saveit = yes(prompt, true, false,true)
       else
-        saveit = lineedit(1,reply_text)
+        saveit = lineedit(1,reply_text,false)
       end
       if saveit then
         savecurmessage(@c_area, to, title,false,false,nil,nil,nil,nil)
