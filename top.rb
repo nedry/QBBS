@@ -66,6 +66,7 @@ class Session
   require "teleconference.rb"
   require "main.rb"
   require "groups.rb"
+ 
 
   def run
     telnetsetup

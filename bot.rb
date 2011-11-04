@@ -1,12 +1,31 @@
 # Load the API.
 require 'chat/irc'
 require "db/db_class.rb"
+require "r_message"
 
-class IrcBot < IRC::Client
-  def initialize(server, port)
-    super(server, port)
+
+def debug (msg) #compatiblity with r_bot plugins
+    puts "-RBOT: #{msg}"
   end
 
+  module Config  #Compatabilty with rbot plugins
+  require "consts"
+    def Config.datadir
+      ROOT_PATH
+    end
+
+  end
+    
+class IrcBot < IRC::Client
+  
+
+  def initialize(server, port)
+    super(server, port)
+
+  end
+
+  
+  
   def join_channel
     join(IRCCHANNEL)
     oper(IRCOPERID,IRCOPERPSWD)
@@ -19,7 +38,7 @@ class IrcBot < IRC::Client
   end
 
   def display_telnet_users(user, list)
-    if list.empty?
+    if list.len == 0
       privmsg(user, "*** No telnet users.")
       return
     end
@@ -61,12 +80,36 @@ end
 
 class Botthread
   attr_reader :irc_bot
+    attr_reader :nick
+
+    
+   require "r_plugins"
+   require "r_registry"
 
   def initialize (irc_who,who,message)
     @irc_who,@who, @message = irc_who,who, message
     @irc_bot = nil
+    @plugins = Plugins.new(self, ["r_plugins"])
+
+    
+
   end
 
+  def nick #compatiblity with r_bot plugins
+    IRCBOTUSER
+  end
+  
+   def delegate_privmsg(message) #compatiblity with r_bot plugins
+     puts "-BOT debug delegate looking"
+    [@plugins].each {|m|
+     puts "looping..."
+       if m.privmsg(message)
+         puts "found!"
+         break
+      end
+    }
+  end
+  
   def send_irc(user,message)
     @irc_bot.privmsg(user,message) if message != ""
   end
@@ -74,6 +117,34 @@ class Botthread
   def send_irc_all (message)
     @irc_bot.privmsg(IRCCHANNEL,message) if message != ""
   end
+
+  
+  def say(where, message, mchan="", mring=-1) #compatiblity with r_bot plugins
+
+    if mchan == ""
+      chan = where
+    else
+      chan = mchan
+    end
+    if mring < 0
+      if where =~ /^#/
+        ring = 2
+      else
+        ring = 1
+      end
+    else
+      ring = mring
+    end
+    message.to_s.gsub(/[\r\n]+/, "\n").each_line { |line|
+      line.chomp!
+      next unless(line.length > 0)
+     # unless((where =~ /^#/) # && (@channels.has_key?(where) && @channels[where].quiet))
+       # sendmsg "PRIVMSG", where, line, chan, ring 
+       send_irc(where,line)
+      #end
+    }
+  end
+
 
   def run
     begin
@@ -137,6 +208,27 @@ class Botthread
         end
 
         if m.kind_of? IRC::Message::Private then
+          if m.dest ==  IRCCHANNEL then
+            instr = m.params.to_s
+            happy = /^\!(.*)/ =~ instr
+            if happy then 
+            mess = PrivMessage.new(self,IRCCHANNEL,IRCCHANNEL,$1)
+            puts "dude: #{$1}"
+         # @plugins.delegate($1,mess)
+           delegate_privmsg(mess)
+            puts "DEBUG: after delegate_privmsg"
+            case $1
+               when "help"
+               puts "I'm here"
+               puts @plugins.help
+               puts @plugins.status
+                 say(m.dest,@plugins.help)
+                 say(m.dest,@plugins.status)
+             end
+          end
+
+          
+          end
           if m.dest == IRCBOTUSER then
             from = m.sourcenick
             instr = m.params.to_s.upcase
