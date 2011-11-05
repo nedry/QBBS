@@ -1,8 +1,8 @@
 # Load the API.
 require 'chat/irc'
 require "db/db_class.rb"
-require "r_message"
-
+require "rbot/rmessage"
+   require "rbot/rhttputil"
 
 def debug (msg) #compatiblity with r_bot plugins
     puts "-RBOT: #{msg}"
@@ -83,13 +83,19 @@ class Botthread
     attr_reader :nick
 
     
-   require "r_plugins"
-   require "r_registry"
+   require "rbot/rplugins"
+   require "rbot/rregistry"
+
+   
+   attr_reader :httputil
+   attr_reader :registry
 
   def initialize (irc_who,who,message)
     @irc_who,@who, @message = irc_who,who, message
     @irc_bot = nil
     @plugins = Plugins.new(self, ["r_plugins"])
+    @httputil = Utils::HttpUtil.new(self)
+    @registry = BotRegistry.new self
 
     
 
@@ -212,16 +218,12 @@ class Botthread
             instr = m.params.to_s
             happy = /^\!(.*)/ =~ instr
             if happy then 
-            mess = PrivMessage.new(self,IRCCHANNEL,IRCCHANNEL,$1)
+            mess = PrivMessage.new(self,m.sourcenick,IRCCHANNEL,$1)
             puts "dude: #{$1}"
-         # @plugins.delegate($1,mess)
            delegate_privmsg(mess)
-            puts "DEBUG: after delegate_privmsg"
             case $1
                when "help"
-               puts "I'm here"
-               puts @plugins.help
-               puts @plugins.status
+               puts @plugins.help($1)
                  say(m.dest,@plugins.help)
                  say(m.dest,@plugins.status)
              end
