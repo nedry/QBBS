@@ -151,7 +151,29 @@ class Botthread
     }
   end
 
-
+ def help(topic=nil)
+    topic = nil if topic == ""
+    case topic
+    when nil
+      helpstr = "help topics: core, auth"
+      helpstr += @plugins.helptopics
+      helpstr += " (help <topic> for more info)"
+    when /^core$/i
+      helpstr = corehelp
+    when /^core\s+(.+)$/i
+      helpstr = corehelp $1
+    when /^auth$/i
+      helpstr = @auth.help
+    when /^auth\s+(.+)$/i
+      helpstr = @auth.help $1
+    else
+      unless(helpstr = @plugins.help(topic))
+        helpstr = "no help for topic #{topic}"
+      end
+    end
+    return helpstr
+  end
+  
   def run
     begin
     puts "-SA: Starting IRC Bot Thread"
@@ -219,13 +241,20 @@ class Botthread
             happy = /^\!(.*)/ =~ instr
             if happy then 
             mess = PrivMessage.new(self,m.sourcenick,IRCCHANNEL,$1)
-            puts "dude: #{$1}"
+            cmdline = $1 
            delegate_privmsg(mess)
-            case $1
+           deporter = /^(\S*)\s(.*)/  =~ cmdline
+           cmd =cmdline
+           param = nil
+           if deporter then
+             cmd = $1
+             param = $2
+           end
+            case cmd
                when "help"
-               puts @plugins.help($1)
-                 say(m.dest,@plugins.help)
-                 say(m.dest,@plugins.status)
+                 say(m.dest,@plugins.help(param))
+                 say(m.dest,help)
+                # say(m.dest,@plugins.status)
              end
           end
 

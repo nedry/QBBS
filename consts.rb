@@ -62,7 +62,7 @@ FULLSCREENDIR = "#{ROOT_PATH}quote"
 
 IRCSERVER = "irc.larryniven.net"
 IRCPORT = 6667
-IRCCHANNEL = "#knownspace"
+IRCCHANNEL = "#noone"
 IRCBOTUSER = "HAL9000T"
 IRCTOPIC = "Knownspace and RetroBBS Chat"
 IRCBOTCMD = "!"
