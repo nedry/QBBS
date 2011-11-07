@@ -85,6 +85,7 @@ class HttpUtil
     proxy_user = nil
     proxy_pass = nil
 
+puts "debug: uri #{uri}"
     if HTTPUSEPROXY
       if (ENV['http_proxy'])
         proxy = URI.parse ENV['http_proxy'] rescue nil
@@ -102,8 +103,9 @@ class HttpUtil
         end
       end
     end
-
+  puts "debug: i'm here"
     h = Net::HTTP.new(uri.host, uri.port, proxy_host, proxy_port, proxy_user, proxy_port)
+    puts "debug: #{h}"
     h.use_ssl = true if uri.scheme == "https"
     return h
   end
@@ -172,6 +174,7 @@ class HttpUtil
 
   # just like the above, but only gets the head
   def head(uri_or_str, readtimeout=10, opentimeout=5, max_redir = HTTPMAXREDIR)
+    puts "DEBUG: get head..."
     if uri_or_str.class <= URI
       uri = uri_or_str
     else

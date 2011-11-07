@@ -159,6 +159,10 @@
     def help(plugin, topic)
       "no help"
     end
+    
+  def pick_one(sequence) 
+		sequence[rand(sequence.length)] 
+	end 
 
     # register the plugin as a handler for messages prefixed +name+
     # this can be called multiple times for a plugin to handle multiple

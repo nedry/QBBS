@@ -2,8 +2,47 @@
 require 'chat/irc'
 require "db/db_class.rb"
 require "rbot/rmessage"
-   require "rbot/rhttputil"
+require "rbot/rhttputil"
+require "rbot/r_config"
+require "rbot/r_config-compat"
+require "rbot/r_utils"
 
+class Array  #compatiblity with r_bot plugins
+   def pick_one
+		self[rand(self.length)] 
+	end 
+end
+
+class Language  #a hacked up language system.  we're only doing one language...
+ def initialize
+   scan
+ end
+ 
+     def get(key)
+      if(@strings.has_key?(key))
+        return @strings[key][rand(@strings[key].length)]
+      else
+        raise "undefined language key"
+      end
+    end
+
+
+    def scan
+      @strings = Hash.new
+      current_key = nil
+      IO.foreach(ROOT_PATH  + 'rbot/english.lang') {|l|
+        next if l =~ /^$/
+        next if l =~ /^\s*#/
+        if(l =~ /^(\S+):$/)
+          @strings[$1] = Array.new
+          current_key = $1
+        elsif(l =~ /^\s*(.*)$/)
+          @strings[current_key] << $1
+        end
+      }
+    end
+  end
+  
 def debug (msg) #compatiblity with r_bot plugins
     puts "-RBOT: #{msg}"
   end
@@ -78,6 +117,8 @@ class IrcBot < IRC::Client
   end
 end
 
+
+
 class Botthread
   attr_reader :irc_bot
     attr_reader :nick
@@ -86,9 +127,14 @@ class Botthread
    require "rbot/rplugins"
    require "rbot/rregistry"
 
+
    
    attr_reader :httputil
    attr_reader :registry
+     attr_reader :config
+     attr_reader :lang
+     
+
 
   def initialize (irc_who,who,message)
     @irc_who,@who, @message = irc_who,who, message
@@ -96,7 +142,7 @@ class Botthread
     @plugins = Plugins.new(self, ["r_plugins"])
     @httputil = Utils::HttpUtil.new(self)
     @registry = BotRegistry.new self
-
+    @lang = Language.new
     
 
   end
@@ -104,6 +150,8 @@ class Botthread
   def nick #compatiblity with r_bot plugins
     IRCBOTUSER
   end
+  
+
   
    def delegate_privmsg(message) #compatiblity with r_bot plugins
      puts "-BOT debug delegate looking"
@@ -236,7 +284,7 @@ class Botthread
         end
 
         if m.kind_of? IRC::Message::Private then
-          if m.dest ==  IRCCHANNEL then
+          if (m.dest ==  IRCCHANNEL) or (m.dest == IRCBOTUSER)  then
             instr = m.params.to_s
             happy = /^\!(.*)/ =~ instr
             if happy then 
@@ -250,11 +298,13 @@ class Botthread
              cmd = $1
              param = $2
            end
-            case cmd
+            case cmd.downcase
                when "help"
                  say(m.dest,@plugins.help(param))
-                 say(m.dest,help)
+                 say(m.dest,help) if $2.nil?
                 # say(m.dest,@plugins.status)
+                when "version"
+                  say(m.dest, "QBBS Bot v.5... With many thanks to Rbot... http://ruby-rbot.org")
              end
           end
 
