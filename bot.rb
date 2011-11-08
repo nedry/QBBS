@@ -9,6 +9,11 @@ require "rbot/r_config"
 require "rbot/r_config-compat"
 require "rbot/r_utils"
 
+
+	
+
+
+
 class Array  #compatiblity with r_bot plugins
    def pick_one
 		self[rand(self.length)] 
@@ -121,7 +126,7 @@ class IrcBot < IRC::Client
   end
 end
 
-
+require "wrap"
 
 class Botthread
   attr_reader :irc_bot
@@ -130,6 +135,7 @@ class Botthread
     
    require "rbot/rplugins"
    require "rbot/rregistry"
+   require "rbot/r_wrap"
 
 
    
@@ -152,6 +158,10 @@ class Botthread
     
 
   end
+  
+  
+ 
+
   
   def path(file)
      ROOT_PATH + "rbot/" + file
@@ -182,6 +192,7 @@ class Botthread
     @irc_bot.privmsg(IRCCHANNEL,message) if message != ""
   end
 
+
   
   def say(where, message, mchan="", mring=-1) #compatiblity with r_bot plugins
 
@@ -199,12 +210,20 @@ class Botthread
     else
       ring = mring
     end
-    message.to_s.gsub(/[\r\n]+/, "\n").each_line { |line|
+    @flood_delay = 0
+    puts message.to_s
+    #split lines longer than 400 char into mulitipile lines.  limit is 512 so this gives us some margin
+    output = doWrap(message.to_s.gsub(/[\r\n]+/, "\n"),400)
+    output.each_line { |line|
+      puts line
       line.chomp!
+      sleep (@flood_delay)
+      
       next unless(line.length > 0)
      # unless((where =~ /^#/) # && (@channels.has_key?(where) && @channels[where].quiet))
-       # sendmsg "PRIVMSG", where, line, chan, ring 
        send_irc(where,line)
+       @flood_delay = 1 + line.length/100
+       puts "flood: #{@flood_delay}"
       #end
     }
   end
