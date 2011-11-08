@@ -118,7 +118,7 @@ puts "debug: uri #{uri}"
   # and caching if requested
   # if a block is given, it yields the urls it gets redirected to
   # TODO we really need something to implement proper caching
-  def get(uri_or_str, readtimeout=10, opentimeout=5, max_redir=HTTPMAXREDIR, cache=false)
+  def get(uri_or_str, readtimeout=40, opentimeout=25, max_redir=HTTPMAXREDIR, cache=false)
     puts "DEBUG: beginning of get"
     if uri_or_str.class <= URI
       uri = uri_or_str

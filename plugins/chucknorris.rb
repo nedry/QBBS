@@ -33,7 +33,7 @@ class ChuckNorrisPlugin < Plugin
   
   # Just a little helper for the initialize method...
   def find_facts_file(name)
-    full_path = File.join Config::datadir, "plugins", name
+    full_path = File.join ROOT_PATH, "plugins", name
     found_files = Dir[full_path]
     if found_files.empty?
       nil

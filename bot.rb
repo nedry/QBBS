@@ -1,5 +1,7 @@
 # Load the API.
 require 'chat/irc'
+require 'rbconfig'
+require 'cgi'
 require "db/db_class.rb"
 require "rbot/rmessage"
 require "rbot/rhttputil"
@@ -47,13 +49,15 @@ def debug (msg) #compatiblity with r_bot plugins
     puts "-RBOT: #{msg}"
   end
 
-  module Config  #Compatabilty with rbot plugins
-  require "consts"
-    def Config.datadir
-      ROOT_PATH
-    end
+ #class Bot
+ # module Config  #Compatabilty with rbot plugins
+ # require "consts"
+  #  def Config.datadir
+  #    ROOT_PATH
+  #  end
 
-  end
+ # end
+ # end
     
 class IrcBot < IRC::Client
   
@@ -133,7 +137,7 @@ class Botthread
    attr_reader :registry
      attr_reader :config
      attr_reader :lang
-     
+     attr_reader :path
 
 
   def initialize (irc_who,who,message)
@@ -143,8 +147,14 @@ class Botthread
     @httputil = Utils::HttpUtil.new(self)
     @registry = BotRegistry.new self
     @lang = Language.new
+          @config = Config.manager
+      @config.bot_associate(self)
     
 
+  end
+  
+  def path(file)
+     ROOT_PATH + "rbot/" + file
   end
 
   def nick #compatiblity with r_bot plugins
