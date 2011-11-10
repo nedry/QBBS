@@ -196,11 +196,15 @@ class Session
       #  puts "loop"
        
         if !@c_user.nil? and new_pages(@c_user) > 0 then
+          begin
           pages = get_all_pages(@c_user)
           print; pages.each {|x| print "%W;PAGE %W;(%C;#{fetch_user(x.from).name}%W;): %WB;#{x.message}%W;"}
           prompt += whole if !prompt.nil? 
            write prompt
            clear_pages(@c_user)
+          rescue  #maybe a page is corrupt or from a user that's been deleted.  just clear them all
+           clear_pages(@c_user)
+          end
         end
 
         time = Time.now

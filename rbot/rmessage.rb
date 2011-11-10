@@ -143,6 +143,7 @@ require "consts"
       @plugin = nil
       @action = false
 
+
       if target.downcase == IRCBOTUSER.downcase
         @private = true
         @address = true

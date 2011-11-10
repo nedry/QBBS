@@ -85,52 +85,14 @@ class IrcBot < IRC::Client
     super(IRCBOTUSER, IRCBOTUSER, "8", "*", "I am the BBS bot.")
   end
 
-  def display_telnet_users(user, list)
-    if list.len == 0
-      privmsg(user, "*** No telnet users.")
-      return
-    end
-
-    privmsg(user, "*** Telnet Users")
-    list.each_with_index {|w,i|
-      privmsg(user, "*** #{w.node}: #{w.name} (#{w.where})")
-    }
-    privmsg(user, "*** End of list.")
-  end
-
-  def handle_unknown_command(user)
-    privmsg(user, "I'm afraid I can't do that, #{user}.")
-    privmsg(user, "Why don't you sit down, take a stress pill, and type ? for help.")
-  end
-
-  def telnet_page(who, from, to, message)
-    if who.user(to).nil?
-      privmsg(from, "*** Sorry, that user is not logged in (via telnet anyway)...")
-      return
-    end
-
-    if message.nil? or message.empty?
-      privmsg(from,"***No blank messages, please")
-      return
-    end
-
-    who.user(to).page ||= []
-    who.user(to).page.push("%CIRC PAGE (%Gfrom #{from}%C): #{message}")
-    send_irc(from,"***Message Sent.")
-  end
-
-  def help (user)
-    privmsg(user, "***Valid Commands:")
-    privmsg(user, "***PAGE <userid>,<message> (pages a telnet user)")
-    privmsg(user, "***USERS lists telnet users")
-  end
+  
+  
 end
 
 require "wrap"
 
 class Botthread
-  attr_reader :irc_bot
-    attr_reader :nick
+
 
     
    require "rbot/rplugins"
@@ -138,12 +100,14 @@ class Botthread
    require "rbot/r_wrap"
 
 
-   
-   attr_reader :httputil
-   attr_reader :registry
+     attr_reader :irc_bot
+     attr_reader :nick
+     attr_reader :httputil
+     attr_reader :registry
      attr_reader :config
      attr_reader :lang
      attr_reader :path
+     attr_reader :who
 
 
   def initialize (irc_who,who,message)
@@ -153,15 +117,13 @@ class Botthread
     @httputil = Utils::HttpUtil.new(self)
     @registry = BotRegistry.new self
     @lang = Language.new
-          @config = Config.manager
-      @config.bot_associate(self)
-    
-
+    @config = Config.manager
+    @config.bot_associate(self)
   end
   
-  
- 
-
+  def who  # expose bbs who list to plugins
+    @who
+  end
   
   def path(file)
      ROOT_PATH + "rbot/" + file
@@ -170,15 +132,10 @@ class Botthread
   def nick #compatiblity with r_bot plugins
     IRCBOTUSER
   end
-  
-
-  
+    
    def delegate_privmsg(message) #compatiblity with r_bot plugins
-     puts "-BOT debug delegate looking"
     [@plugins].each {|m|
-     puts "looping..."
        if m.privmsg(message)
-         puts "found!"
          break
       end
     }
@@ -194,28 +151,18 @@ class Botthread
 
 
   
-  def say(where, message, mchan="", mring=-1) #compatiblity with r_bot plugins
+  def say(where, message, mchan="", mring="") #compatiblity with r_bot plugins
 
     if mchan == ""
       chan = where
     else
       chan = mchan
     end
-    if mring < 0
-      if where =~ /^#/
-        ring = 2
-      else
-        ring = 1
-      end
-    else
-      ring = mring
-    end
+ 
     @flood_delay = 0
-    puts message.to_s
     #split lines longer than 400 char into mulitipile lines.  limit is 512 so this gives us some margin
     output = doWrap(message.to_s.gsub(/[\r\n]+/, "\n"),400)
     output.each_line { |line|
-      puts line
       line.chomp!
       sleep (@flood_delay)
       
@@ -223,7 +170,6 @@ class Botthread
      # unless((where =~ /^#/) # && (@channels.has_key?(where) && @channels[where].quiet))
        send_irc(where,line)
        @flood_delay = 1 + line.length/100
-       puts "flood: #{@flood_delay}"
       #end
     }
   end
@@ -317,7 +263,8 @@ class Botthread
             instr = m.params.to_s
             happy = /^\!(.*)/ =~ instr
             if happy then 
-            mess = PrivMessage.new(self,m.sourcenick,IRCCHANNEL,$1)
+
+            mess = PrivMessage.new(self,m.sourcenick,m.dest,$1)
             cmdline = $1 
            delegate_privmsg(mess)
            deporter = /^(\S*)\s(.*)/  =~ cmdline
@@ -327,34 +274,20 @@ class Botthread
              cmd = $1
              param = $2
            end
+            dest = m.dest
+            dest = m.sourcenick if m.dest == IRCBOTUSER  #send  to the right place, baby!  
+            
             case cmd.downcase
                when "help"
-                 say(m.dest,@plugins.help(param))
-                 say(m.dest,help) if $2.nil?
+                 puts "DEBUG: m.dest for help #{dest}"
+
+                 say(dest,@plugins.help(param))
+                 say(dest,help) if $2.nil?
                 # say(m.dest,@plugins.status)
                 when "version"
-                  say(m.dest, "QBBS Bot v.5... With many thanks to Rbot... http://ruby-rbot.org")
+                  say(dest, "QBBS Bot v.5... With many thanks to Rbot... http://ruby-rbot.org")
              end
           end
-
-          
-          end
-          if m.dest == IRCBOTUSER then
-            from = m.sourcenick
-            instr = m.params.to_s.upcase
-            happy = /^(\S*)\s(.*)/ =~ instr
-            instr = $1 if happy
-            case instr
-            when "?"
-              @irc_bot.help(from)
-            when "USERS"
-              @irc_bot.display_telnet_users(from, @who)
-            when "PAGE"
-              happy = /^(\S*)\s(.*),(.*)/ =~ m.params
-              @irc_bot.telnet_page(@who, from, $2, $3) if happy
-            else
-              @irc_bot.handle_unknown_command(from)
-            end
           end
         end
       end
