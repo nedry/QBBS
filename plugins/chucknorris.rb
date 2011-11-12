@@ -50,6 +50,7 @@ class ChuckNorrisPlugin < Plugin
 
   # The meat.
   def fact(m, params)
+    puts "IM HERE!!!"
     min = params[:minrating].to_f
     debug "+ Getting Chuck Norris fact (rating > #{min})..."
 

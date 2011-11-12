@@ -2,7 +2,7 @@
 
 class BBSPlugin < Plugin
   def help(plugin, topic="")
-  "bbsinfo [status|who] => Display BBS information." 
+  "bbsinfo [status|page|who] => Display BBS information." 
   end
 
   def display_telnet_users(list,m)
@@ -43,12 +43,14 @@ class BBSPlugin < Plugin
              cmd = $1
              param = $2
            end
+          cmd = "none" if cmd.nil?
       return [cmd,param]
   end
   
   def privmsg(m)
     #line = params[:line]
       cmd,param = breakline(m.params)
+
     case cmd.downcase
       when 'who'
        display_telnet_users(@bot.who,m)

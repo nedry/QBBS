@@ -3,15 +3,30 @@ require 'chat/irc'
 require 'rbconfig'
 require 'cgi'
 require "db/db_class.rb"
-require "rbot/rmessage"
-require "rbot/rhttputil"
+  require "rbot/r_timer"
+require "rbot/r_message"
+
 require "rbot/r_config"
 require "rbot/r_config-compat"
 require "rbot/r_utils"
+require "rbot/r_extends"
 
 
 	
+class Object
 
+  # We extend the Object class with a method that
+  # checks if the receiver is nil or empty
+  def nil_or_empty?
+    return true unless self
+    return true if self.respond_to? :empty? and self.empty?
+    return false
+  end
+
+  # We alias the to_s method to __to_s__ to make
+  # it accessible in all classes
+  alias :__to_s__ :to_s
+end
 
 
 class Array  #compatiblity with r_bot plugins
@@ -53,17 +68,12 @@ class Language  #a hacked up language system.  we're only doing one language...
 def debug (msg) #compatiblity with r_bot plugins
     puts "-RBOT: #{msg}"
   end
+ def  warning(msg) #compatiblity with r_bot plugins
+    puts "-RBOT: #{msg}"
+  end
+ 
 
- #class Bot
- # module Config  #Compatabilty with rbot plugins
- # require "consts"
-  #  def Config.datadir
-  #    ROOT_PATH
-  #  end
 
- # end
- # end
-    
 class IrcBot < IRC::Client
   
 
@@ -95,43 +105,55 @@ class Botthread
 
 
     
-   require "rbot/rplugins"
+   require "rbot/r_plugins"
    require "rbot/rregistry"
    require "rbot/r_wrap"
-
-
-     attr_reader :irc_bot
-     attr_reader :nick
-     attr_reader :httputil
-     attr_reader :registry
-     attr_reader :config
-     attr_reader :lang
-     attr_reader :path
-     attr_reader :who
-
+   require  "rbot/r_load-gettext"
+ 
 
   def initialize (irc_who,who,message)
-    @irc_who,@who, @message = irc_who,who, message
-    @irc_bot = nil
-    @plugins = Plugins.new(self, ["r_plugins"])
-    @httputil = Utils::HttpUtil.new(self)
-    @registry = BotRegistry.new self
-    @lang = Language.new
-    @config = Config.manager
-    @config.bot_associate(self)
+     @irc_who,@who, @message = irc_who,who, message
+     @plugins = Plugins::manager
+     $botpassthru = self
+     puts $botpassthru
+     puts "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1self: #{self}"
+     @plugins.scan
+     @registry = BotRegistry.new self
+     @lang = Language.new
+
+  end
+
+def send_me(where, message) #compatiblity with r_bot plugins
+    where = IRCCHANNEL if where.nil?
+    @flood_delay = 0
+    #split lines longer than 400 char into mulitipile lines.  limit is 512 so this gives us some margin
+    output = doWrap(message.to_s.gsub(/[\r\n]+/, "\n"),400)
+    output.each_line { |line|
+      line.chomp!
+      sleep (@flood_delay)
+      
+      next unless(line.length > 0)
+       send_irc(where,line)
+       @flood_delay = 1 + line.length/100
+    }
   end
   
-  def who  # expose bbs who list to plugins
+  def who #compatiblity with r_bot plugins  def who  # expose bbs who list to plugins
     @who
   end
   
-  def path(file)
-     ROOT_PATH + "rbot/" + file
+  def myself
+    IRCBOTUSER
   end
+
 
   def nick #compatiblity with r_bot plugins
     IRCBOTUSER
   end
+  
+
+
+  
     
    def delegate_privmsg(message) #compatiblity with r_bot plugins
     [@plugins].each {|m|
@@ -149,57 +171,47 @@ class Botthread
     @irc_bot.privmsg(IRCCHANNEL,message) if message != ""
   end
 
-
-  
-  def say(where, message, mchan="", mring="") #compatiblity with r_bot plugins
-
-    if mchan == ""
-      chan = where
-    else
-      chan = mchan
-    end
- 
-    @flood_delay = 0
-    #split lines longer than 400 char into mulitipile lines.  limit is 512 so this gives us some margin
-    output = doWrap(message.to_s.gsub(/[\r\n]+/, "\n"),400)
-    output.each_line { |line|
-      line.chomp!
-      sleep (@flood_delay)
-      
-      next unless(line.length > 0)
-     # unless((where =~ /^#/) # && (@channels.has_key?(where) && @channels[where].quiet))
-       send_irc(where,line)
-       @flood_delay = 1 + line.length/100
-      #end
-    }
-  end
-
- def help(topic=nil)
+  def help(topic=nil)
     topic = nil if topic == ""
     case topic
     when nil
-      helpstr = "help topics: core, auth"
+      helpstr = _("help topics: ")
       helpstr += @plugins.helptopics
-      helpstr += " (help <topic> for more info)"
-    when /^core$/i
-      helpstr = corehelp
-    when /^core\s+(.+)$/i
-      helpstr = corehelp $1
-    when /^auth$/i
-      helpstr = @auth.help
-    when /^auth\s+(.+)$/i
-      helpstr = @auth.help $1
+      helpstr += _(" (help <topic> for more info)")
     else
       unless(helpstr = @plugins.help(topic))
-        helpstr = "no help for topic #{topic}"
+        helpstr = _("no help for topic %{topic}") % { :topic => topic }
       end
     end
     return helpstr
   end
   
+ #def help(topic=nil)
+  #  topic = nil if topic == ""
+  #  case topic
+  #  when nil
+   #   helpstr = "help topics: core, auth"
+    #  helpstr += @plugins.helptopics
+    #  helpstr += " (help <topic> for more info)"
+  #  when /^core$/i
+   #   helpstr = corehelp
+   # when /^core\s+(.+)$/i
+    #  helpstr = corehelp $1
+   # when /^auth$/i
+    #  helpstr = @auth.help
+   # when /^auth\s+(.+)$/i
+    #  helpstr = @auth.help $1
+   # else
+   #   unless(helpstr = @plugins.help(topic))
+    #    helpstr = "no help for topic #{topic}"
+   #   end
+  #  end
+  #  return helpstr
+ # end
+  
   def run
     begin
-    puts "-SA: Starting IRC Bot Thread"
+    puts "-BOT: Starting up..."
     add_log_entry(L_MESSAGE,Time.now,"IRC Bot thread starting.")
     @irc_bot = IrcBot.new(IRCSERVER, IRCPORT)
 
@@ -264,9 +276,11 @@ class Botthread
             happy = /^\!(.*)/ =~ instr
             if happy then 
 
-            mess = PrivMessage.new(self,m.sourcenick,m.dest,$1)
+            mess = PrivMessage.new(self,nil,m.sourcenick,m.dest,$1)
             cmdline = $1 
            delegate_privmsg(mess)
+
+
            deporter = /^(\S*)\s(.*)/  =~ cmdline
            cmd =cmdline
            param = nil
@@ -279,13 +293,11 @@ class Botthread
             
             case cmd.downcase
                when "help"
-                 puts "DEBUG: m.dest for help #{dest}"
-
-                 say(dest,@plugins.help(param))
-                 say(dest,help) if $2.nil?
+                # send_irc(dest,@plugins.help(param))
+                 send_me(dest,help) #if $2.nil?
                 # say(m.dest,@plugins.status)
                 when "version"
-                  say(dest, "QBBS Bot v.5... With many thanks to Rbot... http://ruby-rbot.org")
+                  send_me(dest, "QBBS Bot v.5... With many thanks to Rbot... http://ruby-rbot.org")
              end
           end
           end

@@ -221,6 +221,7 @@ class InsultPlugin < Plugin
   end
   def privmsg(m)
     suffix=""
+
     unless(m.params)
       m.reply "incorrect usage: " + help(m.plugin)
       return

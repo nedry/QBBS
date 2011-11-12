@@ -195,6 +195,7 @@ class WeatherPlugin < Plugin
 
   def wu_weather(m, where, units)
     begin
+    puts "bot #{@bot}"
       xml = @bot.httputil.get(@wu_url % [units, CGI.escape(where)])
       case xml
       when nil
