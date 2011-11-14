@@ -76,7 +76,7 @@ end
   log "gettext loaded"
 
 rescue LoadError, GetTextVersionError
-  warning "failed to load ruby-gettext package: #{$!}; translations are disabled"
+  puts "-RBOT: Warning... failed to load ruby-gettext package: #{$!}; translations are disabled"
 
   # undefine GetText, in case it got defined because the error was caused by a
   # wrong version

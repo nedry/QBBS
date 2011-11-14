@@ -4,8 +4,42 @@
 # :title: rbot plugin management
 
 require 'singleton'
-  require 'consts'
+require 'consts'
 
+def debug (str)
+  puts "-RBOT: Debug ... #{str}"
+end
+  
+class Language  #a hacked up language system.  we're only doing one language...
+ def initialize
+   scan
+ end
+ 
+     def get(key)
+      if(@strings.has_key?(key))
+        return @strings[key][rand(@strings[key].length)]
+      else
+        raise "undefined language key"
+      end
+    end
+
+
+    def scan
+      @strings = Hash.new
+      current_key = nil
+      IO.foreach(ROOT_PATH  + 'rbot/english.lang') {|l|
+        next if l =~ /^$/
+        next if l =~ /^\s*#/
+        if(l =~ /^(\S+):$/)
+          @strings[$1] = Array.new
+          current_key = $1
+        elsif(l =~ /^\s*(.*)$/)
+          @strings[current_key] << $1
+        end
+      }
+    end
+  end
+  
 #module Irc
 #class Bot
 #    Config.register Config::ArrayValue.new('plugins.blacklist',
@@ -25,13 +59,17 @@ require 'singleton'
       @httputil = HttpUtil.new(self)
       @config = Config.manager
       @config.bot_associate(self)
-      puts "bot pass though: #{$botpassthru}"
+      @lang = Language.new
    end
    
       def say(to,msg)
         $botpassthru.send_me(to,msg)
       end
-
+      
+      def lang
+         @lang
+      end
+       
       def who
         $botpassthru.who
       end
@@ -42,6 +80,10 @@ require 'singleton'
       
       def config
         @config
+      end
+      
+      def nick
+        IRCBOTUSER
       end
       
      def path(file)
@@ -642,16 +684,16 @@ require 'singleton'
                        :list => core_modules.collect{ |p| p.name}.sort.join(", ") }
         end
       else
-        output << _("no core botmodules loaded")
+     # output << _("no core botmodules loaded")
       end
       # Active plugins first
       if(self.length > 0)
         if short
-          output << n_("%{count} plugin loaded", "%{count} plugins loaded",
+          output << n_("(%{count} Program available)", "%{count} Programs available)",
                        self.length) % {:count => self.length}
         else
-          output << n_("%{count} plugin: %{list}",
-                       "%{count} plugins: %{list}", self.length) %
+          output << n_("(%{count} Program): %{list}",
+                       "(%{count} Programs): %{list}", self.length) %
                    { :count => self.length,
                      :list => plugins.collect{ |p| p.name}.sort.join(", ") }
         end
@@ -711,7 +753,7 @@ require 'singleton'
       case topic
       when /fail(?:ed)?\s*plugins?.*(trace(?:back)?s?)?/
         # debug "Failures: #{@failed.inspect}"
-        return _("no plugins failed to load") if @failed.empty?
+        return _("No programs failed to load") if @failed.empty?
         return @failed.collect { |p|
           _('%{highlight}%{plugin}%{highlight} in %{dir} failed with error %{exception}: %{reason}') % {
               :highlight => Bold, :plugin => p[:name], :dir => p[:dir],
@@ -723,7 +765,7 @@ require 'singleton'
               end
         }.join("\n")
       when /ignored?\s*plugins?/
-        return _('no plugins were ignored') if @ignored.empty?
+        return _('No programs were ignored') if @ignored.empty?
 
         tmp = Hash.new
         @ignored.each do |p|

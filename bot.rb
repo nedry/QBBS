@@ -35,44 +35,6 @@ class Array  #compatiblity with r_bot plugins
 	end 
 end
 
-class Language  #a hacked up language system.  we're only doing one language...
- def initialize
-   scan
- end
- 
-     def get(key)
-      if(@strings.has_key?(key))
-        return @strings[key][rand(@strings[key].length)]
-      else
-        raise "undefined language key"
-      end
-    end
-
-
-    def scan
-      @strings = Hash.new
-      current_key = nil
-      IO.foreach(ROOT_PATH  + 'rbot/english.lang') {|l|
-        next if l =~ /^$/
-        next if l =~ /^\s*#/
-        if(l =~ /^(\S+):$/)
-          @strings[$1] = Array.new
-          current_key = $1
-        elsif(l =~ /^\s*(.*)$/)
-          @strings[current_key] << $1
-        end
-      }
-    end
-  end
-  
-def debug (msg) #compatiblity with r_bot plugins
-    puts "-RBOT: #{msg}"
-  end
- def  warning(msg) #compatiblity with r_bot plugins
-    puts "-RBOT: #{msg}"
-  end
- 
-
 
 class IrcBot < IRC::Client
   
@@ -114,15 +76,14 @@ class Botthread
   def initialize (irc_who,who,message)
      @irc_who,@who, @message = irc_who,who, message
      @plugins = Plugins::manager
-     $botpassthru = self
-     puts $botpassthru
-     puts "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1self: #{self}"
+     $botpassthru = self   #for shame.  using this to get 
      @plugins.scan
      @registry = BotRegistry.new self
-     @lang = Language.new
 
   end
+  
 
+ 
 def send_me(where, message) #compatiblity with r_bot plugins
     where = IRCCHANNEL if where.nil?
     @flood_delay = 0
@@ -175,7 +136,7 @@ def send_me(where, message) #compatiblity with r_bot plugins
     topic = nil if topic == ""
     case topic
     when nil
-      helpstr = _("help topics: ")
+      helpstr = _("help: ")
       helpstr += @plugins.helptopics
       helpstr += _(" (help <topic> for more info)")
     else
@@ -295,7 +256,7 @@ def send_me(where, message) #compatiblity with r_bot plugins
                when "help"
                 # send_irc(dest,@plugins.help(param))
                  send_me(dest,help) #if $2.nil?
-                # say(m.dest,@plugins.status)
+
                 when "version"
                   send_me(dest, "QBBS Bot v.5... With many thanks to Rbot... http://ruby-rbot.org")
              end
