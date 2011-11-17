@@ -52,6 +52,7 @@ class Language  #a hacked up language system.  we're only doing one language...
 
   module Plugins
     require 'rbot/r_messagemapper'
+     require 'open-uri'
     require "rbot/r_httputil"
     
   class Butthole

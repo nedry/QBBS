@@ -14,6 +14,7 @@
 require 'rexml/document'
 
 
+
 # Wraps NOAA National Weather Service information
 class CurrentConditions
     def initialize(station)
@@ -159,8 +160,13 @@ class WeatherPlugin < Plugin
       begin
         m.reply met.update
         @nws_cache[where] = met
-      rescue => e
-        m.reply e.message
+     # rescue => e
+      rescue Exception => e
+      m.reply "-ERROR: Bot Thread Crash. Disconnect? #{$!}"
+      m.reply e.backtrace.map { |x| x.match(/^(.+?):(\d+)(|:in `(.+)')$/);
+      [$1,$2,$3]
+      }
+       #       m.reply e.message
       end
     else
       m.reply "couldn't find weather data for #{where}"
