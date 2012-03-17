@@ -382,10 +382,8 @@ def parse_text_commands(line,user)
       "%NEWUSERS%" =>  system.newu_today.to_s
     }
 
-    #line = line.to_s.gsub("\t",'')
-
-    text_commands.each_pair {|code, result|
-      line.gsub!(code,result)
+     text_commands.each_pair {|code, result|
+      line.gsub!(code,result) if !result.nil?
     }
 
   return line

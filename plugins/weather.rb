@@ -227,7 +227,7 @@ class WeatherPlugin < Plugin
       end
     rescue  Exception  =>e
           m.reply e.backtrace.map { |x| x.match(/^(.+?):(\d+)(|:in `(.+)')$/);
-      [$1,$2,$3]}
+          [$1,$2,$3]}
       m.reply "retrieving info about '#{where}' failed (#{e})"
     end
   end
@@ -236,12 +236,12 @@ class WeatherPlugin < Plugin
     txt = stuff
     txt.gsub!(/[\n\s]+/,' ')
     txt.gsub!(/&nbsp;/, ' ')
-    txt.gsub!(/&#176;/, ' ') # degree sign
+    #txt.gsub!(/&#176;/, ' ') # degree sign
     txt.gsub!(/<\/?b>/,'')
     txt.gsub!(/<\/?span[^<>]*?>/,'')
     txt.gsub!(/<img\s*[^<>]*?>/,'')
     txt.gsub!(/<br\s?\/?>/,'')
-    txt
+    txt.gsub!("&deg;",176.chr) # put the degree sign back in.
   end
 
   def wu_weather_multi(m, xml)
@@ -261,7 +261,7 @@ class WeatherPlugin < Plugin
         (warning ? "*" : "") + ("station %s (%s): %s" % [loc, par, wu_clean(w)])
       end
     }
-    m.reply stations.join("; ")
+    m.reply stations.join(" -- ")
   end
 
   def wu_check_special(xml)
@@ -310,7 +310,7 @@ class WeatherPlugin < Plugin
       next if k == "Raw METAR"
       result << ("%s: %s" % [k, v])
     }
-    return result.join('; ')
+    return result.join(' -- ')
   end
 end
 

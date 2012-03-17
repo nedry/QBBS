@@ -147,29 +147,7 @@ def send_me(where, message) #compatiblity with r_bot plugins
     return helpstr
   end
   
- #def help(topic=nil)
-  #  topic = nil if topic == ""
-  #  case topic
-  #  when nil
-   #   helpstr = "help topics: core, auth"
-    #  helpstr += @plugins.helptopics
-    #  helpstr += " (help <topic> for more info)"
-  #  when /^core$/i
-   #   helpstr = corehelp
-   # when /^core\s+(.+)$/i
-    #  helpstr = corehelp $1
-   # when /^auth$/i
-    #  helpstr = @auth.help
-   # when /^auth\s+(.+)$/i
-    #  helpstr = @auth.help $1
-   # else
-   #   unless(helpstr = @plugins.help(topic))
-    #    helpstr = "no help for topic #{topic}"
-   #   end
-  #  end
-  #  return helpstr
- # end
-  
+ #
   def run
     begin
     puts "-BOT: Starting up..."
@@ -254,9 +232,7 @@ def send_me(where, message) #compatiblity with r_bot plugins
             
             case cmd.downcase
                when "help"
-                # send_irc(dest,@plugins.help(param))
-                 send_me(dest,help) #if $2.nil?
-
+                 send_me(dest,help($2)) 
                 when "version"
                   send_me(dest, "QBBS Bot v.5... With many thanks to Rbot... http://ruby-rbot.org")
              end

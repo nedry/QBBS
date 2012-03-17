@@ -1,3 +1,4 @@
+# encoding: utf-8
 require 'net/http'
 require 'uri'
 
@@ -6,6 +7,103 @@ require 'uri'
   # miscellaneous useful functions
   module Utils
 
+  UNESCAPE_TABLE = {
+    'laquo' => '«',
+    'raquo' => '»',
+    'quot' => '"',
+    'apos' => '\'',
+    'micro' => 'µ',
+    'copy' => '©',
+    'trade' => '™',
+    'reg' => '®',
+    'amp' => '&',
+    'lt' => '<',
+    'gt' => '>',
+    'hellip' => '…',
+    'nbsp' => ' ',
+    'Agrave' => 'À',
+    'Aacute' => 'Á',
+    'Acirc' => 'Â',
+    'Atilde' => 'Ã',
+    'Auml' => 'Ä',
+    'Aring' => 'Å',
+    'AElig' => 'Æ',
+    'OElig' => 'Œ',
+    'Ccedil' => 'Ç',
+    'Egrave' => 'È',
+    'Eacute' => 'É',
+    'Ecirc' => 'Ê',
+    'Euml' => 'Ë',
+    'Igrave' => 'Ì',
+    'Iacute' => 'Í',
+    'Icirc' => 'Î',
+    'Iuml' => 'Ï',
+    'ETH' => 'Ð',
+    'Ntilde' => 'Ñ',
+    'Ograve' => 'Ò',
+    'Oacute' => 'Ó',
+    'Ocirc' => 'Ô',
+    'Otilde' => 'Õ',
+    'Ouml' => 'Ö',
+    'Oslash' => 'Ø',
+    'Ugrave' => 'Ù',
+    'Uacute' => 'Ú',
+    'Ucirc' => 'Û',
+    'Uuml' => 'Ü',
+    'Yacute' => 'Ý',
+    'THORN' => 'Þ',
+    'szlig' => 'ß',
+    'agrave' => 'à',
+    'aacute' => 'á',
+    'acirc' => 'â',
+    'atilde' => 'ã',
+    'auml' => 'ä',
+    'aring' => 'å',
+    'aelig' => 'æ',
+    'oelig' => 'œ',
+    'ccedil' => 'ç',
+    'egrave' => 'è',
+    'eacute' => 'é',
+    'ecirc' => 'ê',
+    'euml' => 'ë',
+    'igrave' => 'ì',
+    'iacute' => 'í',
+    'icirc' => 'î',
+    'iuml' => 'ï',
+    'eth' => 'ð',
+    'ntilde' => 'ñ',
+    'ograve' => 'ò',
+    'oacute' => 'ó',
+    'ocirc' => 'ô',
+    'otilde' => 'õ',
+    'ouml' => 'ö',
+    'oslash' => 'ø',
+    'ugrave' => 'ù',
+    'uacute' => 'ú',
+    'ucirc' => 'û',
+    'uuml' => 'ü',
+    'yacute' => 'ý',
+    'thorn' => 'þ',
+    'yuml' => 'ÿ'
+        }
+        
+    def Utils.decode_html_entities(str)
+      if defined? ::HTMLEntities
+        return HTMLEntities.decode_entities(str)
+      else
+        str.gsub(/(&(.+?);)/) {
+          symbol = $2
+          # remove the 0-paddng from unicode integers
+          if symbol =~ /^#(\d+)$/
+            symbol = $1.to_i.to_s
+          end
+
+          # output the symbol's irc-translated character, or a * if it's unknown
+          UNESCAPE_TABLE[symbol] || (symbol.match(/^\d+$/) ? [symbol.to_i].pack("U") : '*')
+        }
+      end
+    end
+    
     # turn a number of seconds into a human readable string, e.g
     # 2 days, 3 hours, 18 minutes, 10 seconds
     def Utils.secs_to_string(secs)

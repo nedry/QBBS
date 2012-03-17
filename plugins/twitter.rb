@@ -101,8 +101,13 @@ class TwitterPlugin < Plugin
           # friends always return the latest 20 updates, so we clip the count
           texts[count..-1]=nil
         end
-      rescue
+      rescue Exception => e
         error $!
+       
+      m.reply "-ERROR: Bot Thread Crash. Disconnect? #{$!}"
+      m.reply e.backtrace.map { |x| x.match(/^(.+?):(\d+)(|:in `(.+)')$/);
+      [$1,$2,$3]
+      }
         if friends
           m.reply "could not parse status for #{nick}'s friends"
         else
