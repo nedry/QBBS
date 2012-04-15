@@ -1,6 +1,9 @@
 require 'yaml'
 require 'zlib'
 
+#Added because ruby 1.9.3 has changed it's yaml engine...
+YAML::ENGINE.yamler = 'syck'
+
 MIN_RATING = 6.0
 MIN_VOTES = 25
 

@@ -44,7 +44,7 @@ FEEDBACK_TO = "THE DOCTOR"
 SYSTEMNAME = "TARDIS BBS"
 SYSTEMLOCATION = "The TARDIS"
 NODES = 10
-ROOT_PATH = "/home/mark/qbbs/"
+ROOT_PATH = "/home/mark/QBBS/"
 
 
 

@@ -9,6 +9,7 @@ $stdout.flush
 
 DataMapper::Logger.new('log/db', :debug)
 DataMapper.setup(:default, "postgres://#{DATAIP}/#{DATABASE}")
+DataMapper.finalize
 
 who = Who_old.new
 message = []

@@ -1,5 +1,5 @@
 # TODO: replace this with a rake task
-$LOAD_PATH << "/home/mark/qbbs/"
+$LOAD_PATH << "."
 require 'data_mapper'
 require "dm-validations"
 require 'yaml'
@@ -8,6 +8,7 @@ require 'db/db_area'
 require 'db/db_groups'
 require 'db/db_message'
 
+YAML::ENGINE.yamler = 'syck'
 
 Dir['models/*'].each {|i| require i}
 
@@ -31,8 +32,8 @@ DataMapper.setup(:default, cstr)
 DataMapper::Logger.new('log/db', :debug)
 DataObjects::Postgres.logger = DataObjects::Logger.new(STDOUT,:debug) 
 
+DataMapper.finalize
 DataMapper.auto_migrate!
-
 # create initial groups
 
 Group.new(:groupname => 'Local', :number => 0 ).save!
@@ -127,7 +128,7 @@ add_area("Synchronet Announcements","W","W",2030,nil,2)
 add_area("Hobbies","W","W",2021,nil,2)
 add_area("Synchronet Discussion","W","W",2007,nil,2)
 add_area("Sysops Only","I","I",2008,nil,2)
-add_area("Synchronet Prog. (Baja)","W","W",2011,nil,2)
+add_area("SyDatamapper.finailizenchronet Prog. (Baja)","W","W",2011,nil,2)
 add_area("Synchronet Prog. (Javascript)","W","W",2012,nil,2)
 add_area("Synchronet Prog. (c/c++/cvs)","W","W",2010,nil,2)
 
@@ -175,5 +176,6 @@ happy = s.save
 puts "errors:"
 s.errors{|error| puts error}
 puts happy
+
 
 

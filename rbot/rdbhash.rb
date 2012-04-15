@@ -1,8 +1,9 @@
 begin
   require 'bdb'
 rescue Exception => e
-  error "Got exception: "+e
-  error "rbot couldn't load the bdb module, perhaps you need to install it? try: http://www.ruby-lang.org/en/raa-list.rhtml?name=bdb"
+  puts "oh fuck"
+  #error "Got exception: "+e
+#  error "rbot couldn't load the bdb module, perhaps you need to install it? try: http://www.ruby-lang.org/en/raa-list.rhtml?name=bdb"
   exit 2
 end
 
