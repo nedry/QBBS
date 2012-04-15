@@ -1,0 +1,137 @@
+Here is what I have... it's not much but it lists all the packages you need...
+
+These are the preliminary set up instructions for setting up QBBS.
+QBBS currently requires:
+
+A "standard" installation of postgresql:  The current version that we
+have tested is 8.4, however, any version after version 7 should work
+okay.   In most cases, if installing from packages, you must install
+the -dev package as well as the main package.
+
+Detailed instructions for installing postgresql to be added here...
+
+Ruby: version 1.9.2 or higher is required.   If you are installing
+ruby from source, you need to ensure you install xxx dependencies
+before you compile Ruby.  If you do not, you will have to install a
+component separately, or you will not be able to install the Ruby PG
+gem.
+
+Detailed instructions for installing Ruby v. 1.9.2 to be added here...
+
+It is recommended that Ruby 1.9.x is installed from source.
+
+Sometimes Ruby fails to install its openSSL extension.   If this isn't
+installed Sinatra will fail to function.  To install the openSSL
+extension:
+
+cd <ruby source dir>/ext/openssl
+extconf.rb install
+
+For ubuntu/debian, install the following postgres packages.  You must install the dev 
+package or the postgres gems (pg and dm_postgres_adapter) won't install.
+
+http://packages.ubuntu.com/source/oneiric-updates/postgresql-9.1
+
+postgresql-9.1
+libpq-dev
+
+Install berkeley db... at press time, the latest package for ubuntu / debian was...
+
+libdb4.7-dev
+
+The following gems are required:
+o       haml
+o       sinatra
+o       data_mapper
+o       rmail
+o       pg
+o       dm_postgres_adapter
+
+
+As root, install each gem in turn with the command:
+gem install <gem name>
+
+After installing the gems, you must modify the postgresql's
+pg_hba.conf to allow trusted connections on the local server.  This
+file is sometimes located in the directory:
+/etc/postgresql8.4/main
+
+Change the lines...
+# IPv4 local connections:
+host    all             all             127.0.0.1/32            md5
+# IPv6 local connections:
+host    all             all             ::1/128                 md5
+
+and change md5 to trust...
+
+# IPv4 local connections:
+host    all             all             127.0.0.1/32            trust
+# IPv6 local connectio5ns:
+host    all             all             ::1/128                 trust
+
+You need to add a user to postgres ... the same user you will run the BBS
+as...
+
+So, we need to become root.  in ubuntu, you must set a root password to be root.
+
+become root, then
+libdb4.7-dev
+su - postgres
+
+psql template1
+
+createuser -s mark
+
+mark is the name of my user account.  This is the account I will run the BBS from.
+
+Now we have to create the database.  Lets call it qbbs, which is the default.
+
+
+(as user mark)
+
+createdb qbbs
+
+
+
+http://www.cyberciti.biz/faq/howto-add-postgresql-user-account/
+
+Your results may vary depending on your linux distribution, how you
+installed postgresql and the version.  You may need to use find to
+find this file.
+
+You must install the knu-ruby-bdb-v0.6.6-0-g6aa8054 package.  It is
+in the packages directory.  It installs like any other ruby module, using
+extconf.rb.  If you don't install this, the BBS will not function.
+
+The following Linux software is also required.   If you are using
+debain, they are available as debain packages, which may be installed
+using apt-get.
+
+o       unzip
+
+Next, copy the qbbs files from the distribution media or archive, and
+place them in a directory of your choice.  The recommended directory
+name is "QBBS", for obvious reasons.
+Now, in the directory you created, open the file consts.rb, and change
+the setting ROOT_PATH="/home/mark/QBBS" to match the path that you
+have installed QBBS under.
+
+Next, run the BBS database setup utility:
+
+ruby makedb.rb
+
+
+If all goes well, this will create the QBBS database.  You should now
+be able to run QBBS:
+
+ruby runsession.rb
+
+Try connecting to your new BBS, using the following command in a term window:
+telnet 127.0.0.1 2323
+
+You should get a logon screen.  The 2323 at the end of the telnet
+command refers to port 2323.  Because of restrictions in linux,
+programs run by "regular" users cannot access ports below 1024.  The
+simplest and safest way around this restriction is to program your
+router to "translate" this port to port 23 on the outside of your
+firewall.  Virtually all modern routers can do this.
