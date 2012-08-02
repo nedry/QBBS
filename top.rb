@@ -253,7 +253,12 @@ class MailSchedulethread
       add_log_entry(L_ERROR,"An error occurred in QWK/REP scheduler thread died: #{$!}")
       print e.backtrace.map { |x| x.match(/^(.+?):(\d+)(|:in `(.+)')$/);
       [$1,$2,$3]}
-
+      
+      if SCHED_RECONNECT_DELAY > 0 then
+         add_log_entry(L_MESSAGE,Time.now,"Sched thread restart in #{SCHED_RECONNECT_DELAY} seconds.")
+         sleep(SCHED_RECONNECT_DELAY)
+         retry
+      end
      end
   end #of def run
 end #of class Schedulethread

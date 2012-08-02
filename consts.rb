@@ -9,6 +9,9 @@ SCREENSAVER = true
 
 #how long to wait between IRC reconnect attempts.  Set to 0 to not reconnect.
 BOT_RECONNECT_DELAY = 60 
+
+#if the schedule thread dies, how long to wait to try again.
+SCHED_RECONNECT_DELAY = 480
 BS = 8
 ESC = 27
 DBS =127
