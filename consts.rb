@@ -94,6 +94,7 @@ D_QWKTAG ="#{254.chr} TARDIS BBS - Home of QUARKseven #{254.chr} telnet/http bbs
 
 
 QWKREPINTERVAL = 15
+QWKDOWNLOADTIMEOUT = 600
 
 
 

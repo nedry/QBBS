@@ -134,4 +134,17 @@ command refers to port 2323.  Because of restrictions in linux,
 programs run by "regular" users cannot access ports below 1024.  The
 simplest and safest way around this restriction is to program your
 router to "translate" this port to port 23 on the outside of your
-firewall.  Virtually all modern routers can do this.
+firewall.  Many, but not all, modern routers can do this.
+
+Except my new one from my cable company can... the other solution is to use 
+iptables.  To redirect the ports for telnet (2323 to 23) and webrick 
+(4567 to 80) run the following as root:
+
+iptables -t nat -A PREROUTING -p tcp --dport 23 -j REDIRECT --to-port 2323
+iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 4567
+
+You can commit your changes so they are not lost on reboot with:
+
+iptables-save 
+
+

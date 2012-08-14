@@ -308,8 +308,20 @@ end
     end
 
     def ftppacketdown
-      ftp = FtpClient.new(@qwknet)
-      ftp.qwk_packet_down
+	    
+       begin
+          Timeout.timeout(QWKDOWNLOADTIMEOUT) do
+              ftp = FtpClient.new(@qwknet)
+              ftp.qwk_packet_down
+	end
+ 
+      rescue Timeout::Error
+          add_log_entry(L_ERROR,Time.now,"QWK/REP FTP Hangup: #{@qwknet}")
+	  puts "-ERROR: QWK/REP FTP Hangup: #{@qwknet}"
+      rescue
+          add_log_entry(L_IMPORT,Time.now,"Unable to download QWK packet for #{@qwknet} No New Msg?")
+	  puts "-QWK: Unable to download QWK packet for #{@qwknet} No New Msg?"
+       end
     end
 
     def unzippacket
