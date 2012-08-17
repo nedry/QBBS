@@ -15,6 +15,8 @@ class Area
   property :modify_date, DateTime
   property :network, String, :length => 40
   property :fido_net, String, :length => 40
+  property :nntp_net, String, :length => 40
+  property :nntp_pointer, Integer, :default => 0, :min => 0, :max => 2**32
   property :grp, Integer, :default => 1, :min => 0, :max => 2**32
   property :prune, Integer, :default => 1, :min => 0, :max => 2**32
   has n, :messages, :child_key => [:number]

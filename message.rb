@@ -675,6 +675,8 @@ class Session
     %C;Validated Access: %G;#{area.v_access}
     %C;QWK/REP Net # %G;#{out} 
     %C;FidoNet Area: %G;#{area.fido_net}
+    %C;NNTP Newsgroup: %G;#{area.nntp_net}
+    %C;NNTP Pointer: %G;#{area.nntp_pointer}
     %C;Last Modified: %G;#{area.modify_date.strftime("%A the %d#{time_thingie(area.modify_date)} of %B, %Y at %I:%M%p")}
     %C;Total Messages: %G;#{m_total(area.number)}
     %C;Group: %G;#{area.group.groupname}

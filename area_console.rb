@@ -63,17 +63,17 @@ class AreaConsole
     write "%R [DELETED]" if area.delete
     write "%R [LOCKED]" if area.locked
     print ""
-    if area.netnum > -1 then
-      out = area.netnum
-    else
-      out = "NONE"
-    end
+    out = "NONE"
+    out = area.netnum if area.netnum > -1 
+
 
     print <<-here
 %CDefault Access: %G#{area.d_access}
 %CValidated Access: %G#{area.v_access}
 %CQWK/REP Net # %G#{out}
 %CFidoNet Area: %G#{area.fido_net}
+%CNNTP Newsgroup: %G#{area.nntp_net}
+%CNNTP Pointer: %G#{area.nntp_pointer}
 %CLast Modified: %G#{area.modify_date}
 %CTotal Messages: %G#{m_total(area.number)}
 %CGroup: %G#{area.group.groupname}

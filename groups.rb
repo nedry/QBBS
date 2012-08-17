@@ -22,12 +22,93 @@ class Session
       print " %G;[%Y;FA%G;]FTP Address: %Y;#{qwknet.ftpaddress}"
       print " %G;[%Y;FC%G;]FTP User: %Y;#{qwknet.ftpaccount}"
       print " %G;[%Y;FP%G;]FTP Password: %Y;#{qwknet.ftppassword}"
-      print " %G;[%Y;?%G;]More Options"
       print
     else
       print " %WR; No QWK network assigned.%W;"
     end
+    if !get_nntpnet(group).nil? then
+      nntpnet = get_nntpnet(group)
+
+      print " %G;[%Y;NA%G;]ame: %Y;#{nntpnet.name}"
+      print " %G;[%Y;NU%G;]Local NNTP account: %Y;#{nntpnet.nntpuser}"
+      print " %G;[%Y;NT%G;]NNTP Tag:"
+      print "  %Y;#{nntpnet.nntptag}"
+      print " %G;[%Y;NF%G;]NNTP Server Address: %Y;#{nntpnet.nntpaddress}"
+      print " %G;[%Y;NC%G;]NNTP User: %Y;#{nntpnet.nntpaccount}"
+      print " %G;[%Y;NP%G;]NNTP Password: %Y;#{nntpnet.nntppassword}"
+      print
+    else
+      print " %WR; No NNTP network assigned.%W;"
+    end
+    
   end #displaygroup
+
+ def nntpnetadd(number)
+    group = fetch_group(number)
+    if get_nntpnet(group).nil? then
+      while true
+        prompt = "%W;Enter NNTP network name:%G; "
+        name = getinp(prompt)
+        if name == "" then
+          print "%WR; Cancelled %W;"
+          return [gpointer,(g_total - 1)]
+        end
+        if name.length > 40 then
+          print "%WR; Name too long. 40 Character Maximum %W;"
+        else break end
+      end
+
+      while true
+        prompt = "%W;Enter the User ID of NNTP service account on the LOCAL system:%G; "
+        nntpuser = getinp(prompt) {|n| n != ""}
+        if nntpuser.length > 40 then
+          print "%WR; Name too long. 40 Character Maximum %W;"
+        else
+          if !user_exists(nntpuser) then
+            print "%WR; Local user does not exist.  Try again... %W;"
+          else
+            break 
+          end
+        end
+      end
+
+      while true
+        prompt = "%W;Enter the User ID of NNTP account on the REMOTE system:%G; "
+        nntpaccount = getinp(prompt) {|n| n != ""}
+        if nntpaccount.length > 40 then
+          print "%R;Name too long. 40 Character Maximum"
+        else break end
+      end
+
+      while true
+        prompt = "%W;Enter the NNTP address on the REMOTE system:%G; "
+        nntpaddress = getinp(prompt) {|n| n != ""}
+        if nntpaddress.length > 40 then
+          print "%WR; Name too long. 40 Character Maximum %W;:"
+        else break end
+      end
+
+      while true
+        prompt = "%W;Enter the NNTP account password on the REMOTE system:%G; "
+        nntppassword = getinp(prompt) {|n| n != ""}
+        if nntppassword.length > 40 then
+          print "%WR; Name too long. 40 Character Maximum %W;"
+        else break end
+      end
+
+      commit = yes("Are you sure #{YESNO}",true,false,true)
+      if commit then
+        add_nntpnet(group,name,nntpuser,nntpaddress,nntpaccount,nntppassword)
+      else
+        print "%WR; Cancelled. %W;"
+        return
+      end
+    else
+      print "%WR; You may only have one NNTP network per message group. %W;"
+    end
+  end
+
+
 
   def groupmaintmenu
     readmenu(
@@ -41,18 +122,26 @@ class Session
       when "B";  changebbsid(gpointer)
       when "Q";  gpointer = true
       when "NQ"; qwknetadd(gpointer)
+      when "NN"; nntpnetadd(gpointer)
       when "QN"; changeqwkname(gpointer)
+      when "NA"; changenntpname(gpointer)
       when "RD"; changerepdirectory(gpointer)
       when "RP"; changereppacket(gpointer)
       when "QD"; changeqwkdirectory(gpointer)
       when "QP"; changeqwkpacket(gpointer)
       when "QR"; qwknetremove(gpointer)
+      when "NR"; nntpnetremove(gpointer)
       when "QT"; changeqwktag(gpointer)
-      when "QN"; changeqwkname(gpointer)
+      when "NT"; changenntptag(gpointer)
+      when "QN"; changenntpname(gpointer)
       when "QU"; changeqwklocalaccount(gpointer)
+      when "NU"; changenntplocalaccount(gpointer)
       when "FA"; changeftpaddress(gpointer)
+      when "NF"; changenntpaddress(gpointer)
       when "FC"; changeftpaccount(gpointer)
+      when "NC"; changenntpaccount(gpointer)
       when "FP"; changeftppassword(gpointer)
+      when "NP"; changenntppassword(gpointer)
       when "A";  gpointer = addgroup
       when "W";  displaywho
       when "PU"; page
@@ -80,6 +169,23 @@ class Session
     end
     displaygroup(number)
   end
+  
+  
+    def change_group_nntp(number, prompt)
+    group = fetch_group(number)
+    nntpnet = get_nntpnet(group)
+    if nntpnet then
+      new_val = getinp(prompt)
+      if new_val == ""
+        print "%RCancelled"
+      else
+        yield [nntpnet, new_val]
+      end
+    else
+      print "%WR; No NNTP Network defined. %W;"
+    end
+    displaygroup(number)
+  end
 
   def changeftppassword(number)
     prompt = "%W;Enter the FTP Password:%G;  "
@@ -95,6 +201,20 @@ class Session
     end
   end
 
+  def changenntppassword(number)
+    prompt = "%W;Enter the NNTP Password:%G;  "
+    change_group_nntp(number, prompt) do |nntpnet, inp|
+      nntppassword = inp
+
+      if nntppassword.length > 40 then
+        print "%%WR; Password too long. 40 Character Maximum %W;"
+      else
+        nntpnet.nntppassword = nntppassword
+        update_nntpnet(nntpnet)
+      end
+    end
+  end
+  
   def changeftpaddress(number)
     prompt = "%W;Enter the FTP Address:%G;  "
     change_group(number, prompt) do |qwknet, inp|
@@ -105,6 +225,20 @@ class Session
       else
         qwknet.ftpaddress = ftpaddress
         update_qwknet(qwknet)
+      end
+    end
+  end
+  
+    def changenntpaddress(number)
+    prompt = "%W;Enter the NNTP Server Address:%G;  "
+    change_group_nntp(number, prompt) do |nntpnet, inp|
+      nntpaddress = inp
+
+      if nntpaddress.length > 40 then
+        print "%WR; Address too long. 40 Character Maximum%W;"
+      else
+        nntpnet.nntpaddress = nntpaddress
+        update_nntpnet(nntpnet)
       end
     end
   end
@@ -125,6 +259,22 @@ class Session
     end
   end 
 
+  def nntpnetremove(number)
+    group = fetch_group(number)
+
+    if  get_nntpnet(group).nil? then
+      print "%WR; No NNTP network to delete %W;"
+    else
+      print "%WR; WARNING: %YThis action is permenent and may cause damage.%W;"
+      commit = yes("Are you sure #{YESNO}",true,false,true)
+      if commit then
+        remove_nntpnet(group)
+      else
+        print "Cancelled."
+      end
+    end
+  end 
+  
   def changeftpaccount(number)
     prompt = "%W;Enter the FTP UserID:%G;  "
     change_group(number, prompt) do |qwknet, inp|
@@ -139,16 +289,30 @@ class Session
     end
   end
 
-  def changeqwktag(number)
-    prompt = "%WEnter the QWK  tag:%G  "
-    change_group(number, prompt) do |qwknet, inp|
-      qwktag = inp
+  def changenntpaccount(number)
+    prompt = "%W;Enter the NNTP UserID:%G;  "
+    change_group_nntp(number, prompt) do |nntpnet, inp|
+      nntpaccount = inp
+
+      if nntpaccount.length > 40 then
+        print "%RUserID too long. 40 Character Maximum"
+      else
+        nntpnet.nntpaccount = nntpaccount
+        update_nntpnet(nntpnet)
+      end
+    end
+  end
+
+  def changenntptag(number)
+    prompt = "%WEnter the NNTP tag:%G;  "
+    change_group(number, prompt) do |nntpnet, inp|
+      nntptag = inp
 
       if qwktag.length > 78 then
         print "%WR; Tag too long. 78 Character Maximum %W;"
       else
-        qwknet.qwktag =  convert_to_utf8(qwktag)
-        update_qwknet(qwknet)
+        nntpnet.qwktag =  convert_to_utf8(nntptag)
+        update_qwknet(nntpnet)
       end
     end
   end
@@ -252,6 +416,21 @@ class Session
     end
   end
 
+
+  def changenntpname(number)
+    prompt = "%W;Enter NNTP network name:%G; "
+    change_group_nntp(number, prompt) do |nntpnet, inp|
+      name = inp
+
+      if name.length > 40 then
+        print "%WR; Name too long. 40 Character Maximum %W;"
+      else
+        nntpnet.name = name
+        update_nntpnet(nntpnet)
+      end
+    end
+  end
+  
   def changeqwklocalaccount(number)
     prompt = "%W;Enter the User ID of QWK/REP service account on the LOCAL system:%G; "
     change_group(number, prompt) do |qwknet, inp|
@@ -265,6 +444,24 @@ class Session
         else
           qwknet.qwkuser = account
           update_qwknet(qwknet)
+        end
+      end
+    end
+  end
+  
+    def changenntplocalaccount(number)
+    prompt = "%W;Enter the User ID of NNTP service account on the LOCAL system:%G; "
+    change_group_nntp(number, prompt) do |nntpnet, inp|
+      account = inp
+
+      if account.length > 40 then
+        print "%WR; Account too long. 40 Character Maximum %W;"
+      else
+        if !user_exists(account) then
+          print "%WR; Local user does not exist.  Try again... %W;"
+        else
+          nntpnet.nntpuser = account
+          update_nntpnet(nntpnet)
         end
       end
     end

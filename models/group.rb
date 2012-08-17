@@ -8,4 +8,5 @@ class Group
   property :groupname, String, :length => 40
    has n, :areas,  :child_key => [:grp]
    has n, :qwknets, :child_key => [:grp]
+   has n, :nntpnets, :child_key => [:grp]
 end

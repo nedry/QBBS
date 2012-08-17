@@ -321,7 +321,7 @@ end
 
 
 open_nntp(NNTP_HOST, NNTP_PORT)
-if nntp_login("dennisnedry","") then
+if nntp_login("dennisnedry","flatmo1") then
   puts "-NNTP: Succesful Login"
 else
   puts "-NNTP: Authentication Failure"

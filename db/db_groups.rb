@@ -1,6 +1,7 @@
 require 'models/group'
 require 'models/qwknet'
 require 'models/qwkroute'
+require 'models/nntpnet'
 
 def update_groups(number,name)
   g = Group.first(:number => number)
@@ -133,4 +134,27 @@ end
 
 def g_total
   Group.count
+end
+
+def get_nntpnet(group)
+  nntpnet = group.nntpnets.first
+end
+
+def remove_nntpnet(group)
+  nntpnet = group.nntpnets.first
+  nntpnet.destroy!
+end
+
+def update_nntpnet(nntpnet)
+  nntpnet.save
+end
+
+def add_nntpnet(group,name,nntpuser,nntpaddress,nntpaccount,nntppassword)
+ 
+ nntptag = convert_to_utf8(D_QWKTAG)
+ nntprep = group.nntpnets.new(:name => name, :nntpuser => nntpuser, :nntpaddress => nntpaddress, 
+			    :nntpaccount => nntpaccount, :nntppassword => nntppassword, :nntptag => nntptag)
+ e = nntprep.save
+ puts "Worked: #{e}"
+ nntprep.errors.each{|error| puts error}
 end
