@@ -43,6 +43,29 @@ class Message
   
   property :apparentlyto, String, :length => 255
   property :xcommentto, String, :length => 255    
-  property :newsgroups, String, :length => 255   
+  property :newsgroups, String, :length => 255  
+  property :newsgroups, String, :length => 255 
+  property :organization, String, :length => 255
+  property :replyto, String, :length => 255  
+  property :inreplyto, String, :length => 255
+  property :organization, String, :length => 255
+  property :bytes, Integer,  :min => 0, :max => 2**32
+  property :lines, Integer,  :min => 0, :max => 2**32
+  property :xref, String, :length => 255
+  property :messageto, String, :length => 255
+  property :references, String, :length => 255
+  property :xgateway, String, :length => 255
+  property :control, String, :length => 255
+  property :contenttype, String, :length => 255
+  property :contenttransferencoding, String, :length => 255
+  property :nntppostinghost, String, :length => 255
+  property :xcomplaintsto, String, :length => 255
+  property :xtrace, String, :length => 255
+  property :nntppostingdate, String, :length => 40
+  property :xoriginalbytes, String, :length => 255
+  property :fntarea, String, :length => 255
+  property :fntflags, String, :length => 255  
+  property :path, String, :length => 512
+ 
   belongs_to :area, :child_key => [:number]
   end
