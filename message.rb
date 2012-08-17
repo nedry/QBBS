@@ -703,6 +703,7 @@ here
           when "W"; displaywho
           when "PU"; page
           when "N"; changeareaname(apointer)
+          when "NG"; changenntpgroup(apointer)
           when "D"; changedefaultaccess(apointer)
           when "V"; changevalidatedaccess(apointer)
           when "K"; deletearea(apointer)
@@ -784,9 +785,13 @@ here
         groups.each_index {|j| print "#{j}: #{groups[j].groupname}"}
         prompt = "Enter new group number for board #{apointer}: "
         tempint = getnum(prompt,0,groups.length - 1)
-        area.grp = groups[tempint].grp
-        update_group(area)
-        print "Area Updated"
+	if !tempint.nil? then
+          area.grp = groups[tempint].grp
+          update_group(area)
+          print "%WG;Area Updated%W;"
+	else
+          print "%WR;Aborted%W;"
+	end
       end
 
       def changedefaultaccess(apointer)
@@ -868,6 +873,24 @@ here
           end
         end
         area.name = name
+        update_area(area)
+        print
+end
+
+      def changenntpgroup(apointer)
+
+        area = fetch_area(apointer)
+
+        while true
+          prompt = "Enter new NNTP Group name: "
+          nntp_net = getinp(prompt) {|n| n != ""}
+          if nntp_net.length > 40 then
+            print "NNTP Group too long. 40 Character Maximum"
+          else
+            break
+          end
+        end
+        area.nntp_net = nntp_net
         update_area(area)
         print
       end

@@ -1,12 +1,14 @@
 
 %C;     AREA MAINTENANCE COMMANDS
 
-%W;[%Y;A%W;]%G;dd an Area         %W;[%Y;D%W;]%G;efault Access
+%W;[%Y;A%W;]%G;dd an Area         %W;[%Y;CG%W;]%G;Change Area Group 
+%W;[%Y;D%W;]%G;efault Access      %W;[%Y;FN%W;]%G;ido Net Area 
 %W;[%Y;K%W;]%G;ill                %W;[%Y;N%W;]%G;ame
-%W;[%Y;PU%W;]%G;Page User         %W;[%Y;S%W;]%G;ecuire (lock)
-%W;[%Y;V%W;]%G;alidate Access     %W;[%Y;W%W;]%G;ho's Online
-%W;[%Y;Q%W;]%G;uit                %W;[%Y;/%W;]%G;Redisplay
-%W;[%Y;?%W;]%G;This Menu
+%W;[%Y;P%W;]%G;Purge Level        %W;[%Y;NG%W;]%G;NNTP Group 
+%W;[%Y;NN%W;]%G;QWK/REP No.       %W;[%Y;PU%W;]%G;Page User         
+%W;[%Y;S%W;]%G;ecure (lock)       %W;[%Y;V%W;]%G;alidate Access     
+%W;[%Y;W%W;]%G;ho's Online        %W;[%Y;Q%W;]%G;uit                
+%W;[%Y;/%W;]%G;Redisplay          %W;[%Y;?%W;]%G;This Menu
 
 %C;Use a %R;; %C;to stack commands together %W;(%C;I.E., %R;%;a;q%W;)
 %C;Some commands take parameters %W;(%C;I.E., %R;a2%W;)
