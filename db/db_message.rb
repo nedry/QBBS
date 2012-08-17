@@ -94,6 +94,62 @@ def email_absolute_message(ind,m_to)
   result = lazy_list[ind-1].absolute
 end
 
+def add_nntp_msg(m_to,m_from,msg_date,subject,msg_text,number, apparentlyto,
+                 xcommentto, newsgroups, path, organization, replyto,
+                 inreplyto, lines, bytes, xref, messageto, references, xgateway,
+                 control, charset, contenttype, contenttransferencoding,
+                 nntppostinghost, xcomplaintsto, xtrace, nntppostingdate,
+                 xoriginalbytes, ftnarea, ftnflags, ftnmsgid, ftnreply,
+		 ftntid, ftnpid)
+
+  topt = -1 if topt.nil?
+  destnode = -1 if destnode.nil?
+  destnet = -1 if destnet.nil?
+  area = Area.first(:number => number)
+  message = area.messages.new(
+    :m_to => m_to,
+    :m_from => m_from,
+    :msg_date => msg_date,
+    :subject => subject,
+    :msg_text => msg_text, 
+    :exported => true,
+    :apparentlyto => apparentlyto,
+    :xcommentto => xcommentto,
+    :newsgroups => newsgroups,
+    :path => path,
+    :from => from,
+    :organization => organization,
+    :replyto => replyto,
+    :inreplyto => inreplyto,
+    :lines => lines,
+    :bytes => bytes,
+    :xref => xref,
+    :messageto => messageto,
+    :references => references,
+    :xgateway => xgateway,
+    :control => control,
+    :charset => charset,
+    :contenttype  => contenttype,
+    :contenttransferencoding => contenttransferencoding,
+    :nntppostinghost => nntppostinghost,
+    :xcomplaintsto => xcomplaintsto,
+    :xtrace  => xtrace,
+    :nntppostingdate => nntppostingdate,
+    :xoriginalbytes => xoriginalbytes,
+    :ftnarea => ftnarea,
+    :ftnflags => ftnflags,
+    :msgid => ftnmsgid,
+    :tid  => ftntid,  
+    :pid  => ftnpid,
+  ) 
+  
+  worked = message.save
+  if !worked then
+   message.errors.each{|x| puts x}
+  end
+  return high_absolute(area.number)
+end
+
 def add_msg(m_to,m_from,msg_date,subject,msg_text,exported,network,destnode,destnet,intl,topt,smtp, f_network,orgnode,orgnet,attribute,cost,area,msgid,path,tzutc,charset, tid,pid,fmpt,origin,reply,number,q_msgid,q_tz,q_via,q_reply)
 
   topt = -1 if topt.nil?

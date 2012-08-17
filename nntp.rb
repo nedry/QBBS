@@ -5,6 +5,29 @@
 #                                                                                                            
 ##############################################
 
+#!/usr/bin/ruby
+$LOAD_PATH << "."
+
+require 'consts.rb'
+require 'dm-core'
+require 'dm-validations'
+require 'dm-aggregates'
+require "db/db_area"
+require "db/db_bulletins"
+require "db/db_message"
+require "db/db_doors"
+require "db/db_bbs"
+require "db/db_system"
+require "db/db_themes"
+require "db/db_who"
+require "db/db_who_telnet.rb"
+require "db/db_wall.rb"
+require "db/db_log.rb"
+require "db/db_groups"
+require "db/db_user"
+require "db/db_screen"
+
+
 class A_nntp_message  		# An individual Fidonet Message
 
 
@@ -319,6 +342,10 @@ def nntp_parsearticle(article)
 end
 
 
+DataMapper::Logger.new('log/db', :debug)
+DataMapper.setup(:default, "postgres://#{DATAIP}/#{DATABASE}")
+DataMapper.finalize
+
 
 open_nntp(NNTP_HOST, NNTP_PORT)
 if nntp_login("dennisnedry","flatmo1") then
@@ -339,3 +366,12 @@ puts article.length
 #article.each {|line| puts line}
 nntp_parsearticle(article)
 
+for i in 0..g_total-1
+	
+ group = fetch_group(i)
+    if get_nntpnet(group).nil? then
+      puts "group #{i} #{group.groupname} has no nntp"
+    else
+	puts "group #{i} #{group.groupname} has nntp"    
+     end
+end

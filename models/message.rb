@@ -31,7 +31,7 @@ class Message
   property :intl, String, :length => 80
   property :topt, Integer
   property :fmpt, Integer 
-  property :reply, Boolean
+  property :reply, Boolean, :default => false 
   property :origin, String, :length => 80
   property :smtp, Boolean, :default => false 
   property :nntp, Boolean, :default => false 
