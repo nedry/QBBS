@@ -104,6 +104,10 @@ def get_qwknet(group)
   qwknet = group.qwknets.first
 end
 
+def get_nntpnet(group)
+  nntpnet = group.nntpnets.first
+end
+
 def remove_qwknet(group)
   qwknet = group.qwknets.first
   qwknet.destroy!

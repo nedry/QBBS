@@ -67,3 +67,7 @@ end
 def qwk_export_list(grp)
     areas = Area.all(:netnum.gt => - 1, :grp => grp, :order => [:number])
 end
+
+def nntp_list(grp)
+    areas = Area.all(:nntp_net.not => "", :grp => grp, :order => [:number])
+end

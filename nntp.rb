@@ -341,37 +341,70 @@ def nntp_parsearticle(article)
   return nntpmessage
 end
 
+def makenntpimportlist(group)
+ list =nntp_list(group.grp)
+ puts "-NNTP: The following areas have import mappings..."
+ list.each {|x| puts "     #{x.nntp_net}      #{x.name}" }
+ return list
+end
+
+def group_down(group)
+ import = makenntpimportlist(group)
+ if import.length > 0 then
+   nntpnet = get_nntpnet(group)
+   puts nntpnet.nntpaddress
+   if open_nntp(nntpnet.nntpaddress, NNTP_PORT) then
+     if nntp_login(nntpnet.nntpaccount,nntpnet.nntppassword) then
+       import.each {|area| 
+   
+ 
+         }
+     else
+       puts "-ERROR: NNTP logon Failure"
+     end
+   else
+    puts "-ERROR: NNTP Server connection failure."
+  end
+ end
+end
+
+def nntp_down
+  
+  puts "-NNTP: scanning for export groups."
+  for i in 0..g_total-1
+    group = fetch_group(i)
+     if get_nntpnet(group).nil? then
+      puts "-NNTP: group #{i} #{group.groupname} has no NNTP."
+    else
+      puts "-NNTP: group #{i} #{group.groupname} has NNTP."
+      group_down(group)
+     end
+  end
+end
+
+
+
 
 DataMapper::Logger.new('log/db', :debug)
 DataMapper.setup(:default, "postgres://#{DATAIP}/#{DATABASE}")
 DataMapper.finalize
 
 
-open_nntp(NNTP_HOST, NNTP_PORT)
-if nntp_login("dennisnedry","flatmo1") then
-  puts "-NNTP: Succesful Login"
-else
-  puts "-NNTP: Authentication Failure"
-end
+#open_nntp(NNTP_HOST, NNTP_PORT)
+#if nntp_login("dennisnedry","flatmo1") then
+#  puts "-NNTP: Succesful Login"
+#else
+#  puts "-NNTP: Authentication Failure"
+#end
 
-result,total,first,last = nntp_setgroup("alt.bbs.synchronet")
+#result,total,first,last = nntp_setgroup("alt.bbs.synchronet")
 
-puts "-NNTP: total articles #{total}"
-puts "-NNTP: first article #{first}"
-puts "-NNTP: last article #{last}"
+#puts "-NNTP: total articles #{total}"
+#puts "-NNTP: first article #{first}"
+#puts "-NNTP: last article #{last}"
 
-article = nntp_getarticle(first)
+#article = nntp_getarticle(first)
 
-puts article.length
-#article.each {|line| puts line}
-nntp_parsearticle(article)
+#nntp_parsearticle(article)
+nntp_down
 
-for i in 0..g_total-1
-	
- group = fetch_group(i)
-    if get_nntpnet(group).nil? then
-      puts "group #{i} #{group.groupname} has no nntp"
-    else
-	puts "group #{i} #{group.groupname} has nntp"    
-     end
-end
