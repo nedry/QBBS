@@ -89,8 +89,9 @@ end # of class A_nntp_message
 
 require "socket"
 
-NNTP_HOST = "news-europe.giganews.com"
+
 NNTP_PORT = "119"
+NNTP_INITIAL_DOWNLOAD = 500
 
 
 def open_nntp(host, port)
@@ -150,7 +151,7 @@ def nntp_setgroup(groupname)
     success = true if result[0] == "2"
     params = result.split
     #params returncode, total articles, first article, last article
-    return [success,params[1],params[2],params[3]]
+    return [success,params[1].to_i,params[2].to_i,params[3].to_i]
   end
 end
 
@@ -158,16 +159,22 @@ def nntp_getarticle(artnum)
 
  article = []
  done = false
+ puts "ARTICLE #{artnum}"
  nntp_send("ARTICLE #{artnum}")
  while !done 
    line = nntp_recv
    article << line
-   done = true if line == "."
+   done = true if line == "." 
+   if line == "423 no such article in group" then
+    puts "-NNTP: Article #{artnum} missing."
+    done = true
+    article = nil
+   end
  end
  return article
 end
 
-def nntp_parsearticle(article)
+def nntp_parsearticle(article,area)
   limit = article.length 
   msgbody = []
   path = nil
@@ -240,9 +247,9 @@ def nntp_parsearticle(article)
       when "X-Original-Bytes"
         xoriginalbytes = $2
       when "Lines"
-        lines = $2
+        lines = $2.to_i
       when "Bytes"
-	bytes = $2
+	bytes = $2.to_i
       when "Xref"
         xref = $2
       when "To"
@@ -332,13 +339,15 @@ def nntp_parsearticle(article)
   puts "--- message ---"
   msgbody.each {|line| puts line}
   
-  nntpmessage = A_nntp_message.new(apparentlyto, to, xcommentto,newsgroups,path,
-		 from,organization,replyto,inreplyto,datetime,subject,
-		 lines,bytes,xref,messageto,references,xgateway,control,charset,
-		 contenttype, contenttransferencoding,  
-		 nntppostinghost, xcomplaints, xtrace, nntppostingdate, xoriginalbytes,
-		 ftnarea,ftnflags,ftnmsgid, ftnpid, ftntid, ftnreply,msgbody)
-  return nntpmessage
+  msg_text = msgbody.join("\n")
+  
+  add_nntp_msg(to,from,datetime,subject,msg_text,area.number, apparentlyto,
+                 xcommentto, newsgroups, path, organization, replyto,
+                 inreplyto, lines, bytes, xref, messageto, references, xgateway,
+                 control, charset, contenttype, contenttransferencoding,
+                 nntppostinghost, xcomplaintsto, xtrace, nntppostingdate,
+                 xoriginalbytes, ftnarea, ftnflags, ftnmsgid, ftnreply,
+		 ftntid, ftnpid)
 end
 
 def makenntpimportlist(group)
@@ -348,22 +357,48 @@ def makenntpimportlist(group)
  return list
 end
 
+def set_pointer(pointer,first,last,total)
+  if pointer == 0 then
+    pointer = last - NNTP_INITIAL_DOWNLOAD
+    pointer = first if pointer < first
+  end
+  return pointer
+end
+
+
+  
+
+
+
 def group_down(group)
  import = makenntpimportlist(group)
  if import.length > 0 then
    nntpnet = get_nntpnet(group)
-   puts nntpnet.nntpaddress
    if open_nntp(nntpnet.nntpaddress, NNTP_PORT) then
      if nntp_login(nntpnet.nntpaccount,nntpnet.nntppassword) then
        import.each {|area| 
-   
- 
-         }
+         result,total,first,last = nntp_setgroup(area.nntp_net)
+	 if result then
+	   puts "-NNTP: total articles #{total}"
+           puts "-NNTP: first article #{first}"
+           puts "-NNTP: last article #{last}"
+	   puts "-NNTP: area pointer #{area.nntp_pointer}"
+	   pointer = set_pointer(area.nntp_pointer,first,last,total)
+	   for i in pointer..last
+	     article = nntp_getarticle(i)
+	     if !article.nil? then
+	       nntp_parsearticle(article,area) 
+	     end
+	   end
+         else
+	  puts "-ERROR: Group not found." #add loging
+	 end
+	}
      else
-       puts "-ERROR: NNTP logon Failure"
+       puts "-ERROR: NNTP logon Failure"  #add logging
      end
    else
-    puts "-ERROR: NNTP Server connection failure."
+    puts "-ERROR: NNTP Server connection failure." #add logging
   end
  end
 end
@@ -390,18 +425,8 @@ DataMapper.setup(:default, "postgres://#{DATAIP}/#{DATABASE}")
 DataMapper.finalize
 
 
-#open_nntp(NNTP_HOST, NNTP_PORT)
-#if nntp_login("dennisnedry","flatmo1") then
-#  puts "-NNTP: Succesful Login"
-#else
-#  puts "-NNTP: Authentication Failure"
-#end
 
-#result,total,first,last = nntp_setgroup("alt.bbs.synchronet")
 
-#puts "-NNTP: total articles #{total}"
-#puts "-NNTP: first article #{first}"
-#puts "-NNTP: last article #{last}"
 
 #article = nntp_getarticle(first)
 

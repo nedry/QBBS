@@ -8,7 +8,7 @@ class Message
   property :delete, Boolean, :default => false
   property :locked, Boolean, :default => false 
   property :m_to, String, :length => 40
-  property :m_from, String, :length => 40
+  property :m_from, String, :length => 255
   property :msg_date, DateTime
   property :subject, String, :length => 80
   property :msg_text, Text
@@ -23,7 +23,7 @@ class Message
   property :cost, Integer
  # property :area, String, :length => 80
   property :msgid, String, :length => 80 
-  property :path, String, :length => 80
+  property :path, String, :length => 512
   property :tzutc, String, :length => 10
   property :charset, String, :length => 10
   property :tid, String, :length => 80
@@ -65,7 +65,7 @@ class Message
   property :xoriginalbytes, String, :length => 255
   property :fntarea, String, :length => 255
   property :fntflags, String, :length => 255  
-  property :path, String, :length => 512
+
  
   belongs_to :area, :child_key => [:number]
   end
