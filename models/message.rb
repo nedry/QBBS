@@ -15,6 +15,7 @@ class Message
   property :exported, Boolean, :default => false
   property :network, Boolean, :default => false
   property :f_network, Boolean, :default => false
+  property :usenet_network, Boolean, :default => false
   property :orgnode, Integer
   property :destnode, Integer
   property :orgnet, Integer

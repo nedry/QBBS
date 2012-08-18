@@ -417,9 +417,10 @@ class Session
           end
         end
         write " %WG; QWK %W;" if curmessage.network
+	write " %WG; NNTP %W;" if curmessage.usenet_network
         write " %WB; SMTP %W;" if curmessage.smtp
         write " %WC; FIDONET %W;" if curmessage.f_network
-        write " %WY; EXPORTED %W;" if curmessage.exported and !curmessage.f_network and !curmessage.network
+        write " %WY; EXPORTED %W;" if curmessage.exported and !curmessage.usenet_network and !curmessage.f_network and !curmessage.network
         write " %WB; REPLY %W;" if curmessage.reply
         print ""
         write "%C;Date: "

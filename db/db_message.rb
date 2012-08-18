@@ -102,9 +102,8 @@ def add_nntp_msg(m_to,m_from,msg_date,subject,msg_text,number, apparentlyto,
                  xoriginalbytes, ftnarea, ftnflags, ftnmsgid, ftnreply,
 		 ftntid, ftnpid)
 
-  topt = -1 if topt.nil?
-  destnode = -1 if destnode.nil?
-  destnet = -1 if destnet.nil?
+
+  
   area = Area.first(:number => number)
   message = area.messages.new(
     :m_to => m_to,
@@ -113,6 +112,7 @@ def add_nntp_msg(m_to,m_from,msg_date,subject,msg_text,number, apparentlyto,
     :subject => subject,
     :msg_text => msg_text, 
     :exported => true,
+    :usenet_network => true,
     :apparentlyto => apparentlyto,
     :xcommentto => xcommentto,
     :newsgroups => newsgroups,
@@ -263,9 +263,14 @@ def convert_to_ascii(message)
 
   message.each_char do |c|
     if c.ord <= 127 then
-      temp << c
+      temp << c 
     else
-      temp << Encodings::UNICODE_ASCII[c]
+      puts "c: #{c}"
+      puts c.ord
+      
+      if c.ord <= 254 then
+      temp << Encodings::UNICODE_ASCII[c] 
+      end
     end
   end
   return temp

@@ -27,66 +27,7 @@ require "db/db_groups"
 require "db/db_user"
 require "db/db_screen"
 
-
-class A_nntp_message  		# An individual Fidonet Message
-
-
- def initialize (apparentlyto,to, xcommentto,newsgroups,path,
-		 from,organization,replyto,inreplyto,datetime,subject,
-		 lines,bytes,xref,messageto,references,xgateway,control,charset,
-		 contenttype, contenttransferencoding,  
-		 nntppostinghost, xcomplaints, xtrace, nntppostingdate, xoriginalbytes,
-		 ftnarea,ftnflags,ftnmsgid,ftnpid, ftntid, ftnreply,message)
-  @to				= to
-  @apparentlyto			= apparentlyto
-  @xcommentto			= xcommentto
-  @newsgroups			= newsgroups
-  @path				= path
-  @from				= from
-  @organization			= organization
-  @replyto			= replyto
-  @inreplyto			= inreplyto
-  @datetime			= datetime
-  @subject			= subject
-  @lines			= lines
-  @bytes			= bytes
-  @xref				= xref
- 
-  @messageto			= messageto
-  @references			= references
-  @xgateway			= xgateway
-  @control			= control
-  @charset			= charset
-
-  @contenttype 			= contenttype
-  @contenttransferencoding 	= contenttransferencoding
-  @nntppostinghost 		= nntppostinghost
-  @xcomplaintsto 		= xcomplaintsto
-  @xtrace 			= xtrace
-  @nntppostingdate 		= nntppostingdate
-  @xoriginalbytes 		= xoriginalbytes
-
-  @ftnarea			= ftnarea
-  @ftnpid			= ftnpid
-  @ftntid			= ftntid
-  @ftnarea			= ftnarea
-  @ftnflags			= ftnflags
-  @ftnmsgid			= ftnmsgid
-  @ftnreply			= ftnreply
-  
-  @message			= message 
-end
- 
- attr_accessor 	:apparentlyto, :to, :xcommentto, :newsgroups, :path,
-		:from, :organization, :replyto, :inreplyto, :datetime, :subject,
-		:lines, :bytes, :xref, :messageto, :references, :xgateway, :control, :charset, 
-		:contenttype, :contenttransferencoding, :nntppostinghost,
-		:xcomplaintsto, :xtrace, :nntppostingdate, :xoriginalbytes, :ftnarea,
-		:ftnflags, :ftnmsgid, :ftnpid, :ftntid, :ftnreply, :message
-	 
-	 
-end # of class A_nntp_message
-
+require "iconv"
 require "socket"
 
 
@@ -175,6 +116,9 @@ def nntp_getarticle(artnum)
 end
 
 def nntp_parsearticle(article,area)
+  
+  article.slice!(0)  #remove first line which is the server response.
+  
   limit = article.length 
   msgbody = []
   path = nil
@@ -220,6 +164,20 @@ def nntp_parsearticle(article,area)
     if match then    
 
     case $1
+      when "WhenImported"
+      when "WhenExported"
+      when "ExportedFrom"
+      when "User-Agent"
+      when "Mime-Version"
+      when "Injection-Date"
+      when "Injection-Info"
+      when "Cancel-Lock"
+      when "X-Usenet-Provider"
+      when "X-DMCA-Notifications"
+      when "X-Abuse-and-DMCA-Info"
+      when "X-Postfilter"
+      when "X-Antivirus"
+      when "X-Antivirus-Status"
       when "Message-To"
         messageto = $2
       when "Charset"
@@ -278,20 +236,22 @@ def nntp_parsearticle(article,area)
         references = $2
       when "X-gateway"
         xgateway = $2
-      when "X-ftn-pid"
+      when "X-FTN-PID"
         ftnpid = $2
-      when "X-ftn-tid"
+      when "X-FTN-TID"
         ftntid = $2
-      when "X-ftn-area"
+      when "X-FTN-AREA"
         ftnarea = $2
-      when "X-ftn-flags"
+      when "X-FTN-FLAGS"
 	ftnflags = $2
-      when "X-ftn-msgid"
+      when "X-FTN-MSGID"
         ftnmsgid = $2
-      when "X-ftn-reply"
+      when "X-FTN-REPLY"
         ftnreply = $2
       when "Control"
         control = $2
+      when ""
+	break
       else
 	msgbody << article[i]
      end #of case
@@ -300,60 +260,70 @@ def nntp_parsearticle(article,area)
    end
   end
   puts "--- header ---"
-  puts "messageto: #{messageto}"
-  puts "apparentlyto: #{apparentlyto}"
-  puts "path: #{path}"
-  puts "newsgroups: #{newsgroups}"
-  puts "xcommentto: #{xcommentto}"
-  puts "from: #{from}"
-  puts "organization: #{organization}"
-  puts "replyto: #{replyto}" 
-  puts "inrepyto: #{inrepyto}"
-  puts "datetime: #{datetime}"
-  puts "subject: #{subject}" 
-  puts "messageid: #{messageid}"
-  puts "references: #{references}" 
-  puts "xgateway: #{xgateway}"
-  puts "xftnpid: #{ftnpid}"
-  puts "xftntid: #{ftntid}"
-  puts "xftnarea: #{ftnarea}" 
-  puts "xftnflags: #{ftnflags}" 
-  puts "xftnmsgid: #{ftnmsgid}" 
-  puts "xftnreply: #{ftnreply}"
-  puts "control: #{control}"	
-  puts "lines: #{lines}"
-  puts "bytes: #{bytes}"
-  puts "xref: #{xref}"
-  puts "xcommentto: #{xcommentto}"
-  puts "contenttype: #{contenttype}"
-  puts "contenttransferencoding: #{contenttransferencoding}"
-  puts "xgateway: #{xgateway}"
-  puts "nntppostinghost: #{nntppostinghost}"
-  puts "xcomplaintsto: #{xcomplaintsto}"
-  puts "xtrace: #{xtrace}"
-  puts "nntppostingdate: #{nntppostingdate}"
-  puts "xoriginalbytes: #{xoriginalbytes}"
-  puts "charset: #{charset}"  
-  puts "xcomplaints: #{xcomplaints}"  
+  puts "messageto: #{messageto}" if !messageto.nil?
+  puts "apparentlyto: #{apparentlyto}" if !apparentlyto.nil?
+  puts "path: #{path}" if !path.nil?
+  puts "newsgroups: #{newsgroups}" if !newsgroups.nil?
+  puts "xcommentto: #{xcommentto}" if !xcommentto.nil?
+  puts "from: #{from}" if !from.nil?
+  puts "organization: #{organization}" if !organization.nil?
+  puts "replyto: #{replyto}" if !replyto.nil? 
+  puts "inrepyto: #{inrepyto}" if !inrepyto.nil?
+  puts "datetime: #{datetime}" if !datetime.nil?
+  puts "subject: #{subject}" if !subject.nil? 
+  puts "messageid: #{messageid}" if !messageid.nil?
+  puts "references: #{references}" if !references.nil? 
+  puts "xgateway: #{xgateway}" if !xgateway.nil?
+  puts "xftnpid: #{ftnpid}" if !ftnpid.nil?
+  puts "xftntid: #{ftntid}" if !ftntid.nil?
+  puts "xftnarea: #{ftnarea}" if !ftnarea.nil? 
+  puts "xftnflags: #{ftnflags}" if !ftnflags.nil? 
+  puts "xftnmsgid: #{ftnmsgid}" if !ftnmsgid.nil? 
+  puts "xftnreply: #{ftnreply}" if !ftnreply.nil?
+  puts "control: #{control}" if !control.nil?	
+  puts "lines: #{lines}" if !lines.nil?
+  puts "bytes: #{bytes}" if !bytes.nil?
+  puts "xref: #{xref}" if !xref.nil?
+  puts "xcommentto: #{xcommentto}" if !xcommentto.nil?
+  puts "contenttype: #{contenttype}" if !contenttype.nil?
+  puts "contenttransferencoding: #{contenttransferencoding}" if !contenttransferencoding.nil?
+  puts "xgateway: #{xgateway}" if !xgateway.nil?
+  puts "nntppostinghost: #{nntppostinghost}" if !nntppostinghost.nil?
+  puts "xcomplaintsto: #{xcomplaintsto}" if !xcomplaintsto.nil?
+  puts "xtrace: #{xtrace}" if !xtrace.nil?
+  puts "nntppostingdate: #{nntppostingdate}" if !nntppostingdate.nil?
+  puts "xoriginalbytes: #{xoriginalbytes}" if !xoriginalbytes.nil?
+  puts "charset: #{charset}" if !charset.nil? 
+  puts "xcomplaints: #{xcomplaints}" if !xcomplaints.nil?  
 
-  puts "--- message ---"
-  msgbody.each {|line| puts line}
+  puts "----------"
+  puts
+ 
+  msgbody.pop  #remove last line, which is the end of message char
   
-  msg_text = msgbody.join("\n")
+
   
-  add_nntp_msg(to,from,datetime,subject,msg_text,area.number, apparentlyto,
+  untrusted_string = msgbody.join(DLIM)
+  
+  ic = Iconv.new('UTF-8//IGNORE', 'UTF-8')
+  msg_text = ic.iconv(untrusted_string + ' ')[0..-2]
+  
+
+  
+  absolute = add_nntp_msg(to,from,datetime,subject,msg_text,area.number, apparentlyto,
                  xcommentto, newsgroups, path, organization, replyto,
                  inreplyto, lines, bytes, xref, messageto, references, xgateway,
                  control, charset, contenttype, contenttransferencoding,
                  nntppostinghost, xcomplaintsto, xtrace, nntppostingdate,
                  xoriginalbytes, ftnarea, ftnflags, ftnmsgid, ftnreply,
 		 ftntid, ftnpid)
+  return absolute
 end
 
 def makenntpimportlist(group)
- list =nntp_list(group.grp)
+ list = nntp_list(group.grp)
  puts "-NNTP: The following areas have import mappings..."
- list.each {|x| puts "     #{x.nntp_net}      #{x.name}" }
+ list.each {|x| puts "     #{x.nntp_net}.........#{x.name}" }
  return list
 end
 
@@ -376,7 +346,10 @@ def group_down(group)
    nntpnet = get_nntpnet(group)
    if open_nntp(nntpnet.nntpaddress, NNTP_PORT) then
      if nntp_login(nntpnet.nntpaccount,nntpnet.nntppassword) then
+
        import.each {|area| 
+	 user = fetch_user(get_uid(nntpnet.nntpuser))
+         upointer = get_pointer(user,area.number)
          result,total,first,last = nntp_setgroup(area.nntp_net)
 	 if result then
 	   puts "-NNTP: total articles #{total}"
@@ -384,12 +357,20 @@ def group_down(group)
            puts "-NNTP: last article #{last}"
 	   puts "-NNTP: area pointer #{area.nntp_pointer}"
 	   pointer = set_pointer(area.nntp_pointer,first,last,total)
-	   for i in pointer..last
-	     article = nntp_getarticle(i)
-	     if !article.nil? then
-	       nntp_parsearticle(article,area) 
-	     end
-	   end
+	   if pointer < last then
+	     for i in pointer..last
+	       article = nntp_getarticle(i)
+	       if !article.nil? then
+	         absolute = nntp_parsearticle(article,area)
+	         area.nntp_pointer = i
+	         update_area(area)
+		 user.posted = user.posted + 1
+                 upointer.lastread = absolute
+                 update_pointer(upointer)
+                 update_user(user)
+	       end
+             end
+           end
          else
 	  puts "-ERROR: Group not found." #add loging
 	 end
