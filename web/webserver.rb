@@ -1220,7 +1220,7 @@ post '/clogon' do
     session[:name] = name
     uid = get_uid(name)
     who_list_add(uid) #add user to the list of web users online
-    add_wall(uid,"","Web Interface")
+    add_wall(uid,"","Web")
     system = fetch_system
     system.total_logons += 1
     system.logons_today += 1
