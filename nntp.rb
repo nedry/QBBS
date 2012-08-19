@@ -26,7 +26,7 @@ require "db/db_log.rb"
 require "db/db_groups"
 require "db/db_user"
 require "db/db_screen"
-
+require "message.rb"
 require "iconv"
 require "socket"
 
@@ -67,6 +67,7 @@ end
 
     # Shuts down the receive (how == 0), or send (how == 1), or both
     # (how == 2), parts of this socket.
+    
 def nntp_shutdown(how=2)
   @sock.shutdown(how)
 end
@@ -100,7 +101,7 @@ def nntp_getarticle(artnum)
 
  article = []
  done = false
- puts "ARTICLE #{artnum}"
+ #puts "ARTICLE #{artnum}"
  nntp_send("ARTICLE #{artnum}")
  while !done 
    line = nntp_recv
@@ -118,8 +119,7 @@ end
 def nntp_parsearticle(article,area)
   
   article.slice!(0)  #remove first line which is the server response.
-  
-  limit = article.length 
+
   msgbody = []
   path = nil
   newsgroups = nil
@@ -157,11 +157,12 @@ def nntp_parsearticle(article,area)
   charset = nil
   xcomplaints = nil
 
-
+  header = true
    
-  for i in 0..limit
+  for i in 0..article.length-1
+    header = false if article[i].strip == ""
     match = (/^(\S+)\:(.*)/) =~ article[i]  
-    if match then    
+    if match and header then    
 
     case $1
       when "WhenImported"
@@ -178,6 +179,11 @@ def nntp_parsearticle(article,area)
       when "X-Postfilter"
       when "X-Antivirus"
       when "X-Antivirus-Status"
+      when "X-Remailer-Contact"
+      when "X-UC-Weight"
+      when "X-UC-Weight"
+      when "Mail-To-News-Contact"
+
       when "Message-To"
         messageto = $2
       when "Charset"
@@ -220,6 +226,7 @@ def nntp_parsearticle(article,area)
         xcommentto = $2
       when "From"
         from = $2
+	from.gsub!(/\.remove-\S+-this/,"")
       when "Organization"
         organization = $2
       when "Reply-to"
@@ -250,8 +257,6 @@ def nntp_parsearticle(article,area)
         ftnreply = $2
       when "Control"
         control = $2
-      when ""
-	break
       else
 	msgbody << article[i]
      end #of case
@@ -322,7 +327,7 @@ end
 
 def makenntpimportlist(group)
  list = nntp_list(group.grp)
- puts "-NNTP: The following areas have import mappings..."
+ puts "-NNTP: The following areas have NNTP mappings..."
  list.each {|x| puts "     #{x.nntp_net}.........#{x.name}" }
  return list
 end
@@ -349,6 +354,7 @@ def group_down(group)
 
        import.each {|area| 
 	 user = fetch_user(get_uid(nntpnet.nntpuser))
+	 scanforaccess(user)  #insures that pointers get set if this has never been run b4
          upointer = get_pointer(user,area.number)
          result,total,first,last = nntp_setgroup(area.nntp_net)
 	 if result then
@@ -378,6 +384,7 @@ def group_down(group)
      else
        puts "-ERROR: NNTP logon Failure"  #add logging
      end
+     nntp_shutdown
    else
     puts "-ERROR: NNTP Server connection failure." #add logging
   end
@@ -405,12 +412,5 @@ DataMapper::Logger.new('log/db', :debug)
 DataMapper.setup(:default, "postgres://#{DATAIP}/#{DATABASE}")
 DataMapper.finalize
 
-
-
-
-
-#article = nntp_getarticle(first)
-
-#nntp_parsearticle(article)
 nntp_down
 

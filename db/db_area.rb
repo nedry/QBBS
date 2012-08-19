@@ -40,7 +40,7 @@ def find_qwk_area (number,grp)  # name for future use.
   Area.first(:netnum => number, :grp => grp)
 end
 
-def add_area(name, d_access,v_access,netnum,fido_net,group)
+def add_area(name, d_access,v_access,netnum,fido_net,nntp_net,group)
   number = a_total  #area's start with 0, so the total will be the next area
  
   netnum = -1 if netnum.nil?
@@ -49,6 +49,7 @@ def add_area(name, d_access,v_access,netnum,fido_net,group)
   Area.create(
     :number => number,
     :name => name,
+    :nntp_net => nntp_net,
     :d_access => d_access,
     :v_access => v_access,
     :modify_date => Time.now,

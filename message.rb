@@ -825,7 +825,7 @@ here
 
         commit = yes("Are you sure #{YESNO}",true,false,true)
         if commit then
-          add_area(name,"W","W",nil,nil,nil)
+          add_area(name,"W","W",nil,nil,nil,nil)
           apointer = a_total - 1
         else
           print "%WR;Cancelled.%W;"
