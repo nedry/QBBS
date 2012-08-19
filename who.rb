@@ -30,7 +30,7 @@ class Session
       header = hcols.zip(headings).map {|a,b| a+b}.formatrow(widths)
       underscore = cols.zip(['-'*30]*5).map{|a,b| a+b}.formatrow(widths)
       @irc_who.each{|w|
-        print cols.zip(["*",w.name,w.where]).map{|a,b| "#{a}#{b}"}.formatrow(widths)
+        print cols.zip(["*",w.name,w.where.strip]).map{|a,b| "#{a}#{b}"}.formatrow(widths)
       }
     else
 
