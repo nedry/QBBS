@@ -10,6 +10,7 @@ class Nntpnet
   #property :number, Integer, :required => true
   property :modify_date, DateTime
   property :nntpuser, String, :length => 40
+  property :nntpport, String, :length => 119
   property :nntptag, String, :length => 255
   property :nntpinterval, Integer, :default => 15
   property :nntpaddress, String, :length => 60
