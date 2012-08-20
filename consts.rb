@@ -1,7 +1,8 @@
 DEBUG = true
 LISTENPORT = 2323
-QWK = false
+QWK = true
 QWK_DEBUG = false
+NNTP = true
 FIDO = false
 SMTP = false
 IRC_ON =  false
@@ -10,7 +11,7 @@ SCREENSAVER = true
 #how long to wait between IRC reconnect attempts.  Set to 0 to not reconnect.
 BOT_RECONNECT_DELAY = 60 
 
-#if the schedule thread dies, how long to wait to try again.
+#if the schedule thread hangs, how long to wait to try again.
 SCHED_RECONNECT_DELAY = 480
 BS = 8
 ESC = 27
@@ -38,7 +39,7 @@ ECHO = true
 NOECHO = false
 WRAP = true
 NOWRAP = false
-VER = "QUARKseven (QBBS) beta"
+VER = "QUARKware (QBBS) 7.1"
 DONE = false
 
 SYSOPNAME = "SYSOP"
@@ -65,8 +66,8 @@ FULLSCREENDIR = "#{ROOT_PATH}quote"
 
 IRCSERVER = "irc.larryniven.net"
 IRCPORT = 6667
-IRCCHANNEL = "#noone"
-IRCBOTUSER = "HAL9000T"
+IRCCHANNEL = "#knownspace"
+IRCBOTUSER = "testHAL"
 IRCTOPIC = "Knownspace and RetroBBS Chat"
 IRCBOTCMD = "!"
 
@@ -90,12 +91,17 @@ D_REPDATA = "MSG"
 
 ROUTE_SCAVENGE = 90
 
-D_QWKTAG ="#{254.chr} TARDIS BBS - Home of QUARKseven #{254.chr} telnet/http bbs.cortex-media.info"
+
+D_QWKTAG ="* TARDIS BBS - Home of QUARKware * telnet bbs.cortex-media.info"
 
 
 QWKREPINTERVAL = 15
 QWKDOWNLOADTIMEOUT = 600
 
+#NNTP settings
+
+NNTP_TEAR = "---"
+NNTP_TAG = "#{VER} - QUARKnntp 0.9"
 
 
 
@@ -125,7 +131,7 @@ CHARSET = "PC-8"
 TID = "QUARKtoss .5"
 
 TEAR = "--- #{VER}"
-ORGIN = " * Origin: retroCOMPUTING BBS - bbs.retrobbs.org 2323 (#{FIDOZONE}:#{FIDONET}/#{FIDONODE}.#{FIDOPOINT})"
+ORGIN = " * Origin: TARDIS BBS - bbs.retrobbs.org (#{FIDOZONE}:#{FIDONET}/#{FIDONODE}.#{FIDOPOINT})"
 
 TEMPINDIR = "#{ROOT_PATH}fido/tempin"
 TEMPOUTDIR = "#{ROOT_PATH}fido/tempout"

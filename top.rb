@@ -67,6 +67,7 @@ class Session
   require "teleconference.rb"
   require "main.rb"
   require "groups.rb"
+	require "nntp.rb"
  
 
   def run
@@ -161,10 +162,14 @@ class MailSchedulethread
     end
   end
 
-
+  
   def doit(idle)
     up_down_fido(idle) if FIDO
     do_smtp if SMTP
+		if NNTP then
+			nntp_up
+			nntp_down
+		end
   end
 
 
@@ -366,7 +371,4 @@ class ServerSocket
   end
 end #class ServerSocket
 
-#def replogandputs(m)
- # writereplog m
- # puts m
-#end
+

@@ -251,7 +251,9 @@ def convert_to_utf8(message, unixterm=false)
     if c.ord <= 127 then
       temp2 << c
     else
-      temp2 << Encodings::ASCII_UNICODE[c]
+
+       temp2 << Encodings::ASCII_UNICODE[c]
+	
     end
   end
   return temp2
@@ -268,8 +270,13 @@ def convert_to_ascii(message)
       puts "c: #{c}"
       puts c.ord
       
-      if c.ord <= 254 then
-      temp << Encodings::UNICODE_ASCII[c] 
+      if c.ord <= 254 
+				begin
+          temp << Encodings::UNICODE_ASCII[c] 
+				rescue
+				  puts "-NNTP: Encoding failed for chararcter: #{c}"
+					temp << " "
+				end
       end
     end
   end
