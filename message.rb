@@ -812,7 +812,6 @@ here
 
       def addarea
 
-        print ADDAREAWARNING
         while true
           prompt = "Enter new area name: "
           name = getinp(prompt) {|n| n != ""}
