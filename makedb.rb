@@ -164,12 +164,6 @@ add_area("The APC Net","W","W",nil,nil,nil,1)
 #add_area("Conspiracies","W","W",5018,nil,nil,4)
 #add_area("The Quickening","W","W",5019,nil,nil,4)
 
-add_area("alt.bbs.synchronet","W","W",5019,nil,"alt.bbs.synchronet",2)
-add_area("alt.test.ignore","W","W",5019,nil,"alt.test.ignore",2)
-#add_qwknet(fetch_group(1),"Dove.Net","VERT","DOVEQWK","vert.synchro.net","QBBS","FLATMO")
-#add_qwknet(fetch_group(3),"Paranormal Net","TIME","PARAQWK","time.synchro.net","QBBS","FLATMO")
-
-add_nntpnet(fetch_group(1),"usenet","GIGANEWS","news.giganews.com","dennisnedry","flatmo1")
 
 # initial system
 s = System.new(

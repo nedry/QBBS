@@ -294,7 +294,7 @@ def nntp_parsearticle(article,area)
   ic = Iconv.new('UTF-8//IGNORE', 'UTF-8')
   msg_text = ic.iconv(untrusted_string + ' ')[0..-2]
   
-
+  organization = "" if organization.nil?
   if organization.strip != SYSTEMNAME.strip then
   
     absolute = add_nntp_msg(to,from,datetime,subject,msg_text,area.number, apparentlyto,
