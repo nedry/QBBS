@@ -32,7 +32,6 @@ def door_do (path,d_type)
              
                 char = read.getc
                 if d_type == "RSTS" and char.chr == ":" and !send_init then
-                  puts "char: #{char}"
                   account = "#{RSTS_BASE},#{@c_user.rsts_acc}"
                   sleep(2)
                   w.puts(account)
@@ -44,7 +43,6 @@ def door_do (path,d_type)
                 idle = 0
               rescue 
                 sleep (5)
-                puts "boom"
                 print (CLS)
                 print (HOME)
 
@@ -83,9 +81,9 @@ def writedoorfile(outfile)
 
   happy = system("rm #{outfile}")
   if happy then
-    puts "-Deleted old door file..."
+    puts "-DOOR: Deleted old door file..."
   else
-    puts "-Failure to delete old door file"
+    puts "-DOOR: Failure to delete old door file"
   end
 
   begin
@@ -273,9 +271,7 @@ end
 
 
 def rundoor(number)
-  puts "number: #{number}"
   door = fetch_door(number)
-  puts "door.level: #{door.level}"
 
   if @c_user.level >= door.level then
     @who.user(@c_user.name).where = door.name
@@ -285,14 +281,12 @@ def rundoor(number)
     end
 
     node = @who.user(@c_user.name).node
-    #puts "node: #{node}"
     dropfile = "#{door.d_path}#{node}/#{f_name}"
     if door.d_type == "RSTS" then
 
       if @c_user.rsts_acc == 0 or @c_user.rsts_acc == nil then
         print "\r\nFinding a RSTS/E Account for you..."
         account = find_RSTS_account
-        puts "account: #{account}"
         if account != 0 then
           @c_user.rsts_acc = account
           @c_user.rsts_pw = RSTS_DEFAULT_PSWD

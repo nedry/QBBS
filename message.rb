@@ -313,7 +313,14 @@ class Session
       end
     end # of def post
 
-
+def msg_debug(mpointer)
+      area = fetch_area(@c_area)
+      if (h_msg > 0) and (mpointer > 0) then
+        print "--- message text dump ---"
+        dmsg = fetch_msg(absolute_message(@c_area,mpointer))
+				dmsg.msg_text.each_char {|c| write c;write("(#{c.ord})")}
+			end
+end
 
     def display_fido_header(mpointer)
       area = fetch_area(@c_area)
@@ -530,6 +537,7 @@ class Session
         end
         theme = get_user_theme(@c_user) 
         case sel
+				when "MD"; msg_debug(mpointer)
         when @cmd_hash["email"] ; run_if_ulevel("email") {emailmenu}
         when @cmd_hash["post"] ; run_if_ulevel("post") {post}
         when @cmd_hash["page"] ; run_if_ulevel("page") {page}

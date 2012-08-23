@@ -11,9 +11,6 @@ def fetch_subsystems
 end
 
 def add_log_entry(subsystem,ent_date,message)
-	puts subsystem
-	puts ent_date
-	puts message
   Ulog.new(:subsystem => subsystem, :ent_date  => ent_date, :message => message).save!
 end
 

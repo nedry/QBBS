@@ -163,7 +163,7 @@ def send_me(where, message) #compatiblity with r_bot plugins
     tick = 0
 
     loop do
-      sleep(1) if !@irc_bot.isdata
+      sleep(5) if !@irc_bot.isdata
       tick += 1
       #puts "-tick: #{tick}"
 
