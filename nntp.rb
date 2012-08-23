@@ -97,6 +97,26 @@ def nntp_getarticle(artnum)
  return article
 end
 
+def nntp_convert(text)
+		ic = Iconv.new('UTF-8//IGNORE', 'UTF-8')
+		text_out = ""
+		text.each_char {|c| 
+    begin
+		 if c.ord < 255 then
+		  text_out << ic.iconv(c)
+		 else
+			  text_out << " "
+				puts "-NNTP: Illegal character #{c} in message"
+		  end
+		rescue 
+		  text_out << " "
+			puts "-NNTP: Illegal character #{c} in message"
+		end
+		}
+	return text_out
+end
+  
+
 def nntp_parsearticle(article,area)
   
   article.slice!(0)  #remove first line which is the server response.
@@ -194,7 +214,7 @@ def nntp_parsearticle(article,area)
       when "Lines"
         lines = $2.to_i
       when "Bytes"
-	bytes = $2.to_i
+	      bytes = $2.to_i
       when "Xref"
         xref = $2
       when "To"
@@ -207,7 +227,7 @@ def nntp_parsearticle(article,area)
         xcommentto = $2
       when "From"
         from = $2
-	from.gsub!(/\.remove-\S+-this/,"")
+	      from.gsub!(/\.remove-\S+-this/,"")
       when "Organization"
         organization = $2
       when "Reply-to"
@@ -217,7 +237,7 @@ def nntp_parsearticle(article,area)
       when "Date"
         datetime = $2
       when "Subject"
-	subject = $2
+	      subject = $2
       when "Message-ID"
         messageid = $2
       when "References"
@@ -287,13 +307,14 @@ def nntp_parsearticle(article,area)
  
   msgbody.pop  #remove last line, which is the end of message char
   
+#remove any illegal characters... 
+  
+  msg_string = msgbody.join(DLIM)
+  msg_text = nntp_convert(msg_string)
+	subject = nntp_convert(subject)
+	from = nntp_convert(from)
+	
 
-  
-  untrusted_string = msgbody.join(DLIM)
-  
-  ic = Iconv.new('UTF-8//IGNORE', 'UTF-8')
-  msg_text = ic.iconv(untrusted_string + ' ')[0..-2]
-  
   organization = "" if organization.nil?
   if organization.strip != SYSTEMNAME.strip then
   

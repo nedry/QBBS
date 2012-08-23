@@ -255,7 +255,7 @@ class MailSchedulethread
     end
      rescue Exception => e
       puts "ERROR: An error occurred in QWK/REP scheduler thread died: ",$!, "\n" 
-      add_log_entry(L_ERROR,"An error occurred in QWK/REP scheduler thread died: #{$!}")
+      add_log_entry(L_ERROR,Time.now,"An error occurred in QWK/REP scheduler thread died: #{$!}")
       print e.backtrace.map { |x| x.match(/^(.+?):(\d+)(|:in `(.+)')$/);
       [$1,$2,$3]}
       
