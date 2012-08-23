@@ -247,8 +247,9 @@ class MailSchedulethread
 
     #  puts "Idle Time:  #{idle}"
       if idle >= QWKREPINTERVAL then
-        qwk_loop(idle)
+				qwk_loop(idle)
         doit(idle)
+				puts "after do it"
         idle = 0
       end
 

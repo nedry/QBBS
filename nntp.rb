@@ -82,13 +82,13 @@ def nntp_getarticle(artnum)
 
  article = []
  done = false
- #puts "ARTICLE #{artnum}"
  nntp_send("ARTICLE #{artnum}")
  while !done 
    line = nntp_recv
+	 puts "-NNTP: #{line}"
    article << line
    done = true if line == "." 
-   if line == "423 no such article in group" then
+   if line[0] == "4" then
     puts "-NNTP: Article #{artnum} missing."
     done = true
     article = nil
@@ -100,25 +100,28 @@ end
 def nntp_convert(text)
 		ic = Iconv.new('UTF-8//IGNORE', 'UTF-8')
 		text_out = ""
-		text.each_char {|c| 
-    begin
-		 if c.ord < 255 then
-		  text_out << ic.iconv(c)
-		 else
-			  text_out << " "
-				puts "-NNTP: Illegal character #{c} in message"
+	  if !text.nil?
+		  text.each_char {|c| 
+			begin
+		    if c.ord < 255 then
+		      text_out << ic.iconv(c)
+		    else
+					text_out << " "
+				  puts "-NNTP: Illegal character #{c} in message"
+				end
+		  rescue 
+		    text_out << " "
+			  puts "-NNTP: Illegal character #{c} in message"
 		  end
-		rescue 
-		  text_out << " "
-			puts "-NNTP: Illegal character #{c} in message"
+		  }
+		else
+			text_out = ""
 		end
-		}
 	return text_out
 end
   
 
 def nntp_parsearticle(article,area)
-  
   article.slice!(0)  #remove first line which is the server response.
 
   msgbody = []
@@ -390,7 +393,8 @@ def group_down(group)
    else
     puts "-ERROR: NNTP Server connection failure." #add logging
   end
- end
+end
+
 end
 
 def nntp_down
@@ -536,7 +540,4 @@ def nntp_up
 
  end
 
-DataMapper::Logger.new('log/db', :debug)
-DataMapper.setup(:default, "postgres://#{DATAIP}/#{DATABASE}")
-DataMapper.finalize
 
