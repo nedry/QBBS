@@ -11,27 +11,24 @@ def door_do (path,d_type)
   idle = 0
   timeout = 0
   started = false
-
-
+  i = 0
+  ret = false
+  user_len = @c_user.name.length+1
+	user_arr =  ">#{@c_user.name}"
+	
   begin
     PTY.spawn(path) do |read, w, p|
 
   w.putc(13.chr) if d_type == "DOS" #we want to put a ENTER in so dosemu won't pause at intro
       exit = false
       while !exit
-
         while !exit 
-
           ios = select([read, @socket],nil,nil,0.001) #and !exit
-
-
           r, * = ios
           if r != nil then
             if r.include?(read)
               begin
-             
                 char = read.getc
-								puts "char: #{char}"
                 if d_type == "RSTS" and char.chr == ":" and !send_init then
                   account = "#{RSTS_BASE},#{@c_user.rsts_acc}"
                   sleep(2)
@@ -41,14 +38,18 @@ def door_do (path,d_type)
                   send_init = true
                 end
                 if d_type == "QBBS" and char.chr == ">" and !send_init then
-									puts "here i am"
-                  #sleep(2)
                   w.puts("#{@c_user.name}#{CR.chr}")
-									puts @c_user.name
                   send_init = true
                 end
+									
                 started = true
                 idle = 0
+							
+								if user_arr.index(char) and !ret then
+								 char = ""
+								 i += 1
+								 ret = true if i == user_len
+							 end
               rescue 
                 sleep (5)
                 print (CLS)
@@ -57,8 +58,8 @@ def door_do (path,d_type)
                 @who.user(@c_user).where = "Main Menu"
                 return
               end
-              @socket.write CR.chr if char == LF
-              @socket.write(char.chr)
+                @socket.write CR.chr if char == LF
+								@socket.write(char.chr) 
             end
 
             if r.include?(@socket)
@@ -69,7 +70,7 @@ def door_do (path,d_type)
               if d_type == DOS then
                 w.putc(char.chr) if (char != 3) and (char != 27) #we want to block ctrl-c and esc
               else
-                w.putc(char.chr) if (char !=3)
+                w.putc(char.chr) if (char !=3) 
               end
             end
           end
