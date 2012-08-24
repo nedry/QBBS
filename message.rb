@@ -365,10 +365,8 @@ end
     end
 
     def non_standard_zone(inzone)
-      #puts "inzone #{inzone}"
       inzone = inzone[4..7] if inzone.length == 7
       num = inzone.to_i(16)
-      #puts "num: #{num}"
       minutes_utc = num - 65536
       if minutes_utc > -720 and minutes_utc < 720 then
         hours_utc = minutes_utc / 60.0
@@ -424,15 +422,20 @@ end
           end
         end
         write " %WG; QWK %W;" if curmessage.network
-	write " %WG; NNTP %W;" if curmessage.usenet_network
+				write " %WG; NNTP %W;" if curmessage.usenet_network
         write " %WB; SMTP %W;" if curmessage.smtp
         write " %WC; FIDONET %W;" if curmessage.f_network
         write " %WY; EXPORTED %W;" if curmessage.exported and !curmessage.usenet_network and !curmessage.f_network and !curmessage.network
         write " %WB; REPLY %W;" if curmessage.reply
         print ""
         write "%C;Date: "
-        write"%M;#{curmessage.msg_date.strftime("%A the %d#{time_thingie(curmessage.msg_date)} of %B, %Y at %I:%M%p")}"
-        write "%W;(%G;#{tzout}%W;)" if !tzout.nil?
+				if !curmessage.msg_date.nil? then
+          write "%M;#{curmessage.msg_date.strftime("%A the %d#{time_thingie(curmessage.msg_date)} of %B, %Y at %I:%M%p")}"
+					write "%W;(%G;#{tzout}%W;)" if !tzout.nil?
+				else
+					write "%R;[NO DATE]%W;"
+				end
+        
         print        
         print "%C;To: %G;#{curmessage.m_to}%W;" # reset colors in case ansi is embedded in fields
         write "%C;From: %G;#{curmessage.m_from.strip}%W;" # reset colors in case ansi is embedded in fields

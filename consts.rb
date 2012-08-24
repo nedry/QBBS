@@ -1,11 +1,11 @@
 DEBUG = true
 LISTENPORT = 2323
-QWK = true
+QWK = false 
 QWK_DEBUG = false
-NNTP = true
+NNTP = false
 FIDO = false
 SMTP = false
-IRC_ON =  true 
+IRC_ON =  false
 SCREENSAVER = true
 
 #how long to wait between IRC reconnect attempts.  Set to 0 to not reconnect.

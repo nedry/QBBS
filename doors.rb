@@ -31,12 +31,20 @@ def door_do (path,d_type)
               begin
              
                 char = read.getc
+								puts "char: #{char}"
                 if d_type == "RSTS" and char.chr == ":" and !send_init then
                   account = "#{RSTS_BASE},#{@c_user.rsts_acc}"
                   sleep(2)
                   w.puts(account)
                   sleep (2)
                   w.puts(@c_user.rsts_pw)
+                  send_init = true
+                end
+                if d_type == "QBBS" and char.chr == ">" and !send_init then
+									puts "here i am"
+                  #sleep(2)
+                  w.puts("#{@c_user.name}#{CR.chr}")
+									puts @c_user.name
                   send_init = true
                 end
                 started = true
@@ -199,7 +207,7 @@ end
 
 def changedoortype(dpointer)
   door = fetch_door(dpointer)
-  temp = get_max_length("Enter new door type (DOS,LINUX,RSTS): ",10,"Door type") 
+  temp = get_max_length("Enter new door type (DOS,LINUX,RSTS,QBBS): ",10,"Door type") 
   temp.strip! if temp != ""
   door.d_type = temp.upcase if temp != nil
   update_door(door)
