@@ -68,6 +68,7 @@ class Session
   require "main.rb"
   require "groups.rb"
 	require "nntp.rb"
+	require "fortune.rb"
  
 
   def run

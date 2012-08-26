@@ -1,9 +1,9 @@
-#############################################
+###########################################################################
 #											
 #   t_pktwrite.rb --Outgoing Packet Processor for Fidomail tosser for QBBS.		                                
 #   (C) Copyright 2004, Fly-By-Night Software (Ruby Version)                        
 #                                                                                                            
-############################################## 
+############################################################################
 
 include Logger
 require "tools.rb"

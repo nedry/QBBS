@@ -13,8 +13,10 @@ def door_do (path,d_type)
   started = false
   i = 0
   ret = false
-  user_len = @c_user.name.length+1
-	user_arr =  ">#{@c_user.name}"
+	beg = false
+	u_name = @c_user.name
+  user_len = u_name.length+1
+	user_arr =  ">#{u_name}"
 	
   begin
     PTY.spawn(path) do |read, w, p|
@@ -38,14 +40,13 @@ def door_do (path,d_type)
                   send_init = true
                 end
                 if d_type == "QBBS" and char.chr == ">" and !send_init then
-                  w.puts("#{@c_user.name}#{CR.chr}")
+                  w.puts("#{u_name}#{CR.chr}")
                   send_init = true
                 end
-									
                 started = true
                 idle = 0
-							
-								if user_arr.index(char) and !ret then
+							  beg = true if char == ">"
+								if user_arr.index(char) and !ret and beg then									
 								 char = ""
 								 i += 1
 								 ret = true if i == user_len

@@ -55,7 +55,7 @@ ROOT_PATH = "/home/mark/QBBS/"
 
 #QOTD location (or nil for disabled)
 
-QOTD = "fortune > #{ROOT_PATH}text/quote.txt"
+QOTD = "/usr/share/games/fortunes"
 
 # Full Screen Editor
 FULLSCREENPROG = 'nano -R -r 78 -Q"> " -t -o %a'
