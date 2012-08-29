@@ -425,7 +425,7 @@ def nntp_writemessage_post(msg,newsgroup,tag)
 	nntp_send("Subject: #{msg.subject}")
 	nntp_send("Organization: #{SYSTEMNAME}")
 	tempmsg=convert_to_ascii(msg.msg_text)
-	tempmsg.each_line(DLIM) {|line| nntp_send("#{line.sub(/^\./, '..').chop!}")}
+	tempmsg.each_line(DLIM) {|line| nntp_send("#{line.sub(/^\./, '..').chop}")}
 	nntp_send("--- #{NNTP_TAG}")
 	nntp_send(tag)
 	nntp_send(".\r\n")

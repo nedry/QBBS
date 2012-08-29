@@ -403,6 +403,9 @@ end
           abs = absolute_message(table,mpointer)
         end
         curmessage = fetch_msg(abs)
+				#in case a pointer got trashed.
+				pointer.lastread = 0 if pointer.lastread.nil?
+				
         if pointer.lastread < curmessage.absolute then
           pointer.lastread = curmessage.absolute
           update_pointer(pointer)
