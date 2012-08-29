@@ -45,9 +45,34 @@ class NNTPSession
 	def initialize(socket)
 		@socket = socket
 	end
+	
+def getline
+  return @socket.gets
+end
+
+def close
+  @socket.close
+end
+		
+def putline(line)
+  @socket.write("#{line.chomp}\r\n")
+end
 
 def run
-	puts "starting"
+	putline "200 server ready (#{VER})"
+	while (request = getline)
+		case request.strip
+			when /^DATE$/i
+				putline '111 ' + Time.now.gmtime.strftime("%Y%m%d%H%M%S")
+			when /^HELP$/i
+        putline "100 help text follows"
+				putline "."
+			when /^QUIT$/i         # Session end
+        putline "205 closing connection - goodbye!"
+			  close
+				return
+		end
+	end
 end
 
 end
