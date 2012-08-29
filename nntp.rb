@@ -419,8 +419,8 @@ def nntp_messageid
 end
 
 def nntp_writemessage_post(msg,newsgroup,tag)
-
-	nntp_send("From: #{msg.m_from}")
+  from = "\"#{msg.m_from}\" <#{msg.m_from.gsub(" ",".")}@#{SYSTEMNAME.gsub(" ",".")}>"
+	nntp_send("From: #{from}")
 	nntp_send("Newsgroups: #{newsgroup}")
 	nntp_send("Subject: #{msg.subject}")
 	nntp_send("Organization: #{SYSTEMNAME}")

@@ -1,6 +1,6 @@
  
  #fortune file reader based on PHP code by:   
- #Written by Henrik Aasted Sorensen, henrik@aasted.org
+ #Henrik Aasted Sorensen, henrik@aasted.org
  #Read more at http://www.aasted.org/quote
 
 
@@ -17,7 +17,7 @@ def getNumberOfQuotes(file)
 
 	if File.exists?(file) then
 	  file_handle = File.open(file, "rb")
-	  junk = readLong(file_handle)  #Just move over the first long. Might as well be fseek.
+	  junk = readLong(file_handle)  #Just move over the first long. 
 	  result =  readLong(file_handle)
 	  file_handle.close
 	end

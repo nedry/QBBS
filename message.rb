@@ -336,7 +336,9 @@ end
           ["From", :m_from], "Subject", "Area", "Msgid", "Path",
           ["TzUTZ", :tzutc],"CharSet", ["Tosser ID", :tid], ["Proc ID", :pid], "Intl",
           "Topt", "Fmpt", "Reply", "Origin",["QWK Message ID", :q_msgid],
-        ["QWK Time Zone",:q_tz],["QWK Via",:q_via],["QWK Reply",:q_reply]]
+        ["QWK Time Zone",:q_tz],["QWK Via",:q_via],["QWK Reply",:q_reply],
+				["NNTP Organization",:organization],["NNTP references",:references],
+				"Bytes","Lines","xref","nntppostinghost","xtrace","nntppostinghost","xoriginalbytes"]
 
         fields.each do |f|
           field, attr = (f.is_a? Array) ? f : [f, f.downcase]
@@ -408,7 +410,11 @@ end
 
         message = []
         tempmsg=convert_to_ascii(curmessage.msg_text)
-
+				
+				#some QWK/REP messages seem to use linefeeds instead of 227 char characters
+				#to indicate EOL
+				
+        tempmsg.gsub!(10.chr,DLIM)
 
         tempmsg.each_line(DLIM) {|line| message.push(line.chop!)} #changed from .each for ruby 1.9
 
