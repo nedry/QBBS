@@ -47,7 +47,16 @@ class NNTPSession
 	end
 	
 def getline
-  return @socket.gets
+	        line, char = '', nil
+        while char != "\n"
+					if select([@socket],nil,nil,0.1) != nil then 
+          line << (char = @socket.recv(1))
+					#puts "char: #{char}" #if !char.nil?
+				  end
+			    #putc "."
+        end
+  return line 
+	#@socket.gets
 end
 
 def close
@@ -56,17 +65,34 @@ end
 		
 def putline(line)
   @socket.write("#{line.chomp}\r\n")
+	puts "-NNTP SEND: #{line.chomp}"
 end
 
 def run
-	putline "200 server ready (#{VER})"
+
+#	@socket.flush
+  putline "200 server ready QBBS - ready"
 	while (request = getline)
+		puts "-NNTP RECV: #{request}"
 		case request.strip
+			when /^IHAVE\s*/i
+			  valid = (/^IHAVE\s<(.*)>$/) =~ request.strip
+				puts valid
+				if !valid then
+					putline "501 Syntax is:  IHAVE message-ID"
+				else
+					msg_id = $1
+					puts "msg_id: #{msg_id}"
+					#check msg id if not dupe then..
+					putline "335 send article to be transferred. end with <CR-LF>.<CR-LF>"
+				end
 			when /^DATE$/i
 				putline '111 ' + Time.now.gmtime.strftime("%Y%m%d%H%M%S")
 			when /^HELP$/i
         putline "100 help text follows"
 				putline "."
+			when /^SLAVE$/i
+			  putline '202 slave status acknowledged'
 			when /^QUIT$/i         # Session end
         putline "205 closing connection - goodbye!"
 			  close
@@ -79,15 +105,16 @@ end
 class NNTPServerSocket
   def initialize
     @serverSocket = TCPServer.open(NNTPLISTENPORT)
+		@serverSocket.setsockopt(Socket::IPPROTO_TCP, Socket::TCP_NODELAY, 1)
   end
 
   def run
     
     #add_log_entry(L_MESSAGE,Time.now,"#{VER} NNTP Server Starting.")
-    if DEBUG then
-      Thread.abort_on_exception = true 
+   # if DEBUG then
+      Thread.abort_on_exception = false
       #add_log_entry(L_MESSAGE,Time.now,"NNTP Server running in Debug mode.")
-    end
+    #end
 
     while true
       puts "-NNTSRV: Starting Server Accept Thread";
@@ -95,6 +122,7 @@ class NNTPServerSocket
       if socket = @serverSocket.accept then
         Thread.new {
           puts "-NNTP: New Incoming Connection"
+					sleep(4)
           NNTPSession.new(socket).run
         }
       end
