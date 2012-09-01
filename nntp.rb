@@ -81,14 +81,17 @@ end
 def nntp_getarticle(artnum)
 
  article = []
+ count = 0
  done = false
  nntp_send("ARTICLE #{artnum}")
  while !done 
    line = nntp_recv
 	 puts "-NNTP: #{line}"
    article << line
+	 count = count + 1
    done = true if line == "." 
-   if line[0] == "4" then
+	 #we only want to look for a article missing error on the first line of a response
+   if line[0] == "4" and count == 1 then
     puts "-NNTP: Article #{artnum} missing."
     done = true
     article = nil
@@ -327,7 +330,7 @@ def nntp_parsearticle(article,area)
                  control, charset, contenttype, contenttransferencoding,
                  nntppostinghost, xcomplaintsto, xtrace, nntppostingdate,
                  xoriginalbytes, ftnarea, ftnflags, ftnmsgid, ftnreply,
-		             ftntid, ftnpid)
+		             ftntid, ftnpid, messageid)
   else
 		"-NNTP: Dropping article it's from us!"
 		absolute = nil

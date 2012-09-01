@@ -82,6 +82,11 @@ def e_total(user)
   Message.all(:number => 0,  :conditions => ["m_to ILIKE ?", user] ).count
 end
 
+def msgid_exist(msgid)
+  Message.all(:msgid => msgid ).count
+end
+
+
 def new_email(ind,user)
   ind = 0 if ind.nil?
   Message.all(:number => 0, :absolute.gt => ind, :conditions => ["m_to ILIKE ?", user]).count
@@ -100,7 +105,7 @@ def add_nntp_msg(m_to,m_from,msg_date,subject,msg_text,number, apparentlyto,
                  control, charset, contenttype, contenttransferencoding,
                  nntppostinghost, xcomplaintsto, xtrace, nntppostingdate,
                  xoriginalbytes, ftnarea, ftnflags, ftnmsgid, ftnreply,
-		 ftntid, ftnpid)
+								 ftntid, ftnpid, messageid)
 
 
   
@@ -140,6 +145,7 @@ def add_nntp_msg(m_to,m_from,msg_date,subject,msg_text,number, apparentlyto,
     :msgid => ftnmsgid,
     :tid  => ftntid,  
     :pid  => ftnpid,
+		:msgid => messageid
   ) 
   
   worked = message.save

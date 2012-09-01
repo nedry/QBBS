@@ -338,7 +338,8 @@ end
           "Topt", "Fmpt", "Reply", "Origin",["QWK Message ID", :q_msgid],
         ["QWK Time Zone",:q_tz],["QWK Via",:q_via],["QWK Reply",:q_reply],
 				["NNTP Organization",:organization],["NNTP references",:references],
-				"Bytes","Lines","xref","nntppostinghost","xtrace","nntppostinghost","xoriginalbytes"]
+				"Bytes","Lines","xref","nntppostinghost","xtrace","nntppostinghost","xoriginalbytes",
+				"MsgId","contenttransferencoding"]
 
         fields.each do |f|
           field, attr = (f.is_a? Array) ? f : [f, f.downcase]

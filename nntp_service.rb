@@ -136,11 +136,10 @@ puts "\n-#{VER} NNTP Server\n"; $stdout.flush
 puts
 puts "-Starting Up."; $stdout.flush
 puts
-nntpsock.run
-
-
-
+#nntpsock.run
 
 DataMapper::Logger.new('log/db', :debug)
 DataMapper.setup(:default, "postgres://#{DATAIP}/#{DATABASE}")
 DataMapper.finalize
+
+puts msgid_exist("dude")
