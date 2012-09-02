@@ -83,7 +83,7 @@ def e_total(user)
 end
 
 def msgid_exist(msgid)
-  Message.all(:msgid => msgid ).count
+  dude = Message.first(:msgid => msgid)
 end
 
 

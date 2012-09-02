@@ -17,6 +17,10 @@ def fetch_area(record)
   Area.first(:number => record)
 end
 
+def fetch_mbbs_area(nntp_group)
+  Area.first(:mbbs_net => nntp_group)
+end
+
 def fetch_area_grp(grp)
   Area.first(:grp => grp)
 end

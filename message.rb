@@ -338,8 +338,8 @@ end
           "Topt", "Fmpt", "Reply", "Origin",["QWK Message ID", :q_msgid],
         ["QWK Time Zone",:q_tz],["QWK Via",:q_via],["QWK Reply",:q_reply],
 				["NNTP Organization",:organization],["NNTP references",:references],
-				"Bytes","Lines","xref","nntppostinghost","xtrace","nntppostinghost","xoriginalbytes",
-				"MsgId","contenttransferencoding"]
+				"Bytes","Lines","xref","xtrace","nntppostinghost","xoriginalbytes",
+				"MsgId"]
 
         fields.each do |f|
           field, attr = (f.is_a? Array) ? f : [f, f.downcase]
@@ -698,6 +698,7 @@ end
     %C;QWK/REP Net # %G;#{out} 
     %C;FidoNet Area: %G;#{area.fido_net}
     %C;NNTP Newsgroup: %G;#{area.nntp_net}
+    %C;NajorBBS Net Newsgroup: %G;#{area.mbbs_net}
     %C;NNTP Pointer: %G;#{area.nntp_pointer}
     %C;Last Modified: %G;#{area.modify_date.strftime("%A the %d#{time_thingie(area.modify_date)} of %B, %Y at %I:%M%p")}
     %C;Total Messages: %G;#{m_total(area.number)}
@@ -726,6 +727,7 @@ here
           when "PU"; page
           when "N"; changeareaname(apointer)
           when "NG"; changenntpgroup(apointer)
+          when "MB"; changembbsgroup(apointer)
           when "D"; changedefaultaccess(apointer)
           when "V"; changevalidatedaccess(apointer)
           when "K"; deletearea(apointer)
@@ -912,6 +914,24 @@ end
           end
         end
         area.nntp_net = nntp_net
+        update_area(area)
+        print
+      end
+			
+      def changembbsgroup(apointer)
+
+        area = fetch_area(apointer)
+
+        while true
+          prompt = "Enter new MBBS Export map name: "
+          mbbs_net = getinp(prompt) {|n| n != ""}
+          if mbbs_net.length > 40 then
+            print "MBBS Export map too long. 40 Character Maximum"
+          else
+            break
+          end
+        end
+        area.mbbs_net = mbbs_net
         update_area(area)
         print
       end

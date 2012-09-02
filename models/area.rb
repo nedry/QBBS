@@ -16,6 +16,7 @@ class Area
   property :network, String, :length => 40
   property :fido_net, String, :length => 40
   property :nntp_net, String, :length => 40
+	property :mbbs_net, String, :length => 40
   property :nntp_pointer, Integer, :default => 0, :min => 0, :max => 2**32
   property :grp, Integer, :default => 1, :min => 0, :max => 2**32
   property :prune, Integer, :default => 1, :min => 0, :max => 2**32

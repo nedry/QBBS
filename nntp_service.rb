@@ -30,10 +30,12 @@ require "db/db_screen"
 require "message.rb"
 require "iconv"
 require "socket"
+require "nntp"
 
 
-NNTP_PORT = "119"
-# -*- ruby -*-
+
+
+
 require 'socket'
 require 'thread'
 require 'time'
@@ -50,13 +52,10 @@ def getline
 	        line, char = '', nil
         while char != "\n"
 					if select([@socket],nil,nil,0.1) != nil then 
-          line << (char = @socket.recv(1))
-					#puts "char: #{char}" #if !char.nil?
+            line << (char = @socket.recv(1))
 				  end
-			    #putc "."
         end
   return line 
-	#@socket.gets
 end
 
 def close
@@ -68,15 +67,21 @@ def putline(line)
 	puts "-NNTP SEND: #{line.chomp}"
 end
 
+  def figureip(peername)
+    port, ip =Socket.unpack_sockaddr_in(@socket.getpeername)
+    ip.gsub!(/[A-Za-z\:]/,"")
+    return ip
+  end
 def run
-
-#	@socket.flush
+	sleep(2)
+  ip= figureip(@socket.getpeername)
+	puts "-NNTP: Connect from #{ip}"
   putline "200 server ready QBBS - ready"
 	while (request = getline)
 		puts "-NNTP RECV: #{request}"
 		case request.strip
 			when /^IHAVE\s*/i
-			  valid = (/^IHAVE\s<(.*)>$/) =~ request.strip
+			  valid = (/^IHAVE\s(.*)$/) =~ request.strip
 				puts valid
 				if !valid then
 					putline "501 Syntax is:  IHAVE message-ID"
@@ -84,7 +89,20 @@ def run
 					msg_id = $1
 					puts "msg_id: #{msg_id}"
 					#check msg id if not dupe then..
-					putline "335 send article to be transferred. end with <CR-LF>.<CR-LF>"
+					if !msgid_exist(msg_id)
+					  putline "335 send article to be transferred. end with <CR-LF>.<CR-LF>"
+						article = nntp_getarticle(nil)
+						puts "-NNTP: Article Recieved"
+						abs = nntp_parsearticle(article,nil)
+						if !abs.nil? then
+							puts "-NNTP: Article #{abs} saved."
+							putline "235 article transferred ok"
+						else
+							putline "436 transfer failed - try again later"
+						end
+					else
+						putline "437 article rejected - do not try again"
+					end
 				end
 			when /^DATE$/i
 				putline '111 ' + Time.now.gmtime.strftime("%Y%m%d%H%M%S")
@@ -112,12 +130,12 @@ class NNTPServerSocket
     
     #add_log_entry(L_MESSAGE,Time.now,"#{VER} NNTP Server Starting.")
    # if DEBUG then
-      Thread.abort_on_exception = false
+      Thread.abort_on_exception = true
       #add_log_entry(L_MESSAGE,Time.now,"NNTP Server running in Debug mode.")
     #end
 
     while true
-      puts "-NNTSRV: Starting Server Accept Thread";
+      puts "-NNTSRV: Listening for MBBS";
       $stdout.flush
       if socket = @serverSocket.accept then
         Thread.new {
@@ -136,10 +154,10 @@ puts "\n-#{VER} NNTP Server\n"; $stdout.flush
 puts
 puts "-Starting Up."; $stdout.flush
 puts
-#nntpsock.run
+
 
 DataMapper::Logger.new('log/db', :debug)
 DataMapper.setup(:default, "postgres://#{DATAIP}/#{DATABASE}")
 DataMapper.finalize
-
-puts msgid_exist("dude")
+nntpsock.run
+puts "fetch: #{fetch_mbbs_area("alt.test.ignore")}"

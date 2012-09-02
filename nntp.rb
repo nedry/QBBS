@@ -19,7 +19,7 @@ NNTP_INITIAL_DOWNLOAD = 500
 def open_nntp(host, port)
 
   begin
-    @sock = TCPSocket.open(host, port)
+    @socket = TCPSocket.open(host, port)
     puts "-NNTP: #{nntp_recv}"
     return true
   rescue
@@ -30,13 +30,13 @@ def open_nntp(host, port)
 
 def nntp_send(message)
   if message
-    @sock.send("#{message}\r\n", 0)
+    @socket.send("#{message}\r\n", 0)
   end
 end
 
 def nntp_recv  # Get the next line from the socket.
       
-  reply = @sock.gets
+  reply = @socket.gets
 
   if reply
     reply.strip!
@@ -50,7 +50,7 @@ end
     # (how == 2), parts of this socket.
     
 def nntp_shutdown(how=2)
-  @sock.shutdown(how)
+  @socket.shutdown(how)
 end
 
 def nntp_login(user,password)
@@ -83,7 +83,7 @@ def nntp_getarticle(artnum)
  article = []
  count = 0
  done = false
- nntp_send("ARTICLE #{artnum}")
+ nntp_send("ARTICLE #{artnum}") if !artnum.nil?
  while !done 
    line = nntp_recv
 	 puts "-NNTP: #{line}"
@@ -320,9 +320,14 @@ def nntp_parsearticle(article,area)
 	subject = nntp_convert(subject)
 	from = nntp_convert(from)
 	
-
+	if area.nil? and !newsgroups.nil? then
+	  area = fetch_mbbs_area(newsgroups.strip)
+		puts "-NNTP: Found area for message: #{area}"
+		datetime = Time.now.strftime("%Y-%m-%d %I:%M%p") if datetime.nil?
+  end
+	
   organization = "" if organization.nil?
-  if organization.strip != SYSTEMNAME.strip then
+  if (organization.strip != SYSTEMNAME.strip) and !area.nil? then
   
     absolute = add_nntp_msg(to,from,datetime,subject,msg_text,area.number, apparentlyto,
                  xcommentto, newsgroups, path, organization, replyto,
