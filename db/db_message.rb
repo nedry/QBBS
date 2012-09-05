@@ -242,6 +242,30 @@ def add_qwk_message(message, area,qwkuser)
   update_user(user)
 end
 
+def nntp_convert(text)
+		ic = Iconv.new('UTF-8//IGNORE', 'UTF-8')
+		text_out = ""
+	  if !text.nil?
+		  text.each_char {|c| 
+			begin
+		    if c.ord < 255 then
+		      text_out << ic.iconv(c)
+		    else
+					text_out << " "
+				  puts "-ERROR: Illegal character #{c} in message"
+				end
+		  rescue 
+		    text_out << " "
+			  puts "-ERROR: Illegal character #{c} in message"
+		  end
+		  }
+		else
+			text_out = ""
+		end
+	return text_out
+end
+  
+	
 def convert_to_utf8(message, unixterm=false)
   # this makes messages display properly on a unix terminal
   if unixterm
@@ -251,6 +275,8 @@ def convert_to_utf8(message, unixterm=false)
 
   # this works with syncterm
   temp = message.gsub(227.chr,"\r") #replace qwk delimilter with cr
+# this works with syncterm
+  temp = message.gsub(227.chr,"\r") #replace qwk delimilter with cr
   temp2 = ""
   temp2.force_encoding("UTF-8")
   temp.each_char do |c|
@@ -259,7 +285,7 @@ def convert_to_utf8(message, unixterm=false)
     else
 
        temp2 << Encodings::ASCII_UNICODE[c]
-	
+
     end
   end
   return temp2

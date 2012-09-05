@@ -140,6 +140,7 @@ def parse_text_commands(line,u_space,f_space,t_space,pf_space)
       "%PU_SPACE%" =>  pf_space,
       "%NODE%"  => @session.node.to_s,
       "%TIMEOFDAY%" => @session.timeofday,
+			"%YEAR%" => Time.now.year.to_s,
       "%USERNAME%" => @session.c_user.name,
       "%U_LDATE%" => @session.c_user.laston.strftime("%A %B %d, %Y"),
       "%U_LTIME%" => @session.c_user.laston.strftime("%I:%M%p (%Z)"),

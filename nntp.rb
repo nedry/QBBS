@@ -100,29 +100,7 @@ def nntp_getarticle(artnum)
  return article
 end
 
-def nntp_convert(text)
-		ic = Iconv.new('UTF-8//IGNORE', 'UTF-8')
-		text_out = ""
-	  if !text.nil?
-		  text.each_char {|c| 
-			begin
-		    if c.ord < 255 then
-		      text_out << ic.iconv(c)
-		    else
-					text_out << " "
-				  puts "-NNTP: Illegal character #{c} in message"
-				end
-		  rescue 
-		    text_out << " "
-			  puts "-NNTP: Illegal character #{c} in message"
-		  end
-		  }
-		else
-			text_out = ""
-		end
-	return text_out
-end
-  
+
 
 def nntp_parsearticle(article,area)
   article.slice!(0)  #remove first line which is the server response.
