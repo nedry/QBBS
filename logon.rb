@@ -275,9 +275,9 @@ class Session
       print "Today in History: " if !existfileout('tihhdr',0,true)
 			j = 0
 			get_history(TIH).split(LF.chr).each { |line|
-        j = j + 1 if display
-        if j == @c_user.length and @c_user.more and !nomore then
-          cont = @session.moreprompt
+        j = j + 1 
+        if j == @c_user.length and @c_user.more  then
+          cont = moreprompt
           j = 1
         end
 				print line}
