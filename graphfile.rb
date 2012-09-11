@@ -70,6 +70,9 @@ class GraphFile
         if !out.gsub!("%QOTD%","").nil? and @session.logged_on  then
           @session.qotd
         end
+        if !out.gsub!("%TIH%","").nil? and @session.logged_on  then
+          @session.tih
+        end
         if !out.gsub!("%BULLET%","").nil? and @session.logged_on  then
           @session.bullets(0)
         end

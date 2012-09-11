@@ -35,4 +35,6 @@ New features in this version:  %W;o%G; NNTP newsgroup support
 %PAUSE%
 %QOTD%
 %PAUSE%
+%TIH%
+%PAUSE%
 %BULLET%

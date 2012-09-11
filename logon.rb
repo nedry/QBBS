@@ -18,13 +18,13 @@ class Session
   def detect_ansi
     print "\e[s"			#Save Cursor Position
     print "\e[99B_"		#locate Cursor as far down as possible
-    print "\e[6n"		#Get Cursor Position
+    print "\e[6n"		  #Get Cursor Position
     print "\e[u"			#Restore Cursor Position
     print "\e[0m_"		#Set Normal Colours
 
-    print "\e[2J"		#Clear Screen
+    print "\e[2J"		  #Clear Screen
     print "\e[H"			#Home Cursor
-      print "\e[1m\e[37m"
+		print "\e[1m\e[37m"
 
     i = 0
     while i < 50
@@ -266,6 +266,24 @@ class Session
     else
       print
       print "%WG;Quote of the Day is disabled%W;"
+      print
+    end
+  end
+	
+	  def tih
+      if !TIH.nil? then
+      print "Today in History: " if !existfileout('tihhdr',0,true)
+			j = 0
+			get_history(TIH).split(LF.chr).each { |line|
+        j = j + 1 if display
+        if j == @c_user.length and @c_user.more and !nomore then
+          cont = @session.moreprompt
+          j = 1
+        end
+				print line}
+    else
+      print
+      print "%WG;Today in History is disabled%W;"
       print
     end
   end

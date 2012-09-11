@@ -57,6 +57,10 @@ ROOT_PATH = "/home/mark/QBBS/"
 
 QOTD = "/usr/share/games/fortunes"
 
+#Today in History location (or nil for disabled)
+
+TIH = "#{ROOT_PATH}/tih.dat"
+
 # Full Screen Editor
 FULLSCREENPROG = 'nano -R -r 78 -Q"> " -t -o %a'
 #FULLSCREENPROG = 'ruby #{ROOT_PATH}edit.rb -L '

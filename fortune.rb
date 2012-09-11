@@ -2,7 +2,7 @@
  #fortune file reader based on PHP code by:   
  #Henrik Aasted Sorensen, henrik@aasted.org
  #Read more at http://www.aasted.org/quote
-
+require "date"
 
 def readLong(file) 
 	data = file.read(4)
@@ -27,7 +27,8 @@ def getNumberOfQuotes(file)
 def getQuote(file_handle,index) 
 	 file_handle.seek(index)
 	 line=""; result = ""
-	 while ( (line[0] != "%") && (!file_handle.eof) )
+
+	 while ( line.strip != "%") && (!file_handle.eof) 
 		result = result + line		
 	 	line = file_handle.gets(1024) 
 	 end
@@ -96,3 +97,20 @@ def quoteFromDir(dir)
 		return "Quote of the day directory missing, please tell sysop..."
 	end
 end
+
+def get_history(datafile)
+ #/home/mark/QBBS/tih.dat
+ #/usr/share/games/fortunes/quotes.dat
+day_to_display = Time.now.strftime("%j").to_i - 1
+
+#correct for leap year, or rather, not having one.
+
+day_to_dispay = day_to_display - 1 if Date.leap?(Time.now.year) and day_to_display > 59 
+
+numofquotes = getNumberOfQuotes(datafile)
+puts "number of TID: #{numofquotes}"
+
+return getExactQuote(datafile,day_to_display)
+
+end
+
