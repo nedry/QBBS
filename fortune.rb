@@ -108,7 +108,7 @@ day_to_display = Time.now.strftime("%j").to_i - 1
 day_to_dispay = day_to_display - 1 if Date.leap?(Time.now.year) and day_to_display > 59 
 
 numofquotes = getNumberOfQuotes(datafile)
-puts "number of TID: #{numofquotes}"
+puts "number of TIH: #{numofquotes}"
 
 return getExactQuote(datafile,day_to_display)
 

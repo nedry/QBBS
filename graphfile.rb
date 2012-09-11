@@ -27,7 +27,30 @@ class GraphFile
     end
   end
 
+def tih
+			
+		u_space = disk_used_space(ROOT_PATH).to_s
+    f_space = disk_free_space(ROOT_PATH).to_s
+    t_space =  disk_total_space(ROOT_PATH).to_s
+    pf_space = disk_percent_free(ROOT_PATH).to_s
+		
+      if !TIH.nil? then
 
+			j = 0
+			get_history(TIH).split(LF.chr).each { |line|
+        j = j + 1 
+        if j == @session.c_user.length and @session.c_user.more  then
+          cont = @session.moreprompt
+          j = 1
+        end
+				@session.print parse_text_commands(line,u_space,f_space,t_space,pf_space)
+ }
+    else
+      @session.print
+      @session.print "%WG;Today in History is disabled%W;"
+      @session.print
+    end
+  end
 
   def existfileout(offset)
     test = outfile
@@ -71,7 +94,7 @@ class GraphFile
           @session.qotd
         end
         if !out.gsub!("%TIH%","").nil? and @session.logged_on  then
-          @session.tih
+          tih
         end
         if !out.gsub!("%BULLET%","").nil? and @session.logged_on  then
           @session.bullets(0)

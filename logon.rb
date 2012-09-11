@@ -270,23 +270,7 @@ class Session
     end
   end
 	
-	  def tih
-      if !TIH.nil? then
-      print "Today in History: " if !existfileout('tihhdr',0,true)
-			j = 0
-			get_history(TIH).split(LF.chr).each { |line|
-        j = j + 1 
-        if j == @c_user.length and @c_user.more  then
-          cont = moreprompt
-          j = 1
-        end
-				print line}
-    else
-      print
-      print "%WG;Today in History is disabled%W;"
-      print
-    end
-  end
+ 
   
   def checkmaxpwdmiss(count,username)
     if count == MAXPASSWORDMISS then
