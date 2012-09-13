@@ -119,9 +119,9 @@ class Session
 
   def editmenu
     print <<-here
-    (A)bort   (C)ontinue   (I)nsert (F)ind (and Replace)
-    (D)elete  (E)dit line  (L)ist   (R)eplace line
-    (T)itle   (S)ave       (Q)uote
+    %W;[%Y;A%W;]%G;bort   %W;[%Y;C%W;]%G;ontinue   %W;[%Y;I%W;]%G;nsert %W;[%Y;F%W;]%G;ind (and Replace)
+    %W;[%Y;D%W;]%G;elete  %W;[%Y;E%W;]%G;dit line  %W;[%Y;L%W;]%G;ist   %W;[%Y;R%W;]%G;eplace line
+    %W;[%Y;T%W;]%G;itle   %W;[%Y;S%W;]%G;ave       %W;[%Y;Q%W;]%G;uote
 
     here
   end
@@ -130,18 +130,18 @@ class Session
     len = getmsglen
     replaceline = args.shift || 0
 
-    prompt = "Replace line (1-#{len}) or 0 to abort? "
+    prompt = "%Y;Replace line (1-#{len}) or 0 to abort?%W; "
     replaceline = getnum(prompt, 0, len)
 
     return if replaceline == 0
 
     list [replaceline, 0]
-    if yes("Replace this line(y/N)? ",false,false,false) then
-      prompt = "Enter new line or enter <CR> to abort: "
+    if yes("%G;Replace this line #{NOYES}? %W;",false,false,false) then
+      prompt = "%G;Enter new line or enter <CR> to abort:%W; "
       newline = getinp(prompt)
       if newline == "" then print "Line NOT replaced"
       else
-        print "Line REPLACED."
+        print "%WR;Line REPLACED.%W;"
         @lineeditor.msgtext[replaceline - 1] = newline
       end
     end
@@ -152,15 +152,15 @@ class Session
     insertline = args.shift || 0
 
     if len >= MAXMESSAGESIZE then
-      print "No more room!"
+      print "%WR;No more room!%W;"
       return false
     end
 
-    insertline = getnum("Insert after which line? ",0,len) if
+    insertline = getnum("%Y;Insert after which line? %W;",0,len) if
     !(1...len).include?(insertline)
 
     if (insertline <= len) and (insertline >= 0) then
-      @lineeditor.line = (insertline)
+      @lineeditor.line = (insertline + 1)
       return true
     else
       print "%WR;Invalid input!%W;"
@@ -211,7 +211,7 @@ class Session
     @lineeditor.msgtext.compact!
 
     while true
-      prompt = "Edit Prompt: "
+      prompt = "%G;Edit (?/help): %W;"
       happy = getinp(prompt).upcase
       parameters = Parse.parse(happy)
       happy.gsub!(/[-\d]/,"")
