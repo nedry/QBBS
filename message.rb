@@ -301,7 +301,7 @@ class Session
         prompt = "Post message #{YESNO}"
         saveit = yes(prompt, true, false,true)
       else
-        saveit = lineedit(1,reply_text,false)
+        saveit,title = lineedit(1,reply_text,false,title)
       end
       if saveit then
         savecurmessage(@c_area, to, title,false,false,nil,nil,nil,nil)

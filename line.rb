@@ -7,7 +7,7 @@ class Session
   end
 
   def quoter(reply_text)
-    prompt = "[C]ut/Paste [L]ist [R]eturn: "
+    prompt = "%W;[%Y;C%W;]%G;ut/Paste %W;[%Y;L%W;]%G;ist %W;[%Y;R%W;]%G;eturn: "
     while true
       getinp(prompt) {|inp|
         happy = inp.upcase
@@ -45,7 +45,7 @@ class Session
             for i in start..stop
               @lineeditor.msgtext.push(">#{reply_text[i-1]}".slice(0..width))
             end
-            print "#{(stop - start + 1)} line(s) quoted"
+            print "%RW;#{(stop - start + 1)} line(s) quoted%W;"
             len = (@lineeditor.msgtext.nil?) ? 0 : @lineeditor.msgtext.length
             @lineeditor.line = len + 1
           else
@@ -177,6 +177,20 @@ class Session
     len = @lineeditor.msgtext ? @lineeditor.msgtext.length : 0
     @lineeditor.line = len + 1
   end
+	
+	  def change_title(parameters,title)
+		 print "%Y;Current message title is: %C;#{title}%W;"
+     prompt = "%G;Enter new message title or enter <CR> to abort:%W; "
+		 temp_title = getinp(prompt)
+     if !temp_title.strip.nil? then
+			 print "%G;Message Title changed to: %C;#{temp_title}%W;"
+			 return temp_title
+		 else
+			 print "%WR;Aborted%W;"
+			 return title
+		 end
+
+  end
 
   def edit_line(args)
 
@@ -185,17 +199,17 @@ class Session
 
 
     if !(1..len).include?(editline)
-      prompt = "Edit line (1-#{len}) or 0 to abort? "
+      prompt = "%Y;Edit line (1-#{len}) or 0 to abort? %W;"
       editline = getnum(prompt,0,len)
     end
     return if editline == 0
     list ([editline, 0 ])
-    oldline = getinp("Enter old string: ")
+    oldline = getinp("%G;Enter old string: %W;")
     return if oldline == ""
     x = @lineeditor.msgtext[editline-1].index(oldline)
-    print "Not found!" if x == nil
+    print "%RW;Not found!%W;" if x == nil
 
-    newline = getinp("Enter new string: ")
+    newline = getinp("%G;Enter new string: %W;")
     @lineeditor.msgtext[editline-1].sub!(oldline,newline) if newline != ''
   end
 
@@ -203,11 +217,11 @@ class Session
     len = getmsglen
     start, stop = getlinerange(len, parameters,true)
     for i in start..stop do
-      print "#{i}:  #{@lineeditor.msgtext[i - 1]}"
+      print "%W;#{i}:  %C;#{@lineeditor.msgtext[i - 1]}%W;"
     end
   end
 
-  def editprompt(reply_text)
+  def editprompt(reply_text,title)
     @lineeditor.msgtext.compact!
 
     while true
@@ -216,21 +230,23 @@ class Session
       parameters = Parse.parse(happy)
       happy.gsub!(/[-\d]/,"")
       case happy
-      when "S"; @lineeditor.save = true; return true
-      when "A"; @lineeditor.save = false; return true
-      when "C";	return false
+      when "S"; @lineeditor.save = true; return [true,title]
+      when "A"; @lineeditor.save = false; return [true,title]
+      when "C";	return [false,title]
       when "E"; edit_line(parameters)
       when "D"; delete_lines(parameters)
+			when "T"; title = change_title(parameters,title)
       when "L"; list(parameters)
       when "R"; replace_line(parameters)
-      when "I"; return false if insert_lines(parameters)
+      when "I"; return [false,title] if insert_lines(parameters)
       when "?"; editmenu
       when "Q"; quoter(reply_text)
       end #of case
     end # of until
+
   end # of def
 
-  def lineedit(startline,reply_text,file)
+  def lineedit(startline,reply_text,file,title)
 
     print "%G;Enter message text.  %Y;#{MAXMESSAGESIZE}%G; lines maximum."
     if @c_user.ansi
@@ -281,9 +297,9 @@ class Session
 
         end # of Inner Until
         if !done then
-          done = editprompt(reply_text)
+          done,title = editprompt(reply_text,title)
         end
       end #of Outer until
-      return @lineeditor.save
+      return [@lineeditor.save,title]
     end
   end #class Session
