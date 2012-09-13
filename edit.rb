@@ -1,3 +1,5 @@
+
+$LOAD_PATH << "."
 require 'fsed'
 require "tools.rb"
 #require "raspell"
@@ -56,6 +58,7 @@ def pull_apart_args(args)
 end
 
 begin
+
   unless RUBY_PLATFORM =~ /mswin32/
     # turn off stdin buffering and echo
 

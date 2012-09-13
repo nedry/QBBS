@@ -62,8 +62,8 @@ QOTD = "/usr/share/games/fortunes"
 TIH = "#{ROOT_PATH}/tih.dat"
 
 # Full Screen Editor
-FULLSCREENPROG = 'nano -R -r 78 -Q"> " -t -o %a'
-#FULLSCREENPROG = 'ruby #{ROOT_PATH}edit.rb -L '
+#FULLSCREENPROG = 'nano -R -r 78 -Q"> " -t -o %a'
+FULLSCREENPROG = 'ruby #{ROOT_PATH}edit.rb -L'
 FULLSCREENDIR = "#{ROOT_PATH}quote"
 
 #IRC/Chat Settings

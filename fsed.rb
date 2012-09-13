@@ -58,6 +58,11 @@ module Editors
         end
       end
 
+      def insert_line_at(y,ln)
+       @buffer[y+1] = []  if @buffer[y+1] == nil
+       @buffer.insert(y,ln)   
+     end
+		 
       def insert_at(y, x, chars)
         if chars
           row(y).insert(x, chars).flatten!
@@ -89,7 +94,15 @@ module Editors
           return 0
         end
       end
-
+			
+    def length_y(y)
+       if !@buffer[y - 1].nil?
+	      return @buffer[y - 1].length
+       else
+	      return 0
+       end
+     end
+		 
       def del_range(y,x1,x2)
         total = x2 - x1
         str = row(y).slice!(-(total),total)
@@ -137,24 +150,32 @@ module Editors
         ensure_row(y)
         line = row(y)
 
+				$lf.print "width: #{width}\n"
+				$lf.print "line: #{line}\n"
+				$lf.print "line[width]: #{line[width]}\n"
         if line[width] then # is there a character past max_width
           # if there is a space, break on it, else break the line arbitrarily
           # at _width_ ( TODO: add hyphenation if this happens )
           l_space = line[0..width].rindex(' ')
-
+				$lf.print "l_space: #{l_space}\n"
           if !l_space
             l_space = width - 1
           end
           wrap = delete_to_end(y, l_space + 1)
-
+					$lf.print "wrap: #{wrap}\n"
           # if we are on the last row, add a row for the spillover,
           # otherwise prepend to the next row and cascade-wrap
+					$lf.print "y: #{y}\n"
+					$lf.print "buffer_length: #{buffer_length}\n"
           if y == buffer_length
+						$lf.print "inserting line\n"
             insert_line(y, wrap)
           else
+						$lf.print "insert_at\n"
             insert_at(y + 1, 0, wrap)
             wrap_to_width(y + 1, width)
           end
+					$lf.print "wrap.length: #{wrap.length}\n"
           return wrap.length # so we know where to move the cursor
         end
       end
@@ -202,6 +223,7 @@ module Editors
           @buffer << line.split(//)
         }
       end
+			
 
       def read_from_file(filename)
         # if the filename is invalid, return an empty buffer rather than complain
@@ -241,7 +263,7 @@ module Editors
         open_error_log
       end
 
-      require "windows.rb"
+
 
       def open_error_log
         $lf = File.new("debug.txt", File::CREAT|File::TRUNC|File::RDWR, 0644)
@@ -374,12 +396,14 @@ module Editors
         # are we in insert or overwrite mode?
         if @insert then
           @buffer.insert_char(current_x, current_line, c)
-          split_pos, wrap = @buffer.wrap_to_width(current_line, @screen_width - 1)
+          wrap = @buffer.wrap_to_width(current_line, @screen_width - 1)
+					$lf.print "wrap: #{wrap}\n"
           if !wrap then
             move_cursor_right(1)
             return [c,NO_REDRAW]
           else
             # move to the end of the wrapped portion
+						$lf.print "home cursor\n"
             home_cursor
             move_cursor_down(1)
             move_cursor_right(wrap)
@@ -394,10 +418,11 @@ module Editors
           else
             home_cursor
             move_cursor_down(1)
-            return [nil,NO_REDRAW]
-          end
+            return [nil,NO_REDRAW]#
+						end
         end
       end
+
 
       def newline
         l = current_line
@@ -570,7 +595,7 @@ module Editors
     class Editor
 
       #Window Constants
-      MESSAGE = 1
+      MESSAGE 	= 1
       ABORT     = 2
       SAVE       = 3
       SPELL      = 4
@@ -597,21 +622,21 @@ module Editors
         buf = nil
 
         while true
+          catch :done do
+            Signal.trap('INT') do
+              Signal.trap('INT', 'DEFAULT') # reset to default
+									$lf.print "catch\n"
+              #throw :done
+             end
+	        end
 
-          if select([@in_io], nil, nil, 1) 
-            $lf.print "I made it"
+
+          if select([@in_io], nil, nil, 0.1) 
 
 
-            c = @in_io.sysread(1)
+            c = @in_io.read(1)
             $lf.print "after sysread"
-            #c = @in_io.getc
-            #    $lf.print"c: #{c}\n"
-            #  $lf.print"c-chr: #{c[0]}\n"
-            #       if @supress then   # if we are suppressing the mysterious extra linefeed... we do that here.
-            #     @supress = false
-            #         c = 0.chr if c.bytes.to_a[0] = 10
-            #       end
-
+      
             if @w_mode then    #We are in window mode, not edit mode...
               # $lf.print "in wmode\n"
               #$lf.print "c: #{c.upcase}"
@@ -736,6 +761,8 @@ module Editors
         @state.buffer
       end
     end
+
   end
+
 end
 
