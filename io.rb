@@ -380,7 +380,7 @@ class Session
     GraphFile.new(self, filename, override).existfileout(offset)
   end
 
-  def ogfileout (filename,offset,override)
+  def ogfileout(filename,offset,override)
     GraphFile.new(self, filename, override).ogfileout(offset)
   end
 
