@@ -271,9 +271,11 @@ class Session
       print (CLS)
       print (HOME)
       sleep(1)
+			puts "#{launch} #{FULLSCREENDIR}/#{msg_file}"
       door_do("#{launch} #{FULLSCREENDIR}/#{msg_file}","")
       print (CLS)
       print (HOME)
+			print ("%W;")
     end
 
     def post
