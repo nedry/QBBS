@@ -4,7 +4,7 @@ require 'fsed'
 require "tools.rb"
 #require "raspell"
 
-#Consts
+
 
 SPELL_CHECK = true     #if you don't want raspell, comment out the require above.
 
@@ -37,13 +37,13 @@ def writefile(filename, array)
   return unless filename
   lf = File.new(filename, File::WRONLY|File::TRUNC|File::CREAT, 0644)
   array.each {|x|
-    print "."
     lf.puts x
   }
   lf.close
   puts
 end
 
+	
 def pull_apart_args(args)
   bbs_mode = false
   filename = nil
@@ -86,7 +86,6 @@ begin
   end
 
   bbs_mode,in_file = pull_apart_args(ARGV)
-  puts "bbsmode: #{bbs_mode}"
   sleep(2)
   editor = Editors::FSED::Editor.new(80, 23, STDIN.to_io, $>.to_io,in_file,bbs_mode)
 

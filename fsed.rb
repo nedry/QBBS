@@ -17,9 +17,8 @@ module Editors
 
     class Buffer
       def initialize(max_lines, in_file)
-        read_from_file(in_file)
         @max_lines = max_lines
-        @buffer = []
+				@buffer = read_from_file(in_file)
       end
 
       def row(y)
@@ -150,32 +149,24 @@ module Editors
         ensure_row(y)
         line = row(y)
 
-				$lf.print "width: #{width}\n"
-				$lf.print "line: #{line}\n"
-				$lf.print "line[width]: #{line[width]}\n"
         if line[width] then # is there a character past max_width
           # if there is a space, break on it, else break the line arbitrarily
           # at _width_ ( TODO: add hyphenation if this happens )
           l_space = line[0..width].rindex(' ')
-				$lf.print "l_space: #{l_space}\n"
+
           if !l_space
             l_space = width - 1
           end
           wrap = delete_to_end(y, l_space + 1)
-					$lf.print "wrap: #{wrap}\n"
           # if we are on the last row, add a row for the spillover,
           # otherwise prepend to the next row and cascade-wrap
-					$lf.print "y: #{y}\n"
-					$lf.print "buffer_length: #{buffer_length}\n"
+
           if y == buffer_length
-						$lf.print "inserting line\n"
             insert_line(y, wrap)
           else
-						$lf.print "insert_at\n"
             insert_at(y + 1, 0, wrap)
             wrap_to_width(y + 1, width)
           end
-					$lf.print "wrap.length: #{wrap.length}\n"
           return wrap.length # so we know where to move the cursor
         end
       end
@@ -227,14 +218,18 @@ module Editors
 
       def read_from_file(filename)
         # if the filename is invalid, return an empty buffer rather than complain
+
         unless filename and File.exists?(filename)
+
           return []
         end
-        file_array = nil
-        File.open(filename, 'r') do |f|
-          file_array = read_from_io(f)
-        end
-        file_array
+				file_array =[]
+        IO.foreach(filename) {|line|
+          line.gsub!(/[\n\r]/,"")
+          file_array << line.split(//)
+					}
+
+       return file_array
       end
     end
 
@@ -397,13 +392,12 @@ module Editors
         if @insert then
           @buffer.insert_char(current_x, current_line, c)
           wrap = @buffer.wrap_to_width(current_line, @screen_width - 1)
-					$lf.print "wrap: #{wrap}\n"
+
           if !wrap then
             move_cursor_right(1)
             return [c,NO_REDRAW]
           else
             # move to the end of the wrapped portion
-						$lf.print "home cursor\n"
             home_cursor
             move_cursor_down(1)
             move_cursor_right(wrap)
@@ -595,8 +589,8 @@ module Editors
     class Editor
 
       #Window Constants
-      MESSAGE 	= 1
-      ABORT     = 2
+      MESSAGE 	 = 1
+      ABORT      = 2
       SAVE       = 3
       SPELL      = 4
 
@@ -608,8 +602,9 @@ module Editors
         @w_type = MESSAGE
         @supress = false
         @bbs_mode = bbs_mode
+				@in_file = in_file
       end
-
+ 
       def run
         @out_io.sync = true
         @in_io.sync = false
@@ -620,6 +615,7 @@ module Editors
         @out_io.print @state.redraw(true)
         @out_io.print @state.redraw(true)
         buf = nil
+
 
         while true
           catch :done do
@@ -635,11 +631,8 @@ module Editors
 
 
             c = @in_io.read(1)
-            $lf.print "after sysread"
       
             if @w_mode then    #We are in window mode, not edit mode...
-              # $lf.print "in wmode\n"
-              #$lf.print "c: #{c.upcase}"
 
               case c
               when "\e"      #effectively, esc this is cancel for everything
@@ -707,7 +700,7 @@ module Editors
                   end
                 else
                   buf << c
-                  #	$lf.print "buf: #{buf}\n"
+
                   case buf
                   when "\e[H","\e[1"
                     @state.home_cursor
