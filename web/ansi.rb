@@ -357,6 +357,7 @@ def parse_text_commands(line,user)
       "%U_ALIAS%" => ualias,
       "%IP%" => @env['REMOTE_ADDR'],
       "%PAUSE%" => "",
+			"%TIH%" => "",
       "%NOMORE%" => "",
       "%WHOLIST%" => "",
       "%LASTCALL%" => "",
