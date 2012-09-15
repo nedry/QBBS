@@ -193,7 +193,6 @@ class Session
           msg_file = write_quote_msg(reply_text)
           launch_editor(msg_file)
           suck_in_text(msg_file)
-					puts "@lineeditor.msgtext.length #{@lineeditor.msgtext.length}"
           #prompt = "Post message #{YESNO}"
           #saveit = yes(prompt, true, false,true)
 					saveit = false

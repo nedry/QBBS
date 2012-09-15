@@ -1,5 +1,5 @@
 $LOAD_PATH << ".."
-
+$LOAD_PATH << "."
 require 'rubygems'
 require 'socket'
 require 'sinatra'
@@ -251,6 +251,7 @@ def w_display_message(mpointer,user,m_area,email,dir,total)
   m_out <<  " <span style='color:#54fc54'> [QWK]</span>" if curmessage.network
   m_out << " [SMTP]" if curmessage.smtp
   m_out << "<span style='color:#54fc54'> [FIDONET]</span>" if curmessage.f_network
+	m_out << "<span style='color:#54fc54'> [NNTP]</span>"  if curmessage.usenet_network
   m_out << "<span style='color: #fcfc54'> [EXPORTED]</span>" if curmessage.exported and !curmessage.f_network and !curmessage.network
   m_out << " [REPLY]" if curmessage.reply
   m_out << "<br>"
