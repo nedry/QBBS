@@ -193,8 +193,11 @@ class Session
           msg_file = write_quote_msg(reply_text)
           launch_editor(msg_file)
           suck_in_text(msg_file)
-          prompt = "Post message #{YESNO}"
-          saveit = yes(prompt, true, false,true)
+					puts "@lineeditor.msgtext.length #{@lineeditor.msgtext.length}"
+          #prompt = "Post message #{YESNO}"
+          #saveit = yes(prompt, true, false,true)
+					saveit = false
+					saveit = true if @lineeditor.msgtext.length > 0
         else
           saveit,title = lineedit(1,reply_text,false,title)
         end
@@ -301,8 +304,11 @@ class Session
         msg_file = write_quote_msg(nil)
         launch_editor(msg_file)
         suck_in_text(msg_file)
-        prompt = "Post message #{YESNO}"
-        saveit = yes(prompt, true, false,true)
+				puts "@lineeditor.msgtext.length #{@lineeditor.msgtext.length}"
+				saveit = false
+				saveit = true if @lineeditor.msgtext.length > 0
+       # prompt = "Post message #{YESNO}"
+       # saveit = yes(prompt, true, false,true)
       else
         saveit,title = lineedit(1,reply_text,false,title)
       end
