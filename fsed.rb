@@ -519,11 +519,11 @@ module Editors
           window << bdr_color << " " << b_color
           (width - 2).times {window << " "}
           window << bdr_color << " "
-          window << bg("white")  << " "  
+        #  window << bg("white")  << " "  
         end
         window << w_update_cursor(startx,starty+height) << bdr_color
-        width.times  {window << " "}
-        window << w_update_cursor(startx+1,starty+height+1) << bg("white")
+       # width.times  {window << " "}
+        window << w_update_cursor(startx,starty+height+1) #<< bg("white")
         width.times  {window << " "}
         window << w_update_cursor(startx,starty)
 
@@ -557,11 +557,15 @@ module Editors
         idt = 15
         str = 8
         width = 38
-        out = make_window(idt-1,str-1,40,8,"WHITE","magenta","cyan","About")
+        out = make_window(idt-1,str-1,40,8,"WHITE","magenta","blue","About")
         out << w_update_cursor(idt,str+1) <<fg("yellow")  << bg("magenta")
         out << center("QUARKedit #{VERSION}",width,fg("white"))
-        out << w_update_cursor(idt,str+3)
-        out << center("By Dossy and Mark Firestone",width,fg("white"))
+        out << w_update_cursor(idt+5,str+3)
+        out << "By Dossy," << fg("white") 
+				out << w_update_cursor(idt+8,str+4)
+				out << "Mark Firestone" << fg("white")
+				out << w_update_cursor(idt+8,str+5)
+				out << "and Martin Demello" << fg("white")
         out << w_update_cursor(idt+36,str+7)
         #out << fg("hide")
       end
@@ -611,7 +615,7 @@ module Editors
         @out_io.print @state.screen_clear
         @out_io.print @state.redraw(true)
         @out_io.print @state.splash_window
-        sleep(1)
+        sleep(4)
         @out_io.print @state.redraw(true)
         @out_io.print @state.redraw(true)
         buf = nil
