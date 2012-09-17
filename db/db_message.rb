@@ -129,7 +129,11 @@ def add_nntp_msg(m_to,m_from,msg_date,subject,msg_text,number, apparentlyto,
     :bytes => bytes,
     :xref => xref,
     :messageto => messageto,
-    :references => references,
+		#added nntpreferences because you can't auto_update a field change.  
+		#this is so we can send the reference line back to the nntp server for threading on 
+		#newsreaders.  made it a text field because there can be *loads* of references.
+		#:references => references,
+    :nntpreferences => references,
     :xgateway => xgateway,
     :control => control,
     :charset => charset,
@@ -155,7 +159,7 @@ def add_nntp_msg(m_to,m_from,msg_date,subject,msg_text,number, apparentlyto,
   return high_absolute(area.number)
 end
 
-def add_msg(m_to,m_from,msg_date,subject,msg_text,exported,network,destnode,destnet,intl,topt,smtp, f_network,orgnode,orgnet,attribute,cost,area,msgid,path,tzutc,charset, tid,pid,fmpt,origin,reply,number,q_msgid,q_tz,q_via,q_reply)
+def add_msg(m_to,m_from,msg_date,subject,msg_text,exported,network,destnode,destnet,intl,topt,smtp, f_network,orgnode,orgnet,attribute,cost,area,msgid,path,tzutc,charset, tid,pid,fmpt,origin,reply,number,q_msgid,q_tz,q_via,q_reply,nntpreferences)
 
   topt = -1 if topt.nil?
   destnode = -1 if destnode.nil?
@@ -193,7 +197,8 @@ def add_msg(m_to,m_from,msg_date,subject,msg_text,exported,network,destnode,dest
     :q_msgid => q_msgid,
     :q_tz => q_tz,
     :q_via => q_via,
-    :q_reply => q_reply
+    :q_reply => q_reply,
+		:nntpreferences => nntpreferences
   ) 
   
   worked = message.save

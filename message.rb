@@ -182,6 +182,7 @@ class Session
         end
 
         title = r_message.subject
+				nntpreferences = r_message.nntpreferences
 
         print "%G;Title: #{title}"
         title = get_or_cr("%C;Enter Title (<CR> for old):%W; ", title)
@@ -209,7 +210,7 @@ class Session
           end
           update_system(system)
           x = private ? 0 : @c_area
-          savecurmessage(x, to, title, false,true,nil,nil,nil,nil)
+          savecurmessage(x, to, title, false,true,nil,nil,nil,nil,nntpreferences)
           print private ? "Sending Private Mail..." : "%G;Saving Message.."
         else
           print "%WR;Message Cancelled.%W;"
@@ -217,7 +218,7 @@ class Session
       end
     end
 
-    def savecurmessage(x, to, title,exported,reply,destnode,destnet,intl,point)
+    def savecurmessage(x, to, title,exported,reply,destnode,destnet,intl,point,nntpreferences)
 
       area = fetch_area(x)
       @lineeditor.msgtext << DLIM
@@ -225,7 +226,7 @@ class Session
       m_from = @c_user.name
       msg_date = Time.now.strftime("%Y-%m-%d %I:%M%p")
       absolute = add_msg(to,m_from,msg_date,title,msg_text,exported,false,destnode,destnet,intl,point,false, nil,nil,nil,
-      nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,reply,area.number,nil,nil,nil,nil)
+      nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,reply,area.number,nil,nil,nil,nil,nntpreferences)
       add_log_entry(5,Time.now,"#{@c_user.name} posted msg # #{absolute}")
     end
 
@@ -312,7 +313,7 @@ class Session
         saveit,title = lineedit(1,reply_text,false,title)
       end
       if saveit then
-        savecurmessage(@c_area, to, title,false,false,nil,nil,nil,nil)
+        savecurmessage(@c_area, to, title,false,false,nil,nil,nil,nil,nil)
         @c_user.posted += 1
         update_user(@c_user)
         system = fetch_system
@@ -345,9 +346,9 @@ end
           ["TzUTZ", :tzutc],"CharSet", ["Tosser ID", :tid], ["Proc ID", :pid], "Intl",
           "Topt", "Fmpt", "Reply", "Origin",["QWK Message ID", :q_msgid],
         ["QWK Time Zone",:q_tz],["QWK Via",:q_via],["QWK Reply",:q_reply],
-				["NNTP Organization",:organization],["NNTP references",:references],
+				["NNTP Organization",:organization],"references",
 				"Bytes","Lines","xref","xtrace","nntppostinghost","xoriginalbytes",
-				"MsgId"]
+				"MsgId","nntpreferences"]
 
         fields.each do |f|
           field, attr = (f.is_a? Array) ? f : [f, f.downcase]

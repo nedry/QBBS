@@ -410,6 +410,7 @@ def nntp_writemessage_post(msg,newsgroup,tag)
 	nntp_send("Newsgroups: #{newsgroup}")
 	nntp_send("Subject: #{msg.subject}")
 	nntp_send("Organization: #{SYSTEMNAME}")
+	nntp_send("References: #{msg.nntpreferences}") if !msg.nntpreferences.nil?
 	tempmsg=convert_to_ascii(msg.msg_text)
 	tempmsg.each_line(DLIM) {|line| nntp_send("#{line.sub(/^\./, '..').chop}")}
 	nntp_send("--- #{NNTP_TAG}")

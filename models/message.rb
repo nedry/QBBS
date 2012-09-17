@@ -66,7 +66,7 @@ class Message
   property :xoriginalbytes, String, :length => 255
   property :fntarea, String, :length => 255
   property :fntflags, String, :length => 255  
-
+  property :nntpreferences, Text, :lazy => false
  
   belongs_to :area, :child_key => [:number]
   end
