@@ -240,7 +240,7 @@ def add_qwk_message(message, area,qwkuser)
   
   absolute = add_msg(to,m_from,msg_date,title,msg_text,exported,network,nil,nil,nil,nil,false,
                                    nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,false,area.number,
-                                   q_msgid,q_tz,q_via,q_reply)
+                                   q_msgid,q_tz,q_via,q_reply,nil)
   user.posted = user.posted + 1
   pointer.lastread = absolute
   update_pointer(pointer)
