@@ -18,7 +18,7 @@ module IOUtils
   end
 
   def yes(prompt, default, chat, overwrite)
-    validanswers = {"Y" => true, "N" => false, ""=> default}
+    validanswers = {"Y" => true, "N" => false, "Q" => false, ""=> default}
     t = getcmd(prompt, ECHO, 0, chat, overwrite)
     ans = t.upcase.strip
     validanswers[ans]

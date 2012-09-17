@@ -82,7 +82,8 @@ def tih
         break if !cont
         out = parse_text_commands(line,u_space,f_space,t_space,pf_space)
         if !out.gsub!("%PAUSE%","").nil? and @session.logged_on  then
-          @session.yes("%W;Press #{RET}",true,false,true)
+          exit = @session.yes("%W;Press (%G;Q/Quit%W;) #{RET}",true,false,true)
+					return if !exit
         end
         if !out.gsub!("%WHOLIST%","").nil? and @session.logged_on  then
           @session.displaywho

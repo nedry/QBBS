@@ -346,6 +346,7 @@ post "/postsave" do
     msg_subject=params["msg_subject"]
     msg_text=params['msg_text']
     e_uid = params['e_uid']
+		nntpreferences = params['nntpreferences']
     qwk = false
     qwk = true if params['qwk'] == "t"
     fido = false
@@ -442,7 +443,7 @@ post "/postsave" do
       #   absolute = add_msg(msg_to,name,msg_date,msg_subject,msg_text,false,false,false,nil,nil,nil,nil,false,area.number)
       if !area.nil?
         absolute = add_msg(msg_to,name,msg_date,msg_subject,msg_text,false,false,node,net,intl,nil,false,fido,nil,nil,
-        nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,false,area.number,nil,nil,nil,nil)
+        nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,false,area.number,nil,nil,nil,nil,nntpreferences)
         system = fetch_system
         if !pvt
           system.posts_today += 1
@@ -526,6 +527,7 @@ get '/post' do
           post_out <<  "<input name='abs' type='hidden' value='#{curmessage.absolute}'>" #let /postsave know the message id so it can get stuff from it
           post_out <<  "<input name='qwk' type='hidden' value='t'>"  if curmessage.network
           post_out <<  "<input name='fido' type='hidden' value='t'>" if curmessage.f_network
+					post_out <<  "<input name='nntpreferences' type='hidden' value='#{curmessage.nntpreference}'>" if curmessage.nntpreference
         end
       end
 

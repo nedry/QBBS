@@ -1,5 +1,14 @@
 Changes for WeatherSpect
 
+Version 1.9 (2011/05/16)
+	- Included a modified copy of Weather::Underground, since the published
+	  version no longer works.
+	- Better error handling of malformed weather data
+	- Automatically redraw the scene when the window has been resized
+	- Added a turkey dodging falling pumpkins for thanksgiving
+	- Added an 'entities' parameter to the config, to control how many
+	  random entities are on the screen at a time.
+
 Version 1.8 (2007//)
 	- Fixed a bug reported by 'sylvan' on freshmeat.net. When the weather
 	  data didn't include a (sun|moon)(rise|set) time, an error was produced.
