@@ -100,7 +100,7 @@ class MailSchedulethread
     @control = []
     @totalareas = 0
     #@arealist = Arealist_qwk.new
-    sleep (60) #give the bot thread time to start before we launch other stuff
+    sleep (60) if !DEBUG #give the bot thread time to start before we launch other stuff
     
   end
 

@@ -286,7 +286,7 @@ def add_fido_msg(fidomessage)
     puts "FIDO: importing message to: #{a.name}"
 
 add_msg(m_to,m_from,msg_date,subject,msg_text,exported,network,destnode,destnet,intl,topt,false, f_network,orgnode,orgnet,
-               attribute,cost,area,msgid,path,tzutc,charset, tid,pid,fmpt,origin,reply,number,nil,nil,nil,nil)
+               attribute,cost,area,msgid,path,tzutc,charset, tid,pid,fmpt,origin,reply,number,nil,nil,nil,nil,nil)
 
              #Update pointers
              user = fetch_user(get_uid(FIDOUSER))
