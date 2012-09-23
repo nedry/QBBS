@@ -123,7 +123,7 @@ def tih
     pf_space = disk_percent_free(ROOT_PATH).to_s
     if File.exists?(fname)
       IO.foreach(fname) { |line|
-        out = parse_text_commands(line,u_space,f_space,t_space,pf_space)
+        out = parse_text_commands(line.force_encoding("IBM437"),u_space,f_space,t_space,pf_space)
 
         @session.write out + "\r"
       }

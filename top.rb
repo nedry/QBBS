@@ -231,7 +231,7 @@ class MailSchedulethread
                  puts "-SA: area has #{m_total(area.number)} messages."
                  puts "-SA: prune limit is #{area.prune}"
                  stop = m_total(area.number) - area.prune
-                 puts "-SA: deleteing #{stop} messages."
+                 puts "-SA: deleting #{stop} messages."
                  first = absolute_message(area.number,1)  
                  last = absolute_message(area.number,stop)
                  add_log_entry(L_MESSAGE ,Time.now,"%WR;Deleting #{stop} messages on #{area.name}")
