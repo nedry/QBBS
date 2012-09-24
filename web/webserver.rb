@@ -527,7 +527,7 @@ get '/post' do
           post_out <<  "<input name='abs' type='hidden' value='#{curmessage.absolute}'>" #let /postsave know the message id so it can get stuff from it
           post_out <<  "<input name='qwk' type='hidden' value='t'>"  if curmessage.network
           post_out <<  "<input name='fido' type='hidden' value='t'>" if curmessage.f_network
-					post_out <<  "<input name='nntpreferences' type='hidden' value='#{curmessage.nntpreference}'>" if curmessage.nntpreference
+					post_out <<  "<input name='nntpreferences' type='hidden' value='#{curmessage.nntpreferences}'>" if curmessage.nntpreferences
         end
       end
 

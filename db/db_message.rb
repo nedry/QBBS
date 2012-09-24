@@ -6,6 +6,8 @@ require 'encodings.rb'
 require 'db/db_groups'
 require 'models/qwkroute'
 
+require "iconv"
+
 def scanforaccess(user)
   for i in 0..(a_total - 1) do
     area = fetch_area(i)
