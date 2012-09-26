@@ -168,7 +168,15 @@ def nntp_parsearticle(article,area)
       when "X-UC-Weight"
       when "X-UC-Weight"
       when "Mail-To-News-Contact"
-
+			when "X-HTTP-UserAgent"
+			when "MIME-Version"
+			when "MIME-Version"
+			when "X-Priority"
+			when "X-MSMail-Priority"
+			when "X-Newsreader"
+			when "X-MimeOLE"
+			when "X-AuthenticatedUsername"
+			
       when "Message-To"
         messageto = $2
       when "Charset"
@@ -187,7 +195,7 @@ def nntp_parsearticle(article,area)
         xgateway = $2
       when "NNTP-Posting-Host"
         nntppostinghost = $2
-      when "X-Complaints-To"
+      when "X-Complaints-To", "Complaints-To"
         xcomplaintsto = $2
       when "X-Trace"
         xtrace =$2
@@ -214,7 +222,7 @@ def nntp_parsearticle(article,area)
 	      from.gsub!(/\.remove-\S+-this/,"")
       when "Organization"
         organization = $2
-      when "Reply-to"
+      when "Reply-To"
         replyto = $2
       when "In-Reply-To"
         inrepyto = $2

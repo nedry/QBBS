@@ -24,6 +24,7 @@ require "../tools.rb"
 require "../consts.rb"
 require "../class.rb"
 require "../wrap.rb"
+require "../fortune.rb"
 
 
 
