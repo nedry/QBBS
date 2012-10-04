@@ -78,7 +78,7 @@ def tih
         if j == user.length and user.more and !nomore then
           cont = @session.moreprompt
           j = 1
-        end
+        end 
         break if !cont
         out = parse_text_commands(line,u_space,f_space,t_space,pf_space)
         if !out.gsub!("%PAUSE%","").nil? and @session.logged_on  then
@@ -87,6 +87,10 @@ def tih
         end
         if !out.gsub!("%WHOLIST%","").nil? and @session.logged_on  then
           @session.displaywho
+        end
+        if !out.gsub!("%FB%","").nil? and @session.logged_on  then
+				 doit = @session.yes("%W;Do you want to leave a comment to the SysOp #{NOYES} ",true,false,true) 
+				 @session.sendemail(true) if doit
         end
         if !out.gsub!("%LASTCALL%","").nil? and @session.logged_on  then
           @session.display_wall

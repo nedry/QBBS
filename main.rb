@@ -9,7 +9,7 @@ class Session
     update_who_t(@c_user.name,"Goodbye")
     if yes("Log off now #{YESNO}", true, false,false) then
       write "%W;"
-      gfileout('bye')
+      ogfileout('bye',1,true)
       print "%WR; NO CARRIER %W;"
       sleep (1)
       hangup
