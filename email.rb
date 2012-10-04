@@ -304,13 +304,13 @@ class Session
       update_system(system)
       case m_type
       when LOCAL
-        savecurmessage(0,to, title, false,false,nil,nil,nil,nil)
+        savecurmessage(0,to, title, false,false,nil,nil,nil,nil,nil)
         print "Sending Local e-mail..."
 
       when F_NETMAIL
         number = find_fido_area(NETMAIL)
         intl = "#{zone}:#{net}/#{node} #{FIDOZONE}:#{FIDONET}/#{FIDONODE}"
-        savecurmessage(number,to,title,false,false,node,net,intl,point)
+        savecurmessage(number,to,title,false,false,node,net,intl,point,nil)
         print "Sending Netmail..."
 
       when Q_NETMAIL
@@ -326,7 +326,7 @@ class Session
           @lineeditor.msgtext.unshift(inp)
           to = "NETMAIL"
         end
-        savecurmessage(number,to,title,false,false,nil,nil,nil,nil)
+        savecurmessage(number,to,title,false,false,nil,nil,nil,nil,nil)
         print "Sending QWK Netmail..."
       when SMTP
         print "Sending SMTP (Internet) Email..."

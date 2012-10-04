@@ -150,32 +150,17 @@ def nntp_parsearticle(article,area)
     if match and header then    
 
     case $1
-      when "WhenImported"
-      when "WhenExported"
-      when "ExportedFrom"
-      when "User-Agent"
-      when "Mime-Version"
-      when "Injection-Date"
-      when "Injection-Info"
-      when "Cancel-Lock"
-      when "X-Usenet-Provider"
-      when "X-DMCA-Notifications"
-      when "X-Abuse-and-DMCA-Info"
-      when "X-Postfilter"
-      when "X-Antivirus"
-      when "X-Antivirus-Status"
-      when "X-Remailer-Contact"
-      when "X-UC-Weight"
-      when "X-UC-Weight"
-      when "Mail-To-News-Contact"
-			when "X-HTTP-UserAgent"
-			when "MIME-Version"
-			when "MIME-Version"
-			when "X-Priority"
-			when "X-MSMail-Priority"
-			when "X-Newsreader"
-			when "X-MimeOLE"
-			when "X-AuthenticatedUsername"
+			#these can all go when we're sure we aren't missing any header goodness
+			#and we can just drop any unknown header lines
+      when "WhenImported", "WhenExported", "ExportedFrom", "User-Agent"
+      when "Mime-Version", "Injection-Date", "Injection-Info", "Cancel-Lock"
+      when "X-Usenet-Provider", "X-DMCA-Notifications", "X-Abuse-and-DMCA-Info"
+      when "X-Postfilter", "X-Antivirus", "X-Antivirus-Status", "X-Priority"
+      when "X-Remailer-Contact", "X-UC-Weight", "Mail-To-News-Contact"
+			when "X-HTTP-UserAgent", "MIME-Version", "MIME-Version", "X-MimeOLE"
+			when "X-MSMail-Priority", "X-Newsreader","X-newsreader", "Received"
+			when "X-AuthenticatedUsername", "X-Orig-Path", "X-Received-Bytes"
+			when "Distribution", "Sender"
 			
       when "Message-To"
         messageto = $2
@@ -250,8 +235,8 @@ def nntp_parsearticle(article,area)
         ftnreply = $2
       when "Control"
         control = $2
-      else
-	msgbody << article[i]
+     # else
+	#msgbody << article[i]
      end #of case
    else
     msgbody << article[i]   
@@ -297,7 +282,7 @@ def nntp_parsearticle(article,area)
   puts "----------"
   puts
  
-  msgbody.pop  #remove last line, which is the end of message char
+ # msgbody.pop  #remove last line, which is the end of message char
   
 #remove any illegal characters... 
   
