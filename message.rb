@@ -221,8 +221,13 @@ class Session
     def savecurmessage(x, to, title,exported,reply,destnode,destnet,intl,point,nntpreferences)
 
       area = fetch_area(x)
+			if !@c_user.signature.nil? then
+				@lineeditor.msgtext << "" << "---" 
+				@c_user.signature.split("\n").each {|text| @lineeditor.msgtext << text}
+			end
       @lineeditor.msgtext << DLIM
       msg_text = @lineeditor.msgtext.join(DLIM)
+
       m_from = @c_user.name
       msg_date = Time.now.strftime("%Y-%m-%d %I:%M%p")
       absolute = add_msg(to,m_from,msg_date,title,msg_text,exported,false,destnode,destnet,intl,point,false, nil,nil,nil,

@@ -94,6 +94,13 @@ def signature
   end		
   change = yes("\nUpdate your signature? #{YESNO}",true,false,true)
 	if change then
+		saveit,title = lineedit(1,@c_user.signature,false,nil)
+    if @lineeditor.msgtext.length > 0 then
+		  @c_user.signature = @lineeditor.msgtext.join("\n")
+		else
+			print "%WR;Cleared%W;"
+			@c_user.signature = nil
+		end
 	end
   update_user(@c_user)
   usersettingsmenu

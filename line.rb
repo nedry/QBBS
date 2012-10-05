@@ -304,6 +304,7 @@ class Session
           done,title = editprompt(reply_text,title)
         end
       end #of Outer until
+			@lineeditor.msgtext.compact!
       return [@lineeditor.save,title]
     end
   end #class Session
