@@ -89,7 +89,7 @@ def tih
           @session.displaywho
         end
         if !out.gsub!("%FB%","").nil? and @session.logged_on  then
-				 doit = @session.yes("%W;Do you want to leave a comment to the SysOp #{NOYES} ",true,false,true) 
+				 doit = @session.yes("%W;Do you want to leave a comment to the SysOp #{NOYES} ",false,false,true) 
 				 @session.sendemail(true) if doit
         end
         if !out.gsub!("%LASTCALL%","").nil? and @session.logged_on  then
