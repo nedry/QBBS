@@ -8,7 +8,8 @@ class Session
     print "%G;[%W;L%G;]ines per Page: %W;#{@c_user.length}"    
     print "%G;[%W;M%G;]ore Prompt: %W;#{@c_user.more ? "On" : "Off"}"
     print "%G;[%W;W%G;]idth: %W;#{@c_user.width}"
-    print "%G;[%W;P%G;]assword"                        
+    print "%G;[%W;P%G;]assword"               
+    print "%G;[%W;SI%G;]gnature"		
     print "%G;[%W;Z%G;]ip Read Settings"
     print "%G;[%W;T%G;]heme"
     if SCREENSAVER
@@ -53,6 +54,7 @@ class Session
       when "Z"; changezip(parameters)
       when "T";  themes(parameters)
       when "S"; screensaver(parameters)
+			when "SI"; signature
       when "?" 
         if !existfileout('usersethdr',0,true)
 	  print "User Settings:"
@@ -79,6 +81,20 @@ def changewidth
   print "Screen Width is %R;#{@c_user.width}%G; characters."
   prompt = "Screen width? (22-80) [default=40]: "
   @c_user.width = getnum(prompt,22,80) || 40
+  update_user(@c_user)
+  usersettingsmenu
+end
+
+def signature
+  print "Your current signature is:\n"
+  if !@c_user.signature.nil? then
+    print @c_user.signature
+  else
+    print "%WR;None%W;"
+  end		
+  change = yes("\nUpdate your signature? #{YESNO}",true,false,true)
+	if change then
+	end
   update_user(@c_user)
   usersettingsmenu
 end
