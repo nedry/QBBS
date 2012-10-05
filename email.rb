@@ -294,7 +294,7 @@ class Session
       prompt = "Send email #{YESNO}"
       saveit = yes(prompt, true, false,true)
     else
-      saveit = lineedit(1,reply_text)
+      saveit = lineedit(1,reply_text,false,title)
     end
     if saveit then
 
@@ -402,7 +402,7 @@ class Session
       prompt = "Send message #{YESNO}"
       saveit = yes(prompt, true, false,true)
     else
-      saveit = lineedit(1,msg_text)
+      saveit = lineedit(1,msg_text,false,title)
     end
     if saveit then
       system = fetch_system
