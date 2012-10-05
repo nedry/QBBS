@@ -267,10 +267,14 @@ class Session
       @lineeditor.msgtext.clear			#clear the message buffer
       
       if file then
+				if File.exists?(file) then
           File.open(file, "r").each_line {|line| temp = line
           temp = temp.gsub(/\r/," ")
           temp = temp.gsub(/\n/," ")
           @lineeditor.msgtext << temp}
+				else
+					print "%RW;File does not exist!  A new file will be created.%W;\n"
+				end
           @lineeditor.line = @lineeditor.msgtext.length + 1
      end
 

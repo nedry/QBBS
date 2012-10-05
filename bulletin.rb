@@ -72,7 +72,7 @@ def writefromlineeditor(file)
         else
           file = nil
           file = "#{ROOT_PATH}#{TEXT_PATH}#{path}.txt" if edit
-          saveit = lineedit(1,"",file)
+          saveit = lineedit(1,"",file,nil)
           if saveit then
           writefromlineeditor("#{ROOT_PATH}#{TEXT_PATH}#{path}.txt")
           end
