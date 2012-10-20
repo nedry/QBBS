@@ -426,7 +426,7 @@ class Session
         print "Sending SMTP (Internet) Email..."
         smtp_send(to,@c_user.name,title,@lineeditor.msgtext)
       when LOCAL
-        savecurmessage(0, to, title, false,false,nil,nil,nil,nil)
+        savecurmessage(0, to, title, false,false,nil,nil,nil,nil,nil)
         print "Sending Local e-mail..."
       end
     end
