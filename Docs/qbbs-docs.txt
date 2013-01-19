@@ -17,9 +17,20 @@ before you compile Ruby.  If you do not, you will have to install a
 component separately, or you will not be able to install the Ruby PG
 gem.
 
-Detailed instructions for installing Ruby v. 1.9.2 to be added here...
+Lets start with some dependencies...
+
+sudo apt-get -y update && sudo apt-get -y upgrade
+sudo apt-get -y install build-essential zlib1g-dev libssl-dev libreadline-dev libyaml-dev libcurl4-openssl-dev 
+sudo apt-get -y install curl git-core python-software-properties
 
 It is recommended that Ruby 1.9.x is installed from source.
+
+wget ftp://ftp.ruby-lang.org/pub/ruby/1.9/ruby-1.9.3-p286.tar.gz
+tar -xvzf ruby-1.9.3-p286.tar.gz
+cd ruby-1.9.3-p286/
+./configure
+make
+sudo make install
 
 Sometimes Ruby fails to install its openSSL extension.   If this isn't
 installed Sinatra will fail to function.  To install the openSSL
@@ -33,12 +44,12 @@ package or the postgres gems (pg and dm_postgres_adapter) won't install.
 
 http://packages.ubuntu.com/source/oneiric-updates/postgresql-9.1
 
-postgresql-9.1
-libpq-dev
+sudo apt-get -y install postgresql-9.1
+sudo apt-get -y install libpq-dev
 
-Install berkeley db... at press time, the latest package for ubuntu / debian was...
+Install berkeley db... 
 
-libdb4.7-dev
+sudo apt-get -y install libdb-dev
 
 The following gems are required:
 o       haml
@@ -46,7 +57,7 @@ o       sinatra
 o       data_mapper
 o       rmail
 o       pg
-o       dm_postgres_adapter
+o       dm-postgres-adapter
 
 
 As root, install each gem in turn with the command:
@@ -55,7 +66,7 @@ gem install <gem name>
 After installing the gems, you must modify the postgresql's
 pg_hba.conf to allow trusted connections on the local server.  This
 file is sometimes located in the directory:
-/etc/postgresql8.4/main
+/etc/postgresql/9.1/main
 
 Change the lines...
 # IPv4 local connections:
@@ -75,11 +86,11 @@ as...
 
 So, we need to become root.  in ubuntu, you must set a root password to be root.
 
-become root, then
-libdb4.7-dev
-su - postgres
+sudo passwd
 
-psql template1
+become root, then
+
+su - postgres
 
 createuser -s mark
 
@@ -91,7 +102,6 @@ Now we have to create the database.  Lets call it qbbs, which is the default.
 (as user mark)
 
 createdb qbbs
-
 
 
 http://www.cyberciti.biz/faq/howto-add-postgresql-user-account/
