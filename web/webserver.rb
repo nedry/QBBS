@@ -34,6 +34,7 @@ EXISTS = 1
 INVALID = 2
 OKAY = 3
 
+
 configure do
   enable :sessions
   set :static, true
@@ -41,6 +42,8 @@ configure do
   DataMapper::Logger.new('log/db', :debug)
   DataMapper.setup(:default, "postgres://#{DATAIP}/#{DATABASE}")
 end
+
+DataMapper.finalize
 
 helpers do
 
@@ -68,6 +71,9 @@ def get_or_post(path, opts={}, &block)
 end
 
 def who_list_add (uid)
+  puts "uid: #{uid}"
+  puts "time.now: #{Time.now}"
+  puts "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
   if !who_exists(uid) then
     add_who(uid,Time.now,"Logging in...")
   else
