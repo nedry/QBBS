@@ -16,7 +16,7 @@ class Module
 end
 
 #logging functions. class must provide @log supporting @log.line.push
-module Logger
+module BBS_Logger
   def log(string)
     @log.line.push string
   end

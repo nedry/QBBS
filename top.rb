@@ -89,7 +89,7 @@ end
 
 class MailSchedulethread
 
-  include Enumerable, Logger
+  include Enumerable, BBS_Logger
   require 'net/ftp'
 
 
@@ -273,7 +273,7 @@ end #of class Schedulethread
 
 
 class Happythread
-  include Enumerable, Logger
+  include Enumerable, BBS_Logger
 
 
 

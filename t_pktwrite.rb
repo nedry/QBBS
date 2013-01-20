@@ -5,7 +5,7 @@
 #                                                                                                            
 ############################################################################
 
-include Logger
+include BBS_Logger
 require "tools.rb"
 require "consts.rb"
 require "t_class.rb"
@@ -17,7 +17,7 @@ require "db/db_message"
 
 require 'fidomail_packet_writer.rb'
 
-include Logger
+include BBS_Logger
 
 
 

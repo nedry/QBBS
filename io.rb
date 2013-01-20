@@ -162,7 +162,7 @@ module IOUtils
 end
 
 class Session
-  include Logger
+  include BBS_Logger
   include IOUtils
   include IrcConference
 

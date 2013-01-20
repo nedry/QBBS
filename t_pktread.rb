@@ -5,7 +5,7 @@
 #                                                                                                            
 ############################################## 
 
-include Logger
+include BBS_Logger
 require "consts.rb"
 require "t_class.rb"
 require "t_const.rb"
