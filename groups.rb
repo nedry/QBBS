@@ -176,11 +176,11 @@ class Session
     nntpnet = get_nntpnet(group)
     if nntpnet then
       new_val = getinp(prompt)
-      if new_val == ""
-        print "%RCancelled"
-      else
+    #  if new_val == ""
+    #    print "%RCancelled"
+    #  else
         yield [nntpnet, new_val]
-      end
+    #  end
     else
       print "%WR; No NNTP Network defined. %W;"
     end

@@ -55,6 +55,9 @@ end
 
 def nntp_login(user,password)
   success = false
+  if user != "" then  #some servers don't require uid/password 
+	  puts "user: .#{user}."
+	  puts "doing auth"
   nntp_send ("AUTHINFO USER #{user}")
   puts "-NNTP: #{nntp_recv}"
   nntp_send ("AUTHINFO PASS #{password}")
@@ -63,6 +66,10 @@ def nntp_login(user,password)
   if !result.nil?
     success = true if result[0] == "2" 
   end
+else
+  puts "skipped auth"
+  success = true
+end
 end
 
 def nntp_setgroup(groupname)

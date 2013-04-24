@@ -23,6 +23,11 @@ module Rep
     end
 
 
+  def convert_to_ansi(line)
+      COLORTABLE.each_pair {|color, result| line.gsub!(color,result) }
+    return line
+  end
+  
     def log_message(message)
       log.write("DATE  : #{message.msg_date}")
       log.write("TO    : #{message.m_to}")
@@ -32,6 +37,7 @@ module Rep
 
     def message_blocks(message)
       outmessage = convert_to_ascii(message.msg_text) # .join('?)
+      outmessage = convert_to_ansi(outmessage)
       outmessage.gsub!(DLIM,227.chr)
       outmessage = outmessage << 227.chr << "---" <<227.chr
       outmessage = outmessage << convert_to_ascii(@qwknet.qwktag) << 227.chr

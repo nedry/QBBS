@@ -746,6 +746,7 @@ here
           when "V"; changevalidatedaccess(apointer)
           when "K"; deletearea(apointer)
           when "S"; lockarea(apointer)
+	  when "NP";changenntppointer(apointer)
           when "G"; leave
           when "CG"; changegroup(apointer)
           when "?"; gfileout ("areamnu")
@@ -765,6 +766,16 @@ here
         print "Area Updated"
       end
 
+def changenntppointer(apointer)
+
+        area = fetch_area(apointer)
+        print
+
+        prompt = "Select New nntp pointer: "
+        area.nntp_pointer = getnum(prompt,0,999999)
+        update_area(area)
+        print "Area Updated"
+      end
 
       def deletearea(apointer)
         if apointer <= 1
