@@ -13,7 +13,9 @@
 %G;Posts Today:             %C;%POSTS%     
 %G;Emails Today:            %C;%EMAILS%     
 %G;Feedback Today:          %C;%FEEDBACK%     
-%G;New Users Today:         %C;%NEWUSERS%     
+%G;New Users Today:         %C;%NEWUSERS%    
+%G;Total Users:             %C;%TUSERS%    
+%G;Total Messages:          %C;%TMESSAGES%
      
 %G;Ruby Version:            %C;%RVERSION%     
 %G;Platform:                %C;%PLATFORM%     

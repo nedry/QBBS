@@ -235,6 +235,22 @@ class Session
       add_log_entry(5,Time.now,"#{@c_user.name} posted msg # #{absolute}")
     end
 
+
+
+   def savesystemmessage(x, to, title,text)
+     #just to save a message from the SYSTEM account.  The whole message saving system is kludgy.  Rewrite!
+
+      area = fetch_area(x)
+      text << DLIM
+      msg_text = text.join(DLIM)
+
+      m_from = "SYSTEM"
+      msg_date = Time.now.strftime("%Y-%m-%d %I:%M%p")
+      absolute = add_msg(to,m_from,msg_date,title,msg_text,false,false,nil,nil,nil,nil,false, nil,nil,nil,
+      nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,false,area.number,nil,nil,nil,nil,nil)
+      add_log_entry(5,Time.now,"SYSTEM posted msg # #{absolute}")
+    end
+
     def get_or_cr(prompt, crvalue)
       until DONE
         tempstr = getinp(prompt)
@@ -564,7 +580,8 @@ end
         end
         theme = get_user_theme(@c_user) 
         case sel
-				when "MD"; msg_debug(mpointer)
+	when "MD"; msg_debug(mpointer)
+	when "TB"; testbitch("bbsinfo")
         when @cmd_hash["email"] ; run_if_ulevel("email") {emailmenu}
         when @cmd_hash["post"] ; run_if_ulevel("post") {post}
         when @cmd_hash["page"] ; run_if_ulevel("page") {page}
@@ -620,6 +637,12 @@ end
 
       }
     end
+
+
+  def testbitch (filename)
+	      print "Updating Synchronet BBS list details"
+	     savesystemmessage(@c_area, "SBL", SYSTEMNAME,GraphFile.new(self, filename).process_only)
+  end
 
     def killmessage(mpointer)
 

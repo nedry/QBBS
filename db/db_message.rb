@@ -22,6 +22,10 @@ def m_total(area)
   Message.all(:number => area).count
 end
 
+def system_m_total
+  Message.all.count
+end
+
 def new_messages(area,ind)
   ind = 0 if ind.nil?
   Message.all(:absolute.gt => ind, :number => area).count

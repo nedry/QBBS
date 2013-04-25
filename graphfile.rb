@@ -27,9 +27,29 @@ class GraphFile
     end
   end
 
+  def process_only
+
+    u_space = disk_used_space(ROOT_PATH).to_s
+    f_space = disk_free_space(ROOT_PATH).to_s
+    t_space =  disk_total_space(ROOT_PATH).to_s
+    pf_space = disk_percent_free(ROOT_PATH).to_s
+    
+    out = []
+    if File.exists?(outfile)
+      IO.foreach(outfile) { |line|
+        deporter = parse_text_commands(line,u_space,f_space,t_space,pf_space)
+        out  << deporter.gsub("\n", "")
+
+      }
+    else
+      out =  ["\n#{outfile} has run away...please tell sysop!\n"]
+    end
+ return out
+  end
+  
 def tih
 			
-		u_space = disk_used_space(ROOT_PATH).to_s
+    u_space = disk_used_space(ROOT_PATH).to_s
     f_space = disk_free_space(ROOT_PATH).to_s
     t_space =  disk_total_space(ROOT_PATH).to_s
     pf_space = disk_percent_free(ROOT_PATH).to_s
@@ -120,6 +140,8 @@ def tih
     2.times { @session.print }
   end
 
+
+
   def fileout(fname)
     u_space = disk_used_space(ROOT_PATH).to_s
     f_space = disk_free_space(ROOT_PATH).to_s
@@ -158,6 +180,7 @@ def parse_text_commands(line,u_space,f_space,t_space,pf_space)
     calls =  @session.c_user.logons.to_f
     ualias = @session.c_user.alias
     ualias = "<NONE>" if ualias.nil?
+    tspacem = t_space.to_i / 1048576
     ratio = (posts  / calls) * 100
 
     ip= @session.c_user.ip
@@ -200,7 +223,13 @@ def parse_text_commands(line,u_space,f_space,t_space,pf_space)
       "%POSTS%" =>  system.posts_today.to_s,
       "%EMAILS%" =>  system.emails_today.to_s,
       "%FEEDBACK%" =>  system.feedback_today.to_s,
-      "%NEWUSERS%" =>  system.newu_today.to_s
+      "%NEWUSERS%" =>  system.newu_today.to_s,
+      "%TMESSAGES%" => system_m_total.to_s,
+      "%TUSERS%" => u_total.to_s,
+      "%TDOORS%" => d_total.to_s,
+      "%TNODES%" => NODES.to_s,
+      "%TSPACEM%" =>  tspacem.to_s,
+      "%TAREAS%" => a_total.to_s
     }
 
     #line = line.to_s.gsub("\t",'')
