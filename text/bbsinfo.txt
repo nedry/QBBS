@@ -1,0 +1,33 @@
+
+Name:          %BBSNAME%
+Birth:         14/03/85
+Software:      %VER%
+Sysop:         %SYSOP%
+
+E-mail:        mark@cortex-media.info
+Web-site:      bbs.cortex-media.info
+
+Number:        bbs.cortex-media.info
+MinRate:       65535
+MaxRate:       23
+Location:      %SYSLOC%
+
+Network:       DOVE-Net
+Address:       QBBS
+
+Network:       Fido
+Address:       %FIDOADDR%
+
+Terminal:      TTY
+Terminal:      ANSI
+
+Megs:          %TSPACEM%
+Msgs:          %TMESSAGES%
+Nodes:         %TNODES%
+Users:         %TUSERS%
+Subs:          %TAREAS%
+Xtrns:         %TDOORS%
+
+Desc:          Home of Quarkware BBS, the Ruby BBS.
+Desc:          A BBS since 1985 (with a little downtime).
+
