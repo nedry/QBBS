@@ -180,6 +180,7 @@ def read_pkt_header(path)
   buffer   = happy.read(0x3a)
  
   puts "buffer: #{buffer}"
+  return INVALID_PACKET if buffer.nil?
 
   if ((buffer[0x12].ord + (buffer[0x13].ord << 8)) != 2) then
     puts("Not a type 2 packet #{path}")
