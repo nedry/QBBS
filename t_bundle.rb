@@ -151,7 +151,7 @@ def process_incoming
         end
         puts "-BUNDLE: Processing Bundle: #{entry}"
         process_packets 
-        #system("rm #{entry}")
+        system("rm #{entry}")
       }
 
     else

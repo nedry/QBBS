@@ -1,8 +1,8 @@
 
 Name:          %BBSNAME%
 Birth:         14/03/85
-Software:      %VER%
-Sysop:         %SYSOP%
+Software:      Synchronet
+Sysop:         The Doctor
 
 E-mail:        mark@cortex-media.info
 Web-site:      bbs.cortex-media.info

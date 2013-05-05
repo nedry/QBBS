@@ -192,11 +192,11 @@ class Session
   def deleteuser(upointer)
     user = fetch_user(upointer)
     if upointer > 0 then
-      if users.deleted then
-        users.deleted = false
+      if user.deleted then
+        user.deleted = false
         print "%WG;User ##{upointer} UNdeleted%W;"
       else 
-        users.deleted = true
+        user.deleted = true
         print "%WR;User ##{upointer} deleted.%W;"
       end
       update_user(user)
