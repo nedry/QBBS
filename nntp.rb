@@ -354,6 +354,7 @@ def group_down(group)
 					puts "-NNTP: last article #{last}"
 					puts "-NNTP: area pointer #{area.nntp_pointer}"
 					pointer = set_pointer(area.nntp_pointer,first,last,total)
+					pointer = 0 if pointer.nil?
 					if pointer < last then
 						for i in pointer+1..last
 							article = nntp_getarticle(i)
