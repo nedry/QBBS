@@ -124,6 +124,10 @@ def send_me(where, message) #compatiblity with r_bot plugins
     }
   end
   
+  def delegate_join(message)
+   [@plugins].each {|m| m.irc_delegate(:join,message)}
+end
+  
   def send_irc(user,message)
     @irc_bot.privmsg(user,message) if message != ""
   end
@@ -149,7 +153,7 @@ def send_me(where, message) #compatiblity with r_bot plugins
   
  #
   def run
-    begin
+   begin
     puts "-BOT: Starting up..."
     add_log_entry(L_MESSAGE,Time.now,"IRC Bot thread starting.")
     @irc_bot = IrcBot.new(IRCSERVER, IRCPORT)
@@ -208,7 +212,16 @@ def send_me(where, message) #compatiblity with r_bot plugins
         if m.command == IRC::RPL_ENDOFMOTD || m.command == IRC::ERR_NOMOTD
           @irc_bot.join_channel
         end
-
+        if m.kind_of? IRC::Message::Join then
+		puts m.params.to_s
+		puts m.message.to_s
+		instr = m.message.to_s
+            happy = /^:(\S*)\!(.*)/ =~ instr
+	  if happy then 
+		mess = JoinMessage.new(self,nil,$1,m.params.to_s,nil)
+		delegate_join(mess)
+		end
+	end
         if m.kind_of? IRC::Message::Private then
           if (m.dest ==  IRCCHANNEL) or (m.dest == IRCBOTUSER)  then
             instr = m.params.to_s
@@ -245,7 +258,7 @@ def send_me(where, message) #compatiblity with r_bot plugins
       add_log_entry(L_ERROR,Time.now,"Bot TC E:#{$!}")
       puts "-ERROR: Bot Thread Crash. Disconnect? #{$!}"
       print e.backtrace.map { |x| x.match(/^(.+?):(\d+)(|:in `(.+)')$/);
-      [$1,$2,$3]
+     [$1,$2,$3]
       }
 
       if BOT_RECONNECT_DELAY > 0 then

@@ -86,6 +86,10 @@ class Language  #a hacked up language system.  we're only doing one language...
       def nick
         IRCBOTUSER
       end
+
+      def myself
+        IRCBOTUSER
+      end
       
      def path(file)
      ROOT_PATH + "rbot/" + file
@@ -886,7 +890,7 @@ class Language  #a hacked up language system.  we're only doing one language...
             end
           rescue Exception => err
             raise if err.kind_of?(SystemExit)
-            error report_error("#{p.botmodule_class} #{p.name} #{method}() failed:", err)
+           # error report_error("#{p.botmodule_class} #{p.name} #{method}() failed:", err)
             raise if err.kind_of?(BDB::Fatal)
           end
         }
@@ -932,7 +936,9 @@ class Language  #a hacked up language system.  we're only doing one language...
               p.privmsg(m)
             rescue Exception => err
               raise if err.kind_of?(SystemExit)
-              error report_error("#{p.botmodule_class} #{p.name} privmsg() failed:", err)
+	      puts "class:#{p.botmodule_class}"
+	      puts "pname: #{p.name} privmsg() failed:"
+             # error report_error("#{p.botmodule_class} #{p.name} privmsg() failed:", err)
               raise if err.kind_of?(BDB::Fatal)
             end
             debug "Successfully delegated #{m.inspect}"
