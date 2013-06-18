@@ -22,7 +22,7 @@ end
 def write_a_ilo
   ilo_name = "#{SPOOL}/#{H_FIDONET.to_s(16).rjust(4).gsub!(32.chr,"0")}#{H_FIDONODE.to_s(16).rjust(4).gsub!(32.chr,"0")}.ilo"
   happy = system("touch #{ilo_name}")
-  puts "-BUNDLE: Ilo file did not create!" if !happy 
+  @debuglog.push( "-BUNDLE: Ilo file did not create!") if !happy 
 end
 
 def name_a_bundle
@@ -61,18 +61,18 @@ def bundle_it
   folder = folder_by_date
   if bundle_name != OUTOFBUNDLES then
     entries = Dir["#{TEMPOUTDIR}/*.pkt"]
-    #puts entries
+
     if entries.length > 0 then
-      puts "-BUNDLE: Bundling #{entries.length} packets in #{bundle_name}"
+      @debuglog.push( "-BUNDLE: Bundling #{entries.length} packets in #{bundle_name}")
       happy = system("zip -j -m #{TEMPOUTDIR}/#{bundle_name} #{TEMPOUTDIR}/*.pkt")
       happy = system("cp -f #{TEMPOUTDIR}/* #{BACKUPOUT}/#{folder}")
       return SUCCESS
     else
-      puts "-BUNDLE:No packets found!"
+      @debuglog.push( "-BUNDLE:No packets found!")
       return NO_PACKETS_ERROR
     end
   else
-    puts "-BUNDLE:Error.  Out of Bundles!"
+    @debuglog.push( "-BUNDLE:Error.  Out of Bundles!")
   end
 end
 
@@ -85,15 +85,15 @@ def check_for_packets
 
   entries = Dir["#{BUNDLEINDIR}/*"]
   if entries.length > 0 then
-    puts "-BUNDLE: Found #{entries.length} bundles to import."
+    @debuglog.push( "-BUNDLE: Found #{entries.length} bundles to import.")
     entries.each {|entry| 
-      #puts "cp -f #{entry} backup"
+
       happy = system("cp -f #{entry} #{BACKUPIN}")
       happy = system("mv -f #{entry} #{TEMPINDIR}")
     }
     return SUCCESS 
   else
-    puts "-BUNDLE: No Incoming Bundles"
+    @debuglog.push( "-BUNDLE: No Incoming Bundles")
     return NO_BUNDLES_ERROR 
   end
 
@@ -108,7 +108,7 @@ def process_packets
 
   if c_entries.length > 0 then
     c_entries.each { |entry|
-      puts "-BUNDLE: Processing packet #{entry}"
+      @debuglog.push( "-BUNDLE: Processing packet #{entry}")
       process_packet("#{entry}")
 
     }
@@ -123,11 +123,11 @@ def process_incoming_pkt
   entries = Dir["#{BUNDLEINDIR}/*.pkt"]
   entries2 = Dir["#{BUNDLEINDIR}/*.PKT"] 
   c_entries =  entries + entries2 
-  #puts entries
+
   if c_entries.length > 0 then
     override = true
     c_entries.each { |entry|
-      puts "-BUNDLE: Moving packet #{entry}"
+      @debuglog.push( "-BUNDLE: Moving packet #{entry}")
       happy = system("cp -f #{entry} #{BACKUPIN}")
       happy = system("mv -f #{entry} #{PKTTEMP}")
 
@@ -143,19 +143,19 @@ def process_incoming
     entries = Dir["#{TEMPINDIR}/*"]
     if entries.length > 0 then
       entries.each {|entry|
-        puts "-BUNDLE: Uncompressing bundle #{entry}"
+        @debuglog.push( "-BUNDLE: Uncompressing bundle #{entry}")
         happy = system("unzip -o -j #{entry} -d #{PKTTEMP}")
         if !happy then 
-          puts "-BUNDLE: Unzip Failure.  Oh shit!"
+          @debuglog.push( "-BUNDLE: Unzip Failure.  Oh shit!")
           return UNZIP_FAILURE
         end
-        puts "-BUNDLE: Processing Bundle: #{entry}"
+        @debuglog.push( "-BUNDLE: Processing Bundle: #{entry}")
         process_packets 
         system("rm #{entry}")
       }
 
     else
-      puts "-BUNDLE: No Bundles!"
+      @debuglog.push( "-BUNDLE: No Bundles!")
       return NO_BUNDLES_ERROR
     end
 

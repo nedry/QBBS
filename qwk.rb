@@ -84,20 +84,21 @@ module Qwk
   class Importer
     attr_accessor :file, :log
     
-   def initialize(qwknet)
+   def initialize(qwknet,debuglog)
       @qwknet = qwknet
+      @debuglog = debuglog
       @log = Log.new("qwklog.txt")
     end
     
     def putslog(output)
       @log.write(output)
-      puts ("-QWK: #{output}")
+      @debuglog.push("-QWK: #{output}")
     end
 
     def read_index(file)
       index = []
       unless File.exists?(file)
-        puts "-QWK: NDX File not found!"
+        @debuglog.push( "-QWK: NDX File not found!")
         return nil
       end
 
@@ -169,7 +170,7 @@ end
       if File.exists?(filename) then
         return IO.readlines(filename)
       else 
-        puts "-QWK: Invalid packet. Control.dat not found."
+        @debuglog.push("-QWK: Invalid packet. Control.dat not found.")
         add_log_entry(L_IMPORT,Time.now,"Invalid QWK packet or Control.dat.")
         return []
       end
@@ -262,7 +263,7 @@ end
           @arealist.append(Area.new(temp1,temp2))
         end
       else 
-        puts "-QWK: Invalid packet.  Control.dat truncated!"
+        @debuglog.push("-QWK: Invalid packet.  Control.dat truncated!")
       end
     end
 
@@ -275,7 +276,7 @@ end
     def printeverything
       i = 0
       for i in 0..(@arealist.len - 1) do
-        puts "#{@arealist[i].area} #{@arealist[i].name}"
+        @debuglog.push("#{@arealist[i].area} #{@arealist[i].name}")
       end
     end
 
@@ -297,13 +298,13 @@ end
     end #savemessage
 
     def clearoldqwk
-      puts "-QWK: Deleting old packets"
-      happy = system("rm #{@qwknet.qwkdir}/*")
+      @debuglog.push("-QWK: Deleting old packets")
+      happy = system("rm #{@qwknet.qwkdir}/* > /dev/null 2>&1")
       if happy then 
-        puts "-Success" 
+        @debuglog.push( "-Success")
       else 
         add_log_entry(L_IMPORT,Time.now,"No old packets to delete.")
-        puts "-QWK: No old packets to delete." 
+       @debuglog.push("-QWK: No old packets to delete." )
       end
     end
 
@@ -311,21 +312,21 @@ end
 	    
        begin
           Timeout.timeout(QWKDOWNLOADTIMEOUT) do
-              ftp = FtpClient.new(@qwknet)
+              ftp = FtpClient.new(@qwknet,@debuglog)
               ftp.qwk_packet_down
 	end
  
       rescue Timeout::Error
           add_log_entry(L_ERROR,Time.now,"QWK/REP FTP Hangup: #{@qwknet}")
-	  puts "-ERROR: QWK/REP FTP Hangup: #{@qwknet}"
+	  @debuglog.push( "-ERROR: QWK/REP FTP Hangup: #{@qwknet}")
       rescue
           add_log_entry(L_IMPORT,Time.now,"Unable to download QWK packet for #{@qwknet} No New Msg?")
-	  puts "-QWK: Unable to download QWK packet for #{@qwknet} No New Msg?"
+	  @debuglog.push("-QWK: Unable to download QWK packet for #{@qwknet} No New Msg?")
        end
     end
 
     def unzippacket
-      happy = system("unzip #{@qwknet.qwkdir}/#{@qwknet.qwkpacket} -d #{@qwknet.qwkdir}")
+      happy = system("unzip #{@qwknet.qwkdir}/#{@qwknet.qwkpacket} -d #{@qwknet.qwkdir} > /dev/null 2>&1")
       add_log_entry(L_IMPORT,Time.now,"Could not unzip QWK Packet.") if !happy
     end
 
@@ -335,13 +336,13 @@ end
         n_read += 1
         message = getmessage(@qwknet.qwkdir, msg_index)
         if message.error then
-          puts
-          puts "-QWK: ERROR detected in packet.  Aborting."
+          
+          @debuglog.push("-QWK: ERROR detected in packet.  Aborting.")
           break
         else
-          print x
-          $stdout.flush
-          x.to_s.length.times { print(BS.chr) }
+          #print x
+          #$stdout.flush
+          #x.to_s.length.times { print(BS.chr) }
           yield message
         end
       end
@@ -351,7 +352,7 @@ end
     def import
       #relog.write
       ddate = Time.now.strftime("%m/%d/%Y at %I:%M%p") 
-      puts "-QWK: Starting import."
+      @debuglog.push("-QWK: Starting import.")
       add_log_entry(L_IMPORT,Time.now,"Starting QWK message import")
       if !QWK_DEBUG then
        clearoldqwk
@@ -376,7 +377,7 @@ end
         @log.write ("")
         tempstr = idx.scan(/\d\d\d\d/)
         find = tempstr[0].to_i
-        puts "-QWK: Seeking Import Area for packet# #{find}..."
+        @debuglog.push("-QWK: Seeking Import Area for packet# #{find}...")
         if find > 0 then
          area =  find_qwk_area(find,@qwknet.grp) 
         else
@@ -384,25 +385,25 @@ end
         end
         if area
           @log.write "Found! Importing #{idx} to #{area.name}"
-          puts "-QWK: Found. Importing #{idx} to #{area.name}"
-          puts
+          @debuglog.push("-QWK: Found. Importing #{idx} to #{area.name}")
+          
           x = 0
-          print "-QWK: Processing Message #"
+          #print "-QWK: Processing Message #"
 
           read_messages(index) do |message|
             add_qwk_message(message, area,@qwknet.qwkuser) # in db_message
           end
         else
-          puts
+          
           putslog "ERROR: No mapping found for area #{idx}"
-          puts
+  
           add_log_entry(L_ERROR,Time.now,"No QWK mapping for area #{idx}")
         end
-        puts
+
 
       end
       add_log_entry(L_IMPORT,Time.now,"Import Complete. #{tmsgimport} message(s) imported.")
-      puts "-QWK: Import complete."
+      @debuglog.push("-QWK: Import Complete. #{tmsgimport} message(s) imported.")
     end #of def Qwkimport
 
   end

@@ -238,7 +238,7 @@ class Session
     defaulttheme  #prevent crash in case user has no theme, set the default.
     add_log_entry(L_USER,Time.now,"#{@c_user.name} logged on sucessfully.")
     @logged_on = true
-    puts "-SA: Logon - #{@c_user.name}"
+    @debuglog.push("-SA: Logon - #{@c_user.name}")
     @node = addtowholist
     @c_user.logons = @c_user.logons.succ
     @c_user.ip = ip

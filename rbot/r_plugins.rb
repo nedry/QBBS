@@ -7,7 +7,7 @@ require 'singleton'
 require 'consts'
 
 def debug (str)
-  puts "-RBOT: Debug ... #{str}"
+ # puts "-RBOT: Debug ... #{str}"
 end
   
 class Language  #a hacked up language system.  we're only doing one language...
@@ -128,7 +128,7 @@ class Language  #a hacked up language system.  we're only doing one language...
    
     def initialize
       @manager = Plugins::manager
-      puts "manager.bot: #{@manager}"
+
       #@bot = @manager
       @priority = nil
         

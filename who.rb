@@ -3,7 +3,7 @@ require "db/db_who_telnet.rb"
 class Session
 
   def addtowholist
-    puts "-SA: Adding #{@c_user.name} to the Who is Online List"
+    @debuglog.push("-SA: Adding #{@c_user.name} to the Who is Online List")
     u = @c_user
     node = find_node
     @who.append(Awho.create(u.name," ",node,u.citystate,Thread.current,u.level,"Logging On"))

@@ -9,11 +9,12 @@ module Rep
   class Exporter
     attr_accessor :file, :log
 
-    def initialize(qwknet)
+    def initialize(qwknet,debuglog)
       @qwknet = qwknet
       @log = Log.new("replog.txt")
       @repdata = "#{@qwknet.repdir}/#{@qwknet.repdata}"
       @reppacket = "#{@qwknet.repdir}/#{@qwknet.reppacket}"
+      @debuglog = debuglog
     end
 
     def writeheader
@@ -80,23 +81,23 @@ module Rep
 
  def replogandputs(m)
    @log.write(m)
-   puts m
+   @debuglog.push(m)
  end
 
     def makeexportlist
       xport =qwk_export_list(@qwknet.grp)
-      puts "-REP: The following areas have export mappings..."
-      xport.each {|x| puts "     #{x.netnum} #{x.name}" }
+      @debuglog.push( "-REP: The following areas have export mappings...")
+      xport.each {|x| @debuglog.push( "     #{x.netnum} #{x.name}" )}
       return xport
     end
 
     def ftppacketup
-      ftp = FtpClient.new(@qwknet)
+      ftp = FtpClient.new(@qwknet,@debuglog)
       ftp.rep_packet_up
     end
 
     def clearoldrep
-      puts "-REP: Deleting old packets"
+      @debuglog.push("-REP: Deleting old packets")
 
       File.delete(@repdata) if File.exists?(@repdata)
       File.delete(@reppacket) if File.exists?(@reppacket)
@@ -105,13 +106,13 @@ module Rep
     def repexport
       clearoldrep
       ddate = Time.now.strftime("%m/%d/%Y at %I:%M%p")
-      puts "-REP: Starting export."
+      @debuglog.push( "-REP: Starting export.")
       add_log_entry(3,Time.now,"Starting QWK message export.")
       @log.rewrite!
       writeheader
       total = 0
       makeexportlist.each {|xp|
-        puts "-REP: Now Processing #{xp.name} message area."
+        @debuglog.push( "-REP: Now Processing #{xp.name} message area.")
 	@log.write "-REP: Now Processing #{xp.name} message area."
 
        user = fetch_user(get_uid(@qwknet.qwkuser))
@@ -124,9 +125,9 @@ module Rep
         replogandputs "-REP: Total Messages.....................#{m_total(xp.number)}"
         new = new_messages(xp.number,pointer.lastread)
         replogandputs "-REP: Messages to Export.................#{new}"
-	puts 
+	 
         if new > 0 then
-          #puts "-REP: Starting Export"
+
 	  export_messages(xp.number,pointer.lastread).each {|msg|
 
               if  !msg.network   then
@@ -144,23 +145,23 @@ module Rep
 	end
 	}
             end
-            puts "-REP: Updating message pointer for board #{xp.name}"
+            @debuglog.push( "-REP: Updating message pointer for board #{xp.name}")
             pointer.lastread = high_absolute(xp.number)
             update_pointer(pointer)
          # end
 
       }
       add_log_entry(L_EXPORT,Time.now,"Export Complete. #{total} message(s) exported.")
-      puts "-REP: Export Complete. #{total} message(s) exported."
-      puts
-      puts "-REP: Compressing Packet"
-      puts "zip -j -D #{@reppacket} #{@repdata}"
-      happy = system("zip -j -D #{@reppacket} #{@repdata}")
+      @debuglog.push( "-REP: Export Complete. #{total} message(s) exported.")
+      
+      @debuglog.push("-REP: Compressing Packet")
+      happy = system("zip -j -D #{@reppacket} #{@repdata} > /dev/null 2>&1")
       if happy then
         worked = ftppacketup
         return worked
       else
         add_log_entry(8,Time.now,"Failed to zip REP packet.")
+	@debuglog.push("-REP: Failed to zip REP packet.")
         return false
       end
     end

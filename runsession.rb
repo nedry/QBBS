@@ -27,13 +27,11 @@ DataMapper.setup(:default, "postgres://#{DATAIP}/#{DATABASE}")
 DataMapper.finalize
 
 who = Who_old.new
+debuglog = DebugLog.new
 message = []
 irc_who =Irc_who.new
 
-ssock = ServerSocket.new(irc_who, who, message)
+ssock = ServerSocket.new(irc_who, who, message,debuglog)
 
-puts "\n-#{VER} Server\n"; $stdout.flush
-puts
-puts "-Starting Up."; $stdout.flush
-puts
+
 ssock.run

@@ -1,6 +1,6 @@
-DEBUG = true 
+DEBUG = true
 LISTENPORT = 2323
-QWK = false 
+QWK = true
 QWK_DEBUG = false
 NNTP = false
 FIDO = false
@@ -70,7 +70,7 @@ FULLSCREENDIR = "#{ROOT_PATH}quote"
 
 IRCSERVER = "irc.larryniven.net"
 IRCPORT = 6667
-IRCCHANNEL = "#knownspace"
+IRCCHANNEL = "#test"
 IRCBOTUSER = "testHAL"
 IRCTOPIC = "Knownspace and RetroBBS Chat"
 IRCBOTCMD = "!"

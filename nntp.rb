@@ -20,10 +20,10 @@ def open_nntp(host, port)
 
   begin
     @socket = TCPSocket.open(host, port)
-    puts "-NNTP: #{nntp_recv}"
+    @debuglog.push( "-NNTP: #{nntp_recv}")
     return true
   rescue
-    puts "-Error: cannot resolve NNTP server."
+    @debuglog.push( "-Error: cannot resolve NNTP server.")
     return false
   end
  end
@@ -56,18 +56,16 @@ end
 def nntp_login(user,password)
   success = false
   if user != "" then  #some servers don't require uid/password 
-	  puts "user: .#{user}."
-	  puts "doing auth"
+
   nntp_send ("AUTHINFO USER #{user}")
-  puts "-NNTP: #{nntp_recv}"
+  @debuglog.push( "-NNTP: #{nntp_recv}")
   nntp_send ("AUTHINFO PASS #{password}")
   result = nntp_recv
-  puts "-NNTP: #{result}"
+  @debuglog.push( "-NNTP: #{result}")
   if !result.nil?
     success = true if result[0] == "2" 
   end
 else
-  puts "skipped auth"
   success = true
 end
 end
@@ -76,7 +74,7 @@ def nntp_setgroup(groupname)
   success = false
   nntp_send ("GROUP #{groupname}")
   result = nntp_recv
-  puts "-NNTP: #{result}"
+  @debuglog.push( "-NNTP: #{result}")
   if !result.nil? 
     success = true if result[0] == "2"
     params = result.split
@@ -93,13 +91,13 @@ def nntp_getarticle(artnum)
  nntp_send("ARTICLE #{artnum}") if !artnum.nil?
  while !done 
    line = nntp_recv
-	 puts "-NNTP: #{line}"
+	 @debuglog.push( "-NNTP: #{line}")
    article << line
 	 count = count + 1
    done = true if line == "." 
 	 #we only want to look for a article missing error on the first line of a response
    if line[0] == "4" and count == 1 then
-    puts "-NNTP: Article #{artnum} missing."
+    @debuglog.push( "-NNTP: Article #{artnum} missing.")
     done = true
     article = nil
    end
@@ -249,45 +247,45 @@ def nntp_parsearticle(article,area)
     msgbody << article[i]   
    end
   end
-  puts "--- NNTP Import ---"
-  puts "messageto:                  #{messageto}" if !messageto.nil?
-  puts "apparentlyto:               #{apparentlyto}" if !apparentlyto.nil?
-  puts "path:                       #{path}" if !path.nil?
-  puts "newsgroups:                 #{newsgroups}" if !newsgroups.nil?
-  puts "xcommentto:                 #{xcommentto}" if !xcommentto.nil?
-  puts "from:                       #{from}" if !from.nil?
-  puts "organization:               #{organization}" if !organization.nil?
-  puts "replyto:                    #{replyto}" if !replyto.nil? 
-  puts "inrepyto:                   #{inrepyto}" if !inrepyto.nil?
-  puts "datetime:                   #{datetime}" if !datetime.nil?
-  puts "subject:                    #{subject}" if !subject.nil? 
-  puts "messageid:                  #{messageid}" if !messageid.nil?
-  puts "references:                 #{references}" if !references.nil? 
-  puts "xgateway:                   #{xgateway}" if !xgateway.nil?
-  puts "xftnpid:                    #{ftnpid}" if !ftnpid.nil?
-  puts "xftntid:                    #{ftntid}" if !ftntid.nil?
-  puts "xftnarea:                   #{ftnarea}" if !ftnarea.nil? 
-  puts "xftnflags:                  #{ftnflags}" if !ftnflags.nil? 
-  puts "xftnmsgid:                  #{ftnmsgid}" if !ftnmsgid.nil? 
-  puts "xftnreply:                  #{ftnreply}" if !ftnreply.nil?
-  puts "control:                    #{control}" if !control.nil?	
-  puts "lines:                      #{lines}" if !lines.nil?
-  puts "bytes:                      #{bytes}" if !bytes.nil?
-  puts "xref:                       #{xref}" if !xref.nil?
-  puts "xcommentto:                 #{xcommentto}" if !xcommentto.nil?
-  puts "contenttype:                #{contenttype}" if !contenttype.nil?
-  puts "contenttransferencoding:    #{contenttransferencoding}" if !contenttransferencoding.nil?
-  puts "xgateway:                   #{xgateway}" if !xgateway.nil?
-  puts "nntppostinghost:            #{nntppostinghost}" if !nntppostinghost.nil?
-  puts "xcomplaintsto:              #{xcomplaintsto}" if !xcomplaintsto.nil?
-  puts "xtrace:                     #{xtrace}" if !xtrace.nil?
-  puts "nntppostingdate:            #{nntppostingdate}" if !nntppostingdate.nil?
-  puts "xoriginalbytes:             #{xoriginalbytes}" if !xoriginalbytes.nil?
-  puts "charset:                    #{charset}" if !charset.nil? 
-  puts "xcomplaints:                #{xcomplaints}" if !xcomplaints.nil?  
+  #puts "--- NNTP Import ---"
+  #puts "messageto:                  #{messageto}" if !messageto.nil?
+  #puts "apparentlyto:               #{apparentlyto}" if !apparentlyto.nil?
+  #puts "path:                       #{path}" if !path.nil?
+  #puts "newsgroups:                 #{newsgroups}" if !newsgroups.nil?
+  #puts "xcommentto:                 #{xcommentto}" if !xcommentto.nil?
+  #puts "from:                       #{from}" if !from.nil?
+  #puts "organization:               #{organization}" if !organization.nil?
+  #puts "replyto:                    #{replyto}" if !replyto.nil? 
+  #puts "inrepyto:                   #{inrepyto}" if !inrepyto.nil?
+  #puts "datetime:                   #{datetime}" if !datetime.nil?
+  #puts "subject:                    #{subject}" if !subject.nil? 
+  #puts "messageid:                  #{messageid}" if !messageid.nil?
+  #puts "references:                 #{references}" if !references.nil? 
+  #puts "xgateway:                   #{xgateway}" if !xgateway.nil?
+  #puts "xftnpid:                    #{ftnpid}" if !ftnpid.nil?
+  #puts "xftntid:                    #{ftntid}" if !ftntid.nil?
+  #puts "xftnarea:                   #{ftnarea}" if !ftnarea.nil? 
+  #puts "xftnflags:                  #{ftnflags}" if !ftnflags.nil? 
+  #puts "xftnmsgid:                  #{ftnmsgid}" if !ftnmsgid.nil? 
+  #puts "xftnreply:                  #{ftnreply}" if !ftnreply.nil?
+  #puts "control:                    #{control}" if !control.nil?	
+  #puts "lines:                      #{lines}" if !lines.nil?
+  #puts "bytes:                      #{bytes}" if !bytes.nil?
+  #puts "xref:                       #{xref}" if !xref.nil?
+  #puts "xcommentto:                 #{xcommentto}" if !xcommentto.nil?
+  #puts "contenttype:                #{contenttype}" if !contenttype.nil?
+  #puts "contenttransferencoding:    #{contenttransferencoding}" if !contenttransferencoding.nil?
+  #puts "xgateway:                   #{xgateway}" if !xgateway.nil?
+  #puts "nntppostinghost:            #{nntppostinghost}" if !nntppostinghost.nil?
+  #puts "xcomplaintsto:              #{xcomplaintsto}" if !xcomplaintsto.nil?
+  #puts "xtrace:                     #{xtrace}" if !xtrace.nil?
+  #puts "nntppostingdate:            #{nntppostingdate}" if !nntppostingdate.nil?
+  #puts "xoriginalbytes:             #{xoriginalbytes}" if !xoriginalbytes.nil?
+  #puts "charset:                    #{charset}" if !charset.nil? 
+  #puts "xcomplaints:                #{xcomplaints}" if !xcomplaints.nil?  
 
-  puts "----------"
-  puts
+  #puts "----------"
+  #puts
  
  # msgbody.pop  #remove last line, which is the end of message char
   
@@ -300,7 +298,7 @@ def nntp_parsearticle(article,area)
 	
 	if area.nil? and !newsgroups.nil? then
 	  area = fetch_mbbs_area(newsgroups.strip)
-		puts "-NNTP: Found area for message: #{area}"
+		@debuglog.push("-NNTP: Found area for message: #{area}")
 		datetime = Time.now.strftime("%Y-%m-%d %I:%M%p") if datetime.nil?
   end
 	
@@ -323,8 +321,8 @@ end
 
 def makenntpimportlist(group)
  list = nntp_list(group.grp)
- puts "-NNTP: The following areas have NNTP mappings..."
- list.each {|x| puts "     #{x.nntp_net}.........#{x.name}" }
+ @debuglog.push( "-NNTP: The following areas have NNTP mappings...")
+ list.each {|x| @debuglog.push( "     #{x.nntp_net}.........#{x.name}") }
  return list
 end
 
@@ -349,10 +347,10 @@ def group_down(group)
 				upointer = get_pointer(user,area.number)
 				result,total,first,last = nntp_setgroup(area.nntp_net)
 				if result then
-					puts "-NNTP: total articles #{total}"
-					puts "-NNTP: first article #{first}"
-					puts "-NNTP: last article #{last}"
-					puts "-NNTP: area pointer #{area.nntp_pointer}"
+					@debuglog.push("-NNTP: total articles #{total}")
+					@debuglog.push( "-NNTP: first article #{first}")
+					@debuglog.push("-NNTP: last article #{last}")
+					@debuglog.push("-NNTP: area pointer #{area.nntp_pointer}")
 					pointer = set_pointer(area.nntp_pointer,first,last,total)
 					pointer = 0 if pointer.nil?
 					if pointer < last then
@@ -370,15 +368,15 @@ def group_down(group)
 						end
 					end
 				else
-				puts "-ERROR: Group not found." #add loging
+				@debuglog.push("-ERROR: Group not found.") #add loging
 			end
 	}
      else
-       puts "-ERROR: NNTP logon Failure"  #add logging
+       @debuglog.push( "-ERROR: NNTP logon Failure")  #add logging
      end
      nntp_shutdown
    else
-    puts "-ERROR: NNTP Server connection failure." #add logging
+    @debuglog.push("-ERROR: NNTP Server connection failure.") #add logging
   end
 end
 
@@ -386,13 +384,13 @@ end
 
 def nntp_down
   
-  puts "-NNTP: scanning for export groups."
+  @debuglog.push( "-NNTP: scanning for export groups.")
   for i in 0..g_total-1
     group = fetch_group(i)
      if get_nntpnet(group).nil? then
-      puts "-NNTP: group #{i} #{group.groupname} has no NNTP."
+      @debuglog.push( "-NNTP: group #{i} #{group.groupname} has no NNTP.")
     else
-      puts "-NNTP: group #{i} #{group.groupname} has NNTP."
+      @debuglog.push( "-NNTP: group #{i} #{group.groupname} has NNTP.")
       group_down(group)
      end
   end
@@ -421,15 +419,14 @@ end
 
 def nntp_ihave(absolute)
 	msgid="#{absolute}#{nntp_messageid}"
-	puts msgid
 	nntp_send("IHAVE #{msgid}")
 	response = nntp_recv
 	if response[0] == "3" then
-		puts "-NNTP: Server will accept message #{absolute}"
-		puts nntp_recv
+		@debuglog.push( "-NNTP: Server will accept message #{absolute}")
+		@debuglog.push(nntp_recv)
 		return msgid
 	else
-		puts "-NNTP: NNTP_PORTServer says no! #{absolute}"
+		@debuglog.push( "-NNTP: NNTP_PORTServer says no! #{absolute}")
 		return nil
 	end
 end
@@ -439,10 +436,10 @@ def nntp_post
 	nntp_send("POST")
 	response = nntp_recv
 	if response[0] == "3" then
-		puts "-NNTP: Server will accept message."
+		@debuglog.push( "-NNTP: Server will accept message.")
 		return true
 	else
-		puts "-NNTP: NNTP_PORTServer says no! #{absolute}"
+		@debuglog.push( "-NNTP: NNTP_PORTServer says no! #{absolute}")
 		return false
 	end
 end
@@ -452,23 +449,23 @@ def nntp_export(group)
    if open_nntp(nntpnet.nntpaddress, NNTP_PORT) then
      if nntp_login(nntpnet.nntpaccount,nntpnet.nntppassword) then
   ddate = Time.now.strftime("%m/%d/%Y at %I:%M%p")
-  puts "-NNTP: Starting export."
+  @debuglog.push( "-NNTP: Starting export.")
 	add_log_entry(3,Time.now,"Starting QWK message export.")
   total = 0
   nntp_list(group.grp).each {|xp|
-  puts "-NNTP: Now Processing #{xp.name} message area."
+  @debuglog.push( "-NNTP: Now Processing #{xp.name} message area.")
 
   user = fetch_user(get_uid(nntpnet.nntpuser))
 
     scanforaccess(user)
     pointer = get_pointer(user,xp.number)       
        
-    puts "-NNTP: Last [absolute] Exported Message...#{pointer.lastread}"
-    puts "-NNTP: Highest [absolute] Message.........#{high_absolute(xp.number)}"
-		puts "-NNTP: Total Messages.....................#{m_total(xp.number)}"
-		new = new_messages(xp.number,pointer.lastread)
-    puts "-REP: Messages to Export..................#{new}"
-	  puts 
+    @debuglog.push( "-NNTP: Last [absolute] Exported Message...#{pointer.lastread}")
+    @debuglog.push( "-NNTP: Highest [absolute] Message.........#{high_absolute(xp.number)}")
+    @debuglog.push("-NNTP: Total Messages.....................#{m_total(xp.number)}")
+    new = new_messages(xp.number,pointer.lastread)
+    @debuglog.push("-NNTP: Messages to Export..................#{new}")
+	   
 		if new > 0 then
 
 	  export_messages(xp.number,pointer.lastread).each {|msg|
@@ -476,52 +473,52 @@ def nntp_export(group)
 			if  !msg.usenet_network then 
 			  if nntp_post then
 					nntp_writemessage_post(msg,xp.nntp_net,nntpnet.nntptag)
-					puts nntp_recv
+					@debuglog.push(nntp_recv)
 		      total += 1
 		      msg.exported = true
 	        update_msg(msg)
 					pointer.lastread = high_absolute(xp.number)
 					update_pointer(pointer)
 				else
-					puts "-NNTP: Some sort of funky send error: #{nntp_recv}"
+					@debuglog.push("-NNTP: Some sort of funky send error: #{nntp_recv}")
 				end
 			else
         error = msg.usenet_network ?
           "Message has already been imported.":
           "Message [#{msg.absolute}] doesn't exist."
           m = "Message #{msg.absolute} not exported.  #{error}"
-          puts "-#{m}"
+          @debuglog.push( "-#{m}")
           add_log_entry(L_EXPORT,Time.now,"NNTP Export Complete.")
 	     end
 	}
             end
-            puts "-NNTP: Updating message pointer for board #{xp.name}"
+            @debuglog.push("-NNTP: Updating message pointer for board #{xp.name}")
 
          # end
 
       }
       add_log_entry(L_EXPORT,Time.now,"Export Complete. #{total} message(s) exported.")
-      puts "-NNTP: Export Complete. #{total} message(s) exported."
+      @debuglog.push( "-NNTP: Export Complete. #{total} message(s) exported.")
      
 
      else
-       puts "-ERROR: NNTP logon Failure"  #add logging
+       @debuglog.push( "-ERROR: NNTP logon Failure")  #add logging
      end
      nntp_shutdown
    else
-    puts "-ERROR: NNTP Server connection failure." #add logging
+    @debuglog.push( "-ERROR: NNTP Server connection failure.") #add logging
   end
 end
 
 def nntp_up
 
-  puts "-NNTP: scanning for NNTP import groups."
+  @debuglog.push( "-NNTP: scanning for NNTP import groups.")
   for i in 0..g_total-1
     group = fetch_group(i)
      if get_nntpnet(group).nil? then
-      puts "-NNTP: group #{i} #{group.groupname} has no NNTP."
+      @debuglog.push( "-NNTP: group #{i} #{group.groupname} has no NNTP.")
     else
-      puts "-NNTP: group #{i} #{group.groupname} has NNTP."
+      @debuglog.push( "-NNTP: group #{i} #{group.groupname} has NNTP.")
       nntp_export(group)
      end
 	 end

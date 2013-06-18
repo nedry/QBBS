@@ -73,12 +73,13 @@ class Botthread
    require  "rbot/r_load-gettext"
  
 
-  def initialize (irc_who,who,message)
+  def initialize (irc_who,who,message,debuglog)
      @irc_who,@who, @message = irc_who,who, message
      @plugins = Plugins::manager
      $botpassthru = self   #for shame.  using this to get 
      @plugins.scan
      @registry = BotRegistry.new self
+     @debuglog = debuglog
 
   end
   
@@ -154,7 +155,7 @@ end
  #
   def run
    begin
-    puts "-BOT: Starting up..."
+    @debuglog.push("-BOT: Starting up...")
     add_log_entry(L_MESSAGE,Time.now,"IRC Bot thread starting.")
     @irc_bot = IrcBot.new(IRCSERVER, IRCPORT)
 
@@ -169,7 +170,6 @@ end
     loop do
       sleep(5) if !@irc_bot.isdata
       tick += 1
-      #puts "-tick: #{tick}"
 
       @message.each {|x| send_irc_all(x)}
       @message.clear
@@ -213,8 +213,6 @@ end
           @irc_bot.join_channel
         end
         if m.kind_of? IRC::Message::Join then
-		puts m.params.to_s
-		puts m.message.to_s
 		instr = m.message.to_s
             happy = /^:(\S*)\!(.*)/ =~ instr
 	  if happy then 
@@ -256,7 +254,7 @@ end
     end # loop do
     rescue Exception => e
       add_log_entry(L_ERROR,Time.now,"Bot TC E:#{$!}")
-      puts "-ERROR: Bot Thread Crash. Disconnect? #{$!}"
+      @debuglog.push("-ERROR: Bot Thread Crash. Disconnect? #{$!}")
       print e.backtrace.map { |x| x.match(/^(.+?):(\d+)(|:in `(.+)')$/);
      [$1,$2,$3]
       }

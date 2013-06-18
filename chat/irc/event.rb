@@ -27,7 +27,7 @@ module IRC
         if m.is_a? Message::Ping
 
           # Send ping argument back with a PONG.  Keeps us in the game..
-	  print "\n-Sending PONG!\n"
+
           client.send("PONG #{m.params}")
 
         end

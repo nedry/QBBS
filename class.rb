@@ -231,6 +231,31 @@ class Log
   sync_reader '@mutex', :line
 end #of class Log
 
+class DebugLog
+  def initialize
+    @line = Array.new
+    @mutex = Mutex.new
+  end
+
+  def each
+    @line.each {|n| yield n}
+  end
+  
+ def clear
+    @line.clear
+  end
+
+ def push(x)
+    @line.push(x)
+  end
+
+  attr_accessor :line
+  sync_reader '@mutex', :line
+  
+  
+end #of class Log
+
+
 class LineEditor
   def initialize 
     @msgtext 	= []

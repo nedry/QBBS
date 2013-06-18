@@ -26,7 +26,7 @@ def pkt_export_run
   user = fetch_user(get_uid(FIDOUSER))
   scanforaccess(user)
   #clearoldrep
-  puts "-FIDO: Starting export."
+  @debuglog.push("-FIDO: Starting export.")
 
   add_log_entry(2,Time.now,"Starting Fido message export.")
   packet_filename = "#{Time.now.to_i.to_s(16)}.pkt"
@@ -40,14 +40,14 @@ def pkt_export_run
   xport.each {|xp|
 
     pointer = get_pointer(user,xp.number)
-    puts "-FIDO: Now Processing #{xp.name} area."
+     @debuglog.push( "-FIDO: Now Processing #{xp.name} area.")
 
-    puts "-FIDO: Last [absolute] Exported Message...#{pointer.lastread}"
-    puts "-FIDO: Highest [absolute] Message.........#{high_absolute(xp.number)}"
-    puts "-FIDO: Total Messages.....................#{m_total(xp.number)}"
+    @debuglog.push( "-FIDO: Last [absolute] Exported Message...#{pointer.lastread}")
+    @debuglog.push( "-FIDO: Highest [absolute] Message.........#{high_absolute(xp.number)}")
+    @debuglog.push( "-FIDO: Total Messages.....................#{m_total(xp.number)}")
     new = new_messages(xp.number,pointer.lastread)
-    puts "-FIDO: Messages to Export.................#{new}"
-    puts 
+    @debuglog.push( "-FIDO: Messages to Export.................#{new}")
+    
 
     if new > 0
      export_messages(xp.number,pointer.lastread).each_with_index {|msg,i|
@@ -63,12 +63,12 @@ def pkt_export_run
               "Message has already been imported.":
               "Message [#{i}] doesn't exist."
             m = "Message #{i} not exported.  #{error}"
-            #replogandputs "-#{m}"
+          
 
           end
 
      }
-        puts "-FIDO: Updating message pointer for board #{xp.name}"
+        @debuglog.push( "-FIDO: Updating message pointer for board #{xp.name}")
 
         pointer.lastread = high_absolute(xp.number)
         update_pointer(pointer)
@@ -81,10 +81,10 @@ def pkt_export_run
 
   if total == 0
     system("rm #{TEMPOUTDIR}/#{packet_filename}") 
-    puts "-FIDO: No messages to export.  Deleting Packet."
+    @debuglog.push( "-FIDO: No messages to export.  Deleting Packet.")
     add_log_entry(L_FIDO,Time.now,"No msg to export. Del Pkt #{packet_filename}.")
   else
-    puts "-FIDO: Export Complete, #{total} messaged exported."
+    @debuglog.push( "-FIDO: Export Complete, #{total} messaged exported.")
     add_log_entry(L_FIDO,Time.now,"Export Complete #{total} message(s) exported.")
 
     bundle
