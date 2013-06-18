@@ -367,16 +367,18 @@ class ConsoleThread
   include FFI::NCurses
   
   def initialize (debuglog)
-    @debuglog  = debuglog    
+    @debuglog  = debuglog
+    @display_debug = true
   end
   
 def send_name
 
-mvwaddstr(@win,1,9, '  ___  ____  ____ ____     ____                      _      ')
-mvwaddstr(@win,2,9, ' / _ \| __ )| __ ) ___|   / ___|___  _ __  ___  ___ | | ___ ')
-mvwaddstr(@win,3,9, "| | | |  _ \\|  _ \\___ \\  | |   / _ \\| '_ \\/ __|/ _ \\| |/ _ \\")
-mvwaddstr(@win,4,9, '| |_| | |_) | |_) |__) | | |__| (_) | | | \__ \ (_) | |  __/')
-mvwaddstr(@win,5,9, ' \__\_\____/|____/____/   \____\___/|_| |_|___/\___/|_|\___|')
+  mvwaddstr(@win,1,9, '  ___  ____  ____ ____     ____                      _      ')
+  mvwaddstr(@win,2,9, ' / _ \| __ )| __ ) ___|   / ___|___  _ __  ___  ___ | | ___ ')
+  mvwaddstr(@win,3,9, "| | | |  _ \\|  _ \\___ \\  | |   / _ \\| '_ \\/ __|/ _ \\| |/ _ \\")
+  mvwaddstr(@win,4,9, '| |_| | |_) | |_) |__) | | |__| (_) | | | \__ \ (_) | |  __/')
+  mvwaddstr(@win,5,9, ' \__\_\____/|____/____/   \____\___/|_| |_|___/\___/|_|\___|')
+  mvwaddstr(@win,21,3,"CTRL + e[X]it | [D]isplay Messages | Chat [B]ell ON/OFF")
 end
 
 
@@ -398,22 +400,52 @@ def run
 
 begin
  # main_window 
+  flushinp
   @win = newwin(23, 79, 1, 1)
   box(@win, 0, 0)
-  @border_win = newwin(9,75,14,3)
-  @inner_win = newwin(7, 70, 15, 5)
+  @border_win = newwin(9,75,13,3)
+  @inner_win = newwin(7, 70, 14, 5)
   box(@border_win,0,0)
   mvwaddstr(@border_win,0,2,"SYSTEM MESSAGES")
   scrollok(@inner_win, true)
   send_name
+
   wrefresh(@win)
   wrefresh(@border_win)
   update_debug("-QBBS Server Starting up.")
-  
+  wtimeout(@inner_win,100)
   while true
-    @debuglog.each {|line| update_debug(line)}
-    @debuglog.clear
-    sleep(2)    
+
+	ch = wgetch(@inner_win)
+    if ch > 0 then
+	flushinp
+	case ch
+	  when 24   #Control X for exit
+	     update_debug("-SA: Shutting Down...")
+	     sleep(5)
+	     #put exit code here
+	     FFI::NCurses.endwin
+	     exit
+	  when 4  #Control D for Display
+	     case @display_debug
+		when true
+		   update_debug("-SA: System Messages OFF!")
+		   @display_debug = false
+		when false
+		   update_debug("-SA: System Messages ON!")
+		   @display_debug = true
+		end
+        end		
+        #   update_debug("You pressed: #{ch}")
+   end
+     if @display_debug then
+        @debuglog.each {|line| update_debug(line)}
+        @debuglog.clear
+     else
+	@debuglog.clear
+     end
+
+    sleep(1)    
   end
 
 rescue => e
