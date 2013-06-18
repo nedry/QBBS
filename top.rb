@@ -378,7 +378,7 @@ def send_name
   mvwaddstr(@win,3,9, "| | | |  _ \\|  _ \\___ \\  | |   / _ \\| '_ \\/ __|/ _ \\| |/ _ \\")
   mvwaddstr(@win,4,9, '| |_| | |_) | |_) |__) | | |__| (_) | | | \__ \ (_) | |  __/')
   mvwaddstr(@win,5,9, ' \__\_\____/|____/____/   \____\___/|_| |_|___/\___/|_|\___|')
-  mvwaddstr(@win,21,3,"CTRL + e[X]it | [D]isplay Messages | Chat [B]ell ON/OFF")
+  mvwaddstr(@win,20,3,"CTRL + e[X]it | [D]isplay Messages | Chat [B]ell ON/OFF")
 end
 
 
@@ -401,11 +401,12 @@ def run
 begin
  # main_window 
   flushinp
-  @win = newwin(23, 79, 1, 1)
-  box(@win, 0, 0)
-  @border_win = newwin(9,75,13,3)
-  @inner_win = newwin(7, 70, 14, 5)
-  box(@border_win,0,0)
+  @win = newwin(22, 78, 1, 1)
+  #box(@win, 0, 0)
+  @border_win = newwin(9,74,12,3)
+  @inner_win = newwin(7, 69, 13, 5)
+   wborder(@border_win, 124, 124, 45, 45, 43, 43, 43, 43)
+ # box(@border_win,0,0)
   mvwaddstr(@border_win,0,2,"SYSTEM MESSAGES")
   scrollok(@inner_win, true)
   send_name

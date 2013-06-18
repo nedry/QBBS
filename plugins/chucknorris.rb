@@ -53,7 +53,7 @@ class ChuckNorrisPlugin < Plugin
 
   # The meat.
   def fact(m, params)
-    puts "IM HERE!!!"
+
     min = params[:minrating].to_f
     debug "+ Getting Chuck Norris fact (rating > #{min})..."
 
@@ -65,7 +65,7 @@ class ChuckNorrisPlugin < Plugin
     end
 
     rating, fact = viable_facts[rand(viable_facts.length)]
-    puts "#{fact} [score=#{rating}]"
+
     m.reply "#{fact} [score=#{rating}]"
   end
 

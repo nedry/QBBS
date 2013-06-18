@@ -347,7 +347,7 @@ require "consts"
         @replyto = @target
         @channel = @target
       end
-      puts "debug: @replyto #{@replyto}"
+
     
       # check for option extra addressing prefixes, e.g "|search foo", or
       # "!version" - first match wins
@@ -436,7 +436,7 @@ require "consts"
     #   :public reply to the channel (if available)
     #   :auto uses core.private_replies
     def reply(string, options={})
-       puts "DEBUG: options: #{options}"
+
        if @target == IRCBOTUSER then
          to = @source
        else

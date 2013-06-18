@@ -19,7 +19,6 @@ class BBSPlugin < Plugin
   end
   
   def telnet_page(who, from, to, message,m)
-    puts "DEBUG: user to: #{to}"
     if @bot.who.user(to).nil?
       m.reply("%{highlight}Sorry, #{m.sourcenick}, that user is not logged in (via telnet)...%{highlight}" % {:highlight => Bold })
       return

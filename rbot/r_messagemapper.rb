@@ -242,10 +242,9 @@ end
     # Returns +true+ if a match is found including fallbacks, +false+
     # otherwise.
     def handle(m)
-      puts "i'm in handle..."
-      puts @templates.empty?
+
       return false if @templates.empty?
-      puts "i'm past return"
+
       failures = []
       @templates.each do |tmpl|
         options = tmpl.recognize(m)
@@ -261,11 +260,11 @@ end
           debug "checking auth for #{auth}"
          # if m.bot.auth.allow?(auth, m.source, m.replyto)
             debug "template match found and auth'd: #{action.inspect} #{options.inspect}"
-            puts "b4 thread"
+
             if !m.in_thread && (tmpl.options[:thread] || tmpl.options[:threaded])
               Thread.new do
                 begin
-                puts "sending action!"
+
                   @parent.send(action, m, options)
                 rescue Exception => e
                   error "In threaded action: #{e.message}"
@@ -587,10 +586,10 @@ end
     def recognize(m)
 
       debug "Testing #{m.message.inspect} against #{self.inspect}"
-      puts "#{m.message}"
+
 
       matching = @regexp.match(m.message)
-      puts "In recognize match: #{matching}"
+
       return MessageMapper::NoMatchFailure.new(self, m) unless matching
       return MessageMapper::PartialMatchFailure.new(self, m) unless matching[0] == m.message
 
@@ -604,11 +603,11 @@ end
       options = @defaults.dup
 
       @dyn_items.each_with_index { |it, i|
-      puts "i: #{i} it: #{it}"
+
         next if i == 0
-        puts "I'm here"
+
         item = it.name
-        puts "dyn item #{item} (multi-word: #{it.multi?.inspect})"
+
         if it.multi?
           if matching[i].nil?
             default = it.default
@@ -649,7 +648,7 @@ end
       }
 
       options.delete_if {|k, v| v.nil?} # Remove nil values.
-      puts "debug options: #{options}"
+
       return options
     end
 

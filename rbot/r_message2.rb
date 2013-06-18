@@ -347,7 +347,7 @@
         @replyto = @target
         @channel = @target
       end
-      puts "debug: @replyto #{@replyto}"
+
     
       # check for option extra addressing prefixes, e.g "|search foo", or
       # "!version" - first match wins
@@ -436,13 +436,10 @@
     #   :public reply to the channel (if available)
     #   :auto uses core.private_replies
     def reply(string, options={})
-      puts "I'M IN REPLY!!!"
-      puts "string: #{string}"
-      puts "options: #{options}"
-      puts "bot: #{@bot}"
+
       @bot.fucker
    #   @bot.say(to, string, options)
-      puts "after say"
+
       opts = {:nick => :auto, :forcenick => false, :to => :auto}.merge options
 
       if opts[:nick] == :auto
@@ -462,7 +459,7 @@
         string = "#{@source}#{@bot.config['core.nick_postfix']} #{string}"
       end
       to = (opts[:to] == :private) ? source : @channel
-      puts "before say"
+
       @bot.say to, string, options
       @replied = true
     end
