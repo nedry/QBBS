@@ -1,12 +1,15 @@
 DEBUG = true
 LISTENPORT = 2323
-QWK = true
+QWK = false
 QWK_DEBUG = false
 NNTP = false
 FIDO = false
 SMTP = false
 IRC_ON =  true
 SCREENSAVER = true
+FLASH_POL = true
+
+POLICYPORT = 8430
 
 #how long to wait between IRC reconnect attempts.  Set to 0 to not reconnect.
 BOT_RECONNECT_DELAY = 60 

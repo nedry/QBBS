@@ -461,6 +461,47 @@ end
 	
 
 
+class FlashPolicyServer
+  
+  def initialize(debuglog)
+     @debuglog = debuglog
+     @serverSocket = TCPServer.open(POLICYPORT)
+  end
+  
+  def figureip(peername)
+    port, ip =Socket.unpack_sockaddr_in(peername)
+    ip.gsub!(/[A-Za-z\:]/,"")
+    return ip
+  end
+  
+  def load_policy_file
+    policy = File.open("crossdomain.xml", "rb").read  if File.exists?("crossdomain.xml")
+    return policy
+  end
+  
+  def run
+      @debuglog.push( "-SA: Starting flash policy server...")
+      policy = load_policy_file
+      
+      if policy then
+         while true
+            if socket = @serverSocket.accept then
+               Thread.new {
+                   @debuglog.push("-SA: Sending Flash Policy to #{figureip(socket.getpeername)}")
+                    socket.puts  %Q(#{policy})
+	            socket.close
+                }
+            end
+	    sleep(1)
+         end
+     else
+        @debuglog.push("-SA: No crossdomain.xml file found.  Exiting Policy Server")
+     end
+   end
+
+end
+
+
 
 class ServerSocket
   def initialize(irc_who,who,message,debuglog) #,log)
@@ -487,10 +528,11 @@ class ServerSocket
     Thread.new {Botthread.new(@irc_who,@who,@message,@debuglog).run} if IRC_ON
     Thread.new {MailSchedulethread.new(@who,@message,@debuglog).run} 
     Thread.new {ConsoleThread.new(@debuglog).run}
+    Thread.new {FlashPolicyServer.new(@debuglog).run} if FLASH_POL
 
     while true
       @debuglog.push("-SA: Starting Server Accept Thread")
-      $stdout.flush
+
       if socket = @serverSocket.accept then
         Thread.new {
           @debuglog.push("-SA: New Incoming Connection")

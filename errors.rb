@@ -3,7 +3,7 @@ class Session
 def version
 
  print	
- print "%C;#{VERSION} (C) Copyright 1985 - 2011 by Fly-By-Night Software"
+ print "%C;#{VER} (C) Copyright 1985 - 2011 by Fly-By-Night Software"
  print
  print "%G;Programmers:"
  print
@@ -20,6 +20,7 @@ def version
  print "      %M;Datamapper (Database)...........%W;The Datamapper Team"
  print "      %M;Natter (IRC)....................%W;Johnathan Perkins "
  print "      %M;RubyMail (SMTP Email)...........%W;Matt Armstrong      "
+ print "      %M;Rbot 0.9.15.....................%W;The Rbot Team"
  print
 end
 

@@ -80,7 +80,7 @@ def pkt_export_run
 
 
   if total == 0
-    system("rm #{TEMPOUTDIR}/#{packet_filename}") 
+    system("rm #{TEMPOUTDIR}/#{packet_filename} > /dev/null 2>&1") 
     @debuglog.push( "-FIDO: No messages to export.  Deleting Packet.")
     add_log_entry(L_FIDO,Time.now,"No msg to export. Del Pkt #{packet_filename}.")
   else

@@ -21,13 +21,13 @@ end
 
 def write_a_ilo
   ilo_name = "#{SPOOL}/#{H_FIDONET.to_s(16).rjust(4).gsub!(32.chr,"0")}#{H_FIDONODE.to_s(16).rjust(4).gsub!(32.chr,"0")}.ilo"
-  happy = system("touch #{ilo_name}")
+  happy = system("touch #{ilo_name} > /dev/null 2>&1")
   @debuglog.push( "-BUNDLE: Ilo file did not create!") if !happy 
 end
 
 def name_a_bundle
   folder = folder_by_date
-  system("mkdir #{BACKUPOUT}/#{folder}")
+  system("mkdir #{BACKUPOUT}/#{folder} > /dev/null 2>&1")
   t_name = "#{H_FIDONET.to_s(16).rjust(4).gsub!(32.chr,"0")}#{H_FIDONODE.to_s(16).rjust(4).gsub!(32.chr,"0")}"
   day = Time.now.strftime("%a").slice(0..1).downcase
   #Dir.chdir("#{TEMPOUTDIR}")
@@ -49,7 +49,7 @@ def copy_bundles
 
   entries = Dir["*"]
   if entries.length > 0 then
-    happy = system("mv -f #{TEMPOUTDIR}/* #{BUNDLEOUTDIR}")
+    happy = system("mv -f #{TEMPOUTDIR}/* #{BUNDLEOUTDIR} > /dev/null 2>&1")
     if happy then return SUCCESS else return BUNDLE_MOVE_ERROR end
   else 
     return NO_BUNDLE_TO_COPY
@@ -64,8 +64,8 @@ def bundle_it
 
     if entries.length > 0 then
       @debuglog.push( "-BUNDLE: Bundling #{entries.length} packets in #{bundle_name}")
-      happy = system("zip -j -m #{TEMPOUTDIR}/#{bundle_name} #{TEMPOUTDIR}/*.pkt")
-      happy = system("cp -f #{TEMPOUTDIR}/* #{BACKUPOUT}/#{folder}")
+      happy = system("zip -j -m #{TEMPOUTDIR}/#{bundle_name} #{TEMPOUTDIR}/*.pkt > /dev/null 2>&1")
+      happy = system("cp -f #{TEMPOUTDIR}/* #{BACKUPOUT}/#{folder} > /dev/null 2>&1")
       return SUCCESS
     else
       @debuglog.push( "-BUNDLE:No packets found!")
@@ -88,8 +88,8 @@ def check_for_packets
     @debuglog.push( "-BUNDLE: Found #{entries.length} bundles to import.")
     entries.each {|entry| 
 
-      happy = system("cp -f #{entry} #{BACKUPIN}")
-      happy = system("mv -f #{entry} #{TEMPINDIR}")
+      happy = system("cp -f #{entry} #{BACKUPIN} > /dev/null 2>&1")
+      happy = system("mv -f #{entry} #{TEMPINDIR} > /dev/null 2>&1")
     }
     return SUCCESS 
   else
@@ -112,7 +112,7 @@ def process_packets
       process_packet("#{entry}")
 
     }
-    c_entries.each {|entry| system("rm #{entry}")}
+    c_entries.each {|entry| system("rm #{entry} > /dev/null 2>&1")}
 
   end
 end
@@ -128,8 +128,8 @@ def process_incoming_pkt
     override = true
     c_entries.each { |entry|
       @debuglog.push( "-BUNDLE: Moving packet #{entry}")
-      happy = system("cp -f #{entry} #{BACKUPIN}")
-      happy = system("mv -f #{entry} #{PKTTEMP}")
+      happy = system("cp -f #{entry} #{BACKUPIN} > /dev/null 2>&1")
+      happy = system("mv -f #{entry} #{PKTTEMP} > /dev/null 2>&1")
 
     }
     process_packets
