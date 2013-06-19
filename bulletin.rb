@@ -67,7 +67,6 @@ def writefromlineeditor(file)
         print (CLS)
         print (HOME)
         sleep(1)
-        puts "#{launch} #{ROOT_PATH}#{TEXT_PATH}#{path}.txt"
         door_do("#{launch} #{ROOT_PATH}#{TEXT_PATH}#{path}.txt","")
         else
           file = nil
