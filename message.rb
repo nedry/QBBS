@@ -110,7 +110,7 @@ class Session
     end # of while true
     mpointer = p_msg
     mpointer = h_msg if mpointer > h_msg
-    #puts "area change m_pointer: #{mpointer}"
+
     return mpointer
   end # of def
 
@@ -281,7 +281,7 @@ class Session
       if File.exists?("#{FULLSCREENDIR}/#{msg_file}")
         IO.foreach("#{FULLSCREENDIR}/#{msg_file}") { |line| @lineeditor.msgtext.push(line.chomp!) }
       end
-      #puts "rm #{FULLSCREENDIR}/#{msg_file}"
+
       happy = system("rm #{FULLSCREENDIR}/#{msg_file}")
       return true
     end
@@ -295,9 +295,9 @@ class Session
       print (CLS)
       print (HOME)
       sleep(1)
-			puts "#{launch} #{FULLSCREENDIR}/#{msg_file}"
+
       door_do("#{launch} #{FULLSCREENDIR}/#{msg_file}","")
-			print ("%W;")
+      print ("%W;")
       print (CLS)
       print (HOME)
 
@@ -325,11 +325,10 @@ class Session
         msg_file = write_quote_msg(nil)
         launch_editor(msg_file)
         suck_in_text(msg_file)
-				puts "@lineeditor.msgtext.length #{@lineeditor.msgtext.length}"
-				saveit = false
-				saveit = true if @lineeditor.msgtext.length > 0
-       # prompt = "Post message #{YESNO}"
-       # saveit = yes(prompt, true, false,true)
+        #saveit = false
+	#saveit = true if @lineeditor.msgtext.length > 0
+        prompt = "Post message #{YESNO}"
+        saveit = yes(prompt, true, false,true)
       else
         saveit,title = lineedit(1,reply_text,false,title)
       end

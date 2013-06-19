@@ -45,7 +45,7 @@ def getExactQuote(file,index)
     phys_index = readLong(file_handle)
 	  file_handle.close
 	else
-    puts "-QOTD: Can't read index"
+    @debuglog.push( "-QOTD: Can't read index")
 		return
 	end
 	
@@ -56,7 +56,7 @@ def getExactQuote(file,index)
 		quote = getQuote(quotefile,phys_index)
 		quotefile.close
 	else
-		puts "-QOTD: Can't read quote datafile"
+		@debuglog.push( "-QOTD: Can't read quote datafile")
 	end
 	 return quote	
 end
@@ -108,7 +108,7 @@ day_to_display = Time.now.strftime("%j").to_i - 1
 day_to_dispay = day_to_display - 1 if Date.leap?(Time.now.year) and day_to_display > 59 
 
 numofquotes = getNumberOfQuotes(datafile)
-puts "number of TIH: #{numofquotes}"
+
 
 return getExactQuote(datafile,day_to_display)
 

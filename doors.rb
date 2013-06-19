@@ -79,7 +79,6 @@ def door_do (path,d_type)
       end
     end 
   rescue 
-    # puts "boom2: #{$!}"
 
     return
   end
@@ -91,9 +90,9 @@ def writedoorfile(outfile)
 
   happy = system("rm #{outfile}")
   if happy then
-    puts "-DOOR: Deleted old door file..."
+    @debuglog.push("-DOOR: Deleted old door file...")
   else
-    puts "-DOOR: Failure to delete old door file"
+    @debuglog.push("-DOOR: Failure to delete old door file")
   end
 
   begin

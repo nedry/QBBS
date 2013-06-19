@@ -238,7 +238,7 @@ def parse_text_commands(line,u_space,f_space,t_space,pf_space)
     line.gsub!(code,result)
     }
   rescue
-    puts "-ERROR: in graphfile.rb: #{$!}"
+    @session.debuglog.push( "-ERROR: in graphfile.rb: #{$!}")
     add_log_entry(8,Time.now,"Error in graphfile.rb: #{$!}")
     end
   end
