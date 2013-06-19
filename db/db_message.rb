@@ -263,11 +263,11 @@ def nntp_convert(text)
 		      text_out << ic.iconv(c)
 		    else
 					text_out << " "
-				  puts "-ERROR: Illegal character #{c} in message"
+				  @debuglog.push("-ERROR: Illegal character #{c} in message")
 				end
 		  rescue 
 		    text_out << " "
-			  puts "-ERROR: Illegal character #{c} in message"
+			  @debuglog.push("-ERROR: Illegal character #{c} in message")
 		  end
 		  }
 		else
@@ -310,8 +310,6 @@ def convert_to_ascii(message)
     if c.ord <= 127 then
       temp << c 
     else
-      puts "c: #{c}"
-      puts c.ord
       
       if c.ord <= 254 
 				begin
