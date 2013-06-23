@@ -4,7 +4,7 @@ require 'models/numbered'
 #Synchronet BBS list which this is compatable with.
 #So, some names don't make sense...
 
-class Other
+class Bbslist
   include DataMapper::Resource
   extend Numbered
   storage_names[:default] = 'bbslist'
@@ -12,7 +12,7 @@ class Other
   property :id, Serial
   property :name, String, :length => 40
   property :locked, Boolean, :default => false
-  property :number, Integer
+  property :imported, Boolean, :default => false
   property :modify_date, DateTime
   property :born_date, DateTime
   property :software, String, :length => 80

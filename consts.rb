@@ -9,10 +9,17 @@ IRC_ON =  true
 SCREENSAVER = true
 FLASH_POL = true
 
+#this is the port for the flash policy server, which is for allowing flash based
+#telnet clients.  It actually runs on port 843, but that cannot be done on 
+#linux without root.  You should either use a router to translate port 8430 to 
+#port 843 or use iptables to do the same thing.  
+
 POLICYPORT = 8430
 
 #how long to wait between IRC reconnect attempts.  Set to 0 to not reconnect.
 BOT_RECONNECT_DELAY = 60 
+
+BBS_LIST_MSG_AREA = 5
 
 #if the schedule thread hangs, how long to wait to try again.
 SCHED_RECONNECT_DELAY = 480

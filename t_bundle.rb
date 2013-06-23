@@ -144,14 +144,14 @@ def process_incoming
     if entries.length > 0 then
       entries.each {|entry|
         @debuglog.push( "-BUNDLE: Uncompressing bundle #{entry}")
-        happy = system("unzip -o -j #{entry} -d #{PKTTEMP}")
+        happy = system("unzip -o -j #{entry} -d #{PKTTEMP} > /dev/null 2>&1")
         if !happy then 
           @debuglog.push( "-BUNDLE: Unzip Failure.  Oh shit!")
           return UNZIP_FAILURE
         end
         @debuglog.push( "-BUNDLE: Processing Bundle: #{entry}")
         process_packets 
-        system("rm #{entry}")
+        system("rm #{entry} > /dev/null 2>&1")
       }
 
     else

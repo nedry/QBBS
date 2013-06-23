@@ -44,6 +44,7 @@ require "db/db_log.rb"
 require "db/db_groups"
 require "db/db_user"
 require "db/db_screen"
+require "db/db_bbslist"
 require "theme"
 require "screen"
 
@@ -146,6 +147,130 @@ class MailSchedulethread
   require "t_bundle.rb"
   require "smtp.rb"
 
+  
+  def process_BBS (message)
+	  
+    name = nil
+    born_date = nil
+    software = nil
+    sysop = nil
+    email = nil
+    website = nil
+    number = nil
+    maxrate = nil
+    minrate = nil
+    location = nil
+    network = nil
+    terminal = nil
+    megs = nil
+    msgs = nil
+    files = nil
+    nodes = nil
+    users = nil
+    subs = nil
+    dirs = nil
+    xterns = nil
+    desc = nil
+     
+      for i in 0..message.length-1
+	 match = (/^(\S+)\:(.*)/) =~ message[i]  
+	# @debuglog.push ("#{$1} #{$2}")
+	 
+	  case $1
+	    when "Name"
+	       name = $2.strip
+	    when "Birth"
+	       born_date = $2.strip
+	    when "Software"
+	       software = $2.strip
+	    when "E-mail"
+	       email = $2.strip
+	    when "Web-site"
+	       website = $2.strip
+	    when "Number"
+	       number = $2.strip
+	    when "Maxrate"
+	       maxrate = $2.strip
+	    when "Minrate"
+	       maxrate = $2.strip
+	    when "Location"
+	       location= $2.strip
+	    when "Network"
+	        network = $2.strip
+	    when "Terminal"
+	        if terminal.nil? then
+	          terminal = $2.strip
+		else
+		  terminal = "#{terminal}|#{$2.strip}"
+		end
+	    when "Megs"
+	       megs = $2.strip
+	    when "Msgs"
+	        msgs= $2.strip
+	    when "Files"
+	        files = $2.strip
+	    when "Nodes"
+	       nodes = $2.strip
+	    when "Users"
+	       users = $2.strip
+	    when "Subs"
+	       subs = $2.strip
+	    when "Dirs"
+	        dirs = $2.strip
+	    when "Xterns"
+	       xterns = $2.strip
+	    when "Desc"
+	        if desc.nil? then
+	          desc = $2.strip
+		else
+		  desc = "#{desc}|#{$2.strip}"
+		end
+	end
+	    
+
+ end
+
+  @debuglog.push ("-SA: Processing BBS: #{name}")
+
+  if exists_bbs(name) then
+     @debuglog.push ("-SA: Old record exists...deleting...")
+     delete_bbs(name)
+  end
+  @debuglog.push("-SA: Adding entry: #{name}")  
+  add_bbslist(name,born_date,software,sysop,email,website, number, minrate,
+			    maxrate,location,network,terminal,megs,msgs,files,
+			    nodes, users, subs, dirs,xterns,desc,true)
+ 	# sleep(0.5)
+  end 
+
+  def update_BBS_list
+     area = fetch_area(BBS_LIST_MSG_AREA)
+     # for now we will scan the whole message base.  maybe add a message pointer later?  
+     # lets put in the plumbing for that.
+     pointer = absolute_message(area.number,1)
+     i = 1
+     stop = m_total(area.number) 
+     until absolute_message(area.number,i).nil?
+     	  @debuglog.push ("absolute msg: #{absolute_message(area.number,i)}")
+	  #sleep(10)
+	  msg = fetch_msg(absolute_message(area.number,i))
+	  message = []
+          tempmsg=convert_to_ascii(msg.msg_text)
+				
+				#some QWK/REP messages seem to use linefeeds instead of 227 char characters
+				#to indicate EOL
+				
+        tempmsg.gsub!(10.chr,DLIM)
+
+        tempmsg.each_line(DLIM) {|line| message.push(line.chop!)} #changed from .each for ruby 1.9
+	 process_BBS(message)
+       i += 1
+       
+     end
+  end
+
+
+
 
 
   def up_down_fido(idle)
@@ -217,11 +342,11 @@ class MailSchedulethread
   end
   
   def run
-     begin
+     #begin
 
     @debuglog.push("-SCHED: Starting Message Transfer Thread.")
 
-	    
+    update_BBS_list	    
     idle = 0
     current_day = Time.now.strftime("%j")
     qwk_loop(idle)
@@ -284,18 +409,18 @@ class MailSchedulethread
       end
 
     end
-     rescue Exception => e
-      @debuglog.push("ERROR: An error occurred in QWK/REP scheduler thread died: ",$!, "\n" )
-      add_log_entry(L_ERROR,Time.now,"An error occurred in QWK/REP scheduler thread died: #{$!}")
-      print e.backtrace.map { |x| x.match(/^(.+?):(\d+)(|:in `(.+)')$/);
-      [$1,$2,$3]}
+#     rescue Exception => e
+ #     @debuglog.push("ERROR: An error occurred in QWK/REP scheduler thread died: #{$!}" )
+ #    # add_log_entry(L_ERROR,Time.now,"An error occurred in QWK/REP scheduler thread died: #{$!}")
+  #    @debuglog.push( e.backtrace.map { |x| x.match(/^(.+?):(\d+)(|:in `(.+)')$/);
+   #   [$1,$2,$3]})
       
-      if SCHED_RECONNECT_DELAY > 0 then
-         add_log_entry(L_MESSAGE,Time.now,"Sched thread restart in #{SCHED_RECONNECT_DELAY} seconds.")
-         sleep(SCHED_RECONNECT_DELAY)
-         retry
-      end
-     end
+   #   if SCHED_RECONNECT_DELAY > 0 then
+  #       add_log_entry(L_MESSAGE,Time.now,"Sched thread restart in #{SCHED_RECONNECT_DELAY} seconds.")
+    #     sleep(SCHED_RECONNECT_DELAY)
+     #    retry
+     # end
+   #  end
   end #of def run
 end #of class Schedulethread
 
@@ -403,8 +528,11 @@ begin
   flushinp
   @win = newwin(22, 78, 1, 1)
   #box(@win, 0, 0)
-  @border_win = newwin(9,74,12,3)
-  @inner_win = newwin(7, 69, 13, 5)
+  #@border_win = newwin(9,74,12,3)
+  #@inner_win = newwin(7, 69, 13, 5)
+  
+  @border_win = newwin(22,74,1,3)
+  @inner_win = newwin(20, 69, 2, 5)
    wborder(@border_win, 124, 124, 45, 45, 43, 43, 43, 43)
  # box(@border_win,0,0)
   mvwaddstr(@border_win,0,2,"SYSTEM MESSAGES")
@@ -459,8 +587,6 @@ end
 
 end
 	
-
-
 class FlashPolicyServer
   
   def initialize(debuglog)
