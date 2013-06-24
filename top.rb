@@ -44,7 +44,7 @@ require "db/db_log.rb"
 require "db/db_groups"
 require "db/db_user"
 require "db/db_screen"
-require "db/db_bbslist"
+require "db/db_bbslist.rb"
 require "theme"
 require "screen"
 
@@ -92,6 +92,7 @@ class Session
   require "groups.rb"
   require "nntp.rb"
   require "fortune.rb"
+  require "bbslist.rb"
 	
 
  
@@ -181,6 +182,8 @@ class MailSchedulethread
 	       name = $2.strip
 	    when "Birth"
 	       born_date = $2.strip
+	    when "Sysop"
+	       sysop = $2.strip
 	    when "Software"
 	       software = $2.strip
 	    when "E-mail"
@@ -196,12 +199,21 @@ class MailSchedulethread
 	    when "Location"
 	       location= $2.strip
 	    when "Network"
-	        network = $2.strip
+	        if network.nil? then
+	          network = $2.strip
+		else
+		  network = "#{network}|#{$2.strip}"
+	        end
+	    when "Address"
+	        @debuglog.push "NUMBER 2: #{$2} #{$2.strip.length}"
+	        if $2.strip.length > 0 then
+		  network = "#{network} [#{$2.strip}]"
+		end	    
 	    when "Terminal"
 	        if terminal.nil? then
 	          terminal = $2.strip
 		else
-		  terminal = "#{terminal}|#{$2.strip}"
+		  terminal = "#{terminal}, #{$2.strip}"
 		end
 	    when "Megs"
 	       megs = $2.strip
@@ -236,14 +248,17 @@ class MailSchedulethread
      @debuglog.push ("-SA: Old record exists...deleting...")
      delete_bbs(name)
   end
-  @debuglog.push("-SA: Adding entry: #{name}")  
-  add_bbslist(name,born_date,software,sysop,email,website, number, minrate,
+  if !name.nil? then
+    @debuglog.push("-SA: Adding entry: #{name}")  
+    add_bbslist(name,born_date,software,sysop,email,website, number, minrate,
 			    maxrate,location,network,terminal,megs,msgs,files,
 			    nodes, users, subs, dirs,xterns,desc,true)
+  end
  	# sleep(0.5)
   end 
 
   def update_BBS_list
+     delete_all_bbs_old
      area = fetch_area(BBS_LIST_MSG_AREA)
      # for now we will scan the whole message base.  maybe add a message pointer later?  
      # lets put in the plumbing for that.
@@ -551,7 +566,7 @@ begin
 	case ch
 	  when 24   #Control X for exit
 	     update_debug("-SA: Shutting Down...")
-	     sleep(5)
+	     sleep(1)
 	     #put exit code here
 	     FFI::NCurses.endwin
 	     exit

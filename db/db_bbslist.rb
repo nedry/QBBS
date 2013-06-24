@@ -4,20 +4,31 @@ def bbs_total
   Bbslist.count
 end
 
-def delete_bbs(ind)
-  Bbslist.delete_number(ind)
-end
 
 def update_bbs(r)
   r.save
 end
 
-def fetch_bbs(record)
-  Bbslist.first(:number => record)
+def absolute_bbs(ind)
+  ind = 0 if ind.nil?
+  lazy_list = Bbslist.all(:order => [ :name ])
+  result = 0
+  result = lazy_list[ind-1].id if !lazy_list[ind-1].nil?
 end
 
-def renumber_bbs
-  Bbslist.renumber!
+def fetch_bbs(record)
+  Bbslist.first(:id => record)
+end
+
+def delete_all_bbs
+  bbs= Bbslist.all
+  bbs.destroy!
+end
+
+def delete_all_bbs_old
+  before_date = Date.today - 30
+  bbs= Bbslist.all(:modify_date.lte => before_date, :locked => false)
+  bbs.destroy!
 end
 
 def exists_bbs(bname)
