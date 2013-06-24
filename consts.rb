@@ -20,6 +20,7 @@ POLICYPORT = 8430
 BOT_RECONNECT_DELAY = 60 
 
 BBS_LIST_MSG_AREA = 5
+BBS_LIST_USER = "BBSLIST"
 
 #if the schedule thread hangs, how long to wait to try again.
 SCHED_RECONNECT_DELAY = 480

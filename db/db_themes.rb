@@ -37,6 +37,11 @@ def get_user_theme(user)
   
 end
 
+def clear_commands
+  death = Command.all
+  death.destroy!
+end
+
 def add_command(command,theme,ulevel,menu_item)
   Command.new(:command => command, 
                           :theme_key => theme.theme_key, 

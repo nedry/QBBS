@@ -3,6 +3,10 @@ class Session
   def fullbbslist 
     print "Under Construction"
   end
+  
+    def bbscont
+    print "Under Construction"
+  end
 
   def displaybbs(number)
      print  
@@ -51,6 +55,7 @@ class Session
 
   def bbsmenu 
     total = bbs_total
+    gfileout ("bbsmnu")
     readmenu(
       :initval => 1,
       :range => 1..(bbs_total ),
@@ -62,16 +67,17 @@ class Session
 
       displaybbs(bbspointer) if moved
       case sel
-      when "/"; displaybbs(bbspointer)
-      when "Q"; bbspointer = true
-      when "A"; add_bbs(bbspointer)
-      when "L"; lockbbs(bbspointer)
-      when "K"; deletebbs(bbspointer)
-      when "W"; displaywho
-      when "PU"; page    
-      when "E"; edit_bbs(bbspointer)
-      when "G"; leave
-      when "?"; gfileout ("usermnu")
+        when @cmd_hash["bbsreload"] ; run_if_ulevel("bbsreload") {displaybbs(bbspointer)}      
+        when @cmd_hash["bbsquit"] ; run_if_ulevel("bbsquit") {bbspointer = true}
+        when @cmd_hash["bbsadd"] ; run_if_ulevel("bbsadd") {add_bbs(bbspointer)}
+        when @cmd_hash["bbslock"] ; run_if_ulevel("bbslock") {lockbbs(bbspointer)}
+        when @cmd_hash["bbsdelete"] ; run_if_ulevel("bbsdelete") {deletebbs(bbspointer)}
+        when @cmd_hash["who"] ; run_if_ulevel("who") {displaywho}
+        when @cmd_hash["page"] ; run_if_ulevel("page") {page}
+	when @cmd_hash["bbscont"]; run_if_ulevel("bbscont") {bbscont}
+        when "E"; edit_bbs(bbspointer)
+        when @cmd_hash["leave"] ; run_if_ulevel("leave") {leave}
+        when @cmd_hash["screenmenu"] ; run_if_ulevel("screenmenu") {gfileout ("bbsmnu")}
       end # of case
       p_return = [bbspointer,bbs_total ]
 

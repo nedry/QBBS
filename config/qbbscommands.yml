@@ -223,3 +223,38 @@
   theme_key: 1
   ulevel: 0
   menu_item: Q
+  
+- cmd: bbslist
+  theme_key: 1
+  ulevel: 0
+  menu_item: O
+
+- cmd: bbsquit
+  theme_key: 1
+  ulevel: 0
+  menu_item: Q
+
+- cmd: bbsadd
+  theme_key: 1
+  ulevel: 0
+  menu_item: A
+  
+- cmd: bbslock
+  theme_key: 1
+  ulevel: 0
+  menu_item: L
+
+- cmd: bbsdelete
+  theme_key: 1
+  ulevel: 0
+  menu_item: K
+  
+- cmd: bbsreload
+  theme_key: 1
+  ulevel: 0
+  menu_item: '/'
+  
+- cmd: bbscont
+  theme_key: 1
+  ulevel: 0
+  menu_item: 'C'

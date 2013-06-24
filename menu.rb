@@ -25,13 +25,13 @@ def readmenu(args)
       when USER
         o_prompt = eval('"%W;#{sdir}User [%p] (1-#{u_total}): "').gsub("%p","#{ptr}")
      when BBS
-        o_prompt = eval('"%W;#{sdir}bbs [%p] (1-#{bbs_total}): "').gsub("%p","#{ptr}")
+        o_prompt = eval('"%W;#{sdir} BBS System [%p] (1-#{bbs_total}): "').gsub("%p","#{ptr}")
       when THEME
         o_prompt = eval('"%W;#{sdir}Theme [%p] (1-#{t_total}): "').gsub("%p","#{ptr}")
       when AREA
         o_prompt = eval('"%W;#{sdir} Area [%p] (0-#{a_total - 1}): "').gsub("%p","#{ptr}")
       when OTHER
-        o_prompt = eval('"%W;#{sdir}BBS System [%p] (1-#{o_total}): "').gsub("%p","#{ptr}")
+        o_prompt = eval('"%W;#{sdir} BBS System [%p] (1-#{o_total}): "').gsub("%p","#{ptr}")
       when DOOR
         o_prompt = eval('"%G;#{sdir}Door [%p] (1-#{d_total}): %W;"').gsub("%p","#{ptr}")
       when SCREEN

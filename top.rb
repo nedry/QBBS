@@ -205,7 +205,6 @@ class MailSchedulethread
 		  network = "#{network}|#{$2.strip}"
 	        end
 	    when "Address"
-	        @debuglog.push "NUMBER 2: #{$2} #{$2.strip.length}"
 	        if $2.strip.length > 0 then
 		  network = "#{network} [#{$2.strip}]"
 		end	    
@@ -258,12 +257,18 @@ class MailSchedulethread
   end 
 
   def update_BBS_list
+    @debuglog.push("-SA: Starting BBS list update")  
      delete_all_bbs_old
      area = fetch_area(BBS_LIST_MSG_AREA)
+     user = fetch_user(get_uid(BBS_LIST_USER))
+      scanforaccess(user)
      # for now we will scan the whole message base.  maybe add a message pointer later?  
      # lets put in the plumbing for that.
-     pointer = absolute_message(area.number,1)
-     i = 1
+     pointer = get_pointer(user,BBS_LIST_MSG_AREA)  
+     @debuglog.push("-SA: pointer:#{pointer} pointer.lastread:#{pointer.lastread if !pointer.lastread.nil?} ")  
+     sleep(1)
+     #pointer = absolute_message(area.number,1)
+     i = pointer.lastread
      stop = m_total(area.number) 
      until absolute_message(area.number,i).nil?
      	  @debuglog.push ("absolute msg: #{absolute_message(area.number,i)}")
@@ -282,6 +287,8 @@ class MailSchedulethread
        i += 1
        
      end
+	pointer.lastread = high_absolute(BBS_LIST_MSG_AREA)
+        update_pointer(pointer)
   end
 
 
