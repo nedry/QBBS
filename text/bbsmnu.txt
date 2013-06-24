@@ -1,0 +1,20 @@
+%G;                  ____  ____ ____    _     _     _   
+                 | __ )| __ ) ___|  | |   (_)___| |_ 
+                 |  _ \|  _ \___ \  | |   | / __| __|
+                 | |_) | |_) |__) | | |___| \__ \ |_ 
+                 |____/|____/____/  |_____|_|___/\__|
+                                    
+   %C;The BBS entries may be read like messages, by pressing return 
+   after each entry, or may be read all at once in condensed format
+   using the %W;[%Y;C%W;]%C;ondensed List command.
+
+             %W;[%Y;A%W;]%G;dd New Entry           %W;[%Y;C%W;]%G;ontinous List
+             %W;[%Y;E%W;]%G;dit Entry              %W;[%Y;K%W;]%G;ill Entry              
+             %W;[%Y;G%W;]%G;oodbye                 %W;[%Y;PU%W;]%G;Page User             
+             %W;[%Y;W%W;]%G;ho is Online
+
+             %W;[%Y;+%W;]%G;Forward                %W;[%Y;-%W;]%G;Reverse    
+             %W;[%Y;/%W;]%G;Redisplay              %W;[%Y;?%W;]%G;This Menu 
+
+          %C;Use a %R;;%C; to stack commands together %W;(%C;I.E., %R;%;a;q%W;)
+              %C;Some commands take parameters %W;(%C;I.E., %R;a2%W;)
