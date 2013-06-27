@@ -379,7 +379,7 @@ class Session
     if r_message.network then
       out = bbsid
       out = r_message.q_via if ! r_message.q_via.nil?
-      print "Replying to: %W%#{to}@#{out}"
+      print "Replying to: %W;#{to}@#{out}"
       m_type = Q_NETMAIL
     end
     if r_message.smtp then
@@ -411,7 +411,7 @@ class Session
       case m_type
       when F_NETMAIL
         table,number = find_fido_area(NETMAIL)
-        savecurmessage(number, to, title, false,false,node,net,intl,point)
+        savecurmessage(number, to, title, false,false,node,net,intl,point,nil)
         print "Sending Netmail..."
       when Q_NETMAIL
         area = find_qwk_area(QWKMAIL,qwknet.grp)
@@ -421,7 +421,7 @@ class Session
 
         end
         print "Sending QWK Netmail..."
-        savecurmessage(area.number, to, title, false,false,node,net,intl,point)
+        savecurmessage(area.number, to, title, false,false,node,net,intl,point,nil)
       when SMTP
         print "Sending SMTP (Internet) Email..."
         smtp_send(to,@c_user.name,title,@lineeditor.msgtext)

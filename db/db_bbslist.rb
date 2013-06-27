@@ -20,6 +20,23 @@ def fetch_bbs(record)
   Bbslist.first(:id => record)
 end
 
+def fetch_bbs_all
+  Bbslist.all(:order => [ :name ])
+end
+
+def bbs_import(area,first)
+  messages = Message.all(:absolute.gte => first, :number => area)
+end
+
+def bbs_empty
+
+  result = true
+  temp = Bbslist.count
+  result = false if temp > 0 
+  return result
+end
+
+
 def delete_all_bbs
   bbs= Bbslist.all
   bbs.destroy!
@@ -46,7 +63,7 @@ def add_bbslist(name,born_date,software,sysop,email,website, number, minrate,
 			    maxrate,location,network,terminal,megs,msgs,files,
 			    nodes, users, subs, dirs,xterns,desc,imported)
 
-  Bbslist.create(
+  newbbs = Bbslist.new(
     :name => name,
     :born_date => born_date,
     :software => software,
@@ -70,4 +87,9 @@ def add_bbslist(name,born_date,software,sysop,email,website, number, minrate,
     :imported => imported,
     :modify_date => Time.now
   )
+    worked = newbbs.save
+  if !worked then
+   newbbs.errors.each{|x| @debuglog.push("-ERROR: #{x}")}
+   sleep(1)
+  end
 end

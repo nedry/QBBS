@@ -152,7 +152,7 @@ class MailSchedulethread
   def process_BBS (message)
 	  
     name = nil
-    born_date = nil
+    born_date = DateTime.now
     software = nil
     sysop = nil
     email = nil
@@ -175,13 +175,17 @@ class MailSchedulethread
      
       for i in 0..message.length-1
 	 match = (/^(\S+)\:(.*)/) =~ message[i]  
-	# @debuglog.push ("#{$1} #{$2}")
-	 
+
 	  case $1
 	    when "Name"
 	       name = $2.strip
 	    when "Birth"
-	       born_date = $2.strip
+	       begin
+	         born_date = Date.parse($2.strip)
+		rescue
+		  @debuglog.push ("-ERROR: Invalid date in BBS List Entry")
+		  sleep(1)
+		 end
 	    when "Sysop"
 	       sysop = $2.strip
 	    when "Software"
@@ -191,7 +195,11 @@ class MailSchedulethread
 	    when "Web-site"
 	       website = $2.strip
 	    when "Number"
-	       number = $2.strip
+	        if number.nil? then
+	          number = $2.strip
+		else
+		  number = "#{number} | #{$2.strip}"
+	        end
 	    when "Maxrate"
 	       maxrate = $2.strip
 	    when "Minrate"
@@ -202,7 +210,7 @@ class MailSchedulethread
 	        if network.nil? then
 	          network = $2.strip
 		else
-		  network = "#{network}|#{$2.strip}"
+		  network = "#{network} | #{$2.strip}"
 	        end
 	    when "Address"
 	        if $2.strip.length > 0 then
@@ -252,28 +260,107 @@ class MailSchedulethread
     add_bbslist(name,born_date,software,sysop,email,website, number, minrate,
 			    maxrate,location,network,terminal,megs,msgs,files,
 			    nodes, users, subs, dirs,xterns,desc,true)
+
   end
  	# sleep(0.5)
   end 
 
+
+    def parse_text_commands(line,u_space,f_space,t_space,pf_space)
+
+    system = fetch_system
+
+    tspacem = t_space.to_i / 1048576
+
+    text_commands = {
+
+      "%U_SPACE%" => u_space,
+      "%F_SPACE%" => f_space,
+      "%T_SPACE%" => t_space,
+      "%PU_SPACE%" =>  pf_space,
+
+
+      "%BBSNAME%" => SYSTEMNAME,
+      "%FIDOADDR%" => "#{FIDOZONE}:#{FIDONET}/#{FIDONODE}.#{FIDOPOINT}",
+      "%VER%" => VER,
+      "%WEBVER%" => "Sinatra #{Sinatra::VERSION}",
+      "%TNODES%" => NODES.to_s,
+      "%SYSOP%" => SYSOPNAME,
+      "%RVERSION%" => RUBY_VERSION,
+      "%PLATFORM%" => RUBY_PLATFORM,
+      "%PID%" => $$.to_s,
+      "%STIME%" => Time.now.strftime("%I:%M%p (%Z)"),
+      "%SDATE%" => Time.now.strftime("%A %B %d, %Y"),
+      "%SYSLOC%" => SYSTEMLOCATION,
+      "%TLOGON%" => system.total_logons.to_s,
+      "%LOGONS%" => system.logons_today.to_s,
+      "%POSTS%" =>  system.posts_today.to_s,
+      "%EMAILS%" =>  system.emails_today.to_s,
+      "%FEEDBACK%" =>  system.feedback_today.to_s,
+      "%NEWUSERS%" =>  system.newu_today.to_s,
+      "%TMESSAGES%" => system_m_total.to_s,
+      "%TUSERS%" => u_total.to_s,
+      "%TDOORS%" => d_total.to_s,
+      "%TNODES%" => NODES.to_s,
+      "%TSPACEM%" =>  tspacem.to_s,
+      "%TAREAS%" => a_total.to_s
+    }
+
+
+    text_commands.each_pair {|code, result|  line.gsub!(code,result)}
+  return line
+end
+
+def process_only(outfile)
+
+    u_space = disk_used_space(ROOT_PATH).to_s
+    f_space = disk_free_space(ROOT_PATH).to_s
+    t_space =  disk_total_space(ROOT_PATH).to_s
+    pf_space = disk_percent_free(ROOT_PATH).to_s
+    
+    out = []
+    if File.exists?("#{TEXTPATH}#{outfile}")
+      IO.foreach("#{TEXTPATH}#{outfile}") { |line|
+        deporter = parse_text_commands(line,u_space,f_space,t_space,pf_space)
+        out  << deporter.gsub("\n", "")
+
+      }
+    else
+      out =  ["\n#{TEXTPATH}#{outfile} has run away...please tell sysop!\n"]
+    end
+ return out
+  end
+
+  def savesystemmessage(x, to, title,text)
+     #just to save a message from the SYSTEM account.  The whole message saving system is kludgy.  Rewrite!
+
+      area = fetch_area(x)
+      text << DLIM
+      msg_text = text.join(DLIM)
+
+      m_from = "SYSTEM"
+      msg_date = Time.now.strftime("%Y-%m-%d %I:%M%p")
+      absolute = add_msg(to,m_from,msg_date,title,msg_text,false,false,nil,nil,nil,nil,false, nil,nil,nil,
+      nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,false,area.number,nil,nil,nil,nil,nil)
+      add_log_entry(5,Time.now,"SYSTEM posted msg # #{absolute}")
+    end
+
+     
   def update_BBS_list
     @debuglog.push("-SA: Starting BBS list update")  
-     delete_all_bbs_old
-     area = fetch_area(BBS_LIST_MSG_AREA)
-     user = fetch_user(get_uid(BBS_LIST_USER))
-      scanforaccess(user)
-     # for now we will scan the whole message base.  maybe add a message pointer later?  
-     # lets put in the plumbing for that.
-     pointer = get_pointer(user,BBS_LIST_MSG_AREA)  
-     @debuglog.push("-SA: pointer:#{pointer} pointer.lastread:#{pointer.lastread if !pointer.lastread.nil?} ")  
-     sleep(1)
-     #pointer = absolute_message(area.number,1)
-     i = pointer.lastread
-     stop = m_total(area.number) 
-     until absolute_message(area.number,i).nil?
-     	  @debuglog.push ("absolute msg: #{absolute_message(area.number,i)}")
-	  #sleep(10)
-	  msg = fetch_msg(absolute_message(area.number,i))
+    @debuglog.push( "-SA: Updating Synchronet BBS list details")
+    savesystemmessage(BBS_LIST_MSG_AREA, "SBL", SYSTEMNAME,process_only("bbsinfo.txt"))
+    delete_all_bbs_old
+    area = fetch_area(BBS_LIST_MSG_AREA)
+    user = fetch_user(get_uid(BBS_LIST_USER))
+    scanforaccess(user)
+
+    pointer = get_pointer(user,BBS_LIST_MSG_AREA)  
+    @debuglog.push("-SA: pointer:#{pointer} pointer.lastread:#{pointer.lastread if !pointer.lastread.nil?} ")  
+
+    bbs_import(area.number,pointer.lastread).each {|msg|
+    #bbs_import(area.number,0).each {|msg|
+     	  @debuglog.push ("absolute msg: #{msg.absolute}")
 	  message = []
           tempmsg=convert_to_ascii(msg.msg_text)
 				
@@ -283,12 +370,10 @@ class MailSchedulethread
         tempmsg.gsub!(10.chr,DLIM)
 
         tempmsg.each_line(DLIM) {|line| message.push(line.chop!)} #changed from .each for ruby 1.9
-	 process_BBS(message)
-       i += 1
-       
-     end
-	pointer.lastread = high_absolute(BBS_LIST_MSG_AREA)
-        update_pointer(pointer)
+	process_BBS(message)
+        }
+     pointer.lastread = high_absolute(BBS_LIST_MSG_AREA)
+     update_pointer(pointer)
   end
 
 
@@ -364,11 +449,13 @@ class MailSchedulethread
   end
   
   def run
-     #begin
-
+     begin
+     #uncomment to reload from scratch.  will put this in a command
+    #delete_all_bbs
+    #update_BBS_list
     @debuglog.push("-SCHED: Starting Message Transfer Thread.")
 
-    update_BBS_list	    
+    
     idle = 0
     current_day = Time.now.strftime("%j")
     qwk_loop(idle)
@@ -382,6 +469,7 @@ class MailSchedulethread
       new_day = Time.now.strftime("%j")
       if new_day != current_day then  #do daily maintenance
 	@debuglog.push("-SCHED: Daily Maintenance run")
+	update_BBS_list	
         system = fetch_system
         system.logons_today = 0
         system.posts_today = 0
@@ -391,7 +479,7 @@ class MailSchedulethread
         update_system(system)
         current_day = new_day
         @debuglog.push( "-SA: Deleting DB Log...")
-         happy = system("rm #{ROOT_PATH}/log/*")
+         happy = system("rm #{ROOT_PATH}log/* > /dev/null 2>&1")
           if happy then
             @debuglog.push("-SA: Success!")
             add_log_entry(L_MESSAGE ,Time.now,"DB Log Deleted.")
@@ -431,18 +519,18 @@ class MailSchedulethread
       end
 
     end
-#     rescue Exception => e
- #     @debuglog.push("ERROR: An error occurred in QWK/REP scheduler thread died: #{$!}" )
- #    # add_log_entry(L_ERROR,Time.now,"An error occurred in QWK/REP scheduler thread died: #{$!}")
-  #    @debuglog.push( e.backtrace.map { |x| x.match(/^(.+?):(\d+)(|:in `(.+)')$/);
-   #   [$1,$2,$3]})
+     rescue Exception => e
+      @debuglog.push("ERROR: An error occurred in QWK/REP scheduler thread died: #{$!}" )
+      add_log_entry(L_ERROR,Time.now,"An error occurred in QWK/REP scheduler thread died: #{$!}")
+      @debuglog.push( e.backtrace.map { |x| x.match(/^(.+?):(\d+)(|:in `(.+)')$/);
+      [$1,$2,$3]})
       
-   #   if SCHED_RECONNECT_DELAY > 0 then
-  #       add_log_entry(L_MESSAGE,Time.now,"Sched thread restart in #{SCHED_RECONNECT_DELAY} seconds.")
-    #     sleep(SCHED_RECONNECT_DELAY)
-     #    retry
-     # end
-   #  end
+      if SCHED_RECONNECT_DELAY > 0 then
+         add_log_entry(L_MESSAGE,Time.now,"Sched thread restart in #{SCHED_RECONNECT_DELAY} seconds.")
+         sleep(SCHED_RECONNECT_DELAY)
+         retry
+      end
+     end
   end #of def run
 end #of class Schedulethread
 
@@ -550,13 +638,15 @@ begin
   flushinp
   @win = newwin(22, 78, 1, 1)
   #box(@win, 0, 0)
-  #@border_win = newwin(9,74,12,3)
-  #@inner_win = newwin(7, 69, 13, 5)
-  
-  @border_win = newwin(22,74,1,3)
-  @inner_win = newwin(20, 69, 2, 5)
-   wborder(@border_win, 124, 124, 45, 45, 43, 43, 43, 43)
- # box(@border_win,0,0)
+  if !DEBUG then
+    @border_win = newwin(9,74,12,3)
+    @inner_win = newwin(7, 69, 13, 5)
+  else
+    @border_win = newwin(22,74,1,3)
+    @inner_win = newwin(20, 69, 2, 5)
+  end
+  # wborder(@border_win, 124, 124, 45, 45, 43, 43, 43, 43)
+  box(@border_win,0,0)
   mvwaddstr(@border_win,0,2,"SYSTEM MESSAGES")
   scrollok(@inner_win, true)
   send_name

@@ -255,11 +255,12 @@ end
     rescue Exception => e
       add_log_entry(L_ERROR,Time.now,"Bot TC E:#{$!}")
       @debuglog.push("-ERROR: Bot Thread Crash. Disconnect? #{$!}")
-      print e.backtrace.map { |x| x.match(/^(.+?):(\d+)(|:in `(.+)')$/);
+      @debuglog.push(e.backtrace.map { |x| x.match(/^(.+?):(\d+)(|:in `(.+)')$/);
      [$1,$2,$3]
-      }
+      })
 
       if BOT_RECONNECT_DELAY > 0 then
+	@debuglog.push("-BOT: thread restart in #{BOT_RECONNECT_DELAY} seconds.")
          add_log_entry(L_MESSAGE,Time.now,"Bot thread restart in #{BOT_RECONNECT_DELAY} seconds.")
          sleep(BOT_RECONNECT_DELAY)
          retry
