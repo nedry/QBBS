@@ -10,6 +10,7 @@ require "rbot/r_config"
 require "rbot/r_config-compat"
 require "rbot/r_utils"
 require "rbot/r_extends"
+require "rbot/rregistry"
 
 
 	

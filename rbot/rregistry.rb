@@ -124,7 +124,7 @@ require 'rbot/rdbhash'
     # is accessible via @registry.
     
   def debug(msg)
-    puts "-BOT: #{msg}"
+    #puts "-BOT: #{msg}"
   end
   
     def initialize(bot, name)
@@ -192,7 +192,7 @@ require 'rbot/rdbhash'
 
     # lookup a key in the registry
     def [](key)
-      puts "DEBUG: at def[] in registry"
+     # puts "DEBUG: at def[] in registry"
       if @registry.has_key?(key)
         return restore(@registry[key])
       elsif @default != nil

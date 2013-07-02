@@ -7,7 +7,7 @@ FIDO = false
 SMTP = false
 IRC_ON =  true
 SCREENSAVER = true
-FLASH_POL = true
+FLASH_POL = false
 
 #this is the port for the flash policy server, which is for allowing flash based
 #telnet clients.  It actually runs on port 843, but that cannot be done on 

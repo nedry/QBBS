@@ -136,7 +136,8 @@ class Language  #a hacked up language system.  we're only doing one language...
       @botmodule_triggers = Array.new
 
       @handler = MessageMapper.new(self)
-      #@registry = Registry::Accessor.new(@bot, self.class.to_s.gsub(/^.*::/, ""))
+     # @registry = Registry::Accessor.new(@bot, self.class.to_s.gsub(/^.*::/, ""))
+      @registry = BotRegistryAccessor.new(@bot, self.class.to_s.gsub(/^.*::/, ""))
 
       @manager.add_botmodule(self)
       if self.respond_to?('set_language')

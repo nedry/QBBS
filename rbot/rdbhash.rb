@@ -52,7 +52,7 @@ end
     end
 
     def DBHash.create_db(name)
-      puts  "-DBHash: creating empty db #{name}"
+      #puts  "-DBHash: creating empty db #{name}"
       return BDB::Hash.open(name, nil, 
       BDB::CREATE | BDB::EXCL, 0600)
     end
@@ -61,7 +61,7 @@ end
 
    
     def DBHash.open_db(name)
-      puts  "-DBHash: opening existing db #{name}"
+      #puts  "-DBHash: opening existing db #{name}"
       return BDB::Hash.open(name, nil, "r+", 0600)
     end
 
@@ -84,10 +84,10 @@ end
       if @@env.nil?
         begin
           @@env = BDB::Env.open("rbot_data", BDB::INIT_TRANSACTION | BDB::CREATE | BDB::RECOVER, "set_lg_max" => @@lg_max)
-          puts "DBTree: environment opened with max log size #{@@env.conf['lg_max']}"
+          #puts "DBTree: environment opened with max log size #{@@env.conf['lg_max']}"
         rescue => e
-          puts "DBTree: failed to open environment: #{e}. Retrying ..."
-          @@env = BDB::Env.open("rbot_data", BDB::INIT_TRANSACTION | BDB::CREATE |  BDB::RECOVER)
+          #puts "DBTree: failed to open environment: #{e}. Retrying ..."
+        #  @@env = BDB::Env.open("rbot_data", BDB::INIT_TRANSACTION | BDB::CREATE |  BDB::RECOVER)
         end
         #@@env = BDB::Env.open("rbot_data", BDB::CREATE | BDB::INIT_MPOOL | BDB::RECOVER)
       end
@@ -114,18 +114,18 @@ end
     end
 
     def DBTree.create_db(name)
-      puts  "DBTree: creating empty db #{ROOT_PATH}#{name}"
+      #puts  "DBTree: creating empty db #{ROOT_PATH}#{name}"
       return @@env.open_db(BDB::CIBtree, "#{ROOT_PATH}#{name}", nil, BDB::CREATE | BDB::EXCL, 0600)
     end
 
     def DBTree.open_db(name)
-      puts  "DBTree: opening existing db #{ROOT_PATH}#{name}"
+      #puts  "DBTree: opening existing db #{ROOT_PATH}#{name}"
       return @@env.open_db(BDB::CIBtree, "#{ROOT_PATH}#{name}", nil, "r+", 0600)
     end
 
     def DBTree.cleanup_logs()
       begin
-        puts  "DBTree: checkpointing ..."
+        #puts  "DBTree: checkpointing ..."
         @@env.checkpoint
       rescue => e
         puts  "Failed: #{e}"

@@ -599,6 +599,7 @@ end #of class happythread
 
 class ConsoleThread
   require 'ffi-ncurses'
+  require 'terminfo'
   include FFI::NCurses
   
   def initialize (debuglog)
@@ -608,12 +609,14 @@ class ConsoleThread
   
 def send_name
 
-  mvwaddstr(@win,1,9, '  ___  ____  ____ ____     ____                      _      ')
-  mvwaddstr(@win,2,9, ' / _ \| __ )| __ ) ___|   / ___|___  _ __  ___  ___ | | ___ ')
-  mvwaddstr(@win,3,9, "| | | |  _ \\|  _ \\___ \\  | |   / _ \\| '_ \\/ __|/ _ \\| |/ _ \\")
-  mvwaddstr(@win,4,9, '| |_| | |_) | |_) |__) | | |__| (_) | | | \__ \ (_) | |  __/')
-  mvwaddstr(@win,5,9, ' \__\_\____/|____/____/   \____\___/|_| |_|___/\___/|_|\___|')
-  mvwaddstr(@win,20,3,"CTRL + e[X]it | [D]isplay Messages | Chat [B]ell ON/OFF")
+  wattr_set(@win, A_BOLD, 2, nil) 
+  start = (@width  / 2) - 30
+  mvwaddstr(@win,1,start, "  ___  ____  ____ ____     ____                      _      ")
+  mvwaddstr(@win,2,start, ' / _ \| __ )| __ ) ___|   / ___|___  _ __  ___  ___ | | ___ ')
+  mvwaddstr(@win,3,start, "| | | |  _ \\|  _ \\___ \\  | |   / _ \\| '_ \\/ __|/ _ \\| |/ _ \\")
+  mvwaddstr(@win,4,start, '| |_| | |_) | |_) |__) | | |__| (_) | | | \__ \ (_) | |  __/')
+  mvwaddstr(@win,5,start, ' \__\_\____/|____/____/   \____\___/|_| |_|___/\___/|_|\___|')
+  mvwaddstr(@win,@height-3,9,"CTRL + e[X]it | [D]isplay Messages | Chat [B]ell ON/OFF")
 end
 
 
@@ -621,7 +624,7 @@ def update_debug(line)
 
 waddstr(@inner_win, "#{line}\n")
 wrefresh(@inner_win)
-wrefresh(@win)
+#wrefresh(@win)
 end
 
   
@@ -636,17 +639,42 @@ def run
 begin
  # main_window 
   flushinp
-  @win = newwin(22, 78, 1, 1)
+  
+  #set up colours
+  init_pair(0, Color::BLACK, Color::BLACK)
+  init_pair(1, Color::RED, Color::BLACK)
+  init_pair(2, Color::GREEN, Color::BLACK)
+  init_pair(3, Color::YELLOW, Color::BLACK)
+  init_pair(4, Color::BLUE, Color::BLACK)
+  init_pair(5, Color::MAGENTA, Color::BLACK)
+  init_pair(6, Color::CYAN, Color::BLACK)
+  init_pair(7, Color::WHITE, Color::BLACK)
+
+  init_pair(8, Color::BLACK, Color::BLACK)
+  init_pair(9, Color::BLACK, Color::RED)
+  init_pair(10, Color::BLACK, Color::GREEN)
+  init_pair(11, Color::BLACK, Color::YELLOW)
+  init_pair(12, Color::BLACK, Color::BLUE)
+  init_pair(13, Color::BLACK, Color::MAGENTA)
+  init_pair(14, Color::BLACK, Color::CYAN)
+  init_pair(15, Color::BLACK, Color::WHITE)
+
+
+  @height, @width = TermInfo.screen_size
+  @win = newwin(22, @width - 2, 1, 1)
   #box(@win, 0, 0)
-  if !DEBUG then
-    @border_win = newwin(9,74,12,3)
-    @inner_win = newwin(7, 69, 13, 5)
-  else
-    @border_win = newwin(22,74,1,3)
-    @inner_win = newwin(20, 69, 2, 5)
-  end
+  debug_lines = @height - 15
+#  if DEBUG then
+ #   @border_win = newwin(9,@width - 6,12,3)
+  #  @inner_win = newwin(7, @width - 10, 13, 5)
+#  else
+    @border_win = newwin(debug_lines,@width - 6,12,3)
+    @inner_win = newwin(debug_lines - 2, @width - 10,13, 5)
+ # end
   # wborder(@border_win, 124, 124, 45, 45, 43, 43, 43, 43)
+  wattr_set(@border_win, A_BOLD, 3, nil)
   box(@border_win,0,0)
+  wattr_set(@inner_win, A_BOLD, 6, nil)
   mvwaddstr(@border_win,0,2,"SYSTEM MESSAGES")
   scrollok(@inner_win, true)
   send_name
@@ -655,6 +683,7 @@ begin
   wrefresh(@border_win)
   update_debug("-QBBS Server Starting up.")
   wtimeout(@inner_win,100)
+  update_debug ("-SA: Screen size detected: #{@height} #{@width} #{debug_lines}")
   while true
 
 	ch = wgetch(@inner_win)

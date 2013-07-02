@@ -1,19 +1,18 @@
-%C;   ____    ____  ____ _____    __  ___      _          __  ___                
-  / __ \  / __ )/ __ ) ___/   /  |/  /___ _(_)___     /  |/  /__  ____  __  __
- / / / / / __  / __  \__ \   / /|_/ / __ `/ / __ \   / /|_/ / _ \/ __ \/ / / /
-/ /_/ / / /_/ / /_/ /__/ /  / /  / / /_/ / / / / /  / /  / /  __/ / / / /_/ / 
-\___\_\/_____/_____/____/  /_/  /_/\__,_/_/_/ /_/  /_/  /_/\___/_/ /_/\__,_/  
-                        
+ %C;  ___  ____  ____ ____    __  __       _         __  __                  
+  / _ \| __ )| __ ) ___|  |  \/  | __ _(_)_ __   |  \/  | ___ _ __  _   _ 
+ | | | |  _ \|  _ \___ \  | |\/| |/ _` | | '_ \  | |\/| |/ _ \ '_ \| | | |
+ | |_| | |_) | |_) |__) | | |  | | (_| | | | | | | |  | |  __/ | | | |_| |
+  \__\_\____/|____/____/  |_|  |_|\__,_|_|_| |_| |_|  |_|\___|_| |_|\__,_|
   %WR;                            MESSAGE COMMANDS                              %W;
   
   %W;[%Y;A%W;]%G;rea Change          %W;[%Y;E%W;]%G;-mail             %W;[%Y;F%W;]%G;eedback     
   %W;[%Y;P%W;]%G;ost                 %W;[%Y;R%W;]%G;ead Messages      %W;[%Y;Z%W;]%G;IP READ (new msg scan)               
                                           
-  %WG;                             EVERYTHING ELSE                               %W;               
+  %WG;                             EVERYTHING ELSE                              %W;               
   %W;[%Y;B%W;]%G;ulletins/News       %W;[%Y;G%W;]%G;oodbye            %W;[%Y;L%W;]%G;System Log
   %W;[%Y;PU%W;]%G;Page user          %W;[%Y;Q%W;]%G;uestionaire       %W;[%Y;T%W;]%G;eleconference
   %W;[%Y;W%W;]%G;ho's Online         %W;[%Y;V%W;]%G;ersion            %W;[%Y;?%W;]%G;This Menu            
-  %W;[%Y;%%W;]%G;User Settings       %W;[%R;GAME%W;]%G;S              %W;[%Y;O%W;]%G;ther Systems 
+  %W;[%Y;%%W;]%G;User Settings       %W;[%R;GAME%W;]%G;S              %W;[%Y;O%W;]%G;ther Systems %W;(%G;BBS list%W;)
   %W;[%Y;S%W;]%G;User Statistics
           %C;Use a %R;;%C; to stack commands together %W;(%C;I.E., %R;%;a;q%W;)
               %C;Some commands take parameters %W;(%C;I.E., %R;a2%W;)

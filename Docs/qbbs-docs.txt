@@ -47,6 +47,8 @@ http://packages.ubuntu.com/source/oneiric-updates/postgresql-9.1
 sudo apt-get -y install postgresql-9.1
 sudo apt-get -y install libpq-dev
 
+#add installing ncurses
+
 Install berkeley db... 
 
 sudo apt-get -y install libdb-dev
@@ -58,6 +60,8 @@ o       data_mapper
 o       rmail
 o       pg
 o       dm-postgres-adapter
+o       ffi-ncurses
+o       ruby-terminfo
 
 
 As root, install each gem in turn with the command:
