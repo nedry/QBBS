@@ -8,7 +8,7 @@ require 'db/db_area'
 require 'db/db_groups'
 require 'db/db_message'
 
-YAML::ENGINE.yamler = 'syck'
+
 
 Dir['models/*'].each {|i| require i}
 

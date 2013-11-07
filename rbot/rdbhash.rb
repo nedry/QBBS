@@ -1,7 +1,7 @@
 begin
   require 'bdb'
 rescue Exception => e
-  puts "oh fuck"
+  puts "-FATAL: Can't load BDB"
   #error "Got exception: "+e
 #  error "rbot couldn't load the bdb module, perhaps you need to install it? try: http://www.ruby-lang.org/en/raa-list.rhtml?name=bdb"
   exit 2
@@ -87,7 +87,7 @@ end
           #puts "DBTree: environment opened with max log size #{@@env.conf['lg_max']}"
         rescue => e
           #puts "DBTree: failed to open environment: #{e}. Retrying ..."
-        #  @@env = BDB::Env.open("rbot_data", BDB::INIT_TRANSACTION | BDB::CREATE |  BDB::RECOVER)
+       #  @@env = BDB::Env.open("rbot_data", BDB::INIT_TRANSACTION | BDB::CREATE |  BDB::RECOVER)
         end
         #@@env = BDB::Env.open("rbot_data", BDB::CREATE | BDB::INIT_MPOOL | BDB::RECOVER)
       end

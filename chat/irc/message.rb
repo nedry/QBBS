@@ -180,10 +180,10 @@ module IRC
 
     # Return an array of ["nick", "user", "host"] from "nick!identuser@host"
     def user_to_params(usermask)
+	s = IRC::Security.new
 
-      s = IRC::Security.new
-
-      if usermask =~ /(#{s.nick})!#{s.ident}(#{s.user})@(#{s.host})/
+     if usermask =~ /(#{s.nick})!#{s.ident}(#{s.user})@(#{s.host})/
+	     puts "TRUE"
         return ["#{$1}", "#{$2}", "#{$3}"]
       end
 

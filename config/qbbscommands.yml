@@ -117,7 +117,7 @@
 - cmd: usrsetting
   theme_key: 1
   ulevel: 0
-  menu_item: %
+  menu_item: "%"
 
 - cmd: readmnu
   theme_key: 1

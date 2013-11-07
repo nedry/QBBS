@@ -8,7 +8,7 @@
 #!/usr/bin/ruby
 $LOAD_PATH << "."
 
-require "iconv"
+#require "iconv"
 require "socket"
 
 

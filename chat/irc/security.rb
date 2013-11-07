@@ -24,8 +24,14 @@ module IRC
 
     # user       =  1*( %x01-09 / %x0B-0C / %x0E-1F / %x21-3F / %x41-FF )
     #                 ; any octet except NUL, CR, LF, " " and "@"
+    
+    # Ruby 2.0.0 didn't like the old regexp because of the encoding changes
+    # so I made a new regexp
+    
     def user
-      return "[\x01-\x09\x0b-\x0c\x0e-\x1f\x21-\x3f\x41-\xff]+"
+
+      return "[A-Za-z0-9_`[{}^|\]\\-]+"
+      #return "[\x01-\x09\x0b-\x0c\x0e-\x1f\x21-\x3f\x41-\xff]+"
     end
 
     # hostname   =  shortname *( "." shortname )

@@ -28,7 +28,7 @@ require "db/db_groups"
 require "db/db_user"
 require "db/db_screen"
 require "message.rb"
-require "iconv"
+#require "iconv"
 require "socket"
 require "nntp"
 

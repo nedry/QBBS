@@ -1,9 +1,6 @@
 require 'yaml'
 require 'zlib'
 
-#Added because ruby 1.9.3 has changed it's yaml engine...
-YAML::ENGINE.yamler = 'syck'
-
 MIN_RATING = 6.0
 MIN_VOTES = 25
 
@@ -13,12 +10,10 @@ class ChuckNorrisPlugin < Plugin
   # Loadez les factes
   def initialize
    
-    if path = find_facts_file('chucknorris.yml.gz')
-      fyml = Zlib::GzipReader.open(path)
-    elsif path = find_facts_file('chucknorris.yml')
+if path = find_facts_file('chucknorris.yml')
       fyml = open(path)
     else
-      raise "Error: Couldn't find chucknorris.yml[.gz]"
+      raise "Error: Couldn't find chucknorris.yml"
     end
     
     debug "+ [chucknorris] Loading #{path}..."

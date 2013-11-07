@@ -9,7 +9,6 @@ require 'db/db_groups'
 require 'db/db_message'
 require 'db/db_themes'
 
-YAML::ENGINE.yamler = 'syck'
 
 Dir['models/*'].each {|i| require i}
 
