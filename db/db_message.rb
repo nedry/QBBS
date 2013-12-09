@@ -254,29 +254,7 @@ def add_qwk_message(message, area,qwkuser)
 end
 
 def nntp_convert(text)
-	
-	#This is a much shorter, nicer and better way to do this...
-	
-	#	ic = Iconv.new('UTF-8//IGNORE', 'UTF-8')
-	#	text_out = ""
-	 # if !text.nil?
-	#	  text.each_char {|c| 
-	#		begin
-	#	    if c.ord < 255 then
-	#	      text_out << ic.iconv(c)
-	#	    else
-	#				text_out << " "
-	#			  @debuglog.push("-ERROR: Illegal character #{c} in message")
-	#			end
-	#	  rescue 
-	#	    text_out << " "
-	#		  @debuglog.push("-ERROR: Illegal character #{c} in message")
-	#	  end
-	#	  }
-	#	else
-	#		text_out = ""
-	#	end
-	#
+
         text_out = ""
 	text_out = text.force_encoding('UTF-8').encode('UTF-16', :invalid => :replace, :replace => '?').encode('UTF-8') if !text.nil?
 

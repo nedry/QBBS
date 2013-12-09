@@ -3,8 +3,12 @@ require "messagestrings.rb"
 D_LIMIT = 1
 D_IDLE = 5
 
+def random_password
+return (0...8).map { (65 + rand(26)).chr }.join
+end
 
 def door_do (path,d_type)
+
   send_init = false
   time = Time.now
   tick = time.min.to_i
@@ -23,6 +27,7 @@ def door_do (path,d_type)
 
   w.putc(13.chr) if d_type == "DOS" #we want to put a ENTER in so dosemu won't pause at intro
       exit = false
+      temp_pass = random_password
       while !exit
         while !exit 
           ios = select([read, @socket],nil,nil,0.001) #and !exit
@@ -38,23 +43,70 @@ def door_do (path,d_type)
                   sleep (2)
                   w.puts(@c_user.rsts_pw)
                   send_init = true
-                end
+	  end
+	        total_c = 1
+	     #   total_c = @c_user.wg_pw.length  + @c_user.name.length + MBBS_HEADER_LENGTH 
+		#total_c = (@c_user.wg_pw.length *2) + @c_user.name.length + 5 + MBBS_HEADER_LENGTH if @c_user.wg_pw.nil? 
+		
+                if d_type == "MBBS" and char.chr == ":" and !send_init then
+
+		 if !@c_user.wg_pw.nil?  then
+                 
+                  w.puts(@c_user.name)
+		  w.puts(CR.chr)
+                  w.puts(@c_user.wg_pw)
+		  w.puts(CR.chr)
+		  w.puts(CR.chr)
+		 else
+		   w.puts("new")
+		   w.puts(CR.chr)
+		   w.puts("y")
+		   w.puts(CR.chr)
+		   w.puts(@c_user.name)
+		   w.puts(CR.chr)
+		   w.puts("y")
+		   w.puts(CR.chr)
+		   w.puts(temp_pass)
+w.puts(CR.chr)
+		   w.puts(temp_pass)
+
+		   w.puts(CR.chr)
+		   w.puts(CR.chr)
+		   @c_user.wg_pw = temp_pass
+		   update_user(@c_user)
+		   
+		 
+		  end
+                  send_init = true
+
+	  end
+
                 if d_type == "QBBS" and char.chr == ">" and !send_init then
                   w.puts("#{u_name}#{CR.chr}")
                   send_init = true
-                end
+	  end
                 started = true
                 idle = 0
-							  beg = true if char == ">"
-								if user_arr.index(char) and !ret and beg then									
-								 char = ""
-								 i += 1
-								 ret = true if i == user_len
-							 end
+
+		beg = true if char == MBBS_START_CHARACTER and d_type == "MBBS"
+			if  !ret and beg then	
+                          ochar = char				
+			  char = ""
+			  i += 1
+			  ret = true if i == total_c
+			 # print "#{i} char: #{ochar} ret: #{ret} beg:#{beg} total_c #{total_c}"
+		  end
+		  
+		#	beg = true if char == ">"
+		#	if user_arr.index(char) and !ret and beg then									
+		#	  char = ""
+		#	  i += 1
+		#	  ret = true if i == user_len
+		#	end
               rescue 
-                sleep (5)
-                print (CLS)
-                print (HOME)
+              #  sleep (5)
+              #  print (CLS)
+                #print (HOME)
 
                 @who.user(@c_user).where = "Main Menu"
                 return
@@ -208,7 +260,7 @@ end
 
 def changedoortype(dpointer)
   door = fetch_door(dpointer)
-  temp = get_max_length("Enter new door type (DOS,LINUX,RSTS,QBBS): ",10,"Door type") 
+  temp = get_max_length("Enter new door type (DOS,LINUX,RSTS,QBBS,MBBS): ",10,"Door type") 
   temp.strip! if temp != ""
   door.d_type = temp.upcase if temp != nil
   update_door(door)

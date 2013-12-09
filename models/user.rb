@@ -23,6 +23,7 @@ class User
   property :logons, Integer, :default => 0
   property :posted, Integer, :default => 0
   property :rsts_pw, String, :length => 40
+  property :wg_pw, String, :length => 40
   property :rsts_acc, Integer 
   property :fullscreen, Boolean
   property :signature, Text

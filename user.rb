@@ -19,6 +19,7 @@ class Session
     %C;Password:      %G;********   %C;Level: %G;#{user.level}
     %C;RSTS Password: %G;#{user.rsts_pw}
     %C;RSTS Account:  %G;#{RSTS_BASE},#{user.rsts_acc}
+    %C;WG/MBBS Password: %G;#{user.wg_pw}
     here
     print "%Y;                         1         2         3         4" 
     print "%Y;Area#:         01234567890123456789012345678901234567890"
@@ -71,6 +72,7 @@ class Session
       when "PU"; page    
       when "S"; lockuser(upointer)
       when "P"; changepass(upointer)
+      when "WP"; changewgpass(upointer)
       when "LO"; changelocation(upointer)
       when "G"; leave
       when "?"; gfileout ("usermnu")
@@ -224,6 +226,19 @@ class Session
     if pswd == pswd2
       print "%WG;Password Changed.%W;"
       user.password = pswd2
+      update_user(user)
+    else 
+      print "%WR;Passwords don't match.  Try again.%W;" 
+    end
+  end
+  
+  def changewgpass(upointer)
+    user = fetch_user(upointer)
+    pswd = getpwd("%W;Enter new password: ").strip.upcase 
+    pswd2 = getpwd("Enter again to confirm: ").strip.upcase 
+    if pswd == pswd2
+      print "%WG;Password Changed.%W;"
+      user.wg_pw = pswd2
       update_user(user)
     else 
       print "%WR;Passwords don't match.  Try again.%W;" 

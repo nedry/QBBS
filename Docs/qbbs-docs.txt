@@ -83,12 +83,16 @@ o dm-postgres-adapter
 o ffi-ncurses
 o ruby-terminfo
 
-I had to patch rmail to work with ruby 2.00 per:
-https://github.com/strzibny/rubymail/commit/b5300ac5f74a81d268709337bf6e98eb14430f5a
+
 
 
 As root, install each gem in turn with the command:
 gem install <gem name>
+
+I had to patch rmail to work with ruby 2.00 per:
+https://github.com/strzibny/rubymail/commit/b5300ac5f74a81d268709337bf6e98eb14430f5a
+
+
 
 After installing the gems, you must modify the postgresql's
 pg_hba.conf to allow trusted connections on the local server. This

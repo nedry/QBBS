@@ -38,6 +38,7 @@ OKAY = 3
 configure do
   enable :sessions
   set :static, true
+  set :bind, '0.0.0.0'
   BasicSocket.do_not_reverse_lookup = true
   DataMapper::Logger.new('log/db', :debug)
   DataMapper.setup(:default, "postgres://#{DATAIP}/#{DATABASE}")
