@@ -59,7 +59,12 @@ Theme.new(:number => 1,
                    :description => "Default Theme", 
                    :main_prompt => MAIN_PROMPT, 
                     :read_prompt => "%M;[@area@: @aname@]%C; @dir@ Read [%p] (1-@total@): %W;",
-                   
+		    :logout_prompt => "%W;Log off now (%Y;Y%W;,%R;n%W;): ",
+		    :door_prompt => "\r\n%G;Game #[1-@dtotal@] ? #{RET} %G;to quit: %W;",
+		    :bull_prompt => "\r\n%G;Bulletins #[1-@btotal@] ? #{RET} %G;to quit: %W;",
+		    :user_prompt => "%W;Change Which User Setting ? #{RET} to quit: ",
+                   :nomainmenu => false,
+		   :areachangeonmain => true,
                    :text_directory => "text/").save!
                    
 Theme.new(:number => 2, 
@@ -67,8 +72,27 @@ Theme.new(:number => 2,
                    :description => "WBBS Theme", 
                    :main_prompt => MAIN_PROMPT,
                   :read_prompt => "%M;Board @area@:%C; Read 1-@total@ [%p] (? for menu): %W;",
+		    :logout_prompt => "%W;Log off now (%Y;Y%W;,%R;n%W;): ",
+		    :door_prompt => "\r\n%G;Game #[1-@dtotal@] ? #{RET} %G;to quit: %W;",
+		    :bull_prompt => "\r\n%G;Bulletins #[1-@btotal@] ? #{RET} %G;to quit: %W;",
+		    :user_prompt => "%W;Change Which User Setting ? #{RET} to quit: ",
                    :nomainmenu => true,
+		   :areachangeonmain => true,
                    :text_directory => "text/wbbs/").save!
+		   
+Theme.new(:number => 3, 
+                   :name => "MajorBBS", 
+                   :description => "The Rock Garden Theme", 
+                   :main_prompt => "\r\n%G;Main System Menu %w;(%G;MAIN%w;)\r\n%w;Select (%C;T,I,F,E,A,P,G,R,? %W;for help, or %C;X%W; to exit%w;): %W;",
+                   :read_prompt => "%M;Board @area@:%C; Read 1-@total@ [%p] (? for menu): %W;",
+		    :logout_prompt => "%R;You are about to terminate this connection!\r\n\r\n%C;Are you sure (Y/N)?",
+		   :door_prompt => "\r\n%G;GAMES %w;(%G;GAMES%w;)\r\n%w;Select (%C;@dlist@,%W; ? for help, or %C;X%W; to exit%w;): %W;",
+		   :bull_prompt => "\r\n%G;Information Center %w;(%G;INFO%w;)\r\n%w;Select (%C;@blist@,%W; ? for help, or %C;X%W; to exit%w;): %W;",
+		    :user_prompt => "\r\n%G;User Settings %w;(%G;USERS%w;)\r\n%w;Select (%C;C,E,F,G,L,M,W,P,SI,Z,T,%W; ? for help, or %C;X%W; to exit%w;): %W;",
+                   :nomainmenu => false,
+		   :areachangeonmain => false,
+                   :text_directory => "text/mbbs/").save!
+
 
 
 
@@ -95,6 +119,11 @@ YAML.load(IO.read('config/qbbscommands.yml')).each {|cmd|
 
 
 YAML.load(IO.read('config/wbbscommands.yml')).each {|cmd|
+  h = Command.new(cmd).save!
+
+}
+
+YAML.load(IO.read('config/mbbscommands.yml')).each {|cmd|
   h = Command.new(cmd).save!
 
 }

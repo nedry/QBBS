@@ -5,9 +5,10 @@ class Session
   require 'telnet_bbs.rb'
 
   def leave
+   theme = get_user_theme(@c_user) 
     @who.user(@c_user.name).where="Goodbye"
     update_who_t(@c_user.name,"Goodbye")
-    if yes("Log off now #{YESNO}", true, false,false) then
+    if yes(theme.logout_prompt, true, false,false) then
       write "%W;"
       ogfileout('bye',1,true)
       print "%WR; NO CARRIER %W;"
@@ -123,7 +124,12 @@ end
       when @cmd_hash["dmaint"] ; run_if_ulevel("dmaint") {doormaint}
       when @cmd_hash["omaint"] ; run_if_ulevel("omaint") {telnetmaint}
       when @cmd_hash["smaint"] ; run_if_ulevel("smaint") {screenmaint}
-      when @cmd_hash["areachange"] ; run_if_ulevel("areachange") {areachange(parameters)}
+      
+        when @cmd_hash["areachange"] 
+	 print theme.areachangeonmain
+	  if theme.areachangeonmain then
+		   run_if_ulevel("areachange") {areachange(parameters)}
+          end
       when @cmd_hash["bulletins"] ; run_if_ulevel("bulletins") {bullets(parameters)}
       when @cmd_hash["feedback"] ; run_if_ulevel("feedback") { sendemail(true)}
       when @cmd_hash["teleconference"]

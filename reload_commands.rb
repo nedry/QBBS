@@ -45,7 +45,10 @@ YAML.load(IO.read('config/wbbscommands.yml')).each {|cmd|
 
 }
 
+YAML.load(IO.read('config/mbbscommands.yml')).each {|cmd|
+  h = Command.new(cmd).save!
 
+}
 
 
 

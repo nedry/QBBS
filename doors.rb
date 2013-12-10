@@ -321,10 +321,10 @@ def displaydoors
     print "%WR; No External Programs. %W;"
     return
   end
-  print "%G;Games Available:"
+  print "%G;Please select one of the following:"
   for i in 1..(d_total)
     door = fetch_door(i)
-    print "   %B;#{i}...%G;#{door.name}"
+    print "    %C;#{i} %Y;... #{door.name}"
   end
   print
   end
@@ -372,21 +372,36 @@ def rundoor(number)
   update_who_t(@c_user.name,"Main Menu")
 end
 
+
+def dlist(total)
+	
+   list = "[NONE]"
+   if total > 0
+     list = ""
+     1.upto(total) {|i| list = list + "#{i},"}
+     list.chop!
+   end
+   return list
+end
+
 def doors(parameters)
+  theme = get_user_theme(@c_user) 
   t = (parameters[0] > 0) ? parameters[0] : 0
   done = false
   if t == 0 then
     displaydoors  if !existfileout('doors',0,true)
     while true
-      prompt = "\r\n%G;Game #[1-#{d_total}] ? #{RET} %G;to quit: %W;"
+      prompt = theme.door_prompt.gsub("@dtotal@","#{d_total}")
+      prompt = prompt.gsub("@dlist@",dlist(d_total))
+
       getinp(prompt) {|inp|
         happy = inp.upcase
         t = happy.to_i
         case happy
         when "";   return
         when "CR"; crerror
-        when @cmd_hash["doormenu"] ; run_if_ulevel("readquit") {displaydoors}
-        when @cmd_hash["doorquit"] ; run_if_ulevel("readquit") {return}
+        when @cmd_hash["doormenu"] ; run_if_ulevel("doormenu") {displaydoors}
+        when @cmd_hash["doorquit"] ; run_if_ulevel("doorquit") {return}
         else
           rundoor(t) if (t) > 0 and (t) <= d_total
         end #of case

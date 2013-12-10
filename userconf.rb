@@ -1,21 +1,22 @@
 class Session
   def usersettingsmenu
     existfileout('usersethdr',0,true)
-    print "%G;[%W;C%G;]hat Alias: %W;#{@c_user.alias}"
-    print "%G;[%W;E%G;]Full Screen Editor: %W;#{@c_user.fullscreen ? "On" : "Off"}"
-    print "%G;[%W;G%G;]raphics (ANSI): %W;#{@c_user.ansi ? "On" : "Off"}"          
-    print "%G;[%W;F%G;]ast Logon: %W;#{@c_user.fastlogon ? "On" : "Off"}" 
-    print "%G;[%W;L%G;]ines per Page: %W;#{@c_user.length}"    
-    print "%G;[%W;M%G;]ore Prompt: %W;#{@c_user.more ? "On" : "Off"}"
-    print "%G;[%W;W%G;]idth: %W;#{@c_user.width}"
-    print "%G;[%W;P%G;]assword"               
-    print "%G;[%W;SI%G;]gnature"		
-    print "%G;[%W;Z%G;]ip Read Settings"
-    print "%G;[%W;T%G;]heme"
+    print "%G;Please select one of the following:\r\n"
+    print "    %C;C  %Y;... Chat Alias: %W;#{@c_user.alias}"
+    print "    %C;E  %Y;... Full Screen Editor: %W;#{@c_user.fullscreen ? "On" : "Off"}"
+    print "    %C;G  %Y;... Graphics (ANSI): %W;#{@c_user.ansi ? "On" : "Off"}"          
+    print "    %C;F  %Y;... Fast Logon: %W;#{@c_user.fastlogon ? "On" : "Off"}" 
+    print "    %C;L  %Y;... Lines per Page: %W;#{@c_user.length}"    
+    print "    %C;M  %Y;... More Prompt: %W;#{@c_user.more ? "On" : "Off"}"
+    print "    %C;W  %Y;... Width: %W;#{@c_user.width}"
+    print "    %C;P  %Y;... Password"               
+    print "    %C;SI %Y;... Signature"		
+    print "    %C;Z  %Y;... Zip Read Settings"
+    print "    %C;T  %Y;... Theme"
     if SCREENSAVER
       saver = "NONE"
       saver = get_user_screen(@c_user).name if !get_user_screen(@c_user).nil?
-      print "%G;[%W;S%G;]creen Saver:  %W;#{saver}"
+      print "    %C;S  %Y;... Screen Saver:  %W;#{saver}"
     end
     print
   end
@@ -34,8 +35,9 @@ class Session
   end
 
   def usersettings
+    theme = get_user_theme(@c_user) 
     usersettingsmenu	
-    prompt = "%W;Change Which User Setting ? #{RET} to quit: " 
+    prompt = theme.user_prompt
     getinp(prompt) {|inp|
 
       if !inp.integer?
@@ -63,6 +65,7 @@ class Session
                       	      
       when "";	done = true
       when "Q";	done = true
+      when "X";	done = true
       end
       done
     }

@@ -159,25 +159,26 @@ def createbulletin
       print "%WR; No Bulletins %W;"
       return
     end
-   ogfileout("bullethdr",0,true)
+   existfileout("bullethdr",0,true)
    if !existfileout('bulletins',0,true)
-    print "%G;Bulletins Available:"
+    print "%G;Please select one of the following:"
     for i in 1..(b_total)
       bulletin = fetch_bulletin(i)
-      print "   %B;#{i}...%G;#{bulletin.name}"
+      print "   %C;#{i} %Y;... #{bulletin.name}"
     end
   end
     print
   end
 
   def bullets(parameters)
+    theme = get_user_theme(@c_user) 
     t = (parameters[0] > 0) ? parameters[0] : 0   
 
     if t == 0 then
       displaybullet  if !existfileout('bulletins',0,true)
-      prompt = "\r\n%W;Bulletin #[1-#{b_total}] ? #{RET} to quit: " 
+      prompt = theme.bull_prompt.gsub("@btotal@","#{b_total}")
+      prompt = prompt.gsub("@blist@",dlist(b_total))
       while true
-      #  getinp(prompt, :nonempty) {|inp|    <-- removed :nonempty which prevents the loop from exiting on <return>
           getinp(prompt) {|inp|
           happy = inp.upcase
           t = happy.to_i
