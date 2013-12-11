@@ -1,3 +1,5 @@
 %W;Thank you for visiting TARDIS BBS...
 
 %FB%
+
+%WR; NO CARRIER %W;

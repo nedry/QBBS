@@ -261,8 +261,9 @@ class Session
 
   def qotd
       if !QOTD.nil? then
+      print
       print "Quote of the Day: " if !existfileout('qotdhdr',0,true)
-			print quoteFromDir(QOTD)
+      print quoteFromDir(QOTD)
     else
       print
       print "%WG;Quote of the Day is disabled%W;"

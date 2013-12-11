@@ -12,9 +12,11 @@ class Session
   end
 
   def header
-    print ""
-    print "%G;Welcome to QUARKirc v1.1 You are in the %C;#{@irc_channel} %G;channel."
-    print "%G;Type %Y;? %G;for Help  %Y;/QUIT %G;to Quit\r\n"
+    print
+    if !existfileout('irchdr',0,true) then
+      print "%G;Welcome to QUARKirc v1.1 You are in the %C;#{@irc_channel} %G;channel."
+      print "%G;Type %Y;? %G;for Help  %Y;/QUIT %G;to Quit\r\n"
+    end
   end
 
 
@@ -24,7 +26,7 @@ class Session
     count = 0
     game = false
 
-    @who.user(@c_user.name).where="IRC (Chat)"
+    @who.user(@c_user.name).where="Teleconference (irc)"
     @irc_client = IRC::Client::new(IRCSERVER, IRCPORT)
     IRC::Event::Ping.new(@irc_client)
     @chatbuff.clear
@@ -46,30 +48,30 @@ class Session
       m = @irc_client.isdata ? @irc_client.getline : nil
       if m then
         if m.kind_of? IRC::Message::ServerNotice then
-          print "%Y;#{m.params}"
+           print "%Y;#{m.params}" if IRC_DEBUG
 
         elsif m.kind_of? IRC::Message::Numeric then
           case m.command
           when IRC::ERR_NICKNAMEINUSE
-            print "%Y;*** Nickname already in use."
+            print "%Y;*** Nickname already in use." 
             new_alias = "#{@c_user.alias}#{random(1..999)}"
-            print "%Y;*** Trying #{new_alias}"
+            print "%Y;*** Trying #{new_alias}" 
             @irc_client.login(new_alias, @c_user.alias, "8", "*", "Telnet User")
           when IRC::RPL_CREATED
             (/^:(.*):(.*):(.*)/) =~ m.message
-            print "%Y;*** #{$2}:#{$3}"
+            print "%Y;*** #{$2}:#{$3}" if IRC_DEBUG
           when IRC::RPL_LUSEROP
             (/^:(\S*)\s(\d*)\s(\S*)\s(\d*)\s:(.*)/) =~ m.message
-            print "%Y;*** There are #{$4} #{$5}"
+            print "%Y;*** There are #{$4} #{$5}" if IRC_DEBUG
           when IRC::RPL_LUSERCHANNELS
             (/^:(\S*)\s(\d*)\s(\S*)\s(\d*)\s:(.*)/) =~ m.message
-            print "%Y;*** There are #{$4} #{$5}"
+            print "%Y;*** There are #{$4} #{$5}" if IRC_DEBUG
           else
             (/^:(\S*)\s(\S*)\s(\S*)\s(.*)/) =~ m.message
             out = $4
             hippy = (/^:(.*)/) =~ out
             out = $1 if !hippy.nil?
-            print "%Y;*** #{out}"
+            print "%Y;*** #{out}" if IRC_DEBUG
           end
         end
 

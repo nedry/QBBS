@@ -5,7 +5,8 @@ QWK_DEBUG = false
 NNTP = false
 FIDO = false
 SMTP = false
-IRC_ON =  false
+IRC_ON =  true
+IRC_DEBUG = false
 SCREENSAVER = true
 FLASH_POL = false
 

@@ -132,11 +132,11 @@ end
 
 
 
-Awho = Struct.new('Awho', :irc, :node, :level, :location,:where, :threadn, :date, :name, :page, :ping)
+Awho = Struct.new('Awho', :irc, :node, :level, :location,:where, :threadn, :date, :name, :page, :ping,:sex)
 class Awho
   private :initialize
   class << self
-    def create(name,irc,node,location,threadn,level,where)
+    def create(name,irc,node,location,threadn,level,where,sex)
       a = self.new
       a.date		= Time.now
       a.irc			= irc
@@ -146,6 +146,7 @@ class Awho
       a.threadn		= threadn
       a.level		= level
       a.where		= where
+      a.sex                  = sex
       a.page    = []
       a.ping =0
       return a

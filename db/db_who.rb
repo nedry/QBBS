@@ -9,11 +9,13 @@ def w_total
   Who.count
 end
 
-def add_who(number,lastactivity,place)
+def add_who(number,lastactivity,place,access,sex)
   Who.create(
     :number => number,
     :lastactivity => lastactivity,
-    :place => place
+    :place => place,
+    :access => access,
+    :sex => sex
   )
 end
 

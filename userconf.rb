@@ -16,7 +16,7 @@ class Session
     if SCREENSAVER
       saver = "NONE"
       saver = get_user_screen(@c_user).name if !get_user_screen(@c_user).nil?
-      print "    %C;S  %Y;... Screen Saver:  %W;#{saver}"
+      print "    %C;S  %Y;... Screen Saver: %W;#{saver}"
     end
     print
   end

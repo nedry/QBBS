@@ -11,7 +11,6 @@ class Session
     if yes(theme.logout_prompt, true, false,false) then
       write "%W;"
       ogfileout('bye',1,true)
-      print "%WR; NO CARRIER %W;"
       sleep (1)
       hangup
     end

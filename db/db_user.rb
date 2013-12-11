@@ -101,7 +101,7 @@ def update_pointer(r)
   r.save
 end
 
-def add_user(name,ip,password,citystate,address,length,width,ansi, more, level, fullscreen)
+def add_user(name,ip,password,citystate,address,length,width,ansi, more, level, fullscreen,sex)
   User.create(
     :name => name,
     :ip => ip,
@@ -114,7 +114,8 @@ def add_user(name,ip,password,citystate,address,length,width,ansi, more, level, 
     :more => more,
     :level => level,
     :fullscreen => fullscreen,
-    :create_date => Time.now
+    :create_date => Time.now,
+    :sex => sex
   )
 end
 

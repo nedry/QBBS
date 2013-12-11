@@ -27,6 +27,8 @@ class User
   property :rsts_acc, Integer 
   property :fullscreen, Boolean
   property :signature, Text
+  property :sex,String, :length => 5
+  property :birthdate,Date
   property :fastlogon, Boolean
   property :theme_key, Integer
   property :screen_key, Integer

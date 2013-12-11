@@ -137,7 +137,7 @@ def tih
     else
       @session.print "\n#{outfile} has run away...please tell sysop!\n"
     end
-    2.times { @session.print }
+     @session.print 
   end
 
 
