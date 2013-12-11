@@ -1,0 +1,15 @@
+%NOMORE%  
+%C;Greetings %USERNAME% and welcome to The Rock Garden!
+
+ 
+%WHOLIST%  
+%w;You are caller number %m;%TLOGON%%w;!
+%PAUSE%  
+%TIH% 
+%PAUSE%  
+%LASTCALL%  
+%PAUSE%  
+%QOTD%  
+
+
+

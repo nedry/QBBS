@@ -1,0 +1,16 @@
+%C;    ________  ______   ________          __ 
+   /  _/ __ \/ ____/  / ____/ /_  ____ _/ /_
+   / // /_/ / /      / /   / __ \/ __ `/ __/
+ _/ // _, _/ /___   / /___/ / / / /_/ / /_  
+/___/_/ |_|\____/   \____/_/ /_/\__,_/\__
+                     
+  
+%W;[%Y;/JOIN%W;]%G; a channel                    %W;[%Y;/LIST%W;]%G; Channels
+%W;[%Y;/NAMES%W;]%G; of users on current channel %W;[%Y;/ME%W;]%G; Perform Action
+%W;[%Y;/MOTD%W;]%G;Daily Message                 
+
+%W;[%Y;/TOPIC%W;]%G; Change Channel Topic        %W;[%Y;/WHOIS%W;]%G;Info on a user
+
+%W;[%Y;/PAGE%W;]%G; User (not in chat)           %W;[%Y;/U%W;]%G;sers on BBS
+
+%W;[%Y;/QUIT%W;]%G;Quit   

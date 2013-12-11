@@ -1,0 +1,18 @@
+%G;You are logged in to The Rock Garden.
+
+You are looking at the %C;TOP%G; menu page. Please type in your
+selection from the choices below and press %C;RETURN%G;. You may also
+type "%C;/GO%G;" at any time for help on jumping directly to another
+page. (Type "%C;FIND%G;" to get help on finding a page to go to.)
+
+Please select one of the following:
+
+   %C;T%Y; ... Teleconference
+   %C;I %Y;... Information Center
+   %C;F %Y;... Forums (Public Message Bases)
+   %C;E %Y;... Electronic Mail
+   %C;A %Y;... Account Display/Edit
+   %C;P %Y;... Polls and Questionnaires
+   %C;G %Y;... Games
+   %C;R %Y;... Registry of Users
+   %C;X %Y;... Exit System (Logoff)

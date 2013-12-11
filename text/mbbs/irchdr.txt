@@ -1,0 +1,5 @@
+%Y;Teleconference Link-Up
+----------------------
+%G;You are in the Main public channel!
+There is currently no one else here with you.
+Just enter "?" if you need any assistance.

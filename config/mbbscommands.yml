@@ -1,0 +1,260 @@
+- cmd: areachange
+  theme_key: 3
+  ulevel: 0
+  menu_item: S
+
+- cmd: gmaint
+  theme_key: 3
+  ulevel: 0
+  menu_item: GM
+
+- cmd: leave
+  theme_key: 3
+  ulevel: 0
+  menu_item: X
+
+- cmd: umaint
+  theme_key: 3
+  ulevel: 255
+  menu_item: UM
+
+- cmd: kill_log
+  theme_key: 3
+  ulevel: 255
+  menu_item: KL
+
+- cmd: masskill
+  theme_key: 3
+  ulevel: 255
+  menu_item: MK
+  
+- cmd: amaint
+  theme_key: 3
+  ulevel: 255
+  menu_item: AM
+  
+- cmd: smaint
+  theme_key: 3
+  ulevel: 255
+  menu_item: SM
+
+
+- cmd: log
+  theme_key: 3
+  ulevel: 0
+  menu_item: L
+  
+- cmd: sysopmnu
+  theme_key: 3
+  ulevel: 255
+  menu_item: S
+  
+- cmd: bmaint
+  theme_key: 3
+  ulevel: 255
+  menu_item: BM
+
+- cmd: bulletins
+  theme_key: 3
+  ulevel: 0
+  menu_item: I
+  
+- cmd: teleconference
+  theme_key: 3
+  ulevel: 0
+  menu_item: T
+
+- cmd: kick
+  theme_key: 3
+  ulevel: 255
+  menu_item: KU
+
+- cmd: questionaire
+  theme_key: 3
+  ulevel: 0
+  menu_item: P
+
+- cmd: email
+  theme_key: 3
+  ulevel: 0
+  menu_item: E
+
+- cmd: dmaint
+  theme_key: 3
+  ulevel: 255
+  menu_item: DM
+
+- cmd: tmaint
+  theme_key: 3
+  ulevel: 255
+  menu_item: TM
+
+- cmd: omaint
+  theme_key: 3
+  ulevel: 255
+  menu_item: OM
+
+- cmd: doors
+  theme_key: 3
+  ulevel: 0
+  menu_item: G
+
+- cmd: other
+  theme_key: 3
+  ulevel: 0
+  menu_item: O
+
+- cmd: feedback
+  theme_key: 3
+  ulevel: 0
+  menu_item: UF
+
+- cmd: post
+  theme_key: 3
+  ulevel: 0 
+  menu_item: P
+
+- cmd: usrsetting
+  theme_key: 3
+  ulevel: 0
+  menu_item: "A"
+
+- cmd: readmnu
+  theme_key: 3
+  ulevel: 0
+  menu_item: F
+
+- cmd: zipread
+  theme_key: 3
+  ulevel: 0
+  menu_item: Z
+
+- cmd: page
+  theme_key: 3
+  ulevel: 0
+  menu_item: PU
+
+- cmd: info
+  theme_key: 3
+  ulevel: 0
+  menu_item: S
+  
+- cmd: version
+  theme_key: 3
+  ulevel: 0
+  menu_item: V
+
+- cmd: who
+  theme_key: 3
+  ulevel: 0
+  menu_item: W
+
+- cmd: sysopmenu
+  theme_key: 3
+  ulevel: 255
+  menu_item: S
+
+- cmd: mainmnu
+  theme_key: 3
+  ulevel: 0
+  menu_item: '?'
+
+- cmd: reread
+  theme_key: 3
+  ulevel: 0
+  menu_item: '/'
+  
+- cmd: killmsg
+  theme_key: 3
+  ulevel: 0
+  menu_item: K
+  
+- cmd: replymsg
+  theme_key: 3
+  ulevel: 0
+  menu_item: R
+  
+- cmd: fullheader
+  theme_key: 3
+  ulevel: 0
+  menu_item: FH
+
+- cmd: sysopmenu
+  theme_key: 3
+  ulevel: 255
+  menu_item: S
+
+- cmd: readmenu
+  theme_key: 3
+  ulevel: 0
+  menu_item: '?'
+
+- cmd: readquit
+  theme_key: 3
+  ulevel: 0
+  menu_item: Q
+    
+- cmd: bullquit
+  theme_key: 3
+  ulevel: 0
+  menu_item: X
+
+- cmd: bullmenu
+  theme_key: 3
+  ulevel: 0
+  menu_item: '?'
+  
+- cmd: doormenu
+  theme_key: 3
+  ulevel: 0
+  menu_item: '?'
+
+- cmd: doorquit
+  theme_key: 3
+  ulevel: 0
+  menu_item: X
+  
+- cmd: screenmenu
+  theme_key: 3
+  ulevel: 0
+  menu_item: '?'
+
+- cmd: screenquit
+  theme_key: 3
+  ulevel: 0
+  menu_item: Q
+  
+- cmd: bbslist
+  theme_key: 3
+  ulevel: 0
+  menu_item: O
+
+- cmd: bbsquit
+  theme_key: 3
+  ulevel: 0
+  menu_item: Q
+
+- cmd: bbsadd
+  theme_key: 3
+  ulevel: 0
+  menu_item: A
+  
+- cmd: bbslock
+  theme_key: 3
+  ulevel: 0
+  menu_item: L
+
+- cmd: bbsdelete
+  theme_key: 3
+  ulevel: 0
+  menu_item: K
+  
+- cmd: bbsreload
+  theme_key: 3
+  ulevel: 0
+  menu_item: '/'
+  
+- cmd: bbscont
+  theme_key: 3
+  ulevel: 0
+  menu_item: 'C'
