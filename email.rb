@@ -1,21 +1,20 @@
 class Session
 
   def scanformail # revised
+    theme = get_user_theme(@c_user) 
     i = 0
     ptr_check
     u = @c_user
     area = fetch_area(0)
-    print; write "Scanning for New Email... "
+    
     pointer = get_pointer(@c_user,0)
     new = new_email(pointer.lastread,u.name)
 
     if new > 0 then
-      m = "message"
-      m = "messages" if new > 1
-      print "%G;#{new} new #{m} found."
+       print theme.yes_mail_prompt.gsub("@new@","#{new}")
       return true
     end
-    print "none."
+    print theme.no_mail_prompt 
     return false
   end
 
@@ -30,7 +29,7 @@ class Session
   end
 
   def readitnow
-    reademail(true) if yes(CRLF+"Read them now #{YESNO}", true, false,true)
+    reademail(true) if yes(theme.yes_mail_readit, true, false,true)
   end
 
 

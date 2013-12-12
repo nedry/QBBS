@@ -14,6 +14,9 @@ class Theme
   property :user_prompt, String, :length => 200
   property :door_prompt, String, :length => 200
   property :bull_prompt, String, :length => 200
+  property :no_mail_prompt, String, :length => 200
+  property :yes_mail_prompt, String, :length => 200 
+  property :yes_mail_readit, String, :length => 200
   property :main_prompt, String, :length => 200
   property :read_prompt, String, :length => 200
   property :email_prompt, String, :length => 200

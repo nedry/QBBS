@@ -63,6 +63,9 @@ Theme.new(:number => 1,
 		    :door_prompt => "\r\n%G;Game #[1-@dtotal@] ? #{RET} %G;to quit: %W;",
 		    :bull_prompt => "\r\n%G;Bulletins #[1-@btotal@] ? #{RET} %G;to quit: %W;",
 		    :user_prompt => "%W;Change Which User Setting ? #{RET} to quit: ",
+		    :no_mail_prompt => "%W;Scanning for New Email... none.",
+		    :yes_mail_prompt => "%W;Scanning for New Email... @new@ message(s).\r\n",
+		    :yes_mail_readit => "\r\nRead them now #{YESNO}",
                    :nomainmenu => false,
 		   :areachangeonmain => true,
                    :text_directory => "text/").save!
@@ -76,6 +79,9 @@ Theme.new(:number => 2,
 		    :door_prompt => "\r\n%G;Game #[1-@dtotal@] ? #{RET} %G;to quit: %W;",
 		    :bull_prompt => "\r\n%G;Bulletins #[1-@btotal@] ? #{RET} %G;to quit: %W;",
 		    :user_prompt => "%W;Change Which User Setting ? #{RET} to quit: ",
+		    :no_mail_prompt => "%W;Scanning for New Email... none.",
+		    :yes_mail_prompt => "%W;Scanning for New Email... @new@ message(s).\r\n",
+		    :yes_mail_readit => "\r\nRead them now #{YESNO}",
                    :nomainmenu => true,
 		   :areachangeonmain => true,
                    :text_directory => "text/wbbs/").save!
@@ -89,11 +95,12 @@ Theme.new(:number => 3,
 		   :door_prompt => "\r\n%G;GAMES %w;(%G;GAMES%w;)\r\n%w;Select (%C;@dlist@,%W; ? for help, or %C;X%W; to exit%w;): %W;",
 		   :bull_prompt => "\r\n%G;Information Center %w;(%G;INFO%w;)\r\n%w;Select (%C;@blist@,%W; ? for help, or %C;X%W; to exit%w;): %W;",
 		    :user_prompt => "\r\n%G;User Settings %w;(%G;USERS%w;)\r\n%w;Select (%C;C,E,F,G,L,M,W,P,SI,Z,T,%W; ? for help, or %C;X%W; to exit%w;): %W;",
+		    :no_mail_prompt => "",
+		    :yes_mail_prompt => "%Y;There is %W;new%Y; mail in your mailbox!",
+		  :yes_mail_readit => "\r\n%C;Do you want to see it now (Y/N)?",
                    :nomainmenu => false,
 		   :areachangeonmain => false,
                    :text_directory => "text/mbbs/").save!
-
-
 
 
 t = 
