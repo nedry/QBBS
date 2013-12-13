@@ -7,9 +7,12 @@
 %PAUSE%  
 %TIH% 
 %PAUSE%  
-%LASTCALL%  
-%PAUSE%  
-%QOTD%  
+
+%C;Defend the space lanes from the ruthless space pirates?  Or live
+outside the law, robbing and stealing whatever you can get away with?
+
+%W;Conquer the universe!  Play interactive Trade Wars 2002 today!
+
 
 
 

@@ -100,13 +100,14 @@ class Session
   def run
     telnetsetup
     logon 
+    theme = get_user_theme(@c_user) 
     if !@c_user.fastlogon then
       if scanformail == true  then 
         emailmenu if yes("%G;Would you like to read it now #{YESNO}",true,false,true)
       end
     end
-    if !@c_user.fastlogon then
-     messagemenu (true) if yes("%G;Would you like to perform a new message scan %W;(%G;ZIPread%W;)? #{YESNO}",true,false,true)
+    if !@c_user.fastlogon  and !theme.zipreadonlogon then
+     messagemenu (true) if yes(theme.zipread_prompt,true,false,true)
     end
     commandLoop
   end

@@ -87,6 +87,8 @@ def tih
     cont = true
     nomore = false
     display = true
+    nonstop = false
+         theme = get_user_theme(@session.c_user)
     u_space = disk_used_space(ROOT_PATH).to_s
     f_space = disk_free_space(ROOT_PATH).to_s
     t_space =  disk_total_space(ROOT_PATH).to_s
@@ -101,9 +103,15 @@ def tih
         end 
         break if !cont
         out = parse_text_commands(line,u_space,f_space,t_space,pf_space)
-        if !out.gsub!("%PAUSE%","").nil? and @session.logged_on  then
-          exit = @session.yes("%W;Press (%G;Q/Quit%W;) #{RET} ",true,false,true)
-					return if !exit
+	
+        if !out.gsub!("%PAUSE%","").nil? and @session.logged_on and !nonstop then
+	  inp = @session.getinp(theme.pause_prompt,false) 
+	     case inp.upcase
+		when "N"
+		    nonstop = true
+		when "Q"
+		    break
+	     end
         end
         if !out.gsub!("%WHOLIST%","").nil? and @session.logged_on  then
           @session.displaywho
