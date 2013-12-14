@@ -10,7 +10,7 @@ the -dev package as well as the main package.
 
 Detailed instructions for installing postgresql to be added here...
 
-Ruby: version 1.9.2 or higher is required. If you are installing
+Ruby: version 2.0.0 or higher is required. If you are installing
 ruby from source, you need to ensure you install xxx dependencies
 before you compile Ruby. If you do not, you will have to install a
 component separately, or you will not be able to install the Ruby PG
@@ -22,11 +22,11 @@ sudo apt-get -y update && sudo apt-get -y upgrade
 sudo apt-get -y install build-essential zlib1g-dev libssl-dev libreadline-dev libyaml-dev libcurl4-openssl-dev
 sudo apt-get -y install curl git-core python-software-properties
 
-It is recommended that Ruby 1.9.x is installed from source.
+It is recommended that Ruby 2.0.x is installed from source.
 
-wget ftp://ftp.ruby-lang.org/pub/ruby/1.9/ruby-1.9.3-p286.tar.gz
-tar -xvzf ruby-1.9.3-p286.tar.gz
-cd ruby-1.9.3-p286/
+wget ftp://ftp.ruby-lang.org/pub/ruby/2.0/ruby-2.0.0-p353.tar.gz
+tar xvfz ruby-2.0.0-p353.tar.gz
+cd ruby-2.0.0-p353
 ./configure
 make
 sudo make install
@@ -52,7 +52,7 @@ sudo apt-get -y install libncurses5-dev
 
 On my system I had to create a symbolic link for the library to load correctly:
 
-sudo ln -s /lib/i386-linux-gnu/libncursesw.so.5 libncursesw.so
+sudo ln -s /lib/i386-linux-gnu/libncursesw.so.5 /lib/i386-linux-gnu/libncursesw.so
 
 
 Install berkeley db...
@@ -71,7 +71,7 @@ and then:
 
 sudo apt-get update
 sudo apt-get -y install libdb4.7
-sudo apt-get -y libdb4.7-dev
+sudo apt-get -y install libdb4.7-dev
 
 The following gems are required:
 o haml
@@ -144,6 +144,10 @@ find this file.
 You must install the knu-ruby-bdb-v0.6.6-0-g6aa8054 package. It is
 in the packages directory. It installs like any other ruby module, using
 extconf.rb. If you don't install this, the BBS will not function.
+
+Ruby 2.0 breaks the installer, slightly.  You need to comment out the following
+lines in features.rb... lines 816 and 881 before you run extconf.rb.
+
 
 The following Linux software is also required. If you are using
 debain, they are available as debain packages, which may be installed
