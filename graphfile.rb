@@ -14,6 +14,10 @@ class GraphFile
     @session = session
     @filename = filename
     @override = override
+    @u_space = disk_used_space(ROOT_PATH).to_s
+    @f_space = disk_free_space(ROOT_PATH).to_s
+    @t_space =  disk_total_space(ROOT_PATH).to_s
+    @pf_space = disk_percent_free(ROOT_PATH).to_s
   end
 
   def outfile
@@ -29,15 +33,10 @@ class GraphFile
 
   def process_only
 
-    u_space = disk_used_space(ROOT_PATH).to_s
-    f_space = disk_free_space(ROOT_PATH).to_s
-    t_space =  disk_total_space(ROOT_PATH).to_s
-    pf_space = disk_percent_free(ROOT_PATH).to_s
-    
     out = []
     if File.exists?(outfile)
       IO.foreach(outfile) { |line|
-        deporter = parse_text_commands(line,u_space,f_space,t_space,pf_space)
+        deporter = parse_text_commands(line)
         out  << deporter.gsub("\n", "")
 
       }
@@ -48,12 +47,6 @@ class GraphFile
   end
   
 def tih
-			
-    u_space = disk_used_space(ROOT_PATH).to_s
-    f_space = disk_free_space(ROOT_PATH).to_s
-    t_space =  disk_total_space(ROOT_PATH).to_s
-    pf_space = disk_percent_free(ROOT_PATH).to_s
-		
       if !TIH.nil? then
 
 			j = 0
@@ -63,7 +56,7 @@ def tih
           cont = @session.moreprompt
           j = 1
         end
-				@session.print parse_text_commands(line,u_space,f_space,t_space,pf_space)
+				@session.print parse_text_commands(line)
  }
     else
       @session.print
@@ -88,11 +81,8 @@ def tih
     nomore = false
     display = true
     nonstop = false
-         theme = get_user_theme(@session.c_user)
-    u_space = disk_used_space(ROOT_PATH).to_s
-    f_space = disk_free_space(ROOT_PATH).to_s
-    t_space =  disk_total_space(ROOT_PATH).to_s
-    pf_space = disk_percent_free(ROOT_PATH).to_s
+    theme = get_user_theme(@session.c_user)
+
     if File.exists?(outfile)
       IO.foreach(outfile) { |line|
         j = j + 1 if display
@@ -102,7 +92,7 @@ def tih
           j = 1
         end 
         break if !cont
-        out = parse_text_commands(line,u_space,f_space,t_space,pf_space)
+        out = parse_text_commands(line)
 	
         if !out.gsub!("%PAUSE%","").nil? and @session.logged_on and !nonstop then
 	  inp = @session.getinp(theme.pause_prompt,false) 
@@ -117,8 +107,8 @@ def tih
           @session.displaywho
         end
         if !out.gsub!("%FB%","").nil? and @session.logged_on  then
-				 doit = @session.yes("%W;Do you want to leave a comment to the SysOp #{NOYES} ",false,false,true) 
-				 @session.sendemail(true) if doit
+	  doit = @session.yes("%W;Do you want to leave a comment to the SysOp #{NOYES} ",false,false,true) 
+	 @session.sendemail(true) if doit
         end
         if !out.gsub!("%LASTCALL%","").nil? and @session.logged_on  then
           @session.display_wall
@@ -148,16 +138,53 @@ def tih
      @session.print 
   end
 
+  def padding(string,p)
+     s = " "
+     s = string if !string.nil?
+     s = s.ljust(p.to_i) if !p.nil?
+     return s
+  end
 
+
+  def profileout(user)
+    theme = get_user_theme(@session.c_user)
+
+    if File.exists?(outfile)
+      IO.foreach(outfile) { |line|
+	line = parse_text_commands(line.force_encoding("IBM437"))
+        line.gsub!(/%UNAME(\d*)%/){|m| padding(user.name,$1)}
+        line.gsub!(/%REALNAME(\d*)%/){|m| padding(user.real_name,$1)}
+        line.gsub!(/%SEX(\d*)%/){|m| padding(user.sex,$1)}
+        line.gsub!(/%AGE(\d*)%/){|m| padding(user.age.to_s,$1)}
+        line.gsub!(/%ALIASES(\d*)%/){|m| padding(user.aliases,$1)}
+        line.gsub!(/%CITYSTATE(\d*)%/){|m| padding(user.citystate,$1)}
+        line.gsub!(/%VPHONE(\d*)%/){|m| padding(user.voice_phone,$1)}
+        line.gsub!(/%PDESC(\d*)%/){|m| padding(user.p_description,$1)}
+        line.gsub!(/%URL(\d*)%/){|m| padding(user.url,$1)}
+        line.gsub!(/%MOVIE(\d*)%/){|m| padding(user.fav_movie,$1)}
+        line.gsub!(/%TV(\d*)%/){|m| padding(user.fav_tv,$1)}		
+        line.gsub!(/%TV(\d*)%/){|m| padding(user.fav_music,$1)}	
+        line.gsub!(/%INST(\d*)%/){|m| padding(user.insturments,$1)}	
+        line.gsub!(/%FOOD(\d*)%/){|m| padding(user.fav_food,$1)}	
+        line.gsub!(/%SPORT(\d*)%/){|m| padding(user.fav_sport,$1)}
+        line.gsub!(/%HOBBIES(\d*)%/){|m| padding(user.hobbies,$1)}
+        line.gsub!(/%GEN1(\d*)%/){|m| padding(user.gen_info1,$1)}	
+        line.gsub!(/%GEN2(\d*)%/){|m| padding(user.gen_info2,$1)}	
+        line.gsub!(/%SUM(\d*)%/){|m| padding(user.summary,$1)}	
+
+        @session.write line + "\r"
+      }
+    else
+      @session.print "\n#{outfile} has run away...please tell sysop!\n"
+    end
+     @session.print 
+  end
 
   def fileout(fname)
-    u_space = disk_used_space(ROOT_PATH).to_s
-    f_space = disk_free_space(ROOT_PATH).to_s
-    t_space =  disk_total_space(ROOT_PATH).to_s
-    pf_space = disk_percent_free(ROOT_PATH).to_s
+
     if File.exists?(fname)
       IO.foreach(fname) { |line|
-        out = parse_text_commands(line.force_encoding("IBM437"),u_space,f_space,t_space,pf_space)
+        out = parse_text_commands(line.force_encoding("IBM437"))
 
         @session.write out + "\r"
       }
@@ -181,14 +208,17 @@ end
 
 
 
-def parse_text_commands(line,u_space,f_space,t_space,pf_space)
+def parse_text_commands(line)
+	
+
+    
   if @session.logged_on then
     system = fetch_system
     posts = @session.c_user.posted.to_f
     calls =  @session.c_user.logons.to_f
     ualias = @session.c_user.alias
     ualias = "<NONE>" if ualias.nil?
-    tspacem = t_space.to_i / 1048576
+    tspacem = @t_space.to_i / 1048576
     ratio = (posts  / calls) * 100
 
     ip= @session.c_user.ip
@@ -196,13 +226,13 @@ def parse_text_commands(line,u_space,f_space,t_space,pf_space)
     ratio = 0 if calls == 0
     text_commands = {
 
-      "%U_SPACE%" => u_space,
-      "%F_SPACE%" => f_space,
-      "%T_SPACE%" => t_space,
-      "%PU_SPACE%" =>  pf_space,
+      "%U_SPACE%" => @u_space,
+      "%F_SPACE%" => @f_space,
+      "%T_SPACE%" => @t_space,
+      "%PU_SPACE%" =>  @pf_space,
       "%NODE%"  => @session.node.to_s,
       "%TIMEOFDAY%" => @session.timeofday,
-			"%YEAR%" => Time.now.year.to_s,
+       "%YEAR%" => Time.now.year.to_s,
       "%USERNAME%" => @session.c_user.name,
       "%U_LDATE%" => @session.c_user.laston.strftime("%A %B %d, %Y"),
       "%U_LTIME%" => @session.c_user.laston.strftime("%I:%M%p (%Z)"),

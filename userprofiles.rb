@@ -1,46 +1,4 @@
 class Session
-  def userprofileedit
-    existfileout('profilehdr',0,true)
-    print "%G;Your current entry is...\r\n"
-    write "%C; [1] %Y;Real Name: %W;"
-    if !@c_user.real_name.nil?
-      write "#{@c_user.real_name.ljust(30)}" 
-    else 
-      write " ".ljust(30)
-    end 
-    write "%C;[2] %Y;Sex:  %W;"
-    write "#{@c_user.sex.ljust(5)}" if !@c_user.sex.nil?
-    print " %C;[3] %Y;Age:  %W;#{@c_user.age}"
-    print " %C;[4] %Y;Aliases: %W;#{@c_user.aliases}"
-    print " %C;[5] %Y;City/State: %W;#{@c_user.citystate}"
-    print " %C;[6] %Y;Phone #: %W;#{@c_user.voice_phone}"
-    print " %C;[7] %Y;Physical Description: %W;#{@c_user.p_description}"
-    print " %C;[8] %Y;Website/Email: %W;#{@c_user.url}"
-    write " %C;[9] %Y;Fav. Movie: "
-     if !@c_user.fav_movie.nil?
-      write "%W;#{@c_user.fav_movie.ljust(29)}"
-     else 
-	write " ".ljust(29)
-     end
-
-    print "%C;[10] %Y;Fav TV Show: %W;#{@c_user.fav_tv}"  
-    write "%C;[11] %Y;Fav Music: %W;"
-    if !@c_user.fav_music.nil? then
-      write "#{@c_user.fav_music.jlust(29)}"  
-    else
-       write " ".ljust(30)
-    end	    
-    print "%C;[12] %Y;Inst Played: %W;#{@c_user.insturments}" 
-    print "%C;[13] %Y;Fav. Foods: %W;#{@c_user.fav_food}" 
-    print "%C;[14] %Y;Fav. Sport(s): %W;#{@c_user.fav_sport}"  
-    print "%C;[15] %Y;Other Interests: %W;#{@c_user.hobbies}"  
-    print "%C;[16] %Y;General Info 1: %W;#{@c_user.gen_info1}"  
-    print "%C;[17] %Y;General Info 2: %W;#{@c_user.gen_info2}"  
-    print "%C;[18] %Y;Summary: %W;#{@c_user.summary}"  
-    print
-  end
-
- 
 
    def changeuserstring(thing,len, block)
     prompt = "Enter #{thing} (#{len} characters max): "
@@ -79,7 +37,8 @@ class Session
 
   def profileeditmenu
     theme = get_user_theme(@c_user) 
-    userprofileedit
+
+    GraphFile.new(self, "proedit").profileout(@c_user)
     prompt = theme.profileedit_prompt
     getinp(prompt) {|inp|
 
@@ -108,17 +67,12 @@ class Session
       when "18"; changeuserstring("summary",50, Proc.new{|temp| @c_user.summary = temp})
 
 
-      when "?" 
-        if !existfileout('profilehdr',0,true)
-	  print "User Profile:"
-	  userprofileedit
-        end
-	
+      when "?" ;GraphFile.new(self, "proedit").profileout(@c_user)
       when "";	done = true
       when "Q";	done = true
       when "X";	done = true
       end
-      profileeditmenu if !done
+      GraphFile.new(self, "proedit").profileout(@c_user) if !done
       done
     }
   end 
@@ -140,7 +94,7 @@ class Session
 
       when "?" 
            ogfileout('profilemenu',1,true)
-
+      when "TB"; GraphFile.new(self, "proentry").profileout(@c_user)
       when "Y"; profileeditmenu
       when "";	done = true
       when "Q";	done = true
