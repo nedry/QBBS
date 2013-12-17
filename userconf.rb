@@ -45,8 +45,8 @@ class Session
         inp.gsub!(/[-\d]/,"")
       end
       case inp.upcase
-      when "L"; changelength
-      when "W"; changewidth
+      when "L"; changeusernum("screen length (10-60) [24 is normal]",10,40,Proc.new{|temp| @c_user.length = temp})
+      when "W"; changeusernum("screen width (22-80) [80 is normal]",22,80,Proc.new{|temp| @c_user.width = temp})
       when "P"; changepwd
       when "C"; changenick
       when "G"; togglegraphics 
@@ -67,26 +67,12 @@ class Session
       when "Q";	done = true
       when "X";	done = true
       end
+      usersettingsmenu if !done
       done
     }
   end 
 end #class Session
 
-def changelength
-  print "Screen Length is %R;#{@c_user.length}%G; lines."
-  prompt = "Screen length? (10-60) [default=40]: "
-  @c_user.length = getnum(prompt,10,60) || 40
-  update_user(@c_user)
-  usersettingsmenu
-end
-
-def changewidth
-  print "Screen Width is %R;#{@c_user.width}%G; characters."
-  prompt = "Screen width? (22-80) [default=40]: "
-  @c_user.width = getnum(prompt,22,80) || 40
-  update_user(@c_user)
-  usersettingsmenu
-end
 
 def signature
   print "Your current signature is:\n"
@@ -106,7 +92,7 @@ def signature
 		end
 	end
   update_user(@c_user)
-  usersettingsmenu
+
 end
 
 def changepwd
@@ -151,7 +137,6 @@ def changenick
   if !alias_exists(newname) then 
     @c_user.alias = newname
     update_user(@c_user)
-    usersettingsmenu
   else 
     print "%R;That alias is in use by another user.%G;" 
   end
@@ -160,25 +145,21 @@ end
 def togglegraphics
   @c_user.ansi = !@c_user.ansi
   update_user(@c_user)
-  usersettingsmenu
 end
 
 def togglefull
   @c_user.fullscreen = !@c_user.fullscreen
   update_user(@c_user)
-  usersettingsmenu
 end
 
 def togglefast
   @c_user.fastlogon = !@c_user.fastlogon
   update_user(@c_user)
-  usersettingsmenu
 end
 
 def togglemore
   @c_user.more = !@c_user.more
   update_user(@c_user)
-  usersettingsmenu
 end
 
 def displayzipheader
