@@ -112,6 +112,7 @@ end
       ulevel = @c_user.level
 
       case sel
+      when "TB"; profilemenu
       when @cmd_hash["bbslist"] ; run_if_ulevel("bbslist") {bbsmenu}
       when @cmd_hash["leave"] ; run_if_ulevel("leave") {leave}
       when @cmd_hash["umaint"] ; run_if_ulevel("umaint") {usermenu}

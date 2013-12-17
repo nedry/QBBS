@@ -23,7 +23,9 @@ class Theme
   property :logout_prompt, String, :length => 200
   property :pause_prompt, String, :length => 200
   property :zipread_prompt, String, :length => 200
-  property :zipreadonlogon, String, :length => 200
+  property :zipreadonlogon, Boolean, :default => true
+  property :profile_prompt, String, :length => 200
+  property :profileedit_prompt, String, :length => 200
   property :text_directory, String, :length => 80
   has n, :commands, :child_key => [:theme_key]
    has n, :users, :child_key => [:theme_key]

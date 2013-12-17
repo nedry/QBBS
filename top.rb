@@ -93,6 +93,7 @@ class Session
   require "nntp.rb"
   require "fortune.rb"
   require "bbslist.rb"
+  require "userprofiles.rb"
 	
 
  

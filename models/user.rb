@@ -27,7 +27,27 @@ class User
   property :rsts_acc, Integer 
   property :fullscreen, Boolean
   property :signature, Text
+  
   property :sex,String, :length => 5
+  property :real_name, String, :length =>40
+  property :aliases, String, :length =>40
+  property :age,Integer
+  property :city_state, String, :length =>40
+  property :real_name, String, :length =>40
+  property :voice_phone, String, :length =>40
+  property :p_description, String, :length =>40
+  property :url, String, :length =>40
+  property :fav_movie, String, :length =>40
+  property :fav_music, String, :length =>40
+  property :fav_food, String, :length =>40
+  property :fav_sport, String, :length =>40
+  property :fav_tv, String, :length =>40
+  property :insturments, String, :length =>40
+  property :hobbies, String, :length =>40
+  property :gen_info1, String, :length =>80
+  property :gen_info2, String, :length =>80
+  property :summary, String, :length =>40
+  
   property :birthdate,Date
   property :fastlogon, Boolean
   property :theme_key, Integer
