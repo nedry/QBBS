@@ -1,0 +1,19 @@
+%G;Your current entry is...%Y;
+
+%C; [1]%Y; Real Name: %Y;%REALNAME26%%C;[2]%Y; Sex: %Y;%SEX5%%C;[3]%Y; Age: %Y;%AGE%
+%C; [4]%Y; Aliases: %Y;%ALIASES%
+%C; [5]%Y; City/State: %Y;%CITYSTATE%
+%C; [6]%Y; Voice Phone: %Y;%VPHONE%
+%C; [7]%Y; Physical Descripton: %Y;%PDESC%
+%C; [8]%Y; Web/Email: %Y;%Y;%URL%
+%C; [9]%Y; Favourite Movie: %Y;%MOVIE20%%C;
+%C;[10]%Y; Favourite TV Show: %Y;%TV%
+%C;[11]%Y; Favourite Music: %Y;%INST20%
+%C;[12]%Y; Insturment Played: %Y;
+%C;[13]%Y; Favourite Food: %Y;%FOOD%
+%C;[14]%Y; Favourite Sport: %Y;%SPORT%
+%C;[15]%Y; Other Hobbies/Interests: %Y;%HOBBIES%
+%C;[16]%Y; General Info: %Y;%GEN1%
+%C;[17]%Y;               %Y;%GEN2%
+%C;[18]%Y; Summary: %Y;%SUM%
+
