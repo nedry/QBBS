@@ -1,0 +1,20 @@
+%G;The Registry of Users helps you get to know other users of this system.
+And, you can describe yourself, so that others can get to know YOU.
+
+When you create your Registry entry, the answers you give to the various
+questions become AVAILABLE TO THE PUBLIC.  Please do not enter any
+confidential information!  If you don't want to answer a given question,
+just type "N/A", "unlisted", or words to that effect.
+
+After you complete your entry, you will be able to edit it.  Feel free
+to update your information as often as you like.  To see a directory of
+all users now registered, select the '%C;D%G;' option from the menu below.
+
+%G;The following registry services are available...
+
+   %C;G %Y;=> General information
+   %C;D %Y;=> Directory of users in Registry
+        (%C;"DA"%Y; to start at the beginning)
+   %C;Y %Y;=> Edit YOUR entry
+   %C;L %Y;=> Look-up another user's entry
+   %C;X %Y;=> Exit from the Registry area
