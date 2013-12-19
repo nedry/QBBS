@@ -6,6 +6,25 @@ def u_total
   User.count
 end
 
+def p_total
+   User.count(:conditions => {:profile_added => true})
+end
+
+def get_profile_index(uname)
+   u = User.first(:conditions => ["upper(name) = ?", uname.upcase], :profile_added => true)
+   result = nil  
+   fetch_profile_list.each_with_index {|a,i| result = i if a.number == u.number} if !u.nil?
+   return result
+end
+
+def get_profile_start_alpha(alpha)
+ User.all(:order =>[:name],:conditions =>{ :profile_added => true, :name.like => "%[#{alpha}-Z]%"})
+ end
+
+def fetch_profile_list
+ User.all(:order =>[:name], :conditions => {:profile_added => true})
+end
+
 def find_RSTS_account
    act_rec = User.all( :rsts_acc.gt => 0,  :order => [ :rsts_acc.asc])
    if act_rec.length > 0 then
@@ -122,3 +141,4 @@ end
 def fetch_user_list
  User.all(:order =>[:name])
 end
+

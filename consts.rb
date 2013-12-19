@@ -358,6 +358,7 @@ AREA = 7
 SCREEN = 8
 GROUP = 9
 BBS = 10
+PROFILE = 11
 
 #Theme Defaults
 

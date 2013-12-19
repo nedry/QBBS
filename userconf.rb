@@ -45,8 +45,8 @@ class Session
         inp.gsub!(/[-\d]/,"")
       end
       case inp.upcase
-      when "L"; changeusernum("screen length (10-60) [24 is normal]",10,40,Proc.new{|temp| @c_user.length = temp})
-      when "W"; changeusernum("screen width (22-80) [80 is normal]",22,80,Proc.new{|temp| @c_user.width = temp})
+      when "L"; changeusernum("screen length (10-60) [24 is normal]",10,40,false,Proc.new{|temp| @c_user.length = temp})
+      when "W"; changeusernum("screen width (22-80) [80 is normal]",22,80,false,Proc.new{|temp| @c_user.width = temp})
       when "P"; changepwd
       when "C"; changenick
       when "G"; togglegraphics 

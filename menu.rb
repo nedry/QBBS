@@ -38,6 +38,8 @@ def readmenu(args)
         o_prompt = eval('"%G;#{sdir}Screen [%p] (1-#{s_total}): %W;"').gsub("%p","#{ptr}")
       when GROUP 
         o_prompt = eval('"%G;#{sdir}Group [%p] (0-#{g_total-1}): %W;"').gsub("%p","#{ptr}")
+      when PROFILE 
+        o_prompt = eval('"%G;#{sdir}Profile [%p] (1-#{p_total}): %W;"').gsub("%p","#{ptr}")
     end
 
    inp  = getinp (o_prompt)
@@ -63,6 +65,7 @@ def readmenu(args)
 end
 
 def up(ptr, high, zip)
+	print "ptr: #{ptr} high: #{high}"
   if ptr < high
     ptr = ptr + 1
   else
