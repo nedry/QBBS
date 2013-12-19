@@ -147,7 +147,7 @@
 - cmd: who
   theme_key: 3
   ulevel: 0
-  menu_item: W
+  menu_item: '-U'
 
 - cmd: sysopmenu
   theme_key: 3
@@ -258,3 +258,6 @@
   theme_key: 3
   ulevel: 0
   menu_item: 'C'
+
+  
+  

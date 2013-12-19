@@ -108,7 +108,7 @@ end
       imp = getinp(o_prompt,false)
       sel = imp.upcase.strip
       parameters = Parse.parse(sel)
-      sel.gsub!(/[-\d]/,"")
+     # sel.gsub!(/[-\d]/,"")
       ulevel = @c_user.level
 
       case sel

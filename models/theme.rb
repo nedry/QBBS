@@ -28,6 +28,7 @@ class Theme
   property :profileedit_prompt, String, :length => 200
   property :proflle_lookup, String, :length => 200
   property :profile_full_prompt, String, :length => 200
+  property :profile_comlete_entry,String,:length => 200
   property :text_directory, String, :length => 80
   has n, :commands, :child_key => [:theme_key]
    has n, :users, :child_key => [:theme_key]

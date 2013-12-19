@@ -6,6 +6,7 @@
 %w;You are caller number %m;%TLOGON%%w;!
 %PAUSE%  
 %TIH% 
+%PROFILE%
 %PAUSE%  
 
 %C;Defend the space lanes from the ruthless space pirates?  Or live

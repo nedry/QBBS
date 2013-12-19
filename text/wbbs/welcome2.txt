@@ -14,3 +14,5 @@
 %G;You were last logged on: %B;%U_LDATE% at %C;%U_LTIME%
 
 You have connected from IP Address: %IP%.
+
+%PROFILE%

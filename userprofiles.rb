@@ -115,12 +115,19 @@ class Session
     }
   end 
 
-  def alpha_list(startchar)
+  def alpha_list
     j = 1
     cont = true
     nomore = false
     nonstop = false
-
+    startchar = ""
+     theme = get_user_theme(@c_user) 
+     getinp (theme.profile_full_prompt) {|inp|
+      if inp.upcase =~ (/^[A-Z]$/)  then
+	startchar = inp.upcase
+	break
+      end
+      }
      list = fetch_profile_list
      print "%G;USER-ID                             ... SUMMARY"
      print "-----------------------------------------------"
@@ -141,7 +148,7 @@ class Session
     theme = get_user_theme(@c_user) 
     GraphFile.new(self, "profilemenu",true).ogfileout(0)
     prompt = theme.profile_prompt
-    print "p_total #{p_total}"
+
     getinp(prompt) {|inp|
 
       if !inp.integer?
@@ -154,8 +161,8 @@ class Session
       when "Y"; if @c_user.profile_added then profileeditmenu else profileadd end
       when "G"; GraphFile.new(self, "profileinfo",true).ogfileout(0)
       when "L"; findprofile
-      when "TB"; alpha_list("A")
-      when "W"; displaywho
+      when "D"; alpha_list
+      when @cmd_hash["who"] ; run_if_ulevel("who") {displaywho}
       when "PU"; page    
       when "";	done = true
       when "Q";	done = true

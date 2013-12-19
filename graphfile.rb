@@ -113,6 +113,9 @@ def tih
         if !out.gsub!("%LASTCALL%","").nil? and @session.logged_on  then
           @session.display_wall
         end
+        if !out.gsub!("%PROFILE%","").nil? and !@session.c_user.profile_added  then
+          @session.print theme.profile_comlete_entry
+        end
         if !out.gsub!("%QOTD%","").nil? and @session.logged_on  then
           @session.qotd
         end
