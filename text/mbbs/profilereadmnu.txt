@@ -1,0 +1,10 @@
+%G;The following registry services are available...
+
+   %C;G %Y;=> General information
+   %C;D %Y;=> Directory of users in Registry
+        (%C;"D;A"%Y; to start at the beginning)
+   %C;Y %Y;=> Edit YOUR entry
+   %C;L %Y;=> Look-up another user's entry
+   %C;X %Y;=> Exit from the Registry area
+   %C;+ %Y;=> Read the next entry
+   %C;- %Y;=> Read the last entry

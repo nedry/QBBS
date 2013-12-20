@@ -1,0 +1,18 @@
+      _   _                 ____             __ _ _           
+     | | | |___  ___ _ __  |  _ \ _ __ ___  / _(_) | ___  ___ 
+     | | | / __|/ _ \ '__| | |_) | '__/ _ \| |_| | |/ _ \/ __|
+     | |_| \__ \  __/ |    |  __/| | | (_) |  _| | |  __/\__ \
+      \___/|___/\___|_|    |_|   |_|  \___/|_| |_|_|\___||___/
+%C;
+The User Profile entries may be read like messages, by pressing return 
+after each entry, or may be read all at once in condensed format
+using the %W;[%Y;C%W;]%C;ondensed List command.
+
+             %W;[%Y;A%W;]%G;dd / Edit Your Entry   %W;[%Y;C%W;]%G;ontinous List
+             %W;[%Y;S%W;]%G;earch for Entry        %W;[%Y;I%W;]%G;nformation
+             %W;[%Y;PU%W;]%G;Page User             %W;[%Y;W%W;]%G;ho is Online
+             %W;[%Y;+%W;]%G;Forward                %W;[%Y;-%W;]%G;Reverse    
+             %W;[%Y;/%W;]%G;Redisplay              %W;[%Y;?%W;]%G;This Menu 
+
+          %C;Use a %R;;%C; to stack commands together %W;(%C;I.E., %R;%;a;q%W;)
+              %C;Some commands take parameters %W;(%C;I.E., %R;a2%W;)
