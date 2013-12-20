@@ -8,13 +8,4 @@ just type "N/A", "unlisted", or words to that effect.
 
 After you complete your entry, you will be able to edit it.  Feel free
 to update your information as often as you like.  To see a directory of
-all users now registered, select the '%C;D%G;' option from the menu below.
-
-%G;The following registry services are available...
-
-   %C;G %Y;=> General information
-   %C;D %Y;=> Directory of users in Registry
-        (%C;"DA"%Y; to start at the beginning)
-   %C;Y %Y;=> Edit YOUR entry
-   %C;L %Y;=> Look-up another user's entry
-   %C;X %Y;=> Exit from the Registry area
+all users now registered, select the '%C;C%G;' option from the menu below.

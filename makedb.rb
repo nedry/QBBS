@@ -76,6 +76,7 @@ Theme.new(:number => 1,
 		   :zipreadonlogon => true,
 		   :nomainmenu => false,
 		   :areachangeonmain => true,
+		   :profile_flat_menu => true,
 		   :text_directory => "text/").save!
                    
 Theme.new(:number => 2, 
@@ -95,6 +96,7 @@ Theme.new(:number => 2,
 		   :zipreadonlogon => true,
                    :nomainmenu => true,
 		   :areachangeonmain => true,
+		   :profile_flat_menu => true,
 		   :profileedit_prompt => "%C;Select a letter from the above list: %W;",
 		   :profile_prompt => "%C;Select an option (G,D,Y,L,X, or ?): %W;",
 		   :proflle_lookup => "%C;Enter User-ID to look-up, B to browse or X to exit: %W;",
@@ -124,6 +126,7 @@ Theme.new(:number => 3,
 		   :zipreadonlogon => false,
 		   :nomainmenu => false,
 		   :areachangeonmain => false,
+		   :profile_flat_menu => false,
 		   :text_directory => "text/mbbs/").save!
 
 

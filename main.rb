@@ -108,11 +108,10 @@ end
       imp = getinp(o_prompt,false)
       sel = imp.upcase.strip
       parameters = Parse.parse(sel)
-     # sel.gsub!(/[-\d]/,"")
       ulevel = @c_user.level
 
       case sel
-      when "TB"; profilemenu
+      when @cmd_hash["uprofile"] ; run_if_ulevel("uprofile") {if theme.profile_flat_menu then profilebrowse(nil) else profilemenu end }     
       when @cmd_hash["bbslist"] ; run_if_ulevel("bbslist") {bbsmenu}
       when @cmd_hash["leave"] ; run_if_ulevel("leave") {leave}
       when @cmd_hash["umaint"] ; run_if_ulevel("umaint") {usermenu}

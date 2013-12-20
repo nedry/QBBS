@@ -258,3 +258,43 @@
   theme_key: 1
   ulevel: 0
   menu_item: 'C'
+  
+- cmd: uprofile
+  theme_key: 1
+  ulevel: 0
+  menu_item: 'U'
+  
+- cmd: upalpha
+  theme_key: 1
+  ulevel: 0
+  menu_item: 'D'
+  
+- cmd: upadd
+  theme_key: 1
+  ulevel: 0
+  menu_item: 'A'
+  
+- cmd: upbrowse
+  theme_key: 1
+  ulevel: 0
+  menu_item: 'B'
+  
+- cmd: upfind
+  theme_key: 1
+  ulevel: 0
+  menu_item: 'S'
+  
+- cmd: upinfo
+  theme_key: 1
+  ulevel: 0
+  menu_item: 'I'
+  
+- cmd: upmenu
+  theme_key: 1
+  ulevel: 0
+  menu_item: '?'
+  
+- cmd: upexit
+  theme_key: 1
+  ulevel: 0
+  menu_item: 'Q'

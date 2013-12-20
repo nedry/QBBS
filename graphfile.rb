@@ -166,7 +166,7 @@ def tih
         line.gsub!(/%URL(\d*)%/){|m| padding(user.url,$1)}
         line.gsub!(/%MOVIE(\d*)%/){|m| padding(user.fav_movie,$1)}
         line.gsub!(/%TV(\d*)%/){|m| padding(user.fav_tv,$1)}		
-        line.gsub!(/%TV(\d*)%/){|m| padding(user.fav_music,$1)}	
+        line.gsub!(/%MUSIC(\d*)%/){|m| padding(user.fav_music,$1)}	
         line.gsub!(/%INST(\d*)%/){|m| padding(user.insturments,$1)}	
         line.gsub!(/%FOOD(\d*)%/){|m| padding(user.fav_food,$1)}	
         line.gsub!(/%SPORT(\d*)%/){|m| padding(user.fav_sport,$1)}

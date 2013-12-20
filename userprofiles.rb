@@ -75,15 +75,14 @@ class Session
 
   def profileeditmenu
     theme = get_user_theme(@c_user) 
-
+    done = false
     GraphFile.new(self, "proedit").profileout(@c_user)
     prompt = theme.profileedit_prompt
     getinp(prompt) {|inp|
 
-      if !inp.integer?
+
         parameters = Parse.parse(inp)
-        inp.gsub!(/[-\d]/,"")
-      end
+
       case inp.upcase
       when "1"; changeuserstring("your real name",30, false, Proc.new{|temp| @c_user.real_name = temp})
       when "2"; changesex(false)
@@ -104,11 +103,9 @@ class Session
       when "17"; changeuserstring("any other info (line 2)",70, false,Proc.new{|temp| @c_user.gen_info2 = temp})
       when "18"; changeuserstring("your summary",50, false,Proc.new{|temp| @c_user.summary = temp})
 
-
-      when "?" ;GraphFile.new(self, "proedit").profileout(@c_user)
-      when "";	done = true
-      when "Q";	done = true
-      when "X";	done = true
+      when @cmd_hash["upmenu"] ; run_if_ulevel("upmenu") { GraphFile.new(self, "proedit",true).ogfileout(0)}
+      when @cmd_hash["who"] ; run_if_ulevel("who") {displaywho}
+      when @cmd_hash["upexit"] ; run_if_ulevel("upexit") {done = true}
       end
       GraphFile.new(self, "proedit").profileout(@c_user) if !done
       done
@@ -146,36 +143,35 @@ class Session
 
   def profilemenu
     theme = get_user_theme(@c_user) 
-    GraphFile.new(self, "profilemenu",true).ogfileout(0)
-    prompt = theme.profile_prompt
+    done = false
+
+      GraphFile.new(self, "profilemenu",true).ogfileout(0)
+      prompt = theme.profile_prompt
 
     getinp(prompt) {|inp|
 
-      if !inp.integer?
-        parameters = Parse.parse(inp)
-        inp.gsub!(/[-\d]/,"")
-      end
-      case inp.upcase
 
-      when "?"; GraphFile.new(self, "profilemenu",true).ogfileout(0)
-      when "Y"; if @c_user.profile_added then profileeditmenu else profileadd end
-      when "G"; GraphFile.new(self, "profileinfo",true).ogfileout(0)
-      when "L"; findprofile
-      when "D"; alpha_list
-      when @cmd_hash["who"] ; run_if_ulevel("who") {displaywho}
-      when "PU"; page    
-      when "";	done = true
-      when "Q";	done = true
-      when "X";	done = true
+        parameters = Parse.parse(inp)
+
+      case inp.upcase
+        when @cmd_hash["upmenu"] ; run_if_ulevel("upmenu") { GraphFile.new(self, "profilemenu",true).ogfileout(0)}
+        when @cmd_hash["upadd"] ; run_if_ulevel("upadd") {if @c_user.profile_added then profileeditmenu else profileadd end}
+        when @cmd_hash["upinfo"] ; run_if_ulevel("upinfo") { GraphFile.new(self, "profileinfo",true).ogfileout(0)}
+        when @cmd_hash["upfind"] ; run_if_ulevel("upfind") {findprofile}
+        when @cmd_hash["who"] ; run_if_ulevel("who") {displaywho}
+        when @cmd_hash["palpha"] ; run_if_ulevel("palpha") {alpha_list}
+        when @cmd_hash["page"] ; run_if_ulevel("page") {page}
+        when @cmd_hash["upexit"] ; run_if_ulevel("upexit") { done = true}
       end
       done
     }
+
   end 
   
   
 
    def showprofile(ppointer)
-      GraphFile.new(self, "proentry").profileout(fetch_user(fetch_profile_list[ppointer-1].number))
+      GraphFile.new(self, "proentry").profileout(fetch_user(fetch_profile_list[ppointer-1].number))  if p_total > 0
    end
 
   def findprofile
@@ -183,14 +179,20 @@ class Session
      getinp(theme.proflle_lookup) {|inp| 
      
       case inp.upcase
-          when "B"; profilebrowse(nil)
-	  when "X"; return
+          when @cmd_hash["who"] ; run_if_ulevel("who") {displaywho}
+          when @cmd_hash["page"] ; run_if_ulevel("page") {page}
+	  when @cmd_hash["upbrowse"] ; run_if_ulevel("upbrowse") {profilebrowse(nil) if !theme.profile_flat_menu}
+	  when @cmd_hash["upexit"] ; run_if_ulevel("upexit") {return}
        else
 	if 
 	 index = get_profile_index(inp)
 	 if !index.nil? then
 	   done=true
-	   profilebrowse(index+1)
+	   if theme.profile_flat_menu then
+	     profilebrowse(index+1)
+	   else
+	      return index+1
+	    end
         end
       end
      end
@@ -211,20 +213,18 @@ class Session
       :range => 1..(p_total ),
       :loc => PROFILE
     ) {|sel, ppointer, moved|
-      if !sel.integer?
-        sel.gsub!(/[-\d+]/,"")
-      end
 
       showprofile(ppointer) if moved
       case sel
       when "/"; showprofile(ppointer)
-      when "Y"; if @c_user.profile_added then profileeditmenu else profileadd end
-      when "G"; GraphFile.new(self, "profileinfo",true).ogfileout(0)
-      when "Q"; ppointer = true
-      when "W"; displaywho
-      when "PU"; page    
-      when "G"; leave
-      when "?"; GraphFile.new(self, "profilereadmnu",true).ogfileout(0)
+      when @cmd_hash["upadd"] ; run_if_ulevel("upadd") {if @c_user.profile_added then profileeditmenu else profileadd end}
+      when @cmd_hash["upinfo"] ; run_if_ulevel("upinfo") { GraphFile.new(self, "profileinfo",true).ogfileout(0)}
+      when @cmd_hash["upexit"] ; run_if_ulevel("upexit") { ppointer = true}
+      when @cmd_hash["upfind"] ; run_if_ulevel("upfind") {ppointer = findprofile; showprofile(ppointer)}
+      when @cmd_hash["who"] ; run_if_ulevel("who") {displaywho}
+      when @cmd_hash["palpha"] ; run_if_ulevel("palpha") {alpha_list}
+      when @cmd_hash["page"] ; run_if_ulevel("page") {page}  
+      when @cmd_hash["upmenu"] ; run_if_ulevel("upmenu") { GraphFile.new(self, "profilereadmnu",true).ogfileout(0)}
       end # of case
       p_return = [ppointer,p_total ]
 

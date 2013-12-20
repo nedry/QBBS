@@ -566,10 +566,8 @@ end
         mpointer = h_msg if mpointer.nil?
         mpointer = h_msg if mpointer > h_msg
 
-        if !sel.integer?
           parameters = Parse.parse(sel)
-          sel.gsub!(/[-\d]/,"")
-        end
+
 
         if moved
           if (mpointer > 0) and (mpointer <= h_msg) then # range check
@@ -597,6 +595,7 @@ end
         end
      if theme.nomainmenu  #wbbs mode
       case sel
+      when @cmd_hash["uprofile"] ; run_if_ulevel("uprofile") {profilemenu} 
       when @cmd_hash["leave"] ; run_if_ulevel("leave") {leave}
       when @cmd_hash["umaint"] ; run_if_ulevel("umaint") {usermenu}
       when @cmd_hash["kill_log"] ; run_if_ulevel("kill_log") {clearlog}
