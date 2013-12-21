@@ -4,9 +4,9 @@
      | |_| \__ \  __/ |    |  __/| | | (_) |  _| | |  __/\__ \
       \___/|___/\___|_|    |_|   |_|  \___/|_| |_|_|\___||___/
 %C;
-The User Profile entries may be read like messages, by pressing return 
-after each entry, or may be read all at once in condensed format
-using the %W;[%Y;C%W;]%C;ondensed List command.
+   The User Profile entries may be read like messages, by pressing 
+   return after each entry, or may be read all at once in condensed 
+   format using the %W;[%Y;C%W;]%C;ondensed List command.
 
              %W;[%Y;A%W;]%G;dd / Edit Your Entry   %W;[%Y;C%W;]%G;ontinous List
              %W;[%Y;S%W;]%G;earch for Entry        %W;[%Y;I%W;]%G;nformation

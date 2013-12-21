@@ -188,7 +188,7 @@ class Session
 	 index = get_profile_index(inp)
 	 if !index.nil? then
 	   done=true
-	   if theme.profile_flat_menu then
+	   if !theme.profile_flat_menu then
 	     profilebrowse(index+1)
 	   else
 	      return index+1
@@ -205,6 +205,7 @@ class Session
     total =p_total
     if startuser.nil? then
 	startuser = 1
+	GraphFile.new(self, "profilereadmnu",true).ogfileout(0)
     else
         showprofile(startuser)
     end

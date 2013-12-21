@@ -264,7 +264,7 @@
   ulevel: 0
   menu_item: 'R'
   
-- cmd: upalpha
+- cmd: palpha
   theme_key: 3
   ulevel: 0
   menu_item: 'D'

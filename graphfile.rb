@@ -149,32 +149,36 @@ def tih
   end
 
 
-  def profileout(user)
+  def profileout(obj)
     theme = get_user_theme(@session.c_user)
 
     if File.exists?(outfile)
       IO.foreach(outfile) { |line|
 	line = parse_text_commands(line.force_encoding("IBM437"))
-        line.gsub!(/%UNAME(\d*)%/){|m| padding(user.name,$1)}
-        line.gsub!(/%REALNAME(\d*)%/){|m| padding(user.real_name,$1)}
-        line.gsub!(/%SEX(\d*)%/){|m| padding(user.sex,$1)}
-        line.gsub!(/%AGE(\d*)%/){|m| padding(user.age.to_s,$1)}
-        line.gsub!(/%ALIASES(\d*)%/){|m| padding(user.aliases,$1)}
-        line.gsub!(/%CITYSTATE(\d*)%/){|m| padding(user.citystate,$1)}
-        line.gsub!(/%VPHONE(\d*)%/){|m| padding(user.voice_phone,$1)}
-        line.gsub!(/%PDESC(\d*)%/){|m| padding(user.p_description,$1)}
-        line.gsub!(/%URL(\d*)%/){|m| padding(user.url,$1)}
-        line.gsub!(/%MOVIE(\d*)%/){|m| padding(user.fav_movie,$1)}
-        line.gsub!(/%TV(\d*)%/){|m| padding(user.fav_tv,$1)}		
-        line.gsub!(/%MUSIC(\d*)%/){|m| padding(user.fav_music,$1)}	
-        line.gsub!(/%INST(\d*)%/){|m| padding(user.insturments,$1)}	
-        line.gsub!(/%FOOD(\d*)%/){|m| padding(user.fav_food,$1)}	
-        line.gsub!(/%SPORT(\d*)%/){|m| padding(user.fav_sport,$1)}
-        line.gsub!(/%HOBBIES(\d*)%/){|m| padding(user.hobbies,$1)}
-        line.gsub!(/%GEN1(\d*)%/){|m| padding(user.gen_info1,$1)}	
-        line.gsub!(/%GEN2(\d*)%/){|m| padding(user.gen_info2,$1)}	
-        line.gsub!(/%SUM(\d*)%/){|m| padding(user.summary,$1)}	
-
+	if obj.kind_of?(User) then
+          line.gsub!(/%UNAME(\d*)%/){|m| padding(obj.name,$1)}
+          line.gsub!(/%REALNAME(\d*)%/){|m| padding(obj.real_name,$1)}
+          line.gsub!(/%SEX(\d*)%/){|m| padding(obj.sex,$1)}
+          line.gsub!(/%AGE(\d*)%/){|m| padding(obj.age.to_s,$1)}
+          line.gsub!(/%ALIASES(\d*)%/){|m| padding(obj.aliases,$1)}
+          line.gsub!(/%CITYSTATE(\d*)%/){|m| padding(obj.citystate,$1)}
+          line.gsub!(/%VPHONE(\d*)%/){|m| padding(obj.voice_phone,$1)}
+          line.gsub!(/%PDESC(\d*)%/){|m| padding(obj.p_description,$1)}
+          line.gsub!(/%URL(\d*)%/){|m| padding(obj.url,$1)}
+          line.gsub!(/%MOVIE(\d*)%/){|m| padding(obj.fav_movie,$1)}
+          line.gsub!(/%TV(\d*)%/){|m| padding(obj.fav_tv,$1)}		
+          line.gsub!(/%MUSIC(\d*)%/){|m| padding(obj.fav_music,$1)}	
+          line.gsub!(/%INST(\d*)%/){|m| padding(obj.insturments,$1)}	
+          line.gsub!(/%FOOD(\d*)%/){|m| padding(obj.fav_food,$1)}	
+          line.gsub!(/%SPORT(\d*)%/){|m| padding(obj.fav_sport,$1)}
+          line.gsub!(/%HOBBIES(\d*)%/){|m| padding(obj.hobbies,$1)}
+          line.gsub!(/%GEN1(\d*)%/){|m| padding(obj.gen_info1,$1)}	
+          line.gsub!(/%GEN2(\d*)%/){|m| padding(obj.gen_info2,$1)}	
+          line.gsub!(/%SUM(\d*)%/){|m| padding(obj.summary,$1)}	
+        end
+	if obj.kind_of?(Bbslist) then
+          line.gsub!(/%NAME(\d*)%/){|m| padding(obj.name,$1)}
+	end
         @session.write line + "\r"
       }
     else
