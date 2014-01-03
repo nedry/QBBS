@@ -76,3 +76,16 @@
   fullscreen: false
   sex: 'M'
   
+- name: BBSINFO
+  ip: '000.000.000.000'
+  password: '123456'
+  citystate: 'NO STREET'
+  address: 'NO ADDRESS'
+  length: 24
+  width: 80
+  ansi: false
+  more: true
+  level: 255
+  fullscreen: false
+  sex: 'M'
+  

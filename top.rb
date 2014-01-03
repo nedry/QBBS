@@ -453,8 +453,8 @@ def process_only(outfile)
   def run
      begin
      #uncomment to reload from scratch.  will put this in a command
-    #delete_all_bbs
-    #update_BBS_list
+   # delete_all_bbs
+   # update_BBS_list
     @debuglog.push("-SCHED: Starting Message Transfer Thread.")
 
     

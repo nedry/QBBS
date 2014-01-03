@@ -171,7 +171,7 @@ class Session
   
 
    def showprofile(ppointer)
-      GraphFile.new(self, "proentry").profileout(fetch_user(fetch_profile_list[ppointer-1].number))  if p_total > 0
+      GraphFile.new(self, "proentry").profileout(fetch_user(fetch_profile_list[ppointer-1].number),ppointer)  if p_total > 0
    end
 
   def findprofile

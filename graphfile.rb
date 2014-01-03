@@ -149,36 +149,63 @@ def tih
   end
 
 
-  def profileout(obj)
+  def profileout(obj,index)
+
     theme = get_user_theme(@session.c_user)
 
     if File.exists?(outfile)
       IO.foreach(outfile) { |line|
 	line = parse_text_commands(line.force_encoding("IBM437"))
+	line.gsub!(/\|NUMBER(\d*)([^\|]*)\|/){|m| out = "#{$2}#{index.to_s}" ; padding(out,$1)}
+	
 	if obj.kind_of?(User) then
-          line.gsub!(/%UNAME(\d*)%/){|m| padding(obj.name,$1)}
-          line.gsub!(/%REALNAME(\d*)%/){|m| padding(obj.real_name,$1)}
-          line.gsub!(/%SEX(\d*)%/){|m| padding(obj.sex,$1)}
-          line.gsub!(/%AGE(\d*)%/){|m| padding(obj.age.to_s,$1)}
-          line.gsub!(/%ALIASES(\d*)%/){|m| padding(obj.aliases,$1)}
-          line.gsub!(/%CITYSTATE(\d*)%/){|m| padding(obj.citystate,$1)}
-          line.gsub!(/%VPHONE(\d*)%/){|m| padding(obj.voice_phone,$1)}
-          line.gsub!(/%PDESC(\d*)%/){|m| padding(obj.p_description,$1)}
-          line.gsub!(/%URL(\d*)%/){|m| padding(obj.url,$1)}
-          line.gsub!(/%MOVIE(\d*)%/){|m| padding(obj.fav_movie,$1)}
-          line.gsub!(/%TV(\d*)%/){|m| padding(obj.fav_tv,$1)}		
-          line.gsub!(/%MUSIC(\d*)%/){|m| padding(obj.fav_music,$1)}	
-          line.gsub!(/%INST(\d*)%/){|m| padding(obj.insturments,$1)}	
-          line.gsub!(/%FOOD(\d*)%/){|m| padding(obj.fav_food,$1)}	
-          line.gsub!(/%SPORT(\d*)%/){|m| padding(obj.fav_sport,$1)}
-          line.gsub!(/%HOBBIES(\d*)%/){|m| padding(obj.hobbies,$1)}
-          line.gsub!(/%GEN1(\d*)%/){|m| padding(obj.gen_info1,$1)}	
-          line.gsub!(/%GEN2(\d*)%/){|m| padding(obj.gen_info2,$1)}	
-          line.gsub!(/%SUM(\d*)%/){|m| padding(obj.summary,$1)}	
+          line.gsub!(/\|UNAME(\d*)([^\|]*)\|/){|m| out = "#{$2}#{obj.name}" ; padding(out,$1)}
+          line.gsub!(/\|REALNAME(\d*)([^\|]*)\|/){|m| out = "#{$2}#{obj.real_name}" ; padding(out,$1)}
+          line.gsub!(/\|SEX(\d*)([^\|]*)\|/){|m| out = "#{$2}#{obj.sex}" ; padding(out,$1)}
+          line.gsub!(/\|AGE(\d*)([^\|]*)\|/){|m| out = "#{$2}#{obj.age.to_s}" ; padding(out,$1)}
+          line.gsub!(/\|ALIASES(\d*)([^\|]*)\|/){|m| out = "#{$2}#{obj.aliases}" ; padding(out,$1)}
+          line.gsub!(/\|CITYSTATE(\d*)([^\|]*)\|/){|m| out = "#{$2}#{obj.citystate}" ; padding(out,$1)}
+          line.gsub!(/\|VPHONE(\d*)([^\|]*)\|/){|m| out = "#{$2}#{obj.voice_phone}" ; padding(out,$1)}
+          line.gsub!(/\|PDESC(\d*)([^\|]*)\|/){|m| out = "#{$2}#{obj.p_description}" ; padding(out,$1)}
+          line.gsub!(/\|URL(\d*)([^\|]*)\|/){|m| out = "#{$2}#{obj.url}" ; padding(out,$1)}
+          line.gsub!(/\|MOVIE(\d*)([^\|]*)\|/){|m| out = "#{$2}#{obj.fav_movie}" ; padding(out,$1)}
+          line.gsub!(/\|TV(\d*)([^\|]*)\|/){|m| out = "#{$2}#{obj.fav_tv}" ; padding(out,$1)}
+          line.gsub!(/\|MUSIC(\d*)([^\|]*)\|/){|m| out = "#{$2}#{obj.fav_music}" ; padding(out,$1)}
+          line.gsub!(/\|INST(\d*)([^\|]*)\|/){|m| out = "#{$2}#{obj.insturments}" ; padding(out,$1)}
+          line.gsub!(/\|FOOD(\d*)([^\|]*)\|/){|m| out = "#{$2}#{obj.fav_food}" ; padding(out,$1)}	
+          line.gsub!(/\|SPORT(\d*)([^\|]*)\|/){|m| out = "#{$2}#{obj.fav_sport}" ; padding(out,$1)}
+          line.gsub!(/\|HOBBIES(\d*)([^\|]*)\|/){|m| out = "#{$2}#{obj.hobbies}" ; padding(out,$1)}
+          line.gsub!(/\|GEN1(\d*)([^\|]*)\|/){|m| out = "#{$2}#{obj.gen_info1}" ; padding(out,$1)}	
+          line.gsub!(/\|GEN2(\d*)([^\|]*)\|/){|m| out = "#{$2}#{obj.gen_info2}" ; padding(out,$1)}
+          line.gsub!(/\|SUM(\d*)([^\|]*)\|/){|m| out = "#{$2}#{obj.summary}" ; padding(out,$1)}
         end
 	if obj.kind_of?(Bbslist) then
-          line.gsub!(/%NAME(\d*)%/){|m| padding(obj.name,$1)}
-	end
+          line.gsub!(/\|DATE(\d*)([^\|]*)\|/){|m| out = "#{$2}#{obj.modify_date.strftime("%B %d, %Y") }" ;  padding(out,$1) if !obj.modify_date.nil?}
+          line.gsub!(/\|NAME(\d*)([^\|]*)\|/){|m| out = "#{$2}#{obj.name}" ;  padding(out,$1) if !obj.name.nil?}
+          line.gsub!(/\|TELNET(\d*)([^\|]*)\|/){|m| out = "#{$2}#{obj.number}" ;  padding(out,$1) if ! obj.number.nil?}
+          line.gsub!(/\|SYSOP(\d*)([^\|]*)\|/){|m| out = "#{$2}#{obj.sysop}" ;  padding(out,$1) if !obj.sysop.nil?}
+          line.gsub!(/\|EMAIL(\d*)([^\|]*)\|/){|m| out = "#{$2}#{obj.email}" ;  padding(out,$1) if !obj.email.nil?}
+          line.gsub!(/\|LOCATION(\d*)([^\|]*)\|/){|m| out = "#{$2}#{obj.location}" ;  padding(out,$1) if !obj.location.nil?}
+          line.gsub!(/\|SOFTWARE(\d*)([^\|]*)\|/){|m| out = "#{$2}#{obj.software}" ;  padding(out,$1) if !obj.software.nil?}
+          line.gsub!(/\|MSGS(\d*)([^\|]*)\|/){|m| out = "#{$2}#{obj.msgs}" ;  padding(out,$1) if !obj.msgs.nil?}
+          line.gsub!(/\|SUBS(\d*)([^\|]*)\|/){|m| out = "#{$2}#{obj.subs}" ;  padding(out,$1) if !obj.subs.nil?}
+          line.gsub!(/\|FILES(\d*)([^\|]*)\|/){|m| out = "#{$2}#{obj.files}" ;  padding(out,$1) if !obj.files.nil?}
+          line.gsub!(/\|DIRS(\d*)([^\|]*)\|/){|m| out = "#{$2}#{obj.dirs}" ;  padding(out,$1) if !obj.dirs.nil?}
+          line.gsub!(/\|MEGS(\d*)([^\|]*)\|/){|m| out = "#{$2}#{obj.megs}" ;  padding(out,$1) if !obj.megs.nil?}
+          line.gsub!(/\|TERMINAL(\d*)([^\|]*)\|/){|m| out = "#{$2}#{obj.terminal}" ;  padding(out,$1) if !obj.terminal.nil?}
+          line.gsub!(/\|WEBSITE(\d*)([^\|]*)\|/){|m| out = "#{$2}#{obj.website}" ;  padding(out,$1) if ! obj.website.nil?}
+	  line.gsub!(/\|NETWORK(\d*)([^\|]*)\|/){|m| out = "#{$2}"  
+	  obj.network.split("|").each {|line| out << "\r\n   #{line.strip}"}
+	  padding(out,$1) if !obj.network.nil?}
+          line.gsub!(/\|DESC(\d*)([^\|]*)\|/){|m| out = "#{$2}"  
+	  obj.desc.split("|").each {|line| out << "\r\n   #{line.strip}"}
+	  padding(out,$1) if !obj.desc.nil?}
+          line.gsub!(/\|LOCAL(\d*)([^\|]*)\|/){||m|  out = ""; out = padding($2,$1) if !obj.imported; out}
+          line.gsub!(/\|IMPT(\d*)([^\|]*)\|/){|m|  out = ""; out = padding($2,$1) if obj.imported; out}
+          line.gsub!(/\$LOCKED(\d*)([^\|]*)\|/){|m|  out = ""; out = padding($2,$1) if obj.locked; out}
+        end
+  	if obj.kind_of?(Message) then
+        end
         @session.write line + "\r"
       }
     else
