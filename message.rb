@@ -427,7 +427,6 @@ end
         u = @c_user
 
         if email then
-
           abs = email_absolute_message(mpointer,u.name)
         else
           abs = absolute_message(table,mpointer)
@@ -448,62 +447,15 @@ end
 				#to indicate EOL
 				
         tempmsg.gsub!(10.chr,DLIM)
-
         tempmsg.each_line(DLIM) {|line| message.push(line.chop!)} #changed from .each for ruby 1.9
 
-        print
-        write "%W;##{mpointer} %G;[%C;#{curmessage.absolute}%G;] "
 
-        if curmessage.network then
-          if !curmessage.q_tz.nil? then
-            tzout = TIME_TABLE[curmessage.q_tz.upcase]
-            tzout = non_standard_zone(curmessage.q_tz) if tzout.nil?
-          end
-        end
-        write " %WG; QWK %W;" if curmessage.network
-				write " %WG; NNTP %W;" if curmessage.usenet_network
-        write " %WB; SMTP %W;" if curmessage.smtp
-        write " %WC; FIDONET %W;" if curmessage.f_network
-        write " %WY; EXPORTED %W;" if curmessage.exported and !curmessage.usenet_network and !curmessage.f_network and !curmessage.network
-        write " %WB; REPLY %W;" if curmessage.reply
-        print ""
-        write "%C;Date: "
-				if !curmessage.msg_date.nil? then
-          write "%M;#{curmessage.msg_date.strftime("%A the %d#{time_thingie(curmessage.msg_date)} of %B, %Y at %I:%M%p")}"
-					write "%W;(%G;#{tzout}%W;)" if !tzout.nil?
-				else
-					write "%R;[NO DATE]%W;"
-				end
-        
-        print        
-        print "%C;To: %G;#{curmessage.m_to}%W;" # reset colors in case ansi is embedded in fields
-        write "%C;From: %G;#{curmessage.m_from.strip}%W;" # reset colors in case ansi is embedded in fields
-        if curmessage.f_network then
-          out = "UNKNOWN"
-          if !curmessage.intl.nil? then
-            if curmessage.intl.length > 1 then
-              o_adr = curmessage.intl.split[1]
-              zone,net,node,point = parse_intl(o_adr)
-              out = "#{zone}:#{net}/#{node}"
-              out << ".#{point}" if !point.nil?
-            end
-          else out = get_orig_address(curmessage.msgid) end
-          write " %G;(%C;#{out}%G;)" if !out.nil?
-        end
-        if curmessage.network then
-          out = bbsid
-          out = curmessage.q_via if !curmessage.q_via.nil?
-        end
-        write " %G;(%C;#{out}%G;)" if !out.nil?
-        #  end
-        print
-        print "%C;Title: %G;#{curmessage.subject}%Y;"
-        print
-        print "%WG; #{"MESSAGE TEXT".center(@c_user.width - 2)}%W;"
-        print
-        j =7
+
+     j = GraphFile.new(self, "message").profileout(curmessage,mpointer)
+     
+       # print "%WG; #{"MESSAGE TEXT".center(@c_user.width - 2)}%W;"
+
         cont = true
-
 
         message.each {|line|
           j += 1

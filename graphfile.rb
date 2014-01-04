@@ -152,8 +152,39 @@ def tih
   def profileout(obj,index)
 
     theme = get_user_theme(@session.c_user)
+    
+    f_net = nil
+    i = 0
+    
+    if obj.kind_of?(Message) then
+	m_date = "[NO DATE]"
 
+	m_date = obj.msg_date.strftime(theme.profile_date_format.gsub('%Z',time_thingie(obj.msg_date))) if !obj.msg_date.nil?
+	  if obj.network then
+             if !obj.q_tz.nil? then
+            tzout = TIME_TABLE[obj.q_tz.upcase]
+            tzout = non_standard_zone(obj.q_tz) if tzout.nil?
+          end
+        end
+  
+          if obj.f_network then
+           f_net = "UNKNOWN"
+          if !obj.intl.nil? then
+            if obj.intl.length > 1 then
+              o_adr = curmessage.intl.split[1]
+              zone,net,node,point = parse_intl(o_adr)
+              f_net = "#{zone}:#{net}/#{node}"
+              f_net << ".#{point}" if !point.nil?
+            end
+          else f_net = get_orig_address(curmessage.msgid) end
+        end
+        if obj.network then
+          q_net = bbsid
+          q_net = obj.q_via if !obj.q_via.nil?
+        end
+    end
     if File.exists?(outfile)
+
       IO.foreach(outfile) { |line|
 	line = parse_text_commands(line.force_encoding("IBM437"))
 	line.gsub!(/\|NUMBER(\d*)([^\|]*)\|/){|m| out = "#{$2}#{index.to_s}" ; padding(out,$1)}
@@ -205,13 +236,30 @@ def tih
           line.gsub!(/\$LOCKED(\d*)([^\|]*)\|/){|m|  out = ""; out = padding($2,$1) if obj.locked; out}
         end
   	if obj.kind_of?(Message) then
+	  line.gsub!(/\|QWK(\d*)([^\|]*)\|/){|m|  out = ""; out = padding($2,$1) if obj.network; out}
+	  line.gsub!(/\|NNTP(\d*)([^\|]*)\|/){|m|  out = ""; out = padding($2,$1) if obj.usenet_network; out}
+	  line.gsub!(/\|SMTP(\d*)([^\|]*)\|/){|m|  out = ""; out = padding($2,$1) if obj.smtp; out}
+	  line.gsub!(/\|FIDONET(\d*)([^\|]*)\|/){|m|  out = ""; out = padding($2,$1) if obj.f_network; out}
+	  line.gsub!(/\|EXPORTED(\d*)([^\|]*)\|/){|m|  out = ""; out = padding($2,$1) if obj.exported and !obj.usenet_network and !obj.f_network and !obj.network; out}
+	  line.gsub!(/\|REPLY(\d*)([^\|]*)\|/){|m|  out = ""; out = padding($2,$1) if obj.reply; out}
+	  line.gsub!(/\|ABS(\d*)([^\|]*)\|/){|m|  out = "#{$2}#{obj.absolute.to_s}" ;  padding(out,$1) if !obj.absolute.nil?}
+	  line.gsub!(/\|DATE(\d*)([^\|]*)\|/){|m|  out = "#{$2}#{m_date}" ;  padding(out,$1) }	  
+	  line.gsub!(/\|TZ(\d*)([^\|]*)\|/){|m|  out = "#{$2}#{tzout}" ;  padding(out,$1) if !tzout.nil?}
+	  line.gsub!(/\|TO(\d*)([^\|]*)\|/){|m|  out = "#{$2}#{obj.m_to.strip}" ;  padding(out,$1) if !obj.m_to.nil?}
+	  line.gsub!(/\|FROM(\d*)([^\|]*)\|/){|m|  out = "#{$2}#{obj.m_from.strip}" ;  padding(out,$1) if !obj.m_from.nil?}
+	  line.gsub!(/\|FNET(\d*)([^\|]*)\|/){|m|  out = "#{$2}#{f_net}" ;  padding(out,$1) if !f_net.nil?}
+	  line.gsub!(/\|QNET(\d*)([^\|]*)\|/){|m|  out = "#{$2}#{q_net}" ;  padding(out,$1) if !q_net.nil?}
+	  line.gsub!(/\|TITLE(\d*)([^\|]*)\|/){|m|  out = "#{$2}#{obj.subject.strip}" ;  padding(out,$1) if !obj.subject.nil?}
         end
         @session.write line + "\r"
+	i+=1
       }
     else
       @session.print "\n#{outfile} has run away...please tell sysop!\n"
+      return i
     end
      @session.print 
+     return i
   end
 
   def fileout(fname)

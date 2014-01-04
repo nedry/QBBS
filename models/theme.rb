@@ -31,6 +31,7 @@ class Theme
   property :profile_comlete_entry,String,:length => 200
   property :profile_flat_menu, Boolean, :default => false
   property :text_directory, String, :length => 80
+  property :profile_date_format, String, :length => 80
   has n, :commands, :child_key => [:theme_key]
    has n, :users, :child_key => [:theme_key]
    end

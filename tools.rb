@@ -12,7 +12,8 @@ end
 
 def time_thingie(time)
   out = "th"
-  case time.strftime("%d")
+
+  case time.strftime("%-d")
   when "1"; out = "st"
   when "2"; out = "nd"
   when "3"; out = "rd"
