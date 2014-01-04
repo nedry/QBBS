@@ -1,0 +1,11 @@
+
+#%R;|NUMBER| %G;|NAME|%C; |DATE| |IMPT%WB; IMPORTED %W;|
+|TELNET%C;Telnet:   %G;|
+|SYSOP%C;Sysop:    %G;| |EMAIL%C;Email: %G;|
+|LOCATION%C;Location: %G;| 
+|SOFTWARE%C;Software: %G;| 
+|MSGS%C;Messages: %G;| |SUBS%C;Message Areas: %G;|  
+|FILES%C;Files:    %G;| |DIRS%C;File Areas: %G;| |MEGS%C;File MB: %G;| 
+|TERMINAL%C;Terminal: %G;| |WEBSITE%C;Web: %G;| 
+|NETWORK%C;Network...%G;|
+|DESC%C;Description...%G;|

@@ -1,0 +1,5 @@
+%W;#|NUMBER| %G;[|ABS%C;|%G;] |QWK%WB; QWK %W;||NNTP%WB; NNTP %W;||SMTP%WB; SMTP %W;||FIDONET%WB; FIDONET%W;||EXPORTED%WB; EXPORTED %W;||REPLY%WB; REPLY %W;|
+|DATE%C;Date:%M; | |TZ|
+|TO%C;To:%G; |
+|FROM%C;From:%G; ||FNET||QNET|
+|TITLE%C;Title:%G; |%W;
