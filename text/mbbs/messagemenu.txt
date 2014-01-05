@@ -1,0 +1,9 @@
+
+%G;Welcome, %USERNAME%, to /%AREA%
+
+   %C;R %Y;... Read messages
+   %C;W %Y;... Write a message
+   %C;Q %Y;... Quickscan menu
+   %C;T %Y;... Teleconference
+   %C;S %Y;... Select a new Forum
+   
