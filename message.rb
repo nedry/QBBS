@@ -6,7 +6,38 @@ require 'encodings.rb'
 
 class Session
 
+ def messagefirstmenu
+    theme = get_user_theme(@c_user) 
+    done = false
 
+      GraphFile.new(self, "messagemenu",true).ogfileout(0)
+      prompt = theme.message_prompt
+
+    getinp(prompt) {|inp|
+
+
+        parameters = Parse.parse(inp)
+
+      case inp.upcase
+        when @cmd_hash["msgmenu"] ; run_if_ulevel("msgmenu") { GraphFile.new(self, "messagemenu",true).ogfileout(0)}
+        when @cmd_hash["read"] ; run_if_ulevel("read") {messagemenu(false)}
+        when @cmd_hash["write"] ; run_if_ulevel("write") {post}
+        when @cmd_hash["msgareach"] ; run_if_ulevel("msgareach") {areachange(parameters)}
+        when @cmd_hash["who"] ; run_if_ulevel("who") {displaywho}
+      when @cmd_hash["msgzipread"] ; run_if_ulevel("msgzipread") {messagemenu(true)}
+      when @cmd_hash["teleconference"]
+        if IRC_ON then
+          run_if_ulevel("teleconference") {teleconference(nil)}
+        else
+          print "%WR; Teleconference is disabled! %W;\r\n"
+        end
+        when @cmd_hash["msgexit"] ; run_if_ulevel("upexit") { done = true}
+      end
+      done
+    }
+
+  end 
+  
   def displaylist
     cont = false
     user = @c_user

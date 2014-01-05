@@ -65,7 +65,7 @@ def readmenu(args)
 end
 
 def up(ptr, high, zip)
-	print "ptr: #{ptr} high: #{high}"
+	#print "ptr: #{ptr} high: #{high}"
   if ptr < high
     ptr = ptr + 1
   else

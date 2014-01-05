@@ -119,11 +119,6 @@
   ulevel: 0
   menu_item: "A"
 
-- cmd: readmnu
-  theme_key: 3
-  ulevel: 0
-  menu_item: F
-
 - cmd: zipread
   theme_key: 3
   ulevel: 0
@@ -298,4 +293,40 @@
   theme_key: 3
   ulevel: 0
   menu_item: '?'
+  
+- cmd: read
+  theme_key: 3
+  ulevel: 0
+  menu_item: 'R'
+  
+- cmd: msgmenu
+  theme_key: 3
+  ulevel: 0
+  menu_item: '?'
+  
+- cmd: msgexit
+  theme_key: 3
+  ulevel: 0
+  menu_item: 'X'
+  
+- cmd: write
+  theme_key: 3
+  ulevel: 0
+  menu_item: 'W'
+  
+- cmd: msgareach
+  theme_key: 3
+  ulevel: 0
+  menu_item: 'S'
+  
+- cmd: msgmnu
+  theme_key: 3
+  ulevel: 0
+  menu_item: 'F'
+  
+- cmd: msgzipread
+  theme_key: 3
+  ulevel: 0
+  menu_item: 'Q'
+  
   

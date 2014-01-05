@@ -1,6 +1,6 @@
 
-%G;|DATEDate: | 
-|FROM60From: | Msg#: |NUMBER|  
+%G;|DATE60Date: ||AREA/|
+|FROM60From: |Msg#: |NUMBER|  
 |TO  To: |
 |TITLE  Re: |
 |QWK%WB; QWK %W;||NNTP%WB; NNTP %W;||SMTP%WB; SMTP %W;||FIDONET%WB; FIDONET%W;||EXPORTED%WB; EXPORTED %W;||REPLY%WB; REPLY %W;|

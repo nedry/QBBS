@@ -152,6 +152,7 @@ def tih
   def profileout(obj,index)
 
     theme = get_user_theme(@session.c_user)
+    area = fetch_area(@session.c_area)
     
     f_net = nil
     i = 0
@@ -250,6 +251,7 @@ def tih
 	  line.gsub!(/\|FNET(\d*)([^\|]*)\|/){|m|  out = "#{$2}#{f_net}" ;  padding(out,$1) if !f_net.nil?}
 	  line.gsub!(/\|QNET(\d*)([^\|]*)\|/){|m|  out = "#{$2}#{q_net}" ;  padding(out,$1) if !q_net.nil?}
 	  line.gsub!(/\|TITLE(\d*)([^\|]*)\|/){|m|  out = "#{$2}#{obj.subject.strip}" ;  padding(out,$1) if !obj.subject.nil?}
+	  line.gsub!(/\|AREA(\d*)([^\|]*)\|/){|m|  out = "#{$2}#{area.name}" ;  padding(out,$1) if !area.name.nil?}
         end
         @session.write line + "\r"
 	i+=1
@@ -296,6 +298,11 @@ def parse_text_commands(line)
     
   if @session.logged_on then
     system = fetch_system
+    aname = "" 
+    if !@session.c_area.nil? then
+      area = fetch_area(@session.c_area)
+      aname = area.name
+    end
     posts = @session.c_user.posted.to_f
     calls =  @session.c_user.logons.to_f
     ualias = @session.c_user.alias
@@ -307,7 +314,7 @@ def parse_text_commands(line)
     ip= "UNKNOWN" if ip.nil?
     ratio = 0 if calls == 0
     text_commands = {
-
+      "%AREA%" => aname,
       "%U_SPACE%" => @u_space,
       "%F_SPACE%" => @f_space,
       "%T_SPACE%" => @t_space,

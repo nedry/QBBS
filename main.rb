@@ -146,6 +146,7 @@ end
       when @cmd_hash["post"] ; run_if_ulevel("post") {post}
       when @cmd_hash["usrsetting"] ; run_if_ulevel("usrsetting") {usersettings}
       when @cmd_hash["readmnu"] ; run_if_ulevel("readmnu") {messagemenu(false)}
+      when @cmd_hash["msgmnu"] ; run_if_ulevel("msgmnu") {messagefirstmenu}
       when @cmd_hash["zipread"] ; run_if_ulevel("zipread") {messagemenu(true)}
       when @cmd_hash["page"] ; run_if_ulevel("page") {page}
       when @cmd_hash["info"] ; run_if_ulevel("info") {ogfileout("user_information",1,true)}

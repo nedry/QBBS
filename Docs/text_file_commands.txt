@@ -31,9 +31,9 @@ System Variables
       %SYSLOC%  	System Location
       %TLOGON%  	Total Logons
       %LOGONS%  	Logons Today
-      %POSTS%						Posts Today
-      %EMAILS%					Emails Today
-      %FEEDBACK%				Feedback Today
+      %POSTS%		Posts Today
+      %EMAILS%		Emails Today
+      %FEEDBACK%	Feedback Today
       %NEWUSERS%         New Users Registered Today
 
 Flow Control
@@ -47,4 +47,4 @@ Display
       %LASTCALL%        Last X callers list
       %QOTD%            The Quote of the Day
       %BULLET%          Bulletins
-			%FB%							Ask user to leave feedback to sysop.
+      %FB%		Ask user to leave feedback to sysop.
