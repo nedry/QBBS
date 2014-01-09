@@ -212,7 +212,7 @@ def tih
           line.gsub!(/\|SUM(\d*)([^\|]*)\|/){|m| out = "#{$2}#{obj.summary}" ; padding(out,$1)}
         end
 	if obj.kind_of?(Bbslist) then
-          line.gsub!(/\|DATE(\d*)([^\|]*)\|/){|m| out = "#{$2}#{obj.modify_date.strftime("%B %d, %Y") }" ;  padding(out,$1) if !obj.modify_date.nil?}
+          line.gsub!(/\|DATE(\d*)([^\|]*)\|/){|m| out = "#{$2}#{obj.modify_date.strftime("%B %d, %Y") if !obj.modify_date.nil?}" ;  padding(out,$1) if !obj.modify_date.nil?}
           line.gsub!(/\|NAME(\d*)([^\|]*)\|/){|m| out = "#{$2}#{obj.name}" ;  padding(out,$1) if !obj.name.nil?}
           line.gsub!(/\|TELNET(\d*)([^\|]*)\|/){|m| out = "#{$2}#{obj.number}" ;  padding(out,$1) if ! obj.number.nil?}
           line.gsub!(/\|SYSOP(\d*)([^\|]*)\|/){|m| out = "#{$2}#{obj.sysop}" ;  padding(out,$1) if !obj.sysop.nil?}
@@ -226,12 +226,18 @@ def tih
           line.gsub!(/\|MEGS(\d*)([^\|]*)\|/){|m| out = "#{$2}#{obj.megs}" ;  padding(out,$1) if !obj.megs.nil?}
           line.gsub!(/\|TERMINAL(\d*)([^\|]*)\|/){|m| out = "#{$2}#{obj.terminal}" ;  padding(out,$1) if !obj.terminal.nil?}
           line.gsub!(/\|WEBSITE(\d*)([^\|]*)\|/){|m| out = "#{$2}#{obj.website}" ;  padding(out,$1) if ! obj.website.nil?}
-	  line.gsub!(/\|NETWORK(\d*)([^\|]*)\|/){|m| out = "#{$2}"  
-	  obj.network.split("|").each {|line| out << "\r\n   #{line.strip}"}
-	  padding(out,$1) if !obj.network.nil?}
-          line.gsub!(/\|DESC(\d*)([^\|]*)\|/){|m| out = "#{$2}"  
-	  obj.desc.split("|").each {|line| out << "\r\n   #{line.strip}"}
-	  padding(out,$1) if !obj.desc.nil?}
+	  line.gsub!(/\|NETWORK(\d*)([^\|]*)\|/){|m| 
+	    if !obj.network.nil? then
+	      out = "#{$2}"  
+	      obj.network.split("|").each {|line| out << "\r\n   #{line.strip}"}
+	       padding(out,$1) 
+	     end}
+          line.gsub!(/\|DESC(\d*)([^\|]*)\|/){|m| 
+	    if !obj.desc.nil? then
+	      out = "#{$2}"  
+	      obj.desc.split("|").each {|line| out << "\r\n   #{line.strip}"}
+	      padding(out,$1)
+	    end}
           line.gsub!(/\|LOCAL(\d*)([^\|]*)\|/){||m|  out = ""; out = padding($2,$1) if !obj.imported; out}
           line.gsub!(/\|IMPT(\d*)([^\|]*)\|/){|m|  out = ""; out = padding($2,$1) if obj.imported; out}
           line.gsub!(/\$LOCKED(\d*)([^\|]*)\|/){|m|  out = ""; out = padding($2,$1) if obj.locked; out}
@@ -252,8 +258,9 @@ def tih
 	  line.gsub!(/\|QNET(\d*)([^\|]*)\|/){|m|  out = "#{$2}#{q_net}" ;  padding(out,$1) if !q_net.nil?}
 	  line.gsub!(/\|TITLE(\d*)([^\|]*)\|/){|m|  out = "#{$2}#{obj.subject.strip}" ;  padding(out,$1) if !obj.subject.nil?}
 	  line.gsub!(/\|AREA(\d*)([^\|]*)\|/){|m|  out = "#{$2}#{area.name}" ;  padding(out,$1) if !area.name.nil?}
-        end
-        @session.write line + "\r"
+  end
+        line.gsub!(/\|CR\|/,"\r")
+        @session.write line + "\r" if !line.strip.empty?
 	i+=1
       }
     else

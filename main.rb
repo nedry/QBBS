@@ -123,12 +123,7 @@ end
       when @cmd_hash["dmaint"] ; run_if_ulevel("dmaint") {doormaint}
       when @cmd_hash["omaint"] ; run_if_ulevel("omaint") {telnetmaint}
       when @cmd_hash["smaint"] ; run_if_ulevel("smaint") {screenmaint}
-      
-        when @cmd_hash["areachange"] 
-	 print theme.areachangeonmain
-	  if theme.areachangeonmain then
-		   run_if_ulevel("areachange") {areachange(parameters)}
-          end
+        when @cmd_hash["areachange"]; run_if_ulevel("areachange") {areachange(parameters)}
       when @cmd_hash["bulletins"] ; run_if_ulevel("bulletins") {bullets(parameters)}
       when @cmd_hash["feedback"] ; run_if_ulevel("feedback") { sendemail(true)}
       when @cmd_hash["teleconference"]
@@ -150,7 +145,7 @@ end
       when @cmd_hash["zipread"] ; run_if_ulevel("zipread") {messagemenu(true)}
       when @cmd_hash["page"] ; run_if_ulevel("page") {page}
       when @cmd_hash["info"] ; run_if_ulevel("info") {ogfileout("user_information",1,true)}
-      when @cmd_hash["version"] ; run_if_ulevel("version") {version}
+      when @cmd_hash["version"] ; run_if_ulevel("version") {ogfileout("version",1,true)}
       when @cmd_hash["who"] ; run_if_ulevel("who") {displaywho}
       when @cmd_hash["log"] ; run_if_ulevel("log") {picklog}
       when @cmd_hash["sysopmnu"] ; run_if_ulevel("sysopmnu") {ogfileout("sysopmnu",1,true)}

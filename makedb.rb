@@ -37,7 +37,7 @@ DataMapper.auto_migrate!
 # create initial groups
 
 Group.new(:groupname => 'Local', :number => 0 ).save!
-#Group.new(:groupname => 'Dove.net', :number => 1 ).save!
+Group.new(:groupname => 'Dove.net', :number => 1 ).save!
 #Group.new(:groupname => 'Fidonet', :number => 2 ).save!
 #Group.new(:groupname => 'Paranormal Net', :number =>  3 ).save!
 
@@ -74,10 +74,8 @@ Theme.new(:number => 1,
 		   :profile_full_prompt => "%C;Where in the alphabet (A-Z) do you wish to begin your directory listing? %W;",
 		   :profile_comlete_entry => "%G;By the way, you haven't filled out your User Profile yet...\r\nJust select %C;U%G; from the main menu to enter the User Profile System!" ,
 		   :profile_date_format => "%A the %-d%Z of %B, %Y at %I:%M%p",
-		   :read_flat_menu => true,
 		   :zipreadonlogon => true,
 		   :nomainmenu => false,
-		   :areachangeonmain => true,
 		   :profile_flat_menu => true,
 		   :text_directory => "text/").save!
                    
@@ -97,9 +95,7 @@ Theme.new(:number => 2,
 		   :zipread_prompt => "%G;Would you like to perform a new message scan %W;(%G;ZIPread%W;)? #{YESNO} ",
 		   :zipreadonlogon => true,
                    :nomainmenu => true,
-		   :areachangeonmain => true,
 		   :profile_flat_menu => true,
-		   :read_flat_menu => true,
 		   :profileedit_prompt => "%C;Select a letter from the above list: %W;",
 		   :profile_prompt => "%C;Select an option (G,D,Y,L,X, or ?): %W;",
 		   :proflle_lookup => "%C;Enter User-ID to look-up, B to browse or X to exit: %W;",
@@ -129,10 +125,8 @@ Theme.new(:number => 3,
 		   :profile_comlete_entry => "%G;By the way, you haven't filled out your Registry entry yet...\r\nJust select %C;R%G; from the TOP menu to enter the Registry!",
 		   :profile_date_format => "%A, %B %-d, %Y   %l:%M%P",
 		   :message_prompt => "%C;Select a letter from this list, or X to exit: ",
-		   :read_flat_menu => false,
 		   :zipreadonlogon => false,
 		   :nomainmenu => false,
-		   :areachangeonmain => false,
 		   :profile_flat_menu => false,
 		   :text_directory => "text/mbbs/").save!
 
@@ -183,7 +177,7 @@ add_area("The APC Net","W","W",nil,nil,nil,1)
 
 #Synchronet
 
-#add_area("General","W","W",2001,nil,nil,2)
+add_area("General","W","W",2001,nil,nil,2)
 #add_area("Adverstisements","W","W",2002,nil,nil,2)
 #add_area("Entertainment","W","W",2003,nil,nil,2)
 #add_area("Debate","W","W",2004,nil,nil,2)
@@ -200,7 +194,7 @@ add_area("The APC Net","W","W",nil,nil,nil,1)
 #add_area("Hobbies","W","W",2021,nil,2)
 #add_area("Synchronet Discussion","W","W",2007,nil,nil,2)
 #add_area("Sysops Only","I","I",2008,nil,nil,2)
-#add_area("SyDatamapper.finailizenchronet Prog. (Baja)","W","W",2011,nil,nil,2)
+add_area("dove data","W","W",2013,nil,nil,2)
 #add_area("Synchronet Prog. (Javascript)","W","W",2012,nil,nil,2)
 #add_area("Synchronet Prog. (c/c++/cvs)","W","W",2010,nil,nil,2)
 

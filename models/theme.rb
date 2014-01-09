@@ -8,7 +8,6 @@ class Theme
   property :delete, Boolean, :default => false
   property :locked, Boolean, :default => false
   property :nomainmenu, Boolean, :default => false
-  property :areachangeonmain, Boolean, :default => true
   property :modify_date, DateTime, :default => Time.now
   property :description, String, :length => 200
   property :user_prompt, String, :length => 200

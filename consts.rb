@@ -20,7 +20,7 @@ POLICYPORT = 8430
 #how long to wait between IRC reconnect attempts.  Set to 0 to not reconnect.
 BOT_RECONNECT_DELAY = 60 
 
-BBS_LIST_MSG_AREA = 1
+BBS_LIST_MSG_AREA = 4
 BBS_LIST_USER = "BBSLIST"
 
 #if the schedule thread hangs, how long to wait to try again.
@@ -51,7 +51,7 @@ ECHO = true
 NOECHO = false
 WRAP = true
 NOWRAP = false
-VER = "QUARKware (QBBS) 7.2"
+VER = "QUARKware (QBBS) 8a"
 DONE = false
 
 SYSOPNAME = "SYSOP"

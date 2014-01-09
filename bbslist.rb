@@ -1,5 +1,59 @@
 class Session
 
+
+   def changebbsstring(pointer,thing,len, loop, block)
+    bbs = fetch_bbs(absolute_bbs(pointer))
+    prompt = "Enter #{thing} (#{len} characters max): "
+    getinp(prompt) {|temp|
+    if temp.length > 0 and temp.length <= len then
+      block.call(temp)
+      update_bbs(bbs)
+       bbsmenu if !loop 
+       return
+    else 
+      if !loop then
+        print "%R;Not Changed!"
+        return 
+       end
+    end
+    }
+  end
+  
+def addbbsstring(thing,len,req)
+    prompt = "Enter #{thing} (#{len} characters max): "
+    
+    while true
+    temp = getinp(prompt) 
+    if temp.length > 0 and temp.length <= len then
+       return temp
+    else 
+	if req then
+        print "%R;Try again...%W;"
+	else
+	 return if temp.strip.length == 0
+	 end
+       end
+end 
+  end
+  
+  def changebbsnum(pointer,thing,min,max, loop, block)
+        bbs = fetch_bbs(absolute_bbs(pointer))
+    prompt = "Enter your #{thing} (between #{min} and #{max}): "
+   getinp(prompt,min,max) {|temp|
+    if temp.length > 0 and temp.length <= 6 then
+      block.call(temp)
+      update_bbs(bbs)
+      bbsmenu if !loop 
+      return
+    else 
+       if !loop then
+          print "%R;Not Changed!"
+          return 
+       end
+     end
+   }
+  end
+  
   def fullbbslist 
 
     i = 0
@@ -53,7 +107,7 @@ class Session
 
   def displaybbs(number)
 
-     GraphFile.new(self, "bbsentry").profileout(fetch_bbs(absolute_bbs(number)),number)
+     GraphFile.new(self, "bbsentry").profileout(fetch_bbs(absolute_bbs(number)),number) if bbs_total > 0
   end #displaybbslist
 
   def bbsmenu 
@@ -70,13 +124,12 @@ class Session
       case sel
         when @cmd_hash["bbsreload"] ; run_if_ulevel("bbsreload") {displaybbs(bbspointer)}      
         when @cmd_hash["bbsquit"] ; run_if_ulevel("bbsquit") {bbspointer = true}
-        when @cmd_hash["bbsadd"] ; run_if_ulevel("bbsadd") {add_bbs(bbspointer)}
+        when @cmd_hash["bbsadd"] ; run_if_ulevel("bbsadd") {add_a_bbs}
         when @cmd_hash["bbslock"] ; run_if_ulevel("bbslock") {lockbbs(bbspointer)}
         when @cmd_hash["bbsdelete"] ; run_if_ulevel("bbsdelete") {deletebbs(bbspointer)}
         when @cmd_hash["who"] ; run_if_ulevel("who") {displaywho}
         when @cmd_hash["page"] ; run_if_ulevel("page") {page}
 	when @cmd_hash["bbscont"]; run_if_ulevel("bbscont") {fullbbslist}
-        when "E"; edit_bbs(bbspointer)
         when @cmd_hash["leave"] ; run_if_ulevel("leave") {leave}
         when @cmd_hash["screenmenu"] ; run_if_ulevel("screenmenu") {gfileout ("bbsmnu")}
       end # of case
@@ -90,8 +143,15 @@ class Session
     print "Under Construction"
   end
 
-  def add_bbs(bbspointer)
-    print "Under Construction"
+  def add_a_bbs
+    newbbs = Bbslist.new
+    newbbs.name = addbbsstring("the name of the BBS system",30,true)
+    newbbs.sysop = addbbsstring("the sysop's name",30,false)
+    newbbs.software = addbbsstring("the BBS software",30,false)
+     newbbs.number = addbbsstring("the BBS telnet address",30,true)   
+     newbbs.website = addbbsstring("the BBS http address",30,false)   
+     newbbs.network = addbbsstring("the message networks, seperated by | characters",30,false)   
+    newbbs.save
   end
 
   def deletebbs(bbspointer)
