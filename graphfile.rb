@@ -188,7 +188,7 @@ def tih
 
       IO.foreach(outfile) { |line|
 	line = parse_text_commands(line.force_encoding("IBM437"))
-	line.gsub!(/\|NUMBER(\d*)([^\|]*)\|/){|m| out = "#{$2}#{index.to_s}" ; padding(out,$1)}
+	line.gsub!(/\|NUMBER(\d*)([^\|]*)\|/){|m| out = "" ;  out = $2.gsub("%s",index.to_s) ;  padding(out,$1) }
 	
 	if obj.kind_of?(User) then
           line.gsub!(/\|UNAME(\d*)([^\|]*)\|/){|m| out = "#{$2}#{obj.name}" ; padding(out,$1)}
@@ -212,20 +212,21 @@ def tih
           line.gsub!(/\|SUM(\d*)([^\|]*)\|/){|m| out = "#{$2}#{obj.summary}" ; padding(out,$1)}
         end
 	if obj.kind_of?(Bbslist) then
-          line.gsub!(/\|DATE(\d*)([^\|]*)\|/){|m| out = "#{$2}#{obj.modify_date.strftime("%B %d, %Y") if !obj.modify_date.nil?}" ;  padding(out,$1) if !obj.modify_date.nil?}
-          line.gsub!(/\|NAME(\d*)([^\|]*)\|/){|m| out = "#{$2}#{obj.name}" ;  padding(out,$1) if !obj.name.nil?}
-          line.gsub!(/\|TELNET(\d*)([^\|]*)\|/){|m| out = "#{$2}#{obj.number}" ;  padding(out,$1) if ! obj.number.nil?}
-          line.gsub!(/\|SYSOP(\d*)([^\|]*)\|/){|m| out = "#{$2}#{obj.sysop}" ;  padding(out,$1) if !obj.sysop.nil?}
-          line.gsub!(/\|EMAIL(\d*)([^\|]*)\|/){|m| out = "#{$2}#{obj.email}" ;  padding(out,$1) if !obj.email.nil?}
-          line.gsub!(/\|LOCATION(\d*)([^\|]*)\|/){|m| out = "#{$2}#{obj.location}" ;  padding(out,$1) if !obj.location.nil?}
-          line.gsub!(/\|SOFTWARE(\d*)([^\|]*)\|/){|m| out = "#{$2}#{obj.software}" ;  padding(out,$1) if !obj.software.nil?}
-          line.gsub!(/\|MSGS(\d*)([^\|]*)\|/){|m| out = "#{$2}#{obj.msgs}" ;  padding(out,$1) if !obj.msgs.nil?}
-          line.gsub!(/\|SUBS(\d*)([^\|]*)\|/){|m| out = "#{$2}#{obj.subs}" ;  padding(out,$1) if !obj.subs.nil?}
-          line.gsub!(/\|FILES(\d*)([^\|]*)\|/){|m| out = "#{$2}#{obj.files}" ;  padding(out,$1) if !obj.files.nil?}
-          line.gsub!(/\|DIRS(\d*)([^\|]*)\|/){|m| out = "#{$2}#{obj.dirs}" ;  padding(out,$1) if !obj.dirs.nil?}
-          line.gsub!(/\|MEGS(\d*)([^\|]*)\|/){|m| out = "#{$2}#{obj.megs}" ;  padding(out,$1) if !obj.megs.nil?}
-          line.gsub!(/\|TERMINAL(\d*)([^\|]*)\|/){|m| out = "#{$2}#{obj.terminal}" ;  padding(out,$1) if !obj.terminal.nil?}
-          line.gsub!(/\|WEBSITE(\d*)([^\|]*)\|/){|m| out = "#{$2}#{obj.website}" ;  padding(out,$1) if ! obj.website.nil?}
+
+          line.gsub!(/\|DATE(\d*)([^\|]*)\|/){|m| out = "";  out = $2.gsub("%s",obj.modify_date.strftime("%B %d, %Y")) if !obj.modify_date.nil?;  padding(out,$1) if !obj.modify_date.nil?}
+          line.gsub!(/\|NAME(\d*)([^\|]*)\|/){|m| out = "" ;  out = $2.gsub("%s",obj.name) if !obj.name.nil?;  padding(out,$1) }
+          line.gsub!(/\|TELNET(\d*)([^\|]*)\|/){|m| out = "" ;  out = $2.gsub("%s",obj.number.to_s) if !obj.number.nil?;  padding(out,$1) }
+          line.gsub!(/\|SYSOP(\d*)([^\|]*)\|/){|m| out = "" ;  out = $2.gsub("%s",obj.sysop) if !obj.sysop.nil?;  padding(out,$1) }
+          line.gsub!(/\|EMAIL(\d*)([^\|]*)\|/){|m| out = "" ;  out = $2.gsub("%s",obj.email) if !obj.email.nil?;  padding(out,$1) }
+          line.gsub!(/\|LOCATION(\d*)([^\|]*)\|/){|m| out = "" ;  out = $2.gsub("%s",obj.location) if !obj.location.nil?;  padding(out,$1) }
+          line.gsub!(/\|SOFTWARE(\d*)([^\|]*)\|/){|m| out = "" ;  out = $2.gsub("%s",obj.software) if !obj.software.nil?;  padding(out,$1) }
+          line.gsub!(/\|MSGS(\d*)([^\|]*)\|/){|m| out = "" ;  out = $2.gsub("%s",obj.msgs.to_s) if !obj.msgs.nil?;  padding(out,$1) }
+          line.gsub!(/\|SUBS(\d*)([^\|]*)\|/){|m| out = "" ;  out = $2.gsub("%s",obj.subs.to_s) if !obj.subs.nil?;  padding(out,$1) }
+          line.gsub!(/\|FILES(\d*)([^\|]*)\|/){|m| out = "" ;  out = $2.gsub("%s",obj.files.to_s) if !obj.files.nil?;  padding(out,$1) }
+          line.gsub!(/\|DIRS(\d*)([^\|]*)\|/){|m| out = "" ;  out = $2.gsub("%s",obj.dirs.to_s) if !obj.dirs.nil?;  padding(out,$1) }
+          line.gsub!(/\|MEGS(\d*)([^\|]*)\|/){|m| out = "" ;  out = $2.gsub("%s",obj.megs.to_s) if !obj.megs.nil?;  padding(out,$1) }
+          line.gsub!(/\|TERMINAL(\d*)([^\|]*)\|/){|m| out = "" ;  out = $2.gsub("%s",obj.terminal) if !obj.terminal.nil?;  padding(out,$1) }
+          line.gsub!(/\|WEBSITE(\d*)([^\|]*)\|/){|m| out = "" ;  out = $2.gsub("%s",obj.website) if !obj.website.nil?;  padding(out,$1) }
 	  line.gsub!(/\|NETWORK(\d*)([^\|]*)\|/){|m| 
 	    if !obj.network.nil? then
 	      out = "#{$2}"  

@@ -94,6 +94,7 @@ class Session
           #username.upcase!
           if yes("Create new user #{username}? [Y,n]",true,false,true)
             newuser(username, ip)
+	    break
           else
             next # input name again
           end

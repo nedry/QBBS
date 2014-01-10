@@ -33,7 +33,14 @@ def addbbsstring(thing,len,req)
 	 return if temp.strip.length == 0
 	 end
        end
-end 
+    end 
+  end
+  
+    
+def addbbsnum(thing,min,max)
+    prompt = "Enter #{thing}: "
+    temp = getnum(prompt,min,max) 
+    print "temp: #{temp}"
   end
   
   def changebbsnum(pointer,thing,min,max, loop, block)
@@ -122,6 +129,7 @@ end
 
       displaybbs(bbspointer) if moved
       case sel
+	when "TB"; addbbsnum("dude",0,9999999999)
         when @cmd_hash["bbsreload"] ; run_if_ulevel("bbsreload") {displaybbs(bbspointer)}      
         when @cmd_hash["bbsquit"] ; run_if_ulevel("bbsquit") {bbspointer = true}
         when @cmd_hash["bbsadd"] ; run_if_ulevel("bbsadd") {add_a_bbs}
@@ -145,12 +153,18 @@ end
 
   def add_a_bbs
     newbbs = Bbslist.new
+    newbbs.modify_date = Time.now
     newbbs.name = addbbsstring("the name of the BBS system",30,true)
     newbbs.sysop = addbbsstring("the sysop's name",30,false)
+    newbbs.location = addbbsstring("the system's location",30,false)
     newbbs.software = addbbsstring("the BBS software",30,false)
-     newbbs.number = addbbsstring("the BBS telnet address",30,true)   
-     newbbs.website = addbbsstring("the BBS http address",30,false)   
-     newbbs.network = addbbsstring("the message networks, seperated by | characters",30,false)   
+    newbbs.number = addbbsstring("the BBS telnet address",30,true)   
+    newbbs.website = addbbsstring("the BBS http address",30,false)   
+    newbbs.network = addbbsstring("the message networks, seperated by | characters\r\n",80,false)   
+    temp = addbbsnum("the number of messages:",0,999999999) 
+    newbbs.msgs = temp if !temp.nil?
+    temp = addbbsnum("the number of message areas:",0,999999999) 
+    newbbs.subs = temp if !temp.nil?
     newbbs.save
   end
 
