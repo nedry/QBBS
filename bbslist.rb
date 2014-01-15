@@ -153,6 +153,7 @@ def addbbsnum(thing,min,max)
 
   def add_a_bbs
     newbbs = Bbslist.new
+    newbbs.user = @c_user.name
     newbbs.modify_date = Time.now
     newbbs.name = addbbsstring("the name of the BBS system",30,true)
     newbbs.sysop = addbbsstring("the sysop's name",30,false)
@@ -163,13 +164,21 @@ def addbbsnum(thing,min,max)
     newbbs.network = addbbsstring("the message networks, seperated by | characters\r\n",80,false)   
     temp = addbbsnum("the number of messages:",0,999999999) 
     newbbs.msgs = temp if !temp.nil?
-    temp = addbbsnum("the number of message areas:",0,999999999) 
+    temp = addbbsnum("the number of message areas",0,999999999) 
     newbbs.subs = temp if !temp.nil?
-    newbbs.save
+    temp = addbbsnum("the number of files",0,999999999) 
+    newbbs.files = temp if !temp.nil?
+    temp = addbbsnum("the number of file directories",0,999999999) 
+    newbbs.dirs = temp if !temp.nil?
+    newbbs.terminal = addbbsstring("the supported terminal types",80,false) 
+    saveit,title = lineedit( :maxsize => 5, :header => "%G;Enter a description of this system.%Y;")
+    newbbs.desc = @lineeditor.msgtext.join("|") if @lineeditor.msgtext.length > 0 
+    newbbs.save if yes("\nAdd BBS (you may edit it later if you've made a mistake)? #{YESNO}",true,false,true)
   end
 
   def deletebbs(bbspointer)
-     print "Under Construction"
+     delete_bbs_pointer(bbspointer)
+     print "BBS ##{bbspointer} deleted..."
   end
 
   def lockbbs(bbspointer)

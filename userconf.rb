@@ -35,11 +35,12 @@ class Session
   end
 
   def usersettings
+
+    while true
     theme = get_user_theme(@c_user) 
     usersettingsmenu	
     prompt = theme.user_prompt
-    getinp(prompt) {|inp|
-
+    inp = getinp(prompt) 
       if !inp.integer?
         parameters = Parse.parse(inp)
         inp.gsub!(/[-\d]/,"")
@@ -56,21 +57,19 @@ class Session
       when "Z"; changezip(parameters)
       when "T";  themes(parameters)
       when "S"; screensaver(parameters)
-			when "SI"; signature
+      when "SI"; signature
       when "?" 
         if !existfileout('usersethdr',0,true)
 	  print "User Settings:"
         end
 	usersettingsmenu
                       	      
-      when "";	done = true
-      when "Q";	done = true
-      when "X";	done = true
-      end
-      usersettingsmenu if !done
-      done
-    }
+      when "";	break
+      when "Q";	break
+      when "X";	break 
   end 
+  end
+  end
 end #class Session
 
 
@@ -83,7 +82,7 @@ def signature
   end		
   change = yes("\nUpdate your signature? #{YESNO}",true,false,true)
 	if change then
-		saveit,title = lineedit(1,@c_user.signature,false,nil)
+		saveit,title = lineedit(:maxsize => 5, :header =>"%G;Enter your signature.%Y;")
     if @lineeditor.msgtext.length > 0 then
 		  @c_user.signature = @lineeditor.msgtext.join("\n")
 		else

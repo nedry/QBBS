@@ -5,7 +5,9 @@
 |LOCATION%C;Location: %G;%s| 
 |SOFTWARE%C;Software: %G;%s| 
 |MSGS%C;Messages: %G;%s %C;Messages%G;||SUBS%C; in %G;%s%C; Message Areas%G;|  
-|FILES%;Files:    %G;%s %C;Files%G;||DIRS%C; in %G;%s%G; File Areas: %G;| |MEGS%C;%s MB: %G;| 
+|FILES%C;Files:    %G;%s %C;Files%G;||DIRS%C; in %G;%s%C; File Areas %G;| |MEGS%C;%s MB: %G;| 
 |TERMINAL%C;Terminal: %G;%s ||WEBSITE%C;Web: %G;%s| 
+|USER%C;Added by: %G;%s|
 |NETWORK%C;Network...%G;|
-|DESC%C;Description...%G;|
+|DESC%C;Description...%W;|
+

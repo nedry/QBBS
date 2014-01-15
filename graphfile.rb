@@ -188,45 +188,47 @@ def tih
 
       IO.foreach(outfile) { |line|
 	line = parse_text_commands(line.force_encoding("IBM437"))
-	line.gsub!(/\|NUMBER(\d*)([^\|]*)\|/){|m| out = "" ;  out = $2.gsub("%s",index.to_s) ;  padding(out,$1) }
+	line.gsub!(/\|NUMBER(\d*)([^\|]*)\|/){|m| out = "" ; pad = $1;pad = $1;  out = $2.gsub("%s",index.to_s) ;  padding(out,pad) }
 	
 	if obj.kind_of?(User) then
-          line.gsub!(/\|UNAME(\d*)([^\|]*)\|/){|m| out = "#{$2}#{obj.name}" ; padding(out,$1)}
-          line.gsub!(/\|REALNAME(\d*)([^\|]*)\|/){|m| out = "#{$2}#{obj.real_name}" ; padding(out,$1)}
-          line.gsub!(/\|SEX(\d*)([^\|]*)\|/){|m| out = "#{$2}#{obj.sex}" ; padding(out,$1)}
-          line.gsub!(/\|AGE(\d*)([^\|]*)\|/){|m| out = "#{$2}#{obj.age.to_s}" ; padding(out,$1)}
-          line.gsub!(/\|ALIASES(\d*)([^\|]*)\|/){|m| out = "#{$2}#{obj.aliases}" ; padding(out,$1)}
-          line.gsub!(/\|CITYSTATE(\d*)([^\|]*)\|/){|m| out = "#{$2}#{obj.citystate}" ; padding(out,$1)}
-          line.gsub!(/\|VPHONE(\d*)([^\|]*)\|/){|m| out = "#{$2}#{obj.voice_phone}" ; padding(out,$1)}
-          line.gsub!(/\|PDESC(\d*)([^\|]*)\|/){|m| out = "#{$2}#{obj.p_description}" ; padding(out,$1)}
-          line.gsub!(/\|URL(\d*)([^\|]*)\|/){|m| out = "#{$2}#{obj.url}" ; padding(out,$1)}
-          line.gsub!(/\|MOVIE(\d*)([^\|]*)\|/){|m| out = "#{$2}#{obj.fav_movie}" ; padding(out,$1)}
-          line.gsub!(/\|TV(\d*)([^\|]*)\|/){|m| out = "#{$2}#{obj.fav_tv}" ; padding(out,$1)}
-          line.gsub!(/\|MUSIC(\d*)([^\|]*)\|/){|m| out = "#{$2}#{obj.fav_music}" ; padding(out,$1)}
-          line.gsub!(/\|INST(\d*)([^\|]*)\|/){|m| out = "#{$2}#{obj.insturments}" ; padding(out,$1)}
-          line.gsub!(/\|FOOD(\d*)([^\|]*)\|/){|m| out = "#{$2}#{obj.fav_food}" ; padding(out,$1)}	
-          line.gsub!(/\|SPORT(\d*)([^\|]*)\|/){|m| out = "#{$2}#{obj.fav_sport}" ; padding(out,$1)}
-          line.gsub!(/\|HOBBIES(\d*)([^\|]*)\|/){|m| out = "#{$2}#{obj.hobbies}" ; padding(out,$1)}
-          line.gsub!(/\|GEN1(\d*)([^\|]*)\|/){|m| out = "#{$2}#{obj.gen_info1}" ; padding(out,$1)}	
-          line.gsub!(/\|GEN2(\d*)([^\|]*)\|/){|m| out = "#{$2}#{obj.gen_info2}" ; padding(out,$1)}
-          line.gsub!(/\|SUM(\d*)([^\|]*)\|/){|m| out = "#{$2}#{obj.summary}" ; padding(out,$1)}
+		
+          line.gsub!(/\|UNAME(\d*)([^\|]*)\|/){|m| out = "" ; pad = $1; out = $2.gsub("%s",obj.name) if !obj.name.nil?;  padding(out,pad) }
+          line.gsub!(/\|REALNAME(\d*)([^\|]*)\|/){|m| out = "" ; pad = $1; out = $2.gsub("%s",obj.real_name) if !obj.real_name.nil?;  padding(out,pad) }
+          line.gsub!(/\|SEX(\d*)([^\|]*)\|/){|m| out = "" ; pad = $1; out = $2.gsub("%s",obj.sex) if !obj.sex.nil?;  padding(out,pad) }
+          line.gsub!(/\|AGE(\d*)([^\|]*)\|/){|m| out = "" ; pad = $1; out = $2.gsub("%s",obj.age.to_s) if !obj.age.nil?;  padding(out,pad) }
+          line.gsub!(/\|ALIASES(\d*)([^\|]*)\|/){|m| out = "" ; pad = $1; out = $2.gsub("%s",obj.aliases) if !obj.aliases.nil?;  padding(out,pad) }
+          line.gsub!(/\|CITYSTATE(\d*)([^\|]*)\|/){|m| out = "" ; pad = $1; out = $2.gsub("%s",obj.citystate) if !obj.citystate.nil?;  padding(out,pad) }
+          line.gsub!(/\|VPHONE(\d*)([^\|]*)\|/){|m| out = "" ; pad = $1; out = $2.gsub("%s",obj.voice_phone) if !obj.voice_phone.nil?;  padding(out,pad) }
+          line.gsub!(/\|PDESC(\d*)([^\|]*)\|/){|m| out = "" ; pad = $1; out = $2.gsub("%s",obj.p_description) if !obj.p_description.nil?;  padding(out,pad) }
+          line.gsub!(/\|URL(\d*)([^\|]*)\|/){|m| out = "" ; pad = $1; out = $2.gsub("%s",obj.url) if !obj.url.nil?;  padding(out,pad) }
+          line.gsub!(/\|MOVIE(\d*)([^\|]*)\|/){|m| out = "" ; pad = $1; out = $2.gsub("%s",obj.fav_movie) if !obj.fav_movie.nil?;  padding(out,pad) }
+          line.gsub!(/\|TV(\d*)([^\|]*)\|/){|m| out = "" ; pad = $1; out = $2.gsub("%s",obj.fav_tv) if !obj.fav_tv.nil?;  padding(out,pad) }
+          line.gsub!(/\|MUSIC(\d*)([^\|]*)\|/){|m| out = "" ; pad = $1; out = $2.gsub("%s",obj.fav_music) if !obj.fav_music.nil?;  padding(out,pad) }
+          line.gsub!(/\|INST(\d*)([^\|]*)\|/){|m| out = "" ; pad = $1; out = $2.gsub("%s",obj.insturments) if !obj.insturments.nil?;  padding(out,pad) }
+          line.gsub!(/\|FOOD(\d*)([^\|]*)\|/){|m| out = "" ; pad = $1; out = $2.gsub("%s",obj.fav_food) if !obj.fav_food.nil?;  padding(out,pad) }
+          line.gsub!(/\|SPORT(\d*)([^\|]*)\|/){|m| out = "" ; pad = $1; out = $2.gsub("%s",obj.fav_sport) if !obj.fav_sport.nil?;  padding(out,pad) }
+          line.gsub!(/\|HOBBIES(\d*)([^\|]*)\|/){|m| out = "" ; pad = $1; out = $2.gsub("%s",obj.hobbies) if !obj.hobbies.nil?;  padding(out,pad) }
+          line.gsub!(/\|GEN1(\d*)([^\|]*)\|/){|m| out = "" ; pad = $1; out = $2.gsub("%s",obj.gen_info1) if !obj.gen_info1.nil?;  padding(out,pad) }
+          line.gsub!(/\|GEN2(\d*)([^\|]*)\|/){|m| out = "" ; pad = $1; out = $2.gsub("%s",obj.gen_info2) if !obj.gen_info2.nil?;  padding(out,pad) }
+          line.gsub!(/\|SUM(\d*)([^\|]*)\|/){|m| out = "" ; pad = $1; out = $2.gsub("%s",obj.summary) if !obj.summary.nil?;  padding(out,pad) }
         end
 	if obj.kind_of?(Bbslist) then
 
-          line.gsub!(/\|DATE(\d*)([^\|]*)\|/){|m| out = "";  out = $2.gsub("%s",obj.modify_date.strftime("%B %d, %Y")) if !obj.modify_date.nil?;  padding(out,$1) if !obj.modify_date.nil?}
-          line.gsub!(/\|NAME(\d*)([^\|]*)\|/){|m| out = "" ;  out = $2.gsub("%s",obj.name) if !obj.name.nil?;  padding(out,$1) }
-          line.gsub!(/\|TELNET(\d*)([^\|]*)\|/){|m| out = "" ;  out = $2.gsub("%s",obj.number.to_s) if !obj.number.nil?;  padding(out,$1) }
-          line.gsub!(/\|SYSOP(\d*)([^\|]*)\|/){|m| out = "" ;  out = $2.gsub("%s",obj.sysop) if !obj.sysop.nil?;  padding(out,$1) }
-          line.gsub!(/\|EMAIL(\d*)([^\|]*)\|/){|m| out = "" ;  out = $2.gsub("%s",obj.email) if !obj.email.nil?;  padding(out,$1) }
-          line.gsub!(/\|LOCATION(\d*)([^\|]*)\|/){|m| out = "" ;  out = $2.gsub("%s",obj.location) if !obj.location.nil?;  padding(out,$1) }
-          line.gsub!(/\|SOFTWARE(\d*)([^\|]*)\|/){|m| out = "" ;  out = $2.gsub("%s",obj.software) if !obj.software.nil?;  padding(out,$1) }
-          line.gsub!(/\|MSGS(\d*)([^\|]*)\|/){|m| out = "" ;  out = $2.gsub("%s",obj.msgs.to_s) if !obj.msgs.nil?;  padding(out,$1) }
-          line.gsub!(/\|SUBS(\d*)([^\|]*)\|/){|m| out = "" ;  out = $2.gsub("%s",obj.subs.to_s) if !obj.subs.nil?;  padding(out,$1) }
-          line.gsub!(/\|FILES(\d*)([^\|]*)\|/){|m| out = "" ;  out = $2.gsub("%s",obj.files.to_s) if !obj.files.nil?;  padding(out,$1) }
-          line.gsub!(/\|DIRS(\d*)([^\|]*)\|/){|m| out = "" ;  out = $2.gsub("%s",obj.dirs.to_s) if !obj.dirs.nil?;  padding(out,$1) }
-          line.gsub!(/\|MEGS(\d*)([^\|]*)\|/){|m| out = "" ;  out = $2.gsub("%s",obj.megs.to_s) if !obj.megs.nil?;  padding(out,$1) }
-          line.gsub!(/\|TERMINAL(\d*)([^\|]*)\|/){|m| out = "" ;  out = $2.gsub("%s",obj.terminal) if !obj.terminal.nil?;  padding(out,$1) }
-          line.gsub!(/\|WEBSITE(\d*)([^\|]*)\|/){|m| out = "" ;  out = $2.gsub("%s",obj.website) if !obj.website.nil?;  padding(out,$1) }
+          line.gsub!(/\|DATE(\d*)([^\|]*)\|/){|m| out = "";  pad = $1; out = $2.gsub("%s",obj.modify_date.strftime("%B %d, %Y")) if !obj.modify_date.nil?;  padding(out,pad) if !obj.modify_date.nil?}
+          line.gsub!(/\|NAME(\d*)([^\|]*)\|/){|m| out = "" ; pad = $1; out = $2.gsub("%s",obj.name) if !obj.name.nil?;  padding(out,pad) }
+          line.gsub!(/\|USER(\d*)([^\|]*)\|/){|m| out = "" ; pad = $1; out = $2.gsub("%s",obj.user) if !obj.user.nil?;  padding(out,pad) }
+          line.gsub!(/\|TELNET(\d*)([^\|]*)\|/){|m| out = "" ; pad = $1; out = $2.gsub("%s",obj.number.to_s) if !obj.number.nil?;  padding(out,pad) }
+          line.gsub!(/\|SYSOP(\d*)([^\|]*)\|/){|m| out = "" ; pad = $1; out = $2.gsub("%s",obj.sysop) if !obj.sysop.nil?;  padding(out,pad) }
+          line.gsub!(/\|EMAIL(\d*)([^\|]*)\|/){|m| out = "" ; pad = $1; out = $2.gsub("%s",obj.email) if !obj.email.nil?;  padding(out,pad) }
+          line.gsub!(/\|LOCATION(\d*)([^\|]*)\|/){|m| out = "" ; pad = $1; out = $2.gsub("%s",obj.location) if !obj.location.nil?;  padding(out,pad) }
+          line.gsub!(/\|SOFTWARE(\d*)([^\|]*)\|/){|m| out = "" ; pad = $1; out = $2.gsub("%s",obj.software) if !obj.software.nil?;  padding(out,pad) }
+          line.gsub!(/\|MSGS(\d*)([^\|]*)\|/){|m| out = "" ; pad = $1; out = $2.gsub("%s",obj.msgs.to_s) if !obj.msgs.nil?;  padding(out,pad) }
+          line.gsub!(/\|SUBS(\d*)([^\|]*)\|/){|m| out = "" ; pad = $1; out = $2.gsub("%s",obj.subs.to_s) if !obj.subs.nil?;  padding(out,pad) }
+          line.gsub!(/\|FILES(\d*)([^\|]*)\|/){|m| out = "" ; pad = $1; out = $2.gsub("%s",obj.files.to_s) if !obj.files.nil?;  padding(out,pad) }
+          line.gsub!(/\|DIRS(\d*)([^\|]*)\|/){|m| out = "" ; pad = $1; out = $2.gsub("%s",obj.dirs.to_s) if !obj.dirs.nil?;  padding(out,pad) }
+          line.gsub!(/\|MEGS(\d*)([^\|]*)\|/){|m| out = "" ; pad = $1; out = $2.gsub("%s",obj.megs.to_s) if !obj.megs.nil?;  padding(out,pad) }
+          line.gsub!(/\|TERMINAL(\d*)([^\|]*)\|/){|m| out = "" ; pad = $1; out = $2.gsub("%s",obj.terminal) if !obj.terminal.nil?;  padding(out,pad) }
+          line.gsub!(/\|WEBSITE(\d*)([^\|]*)\|/){|m| out = "" ; pad = $1; out = $2.gsub("%s",obj.website) if !obj.website.nil?;  padding(out,pad) }
 	  line.gsub!(/\|NETWORK(\d*)([^\|]*)\|/){|m| 
 	    if !obj.network.nil? then
 	      out = "#{$2}"  
@@ -250,15 +252,17 @@ def tih
 	  line.gsub!(/\|FIDONET(\d*)([^\|]*)\|/){|m|  out = ""; out = padding($2,$1) if obj.f_network; out}
 	  line.gsub!(/\|EXPORTED(\d*)([^\|]*)\|/){|m|  out = ""; out = padding($2,$1) if obj.exported and !obj.usenet_network and !obj.f_network and !obj.network; out}
 	  line.gsub!(/\|REPLY(\d*)([^\|]*)\|/){|m|  out = ""; out = padding($2,$1) if obj.reply; out}
-	  line.gsub!(/\|ABS(\d*)([^\|]*)\|/){|m|  out = "#{$2}#{obj.absolute.to_s}" ;  padding(out,$1) if !obj.absolute.nil?}
-	  line.gsub!(/\|DATE(\d*)([^\|]*)\|/){|m|  out = "#{$2}#{m_date}" ;  padding(out,$1) }	  
-	  line.gsub!(/\|TZ(\d*)([^\|]*)\|/){|m|  out = "#{$2}#{tzout}" ;  padding(out,$1) if !tzout.nil?}
-	  line.gsub!(/\|TO(\d*)([^\|]*)\|/){|m|  out = "#{$2}#{obj.m_to.strip}" ;  padding(out,$1) if !obj.m_to.nil?}
-	  line.gsub!(/\|FROM(\d*)([^\|]*)\|/){|m|  out = "#{$2}#{obj.m_from.strip}" ;  padding(out,$1) if !obj.m_from.nil?}
-	  line.gsub!(/\|FNET(\d*)([^\|]*)\|/){|m|  out = "#{$2}#{f_net}" ;  padding(out,$1) if !f_net.nil?}
-	  line.gsub!(/\|QNET(\d*)([^\|]*)\|/){|m|  out = "#{$2}#{q_net}" ;  padding(out,$1) if !q_net.nil?}
-	  line.gsub!(/\|TITLE(\d*)([^\|]*)\|/){|m|  out = "#{$2}#{obj.subject.strip}" ;  padding(out,$1) if !obj.subject.nil?}
-	  line.gsub!(/\|AREA(\d*)([^\|]*)\|/){|m|  out = "#{$2}#{area.name}" ;  padding(out,$1) if !area.name.nil?}
+	 
+	  
+	  line.gsub!(/\|ABS(\d*)([^\|]*)\|/) {|m| out = "" ; pad = $1; out = $2.gsub("%s",obj.absolute.to_s) if !obj.absolute.nil?;  padding(out,pad) }
+	  line.gsub!(/\|DATE(\d*)([^\|]*)\|/){|m| out = "" ; pad = $1; out = $2.gsub("%s",m_date) if !m_date.nil?;  @session.print "1: #{$1}"; padding(out,pad) }	  
+	  line.gsub!(/\|TZ(\d*)([^\|]*)\|/){|m| out = "" ; pad = $1; out = $2.gsub("%s",tzout) if !tzout.nil?;  padding(out,pad) }
+	  line.gsub!(/\|TO(\d*)([^\|]*)\|/){|m| out = "" ; pad = $1; out = $2.gsub("%s",obj.m_to.strip) if !obj.m_to.nil?;  padding(out,pad) }
+	  line.gsub!(/\|FROM(\d*)([^\|]*)\|/){|m| out = "" ; pad = $1; out = $2.gsub("%s",obj.m_from.strip) if !obj.m_from.nil?;  padding(out,pad) }
+	  line.gsub!(/\|FNET(\d*)([^\|]*)\|/){|m| out = "" ; pad = $1; out = $2.gsub("%s",f_net) if !f_net.nil?;  padding(out,pad) }
+	  line.gsub!(/\|QNET(\d*)([^\|]*)\|/){|m| out = "" ; pad = $1; out = $2.gsub("%s",q_net) if !q_net.nil?;  padding(out,pad) }
+	  line.gsub!(/\|TITLE(\d*)([^\|]*)\|/){|m| out = "" ; pad = $1; out = $2.gsub("%s",obj.subject.strip) if !obj.subject.nil?;  padding(out,pad) }
+	  line.gsub!(/\|AREA(\d*)([^\|]*)\|/) {|m| out = "" ; pad = $1; out = $2.gsub("%s",area.name) if !area.name.nil?;  padding(out,pad) }
   end
         line.gsub!(/\|CR\|/,"\r")
         @session.write line + "\r" if !line.strip.empty?

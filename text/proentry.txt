@@ -1,19 +1,19 @@
-%G;Ok, here's the info for |UNAME|...
+%G;Ok, here's the info for |UNAME%s|...
 
-%G;Real Name: %Y;|REALNAME26|%G;Sex: %Y;|SEX5|%G;Age: %Y;|AGE|
-%G;Aliases: %Y;|ALIASES|
-%G;City/State: %Y;|CITYSTATE|
-%G;Voice Phone: %Y;|VPHONE|
-%G;Physical Descripton: %Y;|PDESC|
-%G;Web/Email: %Y;%Y;|URL|
-%G;Favourite Movie: %Y;|MOVIE|
-%G;Favourite TV Show: %Y;|TV|
-%G;Favourite Music: %Y;|MUSIC|
-%G;Insturment Played: %Y;|INST|
-%G;Favourite Food: %Y;|FOOD|
-%G;Favourite Sport: %Y;|SPORT|
-%G;Other Hobbies/Interests: %Y;|HOBBIES|
-%G;General Info: %Y;|GEN1|
-%G;              %Y;|GEN2|
-%G;Summary: %Y;|SUM|
+|REALNAME%G;Real Name: %Y;%s|      |SEX%G;Sex: %Y;%s|      |AGE%G;Age: %Y;%s|
+%G;Aliases: %Y;|ALIASES%s|
+%G;City/State: %Y;|CITYSTATE%s|
+%G;Voice Phone: %Y;|VPHONE%s|
+%G;Physical Descripton: %Y;|PDESC%s|
+%G;Web/Email: %Y;%Y;|URL%s|
+%G;Favourite Movie: %Y;|MOVIE%s|
+%G;Favourite TV Show: %Y;|TV%s|
+%G;Favourite Music: %Y;|MUSIC%s|
+%G;Insturment Played: %Y;|INST%s|
+%G;Favourite Food: %Y;|FOOD%s|
+%G;Favourite Sport: %Y;|SPORT%s|
+%G;Other Hobbies/Interests: %Y;|HOBBIES%s|
+%G;General Info: %Y;|GEN1%s|
+%G;              %Y;|GEN2%s|
+%G;Summary: %Y;|SUM%s|
 

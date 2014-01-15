@@ -147,11 +147,11 @@ class Session
     end
   end
 
-  def insert_lines(args)
+  def insert_lines(args,max)
     len = getmsglen
     insertline = args.shift || 0
 
-    if len >= MAXMESSAGESIZE then
+    if len >= max then
       print "%WR;No more room!%W;"
       return false
     end
@@ -221,7 +221,7 @@ class Session
     end
   end
 
-  def editprompt(reply_text,title)
+  def editprompt(reply_text,title,max)
     @lineeditor.msgtext.compact!
 
     while true
@@ -235,10 +235,10 @@ class Session
       when "C";	return [false,title]
       when "E"; edit_line(parameters)
       when "D"; delete_lines(parameters)
-			when "T"; title = change_title(parameters,title)
+      when "T"; title = change_title(parameters,title)
       when "L"; list(parameters)
       when "R"; replace_line(parameters)
-      when "I"; return [false,title] if insert_lines(parameters)
+      when "I"; return [false,title] if insert_lines(parameters,max)
       when "?"; editmenu
       when "Q"; quoter(reply_text)
       end #of case
@@ -246,9 +246,13 @@ class Session
 
   end # of def
 
-  def lineedit(startline,reply_text,file,title)
+  def lineedit(options = {})
+	   
+  default = { :maxsize => MAXMESSAGESIZE,  :header => "%G;Enter message text.  %Y;", :reply_text => [], :file => false, :title => nil }
+  options = default.merge(options)
 
-    print "%G;Enter message text.  %Y;#{MAXMESSAGESIZE}%G; lines maximum."
+
+    print "#{options[:header]} #{options[:maxsize]}%G; lines maximum."
     if @c_user.ansi
       then
         displaycolors
@@ -266,22 +270,22 @@ class Session
       @cmdstack.cmd.clear			#clear the command buffer
       @lineeditor.msgtext.clear			#clear the message buffer
       
-      if file then
-				if File.exists?(file) then
-          File.open(file, "r").each_line {|line| temp = line
+      if options[:file] then
+	if File.exists?(options[:file]) then
+          File.open(options[:file], "r").each_line {|line| temp = line
           temp = temp.gsub(/\r/," ")
           temp = temp.gsub(/\n/," ")
           @lineeditor.msgtext << temp}
-				else
-					print "%RW;File does not exist!  A new file will be created.%W;\n"
-				end
+	     else
+		print "%RW;File does not exist!  A new file will be created.%W;\n"
+	     end
           @lineeditor.line = @lineeditor.msgtext.length + 1
      end
 
 
       until (done)
-
-        until (len >= MAXMESSAGESIZE) or (done)
+          len = @lineeditor.msgtext.length - 1
+        until (len > options[:maxsize]) or (done)
           prompt1 = "#{@lineeditor.line}: "
           write prompt1
           workingline = getstr(ECHO,WRAP,@c_user.width-4,prompt1,false,false)
@@ -289,19 +293,18 @@ class Session
           case workingline.upcase.strip
           when  "/A"; done = true; @lineeditor.save = false
           when "/S"; done = true; @lineeditor.save = true
-          when "/Q"; quoter(reply_text)
+          when "/Q"; quoter(options[:reply_text])
           when "/EX"; break				#and we fall through the loop to editprompt
           else
             @lineeditor.line += 1
-            offset = @lineeditor.line < len ? 2 : 0
-            @lineeditor.msgtext[@lineeditor.line - offset,0] = workingline
-            len = @lineeditor.msgtext.length
-            if len == (MAXMESSAGESIZE - 2) then print "%WR;Two Lines Left!%W;" end
+            @lineeditor.msgtext[@lineeditor.line] = workingline
+            len = @lineeditor.msgtext.length - 1
+            if len == (options[:maxsize] - 2) then print "%WR;Two Lines Left!%W;" end
           end # of Case
 
         end # of Inner Until
         if !done then
-          done,title = editprompt(reply_text,title)
+          done,title = editprompt(options[:reply_text],options[:title],options[:maxsize])
         end
       end #of Outer until
 			@lineeditor.msgtext.compact!

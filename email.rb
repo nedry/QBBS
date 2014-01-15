@@ -293,7 +293,7 @@ class Session
       prompt = "Send email #{YESNO}"
       saveit = yes(prompt, true, false,true)
     else
-      saveit = lineedit(1,reply_text,false,title)
+      saveit,title = lineedit(:reply_text => reply_text,:title => title, :header =>"%G;Enter your Email.%Y;")
     end
     if saveit then
 
@@ -303,13 +303,13 @@ class Session
       update_system(system)
       case m_type
       when LOCAL
-        savecurmessage(0,to, title, false,false,nil,nil,nil,nil,nil)
+	savecurmessage(0, to, :title => title)
         print "Sending Local e-mail..."
 
       when F_NETMAIL
         number = find_fido_area(NETMAIL)
         intl = "#{zone}:#{net}/#{node} #{FIDOZONE}:#{FIDONET}/#{FIDONODE}"
-        savecurmessage(number,to,title,false,false,node,net,intl,point,nil)
+        savecurmessage(number, to, :title=>title, :destnode => node, :destnet => net, :intl => intl , :point => point)
         print "Sending Netmail..."
 
       when Q_NETMAIL
@@ -325,7 +325,7 @@ class Session
           @lineeditor.msgtext.unshift(inp)
           to = "NETMAIL"
         end
-        savecurmessage(number,to,title,false,false,nil,nil,nil,nil,nil)
+        savecurmessage(number,to,:title => title)
         print "Sending QWK Netmail..."
       when SMTP
         print "Sending SMTP (Internet) Email..."
@@ -410,7 +410,7 @@ class Session
       case m_type
       when F_NETMAIL
         table,number = find_fido_area(NETMAIL)
-        savecurmessage(number, to, title, false,false,node,net,intl,point,nil)
+        savecurmessage(number, to, :title => title,:destnode => node,:destnet => net,:intl => intl, :point => point)
         print "Sending Netmail..."
       when Q_NETMAIL
         area = find_qwk_area(QWKMAIL,qwknet.grp)
@@ -420,12 +420,12 @@ class Session
 
         end
         print "Sending QWK Netmail..."
-        savecurmessage(area.number, to, title, false,false,node,net,intl,point,nil)
+        savecurmessage(area.number, to, :title => title,:destnode => node,:destnet => net ,:intl => intl,:point => point)
       when SMTP
         print "Sending SMTP (Internet) Email..."
         smtp_send(to,@c_user.name,title,@lineeditor.msgtext)
       when LOCAL
-        savecurmessage(0, to, title, false,false,nil,nil,nil,nil,nil)
+        savecurmessage(0, to, :title => title)
         print "Sending Local e-mail..."
       end
     end

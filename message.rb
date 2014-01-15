@@ -24,19 +24,20 @@ class Session
         when @cmd_hash["write"] ; run_if_ulevel("write") {post}
         when @cmd_hash["msgareach"] ; run_if_ulevel("msgareach") {areachange(parameters)}
         when @cmd_hash["who"] ; run_if_ulevel("who") {displaywho}
-      when @cmd_hash["msgzipread"] ; run_if_ulevel("msgzipread") {messagemenu(true)}
-      when @cmd_hash["teleconference"]
+        when @cmd_hash["msgzipread"] ; run_if_ulevel("msgzipread") {messagemenu(true)}
+        when @cmd_hash["teleconference"]
         if IRC_ON then
           run_if_ulevel("teleconference") {teleconference(nil)}
         else
           print "%WR; Teleconference is disabled! %W;\r\n"
         end
-        when @cmd_hash["msgexit"] ; run_if_ulevel("upexit") { done = true}
+        when @cmd_hash["msgexit"] ; run_if_ulevel("msgexit") { done = true}
       end
       done
     }
 
   end 
+  
   
   def displaylist
     cont = false
@@ -209,11 +210,11 @@ class Session
 
         case reptype
         when "Y"; private = true
-        when "X"; return
+        when "X"; returnlineedit
         end
 
         title = r_message.subject
-				nntpreferences = r_message.nntpreferences
+	nntpreferences = r_message.nntpreferences
 
         print "%G;Title: #{title}"
         title = get_or_cr("%C;Enter Title (<CR> for old):%W; ", title)
@@ -230,7 +231,7 @@ class Session
 					saveit = false
 					saveit = true if @lineeditor.msgtext.length > 0
         else
-          saveit,title = lineedit(1,reply_text,false,title)
+          saveit,title = lineedit(:reply_text => reply_text,:title => title)
         end
         if (saveit) then
           system = fetch_system
@@ -241,7 +242,7 @@ class Session
           end
           update_system(system)
           x = private ? 0 : @c_area
-          savecurmessage(x, to, title, false,true,nil,nil,nil,nil,nntpreferences)
+          savecurmessage(x, to, :title => title,:reply => true, :nntpreferences => nntpreferences)
           print private ? "Sending Private Mail..." : "%G;Saving Message.."
         else
           print "%WR;Message Cancelled.%W;"
@@ -249,7 +250,10 @@ class Session
       end
     end
 
-    def savecurmessage(x, to, title,exported,reply,destnode,destnet,intl,point,nntpreferences)
+    def savecurmessage(x, to,options = {})
+	   
+  default = {:title => "", :exported => false,  :reply => false, :destnode => nil, :destnet => nil, :intl => nil, :point => nil, :nntpreferences => "" }
+  options = default.merge(options)
 
       area = fetch_area(x)
 			if !@c_user.signature.nil? then
@@ -261,8 +265,8 @@ class Session
 
       m_from = @c_user.name
       msg_date = Time.now.strftime("%Y-%m-%d %I:%M%p")
-      absolute = add_msg(to,m_from,msg_date,title,msg_text,exported,false,destnode,destnet,intl,point,false, nil,nil,nil,
-      nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,reply,area.number,nil,nil,nil,nil,nntpreferences)
+      absolute = add_msg(to,m_from,msg_date,options[:title],msg_text,options[:exported],false,options[:destnode],options[:destnet],options[:intl],
+      options[:point],false, nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,options[:reply],area.number,nil,nil,nil,nil,options[:nntpreferences])
       add_log_entry(5,Time.now,"#{@c_user.name} posted msg # #{absolute}")
     end
 
@@ -361,10 +365,10 @@ class Session
         prompt = "Post message #{YESNO}"
         saveit = yes(prompt, true, false,true)
       else
-        saveit,title = lineedit(1,reply_text,false,title)
+	saveit,title = lineedit(:reply_text => reply_text,:title => title)
       end
       if saveit then
-        savecurmessage(@c_area, to, title,false,false,nil,nil,nil,nil,nil)
+        savecurmessage(@c_area, to, :title => title)
         @c_user.posted += 1
         update_user(@c_user)
         system = fetch_system
@@ -608,7 +612,7 @@ end
       when @cmd_hash["readmnu"] ; run_if_ulevel("readmnu") {messagemenu(false)}
       when @cmd_hash["zipread"] ; run_if_ulevel("zipread") {messagemenu(true)}
       when @cmd_hash["info"] ; run_if_ulevel("info") {ogfileout("user_information",1,true)}
-      when @cmd_hash["version"] ; run_if_ulevel("version") {version}
+      when @cmd_hash["version"] ; run_if_ulevel("version") {ogfileout("version",1,true)}
       when @cmd_hash["log"] ; run_if_ulevel("log") {displaylog}
       when @cmd_hash["sysopmnu"] ; run_if_ulevel("sysopmnu") {ogfileout("sysopmnu",1,true)}
 

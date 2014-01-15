@@ -236,7 +236,7 @@
 
 - cmd: bbsdelete
   theme_key: 3
-  ulevel: 0
+  ulevel: 255
   menu_item: K
   
 - cmd: bbsreload

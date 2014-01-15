@@ -59,6 +59,12 @@ def delete_bbs(bname)
     bbs.destroy!
 end
 
+def delete_bbs_pointer(pointer)
+   abs = absolute_bbs(pointer)
+    bbs = Bbslist.all(:id => abs)
+    bbs.destroy!
+end
+
 def add_bbslist(name,born_date,software,sysop,email,website, number, minrate,
 			    maxrate,location,network,terminal,megs,msgs,files,
 			    nodes, users, subs, dirs,xterns,desc,imported)
@@ -66,6 +72,7 @@ def add_bbslist(name,born_date,software,sysop,email,website, number, minrate,
   megs = 32767 if megs.to_i > 32767  # this should be a bigint and why doesn't dm-validtions catch this?
 
   newbbs = Bbslist.new(
+    :user => "SYSTEM",
     :name => name,
     :born_date => born_date,
     :software => software,

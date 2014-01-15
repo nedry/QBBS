@@ -10,6 +10,7 @@ class Bbslist
   storage_names[:default] = 'bbslist'
 
   property :id, Serial
+  property :user, String, :length => 80
   property :name, String, :length => 40
   property :locked, Boolean, :default => false
   property :imported, Boolean, :default => false
