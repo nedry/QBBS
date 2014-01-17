@@ -209,7 +209,7 @@ class Session
         end
 
         case reptype
-        when "Y"; private = true
+        when "Y"; private =add_msg true
         when "X"; returnlineedit
         end
 
@@ -255,18 +255,18 @@ class Session
   default = {:title => "", :exported => false,  :reply => false, :destnode => nil, :destnet => nil, :intl => nil, :point => nil, :nntpreferences => "" }
   options = default.merge(options)
 
-      area = fetch_area(x)
-			if !@c_user.signature.nil? then
-				@lineeditor.msgtext << "" << "---" 
-				@c_user.signature.split("\n").each {|text| @lineeditor.msgtext << text}
-			end
+  area = fetch_area(x)
+    if !@c_user.signature.nil? then
+      @lineeditor.msgtext << "" << "---" 
+      @c_user.signature.split("\n").each {|text| @lineeditor.msgtext << text}
+    end
       @lineeditor.msgtext << DLIM
-      msg_text = @lineeditor.msgtext.join(DLIM)
 
-      m_from = @c_user.name
-      msg_date = Time.now.strftime("%Y-%m-%d %I:%M%p")
-      absolute = add_msg(to,m_from,msg_date,options[:title],msg_text,options[:exported],false,options[:destnode],options[:destnet],options[:intl],
-      options[:point],false, nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,options[:reply],area.number,nil,nil,nil,nil,options[:nntpreferences])
+
+      absolute = add_msg(to,@c_user.name,area.number, :subject => options[:title], :msg_text => @lineeditor.msgtext.join(DLIM),
+            :exported => options[:exported], :destnode => options[:destnode],:destnet => options[:destnet], :intl => options[:intl], 
+	    :point => options[:topt], :reply => options[:reply], :nntpreferences => options[:nntpreferences])
+	    
       add_log_entry(5,Time.now,"#{@c_user.name} posted msg # #{absolute}")
     end
 
@@ -277,12 +277,7 @@ class Session
 
       area = fetch_area(x)
       text << DLIM
-      msg_text = text.join(DLIM)
-
-      m_from = "SYSTEM"
-      msg_date = Time.now.strftime("%Y-%m-%d %I:%M%p")
-      absolute = add_msg(to,m_from,msg_date,title,msg_text,false,false,nil,nil,nil,nil,false, nil,nil,nil,
-      nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,false,area.number,nil,nil,nil,nil,nil)
+      absolute = add_msg(to,"SYSTEM",area.number, :subject => title, :msg_text => text.join(DLIM))
       add_log_entry(5,Time.now,"SYSTEM posted msg # #{absolute}")
     end
 
@@ -300,7 +295,7 @@ class Session
       num = rand(100000).to_s
       outfile = "msg#{num}"
       path = "#{FULLSCREENDIR}/#{outfile}"
-      quotefile = File.new(path, File::CREAT|File::APPEND|File::RDWR, 0666)
+      quotefile = File.nadd_msgew(path, File::CREAT|File::APPEND|File::RDWR, 0666)
       quotefile.puts "#{CRLF}"
       reply_text.each {|line| quotefile.puts "#{line.chop![0..75]}#{CRLF}"} if reply_text != nil
       quotefile.close
@@ -388,7 +383,7 @@ end
 
     def display_fido_header(mpointer)
       area = fetch_area(@c_area)
-      if (h_msg > 0) and (mpointer > 0) then
+      if (h_msg > 0) anadd_msgd (mpointer > 0) then
         u = @c_user
         fidomessage = fetch_msg(absolute_message(@c_area,mpointer))
         print
@@ -429,7 +424,7 @@ end
         end
       end
       return [zone,net,node,point]
-    end
+    endadd_msg
 
     def non_standard_zone(inzone)
       inzone = inzone[4..7] if inzone.length == 7
@@ -467,8 +462,8 @@ end
           abs = absolute_message(table,mpointer)
         end
         curmessage = fetch_msg(abs)
-				#in case a pointer got trashed.
-				pointer.lastread = 0 if pointer.lastread.nil?
+	   #in case a pointer got trashed.
+	   pointer.lastread = 0 if pointer.lastread.nil?
 				
         if pointer.lastread < curmessage.absolute then
           pointer.lastread = curmessage.absolute
@@ -488,8 +483,6 @@ end
 
      j = GraphFile.new(self, "message").profileout(curmessage,mpointer)
      
-       # print "%WG; #{"MESSAGE TEXT".center(@c_user.width - 2)}%W;"
-
         cont = true
 
         message.each {|line|
@@ -548,7 +541,7 @@ end
       :l_read => l_read,
       :loc => READ
 
-      ) {|sel, mpointer, moved, zip|
+      ) {|sel, mpointeradd_msg, moved, zip|
 
         mpointer = h_msg if mpointer.nil?
         mpointer = h_msg if mpointer > h_msg

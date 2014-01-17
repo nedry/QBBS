@@ -47,16 +47,15 @@ class GraphFile
   end
   
 def tih
-      if !TIH.nil? then
-
-			j = 0
-			get_history(TIH).split(LF.chr).each { |line|
-        j = j + 1 
-        if j == @session.c_user.length and @session.c_user.more  then
-          cont = @session.moreprompt
-          j = 1
-        end
-				@session.print parse_text_commands(line)
+  if !TIH.nil? then
+    j = 0
+    get_history(TIH).split(LF.chr).each { |line|
+    j = j + 1 
+    if j == @session.c_user.length and @session.c_user.more  then
+      cont = @session.moreprompt
+      j = 1
+    end
+     @session.print parse_text_commands(line)
  }
     else
       @session.print
@@ -255,7 +254,7 @@ def tih
 	 
 	  
 	  line.gsub!(/\|ABS(\d*)([^\|]*)\|/) {|m| out = "" ; pad = $1; out = $2.gsub("%s",obj.absolute.to_s) if !obj.absolute.nil?;  padding(out,pad) }
-	  line.gsub!(/\|DATE(\d*)([^\|]*)\|/){|m| out = "" ; pad = $1; out = $2.gsub("%s",m_date) if !m_date.nil?;  @session.print "1: #{$1}"; padding(out,pad) }	  
+	  line.gsub!(/\|DATE(\d*)([^\|]*)\|/){|m| out = "" ; pad = $1; out = $2.gsub("%s",m_date) if !m_date.nil?; padding(out,pad) }	  
 	  line.gsub!(/\|TZ(\d*)([^\|]*)\|/){|m| out = "" ; pad = $1; out = $2.gsub("%s",tzout) if !tzout.nil?;  padding(out,pad) }
 	  line.gsub!(/\|TO(\d*)([^\|]*)\|/){|m| out = "" ; pad = $1; out = $2.gsub("%s",obj.m_to.strip) if !obj.m_to.nil?;  padding(out,pad) }
 	  line.gsub!(/\|FROM(\d*)([^\|]*)\|/){|m| out = "" ; pad = $1; out = $2.gsub("%s",obj.m_from.strip) if !obj.m_from.nil?;  padding(out,pad) }

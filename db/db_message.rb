@@ -105,106 +105,196 @@ def email_absolute_message(ind,m_to)
   result = lazy_list[ind-1].absolute
 end
 
-def add_nntp_msg(m_to,m_from,msg_date,subject,msg_text,number, apparentlyto,
-                 xcommentto, newsgroups, path, organization, replyto,
-                 inreplyto, lines, bytes, xref, messageto, references, xgateway,
-                 control, charset, contenttype, contenttransferencoding,
-                 nntppostinghost, xcomplaintsto, xtrace, nntppostingdate,
-                 xoriginalbytes, ftnarea, ftnflags, ftnmsgid, ftnreply,
-								 ftntid, ftnpid, messageid)
+#def add_nntp_msg(m_to,m_from,msg_date,subject,msg_text,number, apparentlyto,
+#                 xcommentto, newsgroups, path, organization, replyto,
+#                 inreplyto, lines, bytes, xref, messageto, references, xgateway,
+#                 control, charset, contenttype, contenttransferencoding,
+#                 nntppostinghost, xcomplaintsto, xtrace, nntppostingdate,
+#                 xoriginalbytes, ftnarea, ftnflags, ftnmsgid, ftnreply,
+#		  ftntid, ftnpid, messageid)
 
 
   
-  area = Area.first(:number => number)
-  message = area.messages.new(
-    :m_to => m_to,
-    :m_from => m_from,
-    :msg_date => msg_date,
-    :subject => subject,
-    :msg_text => msg_text, 
-    :exported => true,
-    :usenet_network => true,
-    :apparentlyto => apparentlyto,
-    :xcommentto => xcommentto,
-    :newsgroups => newsgroups,
-    :path => path,
-    :organization => organization,
-    :replyto => replyto,
-    :inreplyto => inreplyto,
-    :lines => lines,
-    :bytes => bytes,
-    :xref => xref,
-    :messageto => messageto,
+#  area = Area.first(:number => number)
+#  message = area.messages.new(
+#    :m_to => m_to,
+#    :m_from => m_from,
+#    :msg_date => msg_date,
+#    :subject => subject,
+#    :msg_text => msg_text, 
+#    :exported => true,
+#    :usenet_network => true,
+#    :apparentlyto => apparentlyto,
+#    :xcommentto => xcommentto,
+#    :newsgroups => newsgroups,
+#    :path => path,
+#    :organization => organization,
+#    :replyto => replyto,
+#    :inreplyto => inreplyto,
+#    :lines => lines,
+#    :bytes => bytes,
+#    :xref => xref,
+#    :messageto => messageto,
 		#added nntpreferences because you can't auto_update a field change.  
 		#this is so we can send the reference line back to the nntp server for threading on 
 		#newsreaders.  made it a text field because there can be *loads* of references.
 		#:references => references,
-    :nntpreferences => references,
-    :xgateway => xgateway,
-    :control => control,
-    :charset => charset,
-    :contenttype  => contenttype,
-    :contenttransferencoding => contenttransferencoding,
-    :nntppostinghost => nntppostinghost,
-    :xcomplaintsto => xcomplaintsto,
-    :xtrace  => xtrace,
-    :nntppostingdate => nntppostingdate,
-    :xoriginalbytes => xoriginalbytes,
-    :fntarea => ftnarea,
-    :fntflags => ftnflags,
-    :msgid => ftnmsgid,
-    :tid  => ftntid,  
-    :pid  => ftnpid,
-		:msgid => messageid
-  ) 
+#    :nntpreferences => references,
+#    :xgateway => xgateway,
+#    :control => control,
+#    :charset => charset,
+#    :contenttype  => contenttype,
+#    :contenttransferencoding => contenttransferencoding,
+#    :nntppostinghost => nntppostinghost,
+#    :xcomplaintsto => xcomplaintsto,
+#    :xtrace  => xtrace,
+#    :nntppostingdate => nntppostingdate,
+#    :xoriginalbytes => xoriginalbytes,
+#    :fntarea => ftnarea,
+#    :fntflags => ftnflags,
+#    :msgid => ftnmsgid,
+#    :tid  => ftntidtrue,  
+#    :pid  => ftnpid,
+#		:msgid => messageid
+#  ) 
   
-  worked = message.save
-  if !worked then
-   message.errors.each{|x| puts x}
-  end
-  return high_absolute(area.number)
-end
+#  worked = message.save
+#  if !worked then
+#   message.errors.each{|x| puts x}
+#  end
+#  return high_absolute(area.number)
+#end
 
-def add_msg(m_to,m_from,msg_date,subject,msg_text,exported,network,destnode,destnet,intl,topt,smtp, f_network,orgnode,orgnet,attribute,cost,area,msgid,path,tzutc,charset, tid,pid,fmpt,origin,reply,number,q_msgid,q_tz,q_via,q_reply,nntpreferences)
 
-  topt = -1 if topt.nil?
-  destnode = -1 if destnode.nil?
-  destnet = -1 if destnet.nil?
+def add_msg(m_to,m_from,number,options = {})
+	
+  #added nntpreferences because you can't auto_update a field change. 
+  #this is so we can send the reference line back to the nntp server for threading on 
+  #newsreaders.  made it a text field because there can be *loads* of references.
+
+		
+  default = { :msg_date => Time.now.strftime("%Y-%m-%d %I:%M%p"),
+	       :subject => "No Subject",
+	       :msg_text => "",
+	       :exported => false,
+	       
+	       :network => false,
+	       
+	       :destnode => -1,
+	       :destnet => -1,
+	       :intl => nil,
+	       :topt => -1,
+	       
+	       :smtp => false,
+	       
+	       :f_network => false,
+	       
+	       :orgnode => nil,
+	       :orgnet => nil,
+	       :attribute => nil,
+	       :cost => nil,
+	       :area => nil,
+	       :msgid => nil,
+	       :path => nil,
+	       :tzutc => nil,
+	       :charset => nil,
+	       :tid => nil,
+	       :pid => nil,
+	       :fmpt => nil,
+	       :origin => nil,
+	       :reply => false,
+	       :q_msgid => nil,
+	       :q_tz => nil,
+	       :q_via => nil,
+	       :q_reply => nil,
+	       :nntpreferences => nil,
+	       
+	       :usenet_network => false,
+	       
+               :apparentlyto => nil,
+               :xcommentto => nil,
+               :newsgroups => nil,
+               :organization => nil,
+               :replyto => nil,
+               :inreplyto => nil,
+               :lines => nil,
+               :bytes => nil,
+               :xref => nil,
+               :messageto => nil,
+               :nntpreferences => nil,
+               :xgateway => nil,
+	       :control => nil,
+               :contenttype  => nil,
+               :contenttransferencoding => nil,
+	       :nntppostinghost => nil,
+               :xcomplaintsto => nil,
+               :xtrace  => nil,
+               :nntppostingdate => nil,
+               :xoriginalbytes => nil,
+               :fntarea => nil,
+               :fntflags => nil}
+	       
+  options = default.merge(options)
+
+ 
   area = Area.first(:number => number)
   message = area.messages.new(
     :m_to => m_to,
     :m_from => m_from,
-    :msg_date => msg_date,
-    :subject => subject,
-    :msg_text => msg_text, 
-    :exported => exported,
-    :network => network,
-    :reply => reply,
-    :destnode => destnode,
-    :destnet => destnet,
-    :intl => intl,
-    :topt => topt,
-    :smtp => smtp,
-    :f_network  => f_network,
-    :orgnode  => orgnode, 
-    :orgnet  => orgnet, 
-    :attribute  => attribute, 
-    :cost  => cost,
-    :area  => area,  
-    :msgid  => msgid, 
-    :path  => path, 
-    :tzutc  => tzutc,  
-    :charset  => charset,
-    :tid  => tid,  
-    :pid  => pid,
-    :fmpt  => fmpt,  
-    :origin  => origin,
-    :reply  => reply,
-    :q_msgid => q_msgid,
-    :q_tz => q_tz,
-    :q_via => q_via,
-    :q_reply => q_reply,
-		:nntpreferences => nntpreferences
+    :msg_date => options[:msg_date],
+    :subject => options[:subject],
+    :msg_text => options[:msg_text], 
+    :exported => options[:exported],
+    :network => options[:network],
+    :reply => options[:reply],
+    :destnode => options[:destnode],
+    :destnet => options[:destnet],
+    :intl => options[:intl],
+    :topt => options[:topt],
+    :smtp => options[:smtp],
+    :exported => options[:exported],
+    :f_network  => options[:f_network],
+    :orgnode  => options[:orgnode], 
+    :orgnet  => options[:orgnet], 
+    :attribute  => options[:attribute], 
+    :cost  => options[:cost],
+    :area  => options[:area],  
+    :msgid  => options[:msgid], 
+    :path  => options[:path], 
+    :tzutc  => options[:tzutc],  
+    :charset  => options[:charset],
+    :tid  => options[:tid],  
+    :pid  => options[:pid],
+    :fmpt  => options[:fmpt],  
+    :origin  => options[:origin],
+    :q_msgid => options[:q_msgid],
+    :q_tz => options[:q_tz],
+    :q_via => options[:q_via],
+    :q_reply => options[:q_reply],
+    :nntpreferences => options[:nntpreferences],
+    :usenet_network => options[:usenet_network],       
+    :apparentlyto => options[:apparentlyto],
+    :xcommentto => options[:xcommentto],
+    :newsgroups => options[:organization],
+    :organization => options[:organization],
+    :replyto => options[:replyto],
+    :inreplyto => options[:inreplyto],
+    :lines => options[:lines],
+    :bytes => options[:bytes],
+    :xref => options[:xref],
+    :messageto => options[:messageto],
+    :nntpreferences => options[:nntpreferences],
+    :xgateway => options[:xgateway],
+    :control => options[:contenttype],
+    :contenttype  => options[:contenttype],
+    :contenttransferencoding => [:contenttransferencoding],
+    :nntppostinghost => options[:nntppostinghost],
+    :xcomplaintsto => options[:xcomplaintsto],
+    :xtrace  => options[:xtrace],
+    :nntppostingdate => options[:nntppostingdate],
+    :xoriginalbytes => options[:xoriginalbytes],
+    :fntarea => options[:fntarea],
+    :fntflags => options[:fntflags]
   ) 
   
   worked = message.save
@@ -218,17 +308,7 @@ def add_qwk_message(message, area,qwkuser)
   user = fetch_user(get_uid(qwkuser))
   pointer = get_pointer(user,area.number)
   to = message.to.upcase.strip
-  m_from = message.from.upcase.strip
-  msg_text = message.text
-  msg_date = message.date
-  title = message.subject.strip
-  q_msgid = message.msgid
-  q_tz = message.tz
-  q_via = message.via
-  q_reply = message.reply
-  exported = true
-  network = true
-  
+  m_from = message.from.upcase.strip  
   group =  fetch_group_grp(area.grp)
   qwknet = get_qwknet(group)
   dest,route = get_qwk_dest(q_via)
@@ -244,9 +324,17 @@ def add_qwk_message(message, area,qwkuser)
  end
  end
   
-  absolute = add_msg(to,m_from,msg_date,title,msg_text,exported,network,nil,nil,nil,nil,false,
-                                   nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,false,area.number,
-                                   q_msgid,q_tz,q_via,q_reply,nil)
+  absolute = add_msg(to, m_from, area.number,
+			:msg_date => message.date,
+			:subject => message.subject.strip, 
+			:msg_text => message.text, 
+			:exported => true, 
+			:network => true,
+			:q_msgid => message.msgid, 
+			:q_tz => message.tz ,
+			:q_via => message.via, 
+			:q_reply => message.reply)
+			
   user.posted = user.posted + 1
   pointer.lastread = absolute
   update_pointer(pointer)
