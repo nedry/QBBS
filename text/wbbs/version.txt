@@ -1,0 +1,21 @@
+%G; __      __  ____     ____     ____       
+/\ \  __/\ \/\  _`\  /\  _`\  /\  _`\     
+\ \ \/\ \ \ \ \ \L\ \\ \ \L\ \\ \,\L\_\   
+ \ \ \ \ \ \ \ \  _ <'\ \  _ <'\/_\__ \   
+  \ \ \_/ \_\ \ \ \L\ \\ \ \L\ \ /\ \L\ \ 
+   \ `\___x___/\ \____/ \ \____/ \ `\____\
+    '\/__//__/  \/___/   \/___/   \/_____/ %C;Theme
+%W;WBBS, version 4.50 (IBM-PC), 11/1/96  Copyright (C) 1986 by Wayne Conrad
+%W;  QUARKware 7 BBS for Linux   %g;Copyright %G;1985%g;-%G;2014 %g;Fly By Night Software
+   
+  %G;Programmers:
+       %WC; Mark Firestone %W;   %WG; Martin DeMello %W;    %WR; John Lorance %W;
+  			     
+  %G;Thanks to:
+             %WB; Wayne Conrad %W;          %WY; Rob Swindell %W;
+ 			
+  %G;APIs by:
+        %M;Datamapper (Database)...........%W;The Datamapper Team
+        %M;Natter (IRC)....................%W;Johnathan Perkins 
+        %M;RubyMail (SMTP Email)...........%W;Matt Armstrong      
+        %M;Rbot 0.9.15.....................%W;The Rbot Team
