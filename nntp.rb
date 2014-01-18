@@ -305,17 +305,19 @@ def nntp_parsearticle(article,area)
   organization = "" if organization.nil?
   if (organization.strip != SYSTEMNAME.strip) and !area.nil? then
   
-    absolute = add_nntp_msg(to,from,datetime,subject,msg_text,area.number, apparentlyto,
-                 xcommentto, newsgroups, path, organization, replyto,
-                 inreplyto, lines, bytes, xref, messageto, references, xgateway,
-                 control, charset, contenttype, contenttransferencoding,
-                 nntppostinghost, xcomplaintsto, xtrace, nntppostingdate,
-                 xoriginalbytes, ftnarea, ftnflags, ftnmsgid, ftnreply,
-		             ftntid, ftnpid, messageid)
+      absolute = add_msg(to,from.name,area.number, :subject => subject,  :msg_text => msg_text,
+            :apparentlyto => apparentlyto, :xcommentto => xcommentto,:newsgroups => newsgroups, :path => path, 
+	    :organization => organization, :replyto => replyto, :inreplyto => inreplyto, :lines => lines,
+	    :bytes => bytes, :xref => xref, :messageto => messageto, :references => references, 
+	    :xgateway => xgateway, :control => control, :charset => charset, :contenttype => contenttype,
+	    :contenttransferencoding => contenttransferencoding, :nntppostinghost => nntppostinghost,
+	    :xcomplaintsto => xcomplaintsto, :xtrace => xtrace, :nntppostingdate => nntppostingdate,
+	    :xoriginalbytes => xoriginalbytes, :ftnarea => ftntid, :ftnpid => ftnpid, :messageid => messageid,
+	    :exported => true, :usenet_network => true)
   else
-		"-NNTP: Dropping article it's from us!"
-		absolute = nil
-	end
+    "-NNTP: Dropping article it's from us!"
+     absolute = nil
+  end
   return absolute
 end
 

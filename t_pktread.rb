@@ -89,11 +89,11 @@ def read_a_message(path,offset)
   end
   happy.read(offset) #move the record pointer to the next record
 
-  buffer		= happy.read(0xb2) # read the maximum possible header, although this may not all be used.
-  orgnode		= (buffer[0x03].ord << 8) + buffer[0x02].ord
+  buffer	= happy.read(0xb2) # read the maximum possible header, although this may not all be used.
+  orgnode	= (buffer[0x03].ord << 8) + buffer[0x02].ord
   destnode	= (buffer[0x05].ord << 8) + buffer[0x04].ord
-  orgnet		= (buffer[0x07].ord << 8) + buffer[0x06].ord
-  destnet		= (buffer[0x09].ord << 8) + buffer[0x08].ord
+  orgnet	= (buffer[0x07].ord << 8) + buffer[0x06].ord
+  destnet	= (buffer[0x09].ord << 8) + buffer[0x08].ord
   attribute	= (buffer[0x0b].ord << 8) + buffer[0x0a].ord
   cost		= (buffer[0x0d].ord << 8) + buffer[0x0c].ord
 
@@ -187,11 +187,11 @@ def read_pkt_header(path)
     return INVALID_PACKET;
   end
 
-  orgnode		= (buffer[0x01].ord << 8) + buffer[0x00].ord
+  orgnode	= (buffer[0x01].ord << 8) + buffer[0x00].ord
   destnode  	= (buffer[0x03].ord << 8) + buffer[0x02].ord
-  orgnet		= (buffer[0x15].ord << 8) + buffer[0x14].ord
-  destnet		= (buffer[0x17].ord << 8) + buffer[0x16].ord
-  orgzone		= (buffer[0x23].ord << 8) + buffer[0x22].ord
+  orgnet	= (buffer[0x15].ord << 8) + buffer[0x14].ord
+  destnet	= (buffer[0x17].ord << 8) + buffer[0x16].ord
+  orgzone	= (buffer[0x23].ord << 8) + buffer[0x22].ord
   destzone	= (buffer[0x25].ord << 8) + buffer[0x24].ord
 
   year		= (buffer[0x05].ord << 8) + buffer[0x04].ord
@@ -201,7 +201,7 @@ def read_pkt_header(path)
   min		= (buffer[0x0d].ord << 8) + buffer[0x0c].ord
   sec		= (buffer[0x0f].ord << 8) + buffer[0x0e].ord
 
-  prodx   		=  buffer[0x18].ord
+  prodx   	=  buffer[0x18].ord
   major		=  buffer[0x19].ord
 
   capword 	= (buffer[0x2d].ord << 8) + buffer[0x2c].ord
@@ -210,8 +210,8 @@ def read_pkt_header(path)
 
   if (capword & 0x0001) then       # FSC-0039 packet type 2+
      @debuglog.push(  "Type 2+ Packet")
-    prodx			= prodx + (buffer[0x2a].ord << 8)
-    minor			= buffer[0x2b].ord
+    prodx		= prodx + (buffer[0x2a].ord << 8)
+    minor		= buffer[0x2b].ord
     orgzone		= buffer[0x2e].ord + (buffer[0x2f].ord << 8)
     destzone		= buffer[0x30].ord + (buffer[0x31].ord << 8)
     orgpoint		= buffer[0x32].ord + (buffer[0x33].ord << 8)
@@ -242,35 +242,12 @@ def add_fido_msg(fidomessage)
   else
     number = find_fido_area(fidomessage.area)
   end
-  msg_text = convert_to_utf8(fidomessage.message.join(DLIM))
-  msg_date = fidomessage.datetime.strip
-  m_to = fidomessage.to
-  m_from = fidomessage.from
-  subject = fidomessage.subject
-  orgnode = fidomessage.orgnode
-  destnode = fidomessage.destnode
-  orgnet = fidomessage.orgnet
-  destnet = fidomessage.destnet
-  attribute = fidomessage.attribute
-  cost = fidomessage.cost
-  area = fidomessage.area
-  msgid = fidomessage.msgid
-  path = fidomessage.path
-  tzutc = fidomessage.tzutc
-  charset = fidomessage.charset
-  tid = fidomessage.tid
-  pid = fidomessage.pid
+
   topt = -1
   topt = fidomessage.topt if !fidomessage.topt.nil?
   intl = fidomessage.intl
   fmpt = -1
   fmpt = fidomessage.fmpt if !fidomessage.fmpt.nil?
-  origin = fidomessage.origin
-
-  f_network = true
-  exported = true
-  network = false
-  reply = false
 
   if !number.nil? then 
 
@@ -286,8 +263,12 @@ def add_fido_msg(fidomessage)
     a = fetch_area(number)
      @debuglog.push(  "FIDO: importing message to: #{a.name}")
 
-add_msg(m_to,m_from,msg_date,subject,msg_text,exported,network,destnode,destnet,intl,topt,false, f_network,orgnode,orgnet,
-               attribute,cost,area,msgid,path,tzutc,charset, tid,pid,fmpt,origin,reply,number,nil,nil,nil,nil,nil)
+    absolute = add_msg(fidomessage.to,fidomessage.from,area.number, :msg_date => fidomessage.datetime.strip, :subject =>fidomessage.subject, 
+              :msg_text => convert_to_utf8(fidomessage.message.join(DLIM)),:exported => true, :destnode => fidomessage.destnode,
+	      :orgnode => fidomessage.orgnode, :orgnet => fidomessage.orgnet, :destnet => fidomessage.destnet,
+	      :attribute => fidomessage.attribute, :cost => fidomessage.cost, :area => fidomessage.area, :msgid => fidomessage.msgid,
+	      :path => fidomessage.path, :tzutc => fidomessage.tzutc, :cost => fidomessage.charset, :tid => fidomessage.tid,
+	      :pid => fidomessage.pid, :orgin => fidomessage.origin, :f_network => true)
 
              #Update pointers
              user = fetch_user(get_uid(FIDOUSER))

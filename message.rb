@@ -273,13 +273,14 @@ class Session
 
 
    def savesystemmessage(x, to, title,text)
-     #just to save a message from the SYSTEM account.  The whole message saving system is kludgy.  Rewrite!
+     #just to save a message from th    ende SYSTEM account.  The whole message saving system is kludgy.  Rewrite!
 
       area = fetch_area(x)
       text << DLIM
       absolute = add_msg(to,"SYSTEM",area.number, :subject => title, :msg_text => text.join(DLIM))
       add_log_entry(5,Time.now,"SYSTEM posted msg # #{absolute}")
     end
+
 
     def get_or_cr(prompt, crvalue)
       until DONE
@@ -308,7 +309,7 @@ class Session
         print "wow"
       end
       @lineeditor.msgtext = []
-      if File.exists?("#{FULLSCREENDIR}/#{msg_file}")
+      if File.exists?("#{FULLSCREENDIR}/#{msg_file}") then
         IO.foreach("#{FULLSCREENDIR}/#{msg_file}") { |line| @lineeditor.msgtext.push(line.chomp!) }
       end
 
@@ -373,17 +374,17 @@ class Session
     end # of def post
 
 def msg_debug(mpointer)
-      area = fetch_area(@c_area)
-      if (h_msg > 0) and (mpointer > 0) then
-        print "--- message text dump ---"
-        dmsg = fetch_msg(absolute_message(@c_area,mpointer))
-				dmsg.msg_text.each_char {|c| write c;write("(#{c.ord})")}
-			end
+  area = fetch_area(@c_area)
+    if (h_msg > 0) and (mpointer > 0) then
+       print "--- message text dump ---"
+       dmsg = fetch_msg(absolute_message(@c_area,mpointer))
+       dmsg.msg_text.each_char {|c| write c;write("(#{c.ord})")}
+     end
 end
 
     def display_fido_header(mpointer)
       area = fetch_area(@c_area)
-      if (h_msg > 0) anadd_msgd (mpointer > 0) then
+      if (h_msg > 0) and (mpointer > 0) then
         u = @c_user
         fidomessage = fetch_msg(absolute_message(@c_area,mpointer))
         print
@@ -396,16 +397,15 @@ end
           ["TzUTZ", :tzutc],"CharSet", ["Tosser ID", :tid], ["Proc ID", :pid], "Intl",
           "Topt", "Fmpt", "Reply", "Origin",["QWK Message ID", :q_msgid],
         ["QWK Time Zone",:q_tz],["QWK Via",:q_via],["QWK Reply",:q_reply],
-				["NNTP Organization",:organization],"references",
-				"Bytes","Lines","xref","xtrace","nntppostinghost","xoriginalbytes",
-				"MsgId","nntpreferences"]
+	["NNTP Organization",:organization],"references",
+	"Bytes","Lines","xref","xtrace","nntppostinghost","xoriginalbytes",
+	"MsgId","nntpreferences"]
 
         fields.each do |f|
           field, attr = (f.is_a? Array) ? f : [f, f.downcase]
           val = fidomessage.send(attr)
           print "%C;#{field}:%G; #{val}" if val
-        end
-
+	end
         print
       else
         print "\r\n%Y;This message area is empty. Why not %G;[P]ost%Y; a Message?" if h_msg == 0
@@ -424,7 +424,7 @@ end
         end
       end
       return [zone,net,node,point]
-    endadd_msg
+    end
 
     def non_standard_zone(inzone)
       inzone = inzone[4..7] if inzone.length == 7
@@ -490,7 +490,7 @@ end
           write line
           if j == u.length - 2 and u.more then
             print
-            cont = moreprompt
+       cont = moreprompt
 
             j = 1
             break if !cont

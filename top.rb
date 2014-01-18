@@ -321,7 +321,7 @@ def process_only(outfile)
     pf_space = disk_percent_free(ROOT_PATH).to_s
     
     out = []
-    if File.exists?("#{TEXTPATH}#{outfile}")
+    if File.exists?("#{TEXTPATH}#{outfile}") then
       IO.foreach("#{TEXTPATH}#{outfile}") { |line|
         deporter = parse_text_commands(line,u_space,f_space,t_space,pf_space)
         out  << deporter.gsub("\n", "")
@@ -338,12 +338,8 @@ def process_only(outfile)
 
       area = fetch_area(x)
       text << DLIM
-      msg_text = text.join(DLIM)
-
-      m_from = "SYSTEM"
-      msg_date = Time.now.strftime("%Y-%m-%d %I:%M%p")
-      absolute = add_msg(to,m_from,msg_date,title,msg_text,false,false,nil,nil,nil,nil,false, nil,nil,nil,
-      nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,false,area.number,nil,nil,nil,nil,nil)
+      
+      absolute = add_msg(to,"SYSTEM",area.number, :subject => title, :msg_text => text.join(DLIM))
       add_log_entry(5,Time.now,"SYSTEM posted msg # #{absolute}")
     end
 

@@ -122,7 +122,8 @@ def read_mailbox
           msgtext = extract_multipart_msg(message)
         end
         puts msgtext
-        add_msg(area.tbl, l_address,from,msg_date,subject,msgtext,false,false,false,nil,nil,nil,nil,true)
+	
+        absolute = add_msg(l_address,from,area.tbl, :msg_date => msg_date, :subject => subject, :msg_text => msgtext,:smtp => true)
       else
         puts "-SMTP: Local user not found.  Bouncing Message."
         bounce_message(from,address)
