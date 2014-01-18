@@ -1,9 +1,9 @@
 ##############################################
-#											
-#   t_bundle.rb --Bundle Processor for Fidomail tosser for QBBS.		                                
-#   (C) Copyright 2004, Fly-By-Night Software (Ruby Version)                        
-#                                                                                                            
-############################################## 
+#
+#   t_bundle.rb --Bundle Processor for Fidomail tosser for QBBS.
+#   (C) Copyright 2004, Fly-By-Night Software (Ruby Version)
+#
+##############################################
 
 require "pg_ext"
 require "consts.rb"
@@ -22,7 +22,7 @@ end
 def write_a_ilo
   ilo_name = "#{SPOOL}/#{H_FIDONET.to_s(16).rjust(4).gsub!(32.chr,"0")}#{H_FIDONODE.to_s(16).rjust(4).gsub!(32.chr,"0")}.ilo"
   happy = system("touch #{ilo_name} > /dev/null 2>&1")
-  @debuglog.push( "-BUNDLE: Ilo file did not create!") if !happy 
+  @debuglog.push( "-BUNDLE: Ilo file did not create!") if !happy
 end
 
 def name_a_bundle
@@ -38,7 +38,7 @@ def name_a_bundle
     rec = entries.last
     last = rec[rec.length - 1].chr
     ext = last.succ
-    ext = "a" if ext == "10"  
+    ext = "a" if ext == "10"
     return OUTOFBUNDLES if ext == "aa" #this is the succ to "z", and means we have too many packets
   end
   name = "#{t_name}.#{day}#{ext}"
@@ -51,7 +51,7 @@ def copy_bundles
   if entries.length > 0 then
     happy = system("mv -f #{TEMPOUTDIR}/* #{BUNDLEOUTDIR} > /dev/null 2>&1")
     if happy then return SUCCESS else return BUNDLE_MOVE_ERROR end
-  else 
+  else
     return NO_BUNDLE_TO_COPY
   end
 end
@@ -78,7 +78,7 @@ end
 
 def bundle
   result = bundle_it
-  result = copy_bundles if result == SUCCESS 
+  result = copy_bundles if result == SUCCESS
 end
 
 def check_for_packets
@@ -86,15 +86,15 @@ def check_for_packets
   entries = Dir["#{BUNDLEINDIR}/*"]
   if entries.length > 0 then
     @debuglog.push( "-BUNDLE: Found #{entries.length} bundles to import.")
-    entries.each {|entry| 
+    entries.each {|entry|
 
       happy = system("cp -f #{entry} #{BACKUPIN} > /dev/null 2>&1")
       happy = system("mv -f #{entry} #{TEMPINDIR} > /dev/null 2>&1")
     }
-    return SUCCESS 
+    return SUCCESS
   else
     @debuglog.push( "-BUNDLE: No Incoming Bundles")
-    return NO_BUNDLES_ERROR 
+    return NO_BUNDLES_ERROR
   end
 
 end
@@ -103,8 +103,8 @@ end
 def process_packets
 
   entries = Dir["#{PKTTEMP}/*.pkt"]
-  entries2 = Dir["#{PKTTEMP}/*.PKT"] 
-  c_entries = entries + entries2 
+  entries2 = Dir["#{PKTTEMP}/*.PKT"]
+  c_entries = entries + entries2
 
   if c_entries.length > 0 then
     c_entries.each { |entry|
@@ -121,8 +121,8 @@ def process_incoming_pkt
 
   override = false
   entries = Dir["#{BUNDLEINDIR}/*.pkt"]
-  entries2 = Dir["#{BUNDLEINDIR}/*.PKT"] 
-  c_entries =  entries + entries2 
+  entries2 = Dir["#{BUNDLEINDIR}/*.PKT"]
+  c_entries =  entries + entries2
 
   if c_entries.length > 0 then
     override = true
@@ -145,12 +145,12 @@ def process_incoming
       entries.each {|entry|
         @debuglog.push( "-BUNDLE: Uncompressing bundle #{entry}")
         happy = system("unzip -o -j #{entry} -d #{PKTTEMP} > /dev/null 2>&1")
-        if !happy then 
+        if !happy then
           @debuglog.push( "-BUNDLE: Unzip Failure.  Oh shit!")
           return UNZIP_FAILURE
         end
         @debuglog.push( "-BUNDLE: Processing Bundle: #{entry}")
-        process_packets 
+        process_packets
         system("rm #{entry} > /dev/null 2>&1")
       }
 

@@ -29,7 +29,7 @@ def update_group(g)
 end
 
 def add_group(name)
-  number = g_total 
+  number = g_total
   Group.create(
     :groupname => name,
     :number => number
@@ -38,10 +38,10 @@ end
 
 
 def get_qwk_dest(route)
-  
+
  dest = nil
-  
-if !route.nil?  
+
+if !route.nil?
  routes = route.split ("/")
  dest = routes.pop
  route = routes.join("/")
@@ -56,7 +56,7 @@ def find_qwk_route(dest)
   qwkroute = Qwkroute.first(:conditions => ["upper(dest) = ?", dest.upcase])
   if !qwkroute.nil? then
     group = fetch_qwknet_qwk(qwkroute.qwk_id)
-    area = fetch_area_grp(group.grp)  
+    area = fetch_area_grp(group.grp)
     route = qwkroute.route
   end
   return area,route
@@ -66,7 +66,7 @@ def find_qwk_single_hop(bbsid)
   area = nil
   puts "bbsid: #{bbsid}"
   qwknet = Qwknet.first(:conditions => ["upper(bbsid) = ?", bbsid.upcase])
-  area = fetch_area_grp(qwknet.grp)  if !qwknet.nil? 
+  area = fetch_area_grp(qwknet.grp)  if !qwknet.nil?
   return area
  end
 
@@ -83,23 +83,23 @@ def save_qwkroute(qwknet,dest,route)
    qwkroute = qwknet.qwkroutes.new(:dest => dest, :route => route)
    qwkroute.save
  end
- 
+
  def update_qwkroute(qwkroute)
    qwkroute.save
  end
- 
+
  def remove_qwkroute(qwknet,dest)
    qwkroute = qwknet.qwkroutes.first(:dest => dest)
    qwkroute.destroy!
  end
- 
+
  def qwkroute_scavenge(qwknet)
    current_date = Time.now
    scavengetime = Time.now - (DAY_SEC * ROUTE_SCAVENGE)
    qwkroute = qwknet.qwkroutes.all(:modified.lte => scavengetime)
    qwkroute.destroy!
  end
-    
+
 def get_qwknet(group)
   qwknet = group.qwknets.first
 end
@@ -118,7 +118,7 @@ def update_qwknet(qwknet)
 end
 
 def add_qwknet(group,name,bbsid,qwkuser,ftpaddress,ftpaccount,ftppassword)
-  
+
  qwktag = convert_to_utf8(D_QWKTAG)
  qwkdir = D_QWKDIR
  repdir = D_REPDIR
@@ -126,10 +126,10 @@ def add_qwknet(group,name,bbsid,qwkuser,ftpaddress,ftpaccount,ftppassword)
  qwkpacket = "#{bbsid}.#{D_QWKEXT}"
  reppacket = "#{bbsid}.#{D_REPEXT}"
  repdata = "#{bbsid}.#{D_REPDATA}"
- 
- qwkrep = group.qwknets.new(:name => name, :bbsid => bbsid, :qwkuser => qwkuser, :ftpaddress => ftpaddress, 
+
+ qwkrep = group.qwknets.new(:name => name, :bbsid => bbsid, :qwkuser => qwkuser, :ftpaddress => ftpaddress,
                                                 :ftpaccount => ftpaccount, :ftppassword => ftppassword, :qwktag => qwktag,
-                                                :qwkdir => qwkdir, :repdir => repdir, :qwkpacket => qwkpacket, 
+                                                :qwkdir => qwkdir, :repdir => repdir, :qwkpacket => qwkpacket,
                                                 :reppacket => reppacket, :repdata => repdata)
  e = qwkrep.save
  puts "Worked: #{e}"
@@ -154,10 +154,10 @@ def update_nntpnet(nntpnet)
 end
 
 def add_nntpnet(group,name,nntpuser,nntpaddress,nntpaccount,nntppassword)
- 
+
  nntptag = convert_to_utf8(D_QWKTAG)
- nntprep = group.nntpnets.new(:name => name, :nntpuser => nntpuser, :nntpaddress => nntpaddress, 
-			    :nntpaccount => nntpaccount, :nntppassword => nntppassword, :nntptag => nntptag)
+ nntprep = group.nntpnets.new(:name => name, :nntpuser => nntpuser, :nntpaddress => nntpaddress,
+          :nntpaccount => nntpaccount, :nntppassword => nntppassword, :nntptag => nntptag)
  e = nntprep.save
  puts "Worked: #{e}"
  nntprep.errors.each{|error| puts error}

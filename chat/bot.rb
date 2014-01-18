@@ -11,14 +11,14 @@ class Botthread
   @irc_who,@who, @users, @message, @log = irc_who,who, users, message, log
   @irc_bot = nil
  end
- 
+
 # Wrap everything inside the IRC module.
 #module IRC
 
   def send_irc(user,message)
    @irc_bot.privmsg(user,message) if message != ""
   end
-  
+
   def send_irc_all (message)
    @irc_bot.privmsg(IRCCHANNEL,message) if message != ""
   end
@@ -29,9 +29,9 @@ class Botthread
      send_irc (user,"*** Telnet Users")
      @who.each_with_index {|w,i|
      send_irc(user,"*** #{w.node}: #{w.name} (#{w.where})")
-	}
-   else 
-    send_irc (user, "*** No telnet users.") 
+  }
+   else
+    send_irc (user, "*** No telnet users.")
    end
     send_irc (user, "*** End of list.")
   end
@@ -49,13 +49,13 @@ class Botthread
    send_irc(from,"***No blank messages, please")
   end
  end
- 
+
  def help (user)
   send_irc(user, "***Valid Commands:")
   send_irc(user, "***PAGE <userid>,<message> (pages a telnet user)")
   send_irc(user, "***USERS lists telnet users")
  end
- 
+
  def run
   puts "BOT: -STARTING IRC BOT THREAD"
   @irc_bot = IRC::Client::new(IRCSERVER, IRCPORT)
@@ -65,12 +65,12 @@ class Botthread
   # Log onto the server.
   @irc_bot.login(IRCBOTUSER, IRCBOTUSER, "8", "*", "I am the BBS bot.")
 
- 
-  
+
+
   names = false
   tick = 0
- 
-  
+
+
   loop do
     sleep(1)
     tick += 1
@@ -82,23 +82,23 @@ class Botthread
     m = nil
     m = @irc_bot.getline if @irc_bot.isdata
 
-   if tick == 15 then 
+   if tick == 15 then
     tick = 0
     @irc_bot.names("")
     names = true
     @irc_who.clear
    end
-   
+
    if !m.nil? then
     puts "BOT: #{m.message}"
     if m.is_a? IRC::Message::Numeric then
      if m.command == IRC::RPL_NAMREPLY then
-  
-     (/^:(\S*)\s(\d*)\s(\S*)(.*):(.*)/) =~ m.message 
-	 channel = $4; users = $5
 
-	 happy = (/=(.*)/) =~ channel
-	 channel = $1 if !happy.nil?
+     (/^:(\S*)\s(\d*)\s(\S*)(.*):(.*)/) =~ m.message
+   channel = $4; users = $5
+
+   happy = (/=(.*)/) =~ channel
+   channel = $1 if !happy.nil?
 
       if !users.nil?
        user_arr = users.split(" ")
@@ -107,43 +107,43 @@ class Botthread
       end
      end
      if m.command == IRC::RPL_ENDOFNAMES
-      names = false 
+      names = false
      end
     end
-      
+
      if m.command == IRC::RPL_ENDOFMOTD || m.command == IRC::ERR_NOMOTD
       @irc_bot.join(IRCCHANNEL)
       @irc_bot.oper(IRCOPERID,IRCOPERPSWD)
       @irc_bot.mode("#{IRCCHANNEL} +o #{IRCBOTUSER}")
       @irc_bot.topic(IRCCHANNEL,IRCTOPIC)
      end
-     
+
       if m.kind_of? IRC::Message::Private then
        if m.dest == IRCBOTUSER then
         instr = m.params.to_s.upcase
-	happy = (/^(\S*)\s(.*)/) =~ instr
-	instr = $1 if !happy.nil? 
+  happy = (/^(\S*)\s(.*)/) =~ instr
+  instr = $1 if !happy.nil?
         case instr
-	 when "?"
-	  help(m.sourcenick)
-	 when "USERS"
-	   displayircwho(m.sourcenick)
-	 when "PAGE"
-	  happy = (/^(\S*)\s(.*),(.*)/) =~ m.params
-	  telnetpage(m.sourcenick,$2,$3)  if !happy.nil? 
-	 else
-	  send_irc(m.sourcenick,"I'm afraid I can't do that, #{m.sourcenick}.")
-	  send_irc (m.sourcenick,"Why don't you sit down, take a stress pill, and type ? for help.")
+   when "?"
+    help(m.sourcenick)
+   when "USERS"
+     displayircwho(m.sourcenick)
+   when "PAGE"
+    happy = (/^(\S*)\s(.*),(.*)/) =~ m.params
+    telnetpage(m.sourcenick,$2,$3)  if !happy.nil?
+   else
+    send_irc(m.sourcenick,"I'm afraid I can't do that, #{m.sourcenick}.")
+    send_irc (m.sourcenick,"Why don't you sit down, take a stress pill, and type ? for help.")
        end
       end
     end
    end
 
-  
+
 
   end # loop do
  end #IRC.run
  end
-# end 
+# end
 
 #end

@@ -30,7 +30,7 @@ puts "connecting to #{cstr}"
 
 DataMapper.setup(:default, cstr)
 DataMapper::Logger.new('log/db', :debug)
-DataObjects::Postgres.logger = DataObjects::Logger.new(STDOUT,:debug) 
+DataObjects::Postgres.logger = DataObjects::Logger.new(STDOUT,:debug)
 
 DataMapper.finalize
 DataMapper.auto_migrate!
@@ -55,98 +55,98 @@ Subsys.new(:subsystem => 9, :name => 'MESSAGE').save!
 
 
 Theme.new(:number => 1,
-                   :name => "QBBS", 
-                   :description => "Default Theme", 
-                   :main_prompt => MAIN_PROMPT, 
-		   :read_prompt => "%M;[@area@: @aname@]%C; @dir@ Read [%p] (1-@total@): %W;",
-		   :logout_prompt => "%W;Log off now (%Y;Y%W;,%R;n%W;): ",
-		   :door_prompt => "\r\n%G;Game #[1-@dtotal@] ? #{RET} %G;to quit: %W;",
-		   :bull_prompt => "\r\n%G;Bulletins #[1-@btotal@] ? #{RET} %G;to quit: %W;",
-		   :user_prompt => "%W;Change Which User Setting ? #{RET} to quit: ",
-		   :no_mail_prompt => "%W;Scanning for New Email... none.",
-		   :yes_mail_prompt => "%W;Scanning for New Email... @new@ message(s).\r\n",
-		   :yes_mail_readit => "\r\nRead them now #{YESNO}",
-		   :pause_prompt => "%W;Press (%G;N/Nonstop %R;Q/Quit%W;) #{RET} ",
-		   :zipread_prompt => "%G;Would you like to perform a new message scan %W;(%G;ZIPread%W;)? #{YESNO} ",
-		   :profileedit_prompt => "%C;Select a letter from the above list: %W;",
-		   :profile_prompt => "%C;Select an option (G,D,Y,L,X, or ?): %W;",
-		   :proflle_lookup => "%C;Enter User-ID to look-up, B to browse or X to exit: %W;",
-		   :profile_full_prompt => "%C;Where in the alphabet (A-Z) do you wish to begin your directory listing? %W;",
-		   :profile_comlete_entry => "%G;By the way, you haven't filled out your User Profile yet...\r\nJust select %C;U%G; from the main menu to enter the User Profile System!" ,
-		   :profile_date_format => "%A the %-d%Z of %B, %Y at %I:%M%p",
-		   :zipreadonlogon => true,
-		   :nomainmenu => false,
-		   :profile_flat_menu => true,
-		   :text_directory => "text/").save!
-                   
-Theme.new(:number => 2, 
-                   :name => "WBBS", 
-                   :description => "WBBS Theme", 
-                   :main_prompt => MAIN_PROMPT,
-		   :read_prompt => "%M;Board @area@:%C; Read 1-@total@ [%p] (? for menu): %W;",
-		   :logout_prompt => "%W;Log off now (%Y;Y%W;,%R;n%W;): ",
-		   :door_prompt => "\r\n%G;Game #[1-@dtotal@] ? #{RET} %G;to quit: %W;",
-		   :bull_prompt => "\r\n%G;Bulletins #[1-@btotal@] ? #{RET} %G;to quit: %W;",
-		   :user_prompt => "%W;Change Which User Setting ? #{RET} to quit: ",
-		   :no_mail_prompt => "%W;Scanning for New Email... none.",
-		   :yes_mail_prompt => "%W;Scanning for New Email... @new@ message(s).\r\n",
-		   :yes_mail_readit => "\r\nRead them now #{YESNO}",
-		   :pause_prompt => "%W;Press (%G;N/Nonstop %R;Q/Quit%W;) #{RET} ",
-		   :zipread_prompt => "%G;Would you like to perform a new message scan %W;(%G;ZIPread%W;)? #{YESNO} ",
-		   :zipreadonlogon => true,
-                   :nomainmenu => true,
-		   :profile_flat_menu => true,
-		   :profileedit_prompt => "%C;Select a letter from the above list: %W;",
-		   :profile_prompt => "%C;Select an option (G,D,Y,L,X, or ?): %W;",
-		   :proflle_lookup => "%C;Enter User-ID to look-up, B to browse or X to exit: %W;",
-		   :profile_full_prompt => "%C;Where in the alphabet (A-Z) do you wish to begin your directory listing? %W;",
-		   :profile_comlete_entry => "%G;By the way, you haven't filled out your User Profile yet...\r\nJust select %C;U%G; from the main menu to enter the User Profile System!",
-		   :profile_date_format => "%D  %T",
-		   :text_directory => "text/wbbs/").save!
-		   
-Theme.new(:number => 3, 
-                   :name => "MajorBBS", 
-                   :description => "The Rock Garden Theme", 
-                   :main_prompt => "\r\n%G;Main System Menu %w;(%G;MAIN%w;)\r\n%w;Select (%C;T,I,F,E,A,P,G,R,? %W;for help, or %C;X%W; to exit%w;): %W;",
-                   :read_prompt => "%M;Board @area@:%C; Read 1-@total@ [%p] (? for menu): %W;",
-		   :logout_prompt => "%R;You are about to terminate this connection!\r\n\r\n%C;Are you sure (Y/N)?",
-		   :door_prompt => "\r\n%G;GAMES %w;(%G;GAMES%w;)\r\n%w;Select (%C;@dlist@,%W; ? for help, or %C;X%W; to exit%w;): %W;",
-		   :bull_prompt => "\r\n%G;Information Center %w;(%G;INFO%w;)\r\n%w;Select (%C;@blist@,%W; ? for help, or %C;X%W; to exit%w;): %W;",
-		   :user_prompt => "\r\n%G;User Settings %w;(%G;USERS%w;)\r\n%w;Select (%C;C,E,F,G,L,M,W,P,SI,Z,T,%W; ? for help, or %C;X%W; to exit%w;): %W;",
-		   :no_mail_prompt => "",
-		   :yes_mail_prompt => "%Y;There is %W;new%Y; mail in your mailbox!",
-		   :yes_mail_readit => "\r\n\r\n%C;Do you want to see it now (Y/N)?",
-		   :pause_prompt => "%w;[N]onstop, [Q]uit, or [C]ontinue? ",
-		   :zipread_prompt => "%C;Would you like to perform a new message scan %W;(%G;ZIPread%W;)? (Y/N) ",
-		   :profileedit_prompt => "%C;Select a letter from the above list: %W;",
-		   :profile_prompt => "%C;Select an option (G,D,Y,L,X, or ?): %W;",
-		   :proflle_lookup => "%C;Enter User-ID to look-up, B to browse or X to exit: %W;",
-		   :profile_full_prompt => "%C;Where in the alphabet (A-Z) do you wish to begin your directory listing? %W;",
-		   :profile_comlete_entry => "%G;By the way, you haven't filled out your Registry entry yet...\r\nJust select %C;R%G; from the TOP menu to enter the Registry!",
-		   :profile_date_format => "%A, %B %-d, %Y   %l:%M%P",
-		   :message_prompt => "%C;Select a letter from this list, or X to exit: ",
-		   :zipreadonlogon => false,
-		   :nomainmenu => false,
-		   :profile_flat_menu => false,
-		   :text_directory => "text/mbbs/").save!
+:name => "QBBS",
+:description => "Default Theme",
+:main_prompt => MAIN_PROMPT,
+:read_prompt => "%M;[@area@: @aname@]%C; @dir@ Read [%p] (1-@total@): %W;",
+:logout_prompt => "%W;Log off now (%Y;Y%W;,%R;n%W;): ",
+:door_prompt => "\r\n%G;Game #[1-@dtotal@] ? #{RET} %G;to quit: %W;",
+:bull_prompt => "\r\n%G;Bulletins #[1-@btotal@] ? #{RET} %G;to quit: %W;",
+:user_prompt => "%W;Change Which User Setting ? #{RET} to quit: ",
+:no_mail_prompt => "%W;Scanning for New Email... none.",
+:yes_mail_prompt => "%W;Scanning for New Email... @new@ message(s).\r\n",
+:yes_mail_readit => "\r\nRead them now #{YESNO}",
+:pause_prompt => "%W;Press (%G;N/Nonstop %R;Q/Quit%W;) #{RET} ",
+:zipread_prompt => "%G;Would you like to perform a new message scan %W;(%G;ZIPread%W;)? #{YESNO} ",
+:profileedit_prompt => "%C;Select a letter from the above list: %W;",
+:profile_prompt => "%C;Select an option (G,D,Y,L,X, or ?): %W;",
+:proflle_lookup => "%C;Enter User-ID to look-up, B to browse or X to exit: %W;",
+:profile_full_prompt => "%C;Where in the alphabet (A-Z) do you wish to begin your directory listing? %W;",
+:profile_comlete_entry => "%G;By the way, you haven't filled out your User Profile yet...\r\nJust select %C;U%G; from the main menu to enter the User Profile System!" ,
+:profile_date_format => "%A the %-d%Z of %B, %Y at %I:%M%p",
+:zipreadonlogon => true,
+:nomainmenu => false,
+:profile_flat_menu => true,
+:text_directory => "text/").save!
+
+Theme.new(:number => 2,
+:name => "WBBS",
+:description => "WBBS Theme",
+:main_prompt => MAIN_PROMPT,
+:read_prompt => "%M;Board @area@:%C; Read 1-@total@ [%p] (? for menu): %W;",
+:logout_prompt => "%W;Log off now (%Y;Y%W;,%R;n%W;): ",
+:door_prompt => "\r\n%G;Game #[1-@dtotal@] ? #{RET} %G;to quit: %W;",
+:bull_prompt => "\r\n%G;Bulletins #[1-@btotal@] ? #{RET} %G;to quit: %W;",
+:user_prompt => "%W;Change Which User Setting ? #{RET} to quit: ",
+:no_mail_prompt => "%W;Scanning for New Email... none.",
+:yes_mail_prompt => "%W;Scanning for New Email... @new@ message(s).\r\n",
+:yes_mail_readit => "\r\nRead them now #{YESNO}",
+:pause_prompt => "%W;Press (%G;N/Nonstop %R;Q/Quit%W;) #{RET} ",
+:zipread_prompt => "%G;Would you like to perform a new message scan %W;(%G;ZIPread%W;)? #{YESNO} ",
+:zipreadonlogon => true,
+:nomainmenu => true,
+:profile_flat_menu => true,
+:profileedit_prompt => "%C;Select a letter from the above list: %W;",
+:profile_prompt => "%C;Select an option (G,D,Y,L,X, or ?): %W;",
+:proflle_lookup => "%C;Enter User-ID to look-up, B to browse or X to exit: %W;",
+:profile_full_prompt => "%C;Where in the alphabet (A-Z) do you wish to begin your directory listing? %W;",
+:profile_comlete_entry => "%G;By the way, you haven't filled out your User Profile yet...\r\nJust select %C;U%G; from the main menu to enter the User Profile System!",
+:profile_date_format => "%D  %T",
+:text_directory => "text/wbbs/").save!
+
+Theme.new(:number => 3,
+:name => "MajorBBS",
+:description => "The Rock Garden Theme",
+:main_prompt => "\r\n%G;Main System Menu %w;(%G;MAIN%w;)\r\n%w;Select (%C;T,I,F,E,A,P,G,R,? %W;for help, or %C;X%W; to exit%w;): %W;",
+:read_prompt => "%M;Board @area@:%C; Read 1-@total@ [%p] (? for menu): %W;",
+:logout_prompt => "%R;You are about to terminate this connection!\r\n\r\n%C;Are you sure (Y/N)?",
+:door_prompt => "\r\n%G;GAMES %w;(%G;GAMES%w;)\r\n%w;Select (%C;@dlist@,%W; ? for help, or %C;X%W; to exit%w;): %W;",
+:bull_prompt => "\r\n%G;Information Center %w;(%G;INFO%w;)\r\n%w;Select (%C;@blist@,%W; ? for help, or %C;X%W; to exit%w;): %W;",
+:user_prompt => "\r\n%G;User Settings %w;(%G;USERS%w;)\r\n%w;Select (%C;C,E,F,G,L,M,W,P,SI,Z,T,%W; ? for help, or %C;X%W; to exit%w;): %W;",
+:no_mail_prompt => "",
+:yes_mail_prompt => "%Y;There is %W;new%Y; mail in your mailbox!",
+:yes_mail_readit => "\r\n\r\n%C;Do you want to see it now (Y/N)?",
+:pause_prompt => "%w;[N]onstop, [Q]uit, or [C]ontinue? ",
+:zipread_prompt => "%C;Would you like to perform a new message scan %W;(%G;ZIPread%W;)? (Y/N) ",
+:profileedit_prompt => "%C;Select a letter from the above list: %W;",
+:profile_prompt => "%C;Select an option (G,D,Y,L,X, or ?): %W;",
+:proflle_lookup => "%C;Enter User-ID to look-up, B to browse or X to exit: %W;",
+:profile_full_prompt => "%C;Where in the alphabet (A-Z) do you wish to begin your directory listing? %W;",
+:profile_comlete_entry => "%G;By the way, you haven't filled out your Registry entry yet...\r\nJust select %C;R%G; from the TOP menu to enter the Registry!",
+:profile_date_format => "%A, %B %-d, %Y   %l:%M%P",
+:message_prompt => "%C;Select a letter from this list, or X to exit: ",
+:zipreadonlogon => false,
+:nomainmenu => false,
+:profile_flat_menu => false,
+:text_directory => "text/mbbs/").save!
 
 
-t = 
+t =
 
-  Screensaver.create(
-    :number => 1,
-    :name => "Fish Tank",
-    :path => "perl external/aquarium",
-    :modify_date => Time.now
-  ).save!
+Screensaver.create(
+:number => 1,
+:name => "Fish Tank",
+:path => "perl external/aquarium",
+:modify_date => Time.now
+).save!
 
-  Screensaver.create(
-    :number => 2,
-    :name => "Local Weather",
-    :path => "perl external/weatherspect",
-    :modify_date => Time.now
-  ).save!
-  
+Screensaver.create(
+:number => 2,
+:name => "Local Weather",
+:path => "perl external/weatherspect",
+:modify_date => Time.now
+).save!
+
 YAML.load(IO.read('config/qbbscommands.yml')).each {|cmd|
   h = Command.new(cmd).save!
 
@@ -231,10 +231,10 @@ add_area("dove data","W","W",2013,nil,nil,2)
 
 # initial system
 s = System.new(
-  :lastqwkrep => Time.now,
-  :qwkrepsuccess => false,
-  :qwkrepwake => Time.now,
-  :f_msgid => 9999999
+:lastqwkrep => Time.now,
+:qwkrepsuccess => false,
+:qwkrepwake => Time.now,
+:f_msgid => 9999999
 )
 happy = s.save
 puts "errors:"

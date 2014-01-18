@@ -11,14 +11,14 @@ SCREENSAVER = true
 FLASH_POL = false
 
 #this is the port for the flash policy server, which is for allowing flash based
-#telnet clients.  It actually runs on port 843, but that cannot be done on 
-#linux without root.  You should either use a router to translate port 8430 to 
-#port 843 or use iptables to do the same thing.  
+#telnet clients.  It actually runs on port 843, but that cannot be done on
+#linux without root.  You should either use a router to translate port 8430 to
+#port 843 or use iptables to do the same thing.
 
 POLICYPORT = 8430
 
 #how long to wait between IRC reconnect attempts.  Set to 0 to not reconnect.
-BOT_RECONNECT_DELAY = 60 
+BOT_RECONNECT_DELAY = 60
 
 BBS_LIST_MSG_AREA = 4
 BBS_LIST_USER = "BBSLIST"
@@ -153,7 +153,7 @@ TEMPINDIR = "#{ROOT_PATH}fido/tempin"
 TEMPOUTDIR = "#{ROOT_PATH}fido/tempout"
 BUNDLEOUTDIR = "#{ROOT_PATH}fido/out"
 BUNDLEINDIR = "#{ROOT_PATH}fido/in"
-PKTTEMP	= "#{ROOT_PATH}fido/packet"
+PKTTEMP  = "#{ROOT_PATH}fido/packet"
 BACKUPIN = "#{ROOT_PATH}fido/backup_in"
 BACKUPOUT = "#{ROOT_PATH}fido/backup_out"
 SPOOL = "#{ROOT_PATH}fido/spool/out"
@@ -193,7 +193,7 @@ RSTS    = 2
 MBBS_HEADER_LENGTH  = 188
 MBBS_START_CHARACTER = "^"
 
-RBBS	= 0
+RBBS  = 0
 RBBSDROPFILE = "DORINFO1.DEF"
 
 RSTS_MAX = 50
@@ -275,24 +275,24 @@ COLORTABLE = {
 
 
 CELERITY_COLORTABLE = {
-'|R' => "\e[;1;31;40m", '|G' => "\e[;1;32;40m",
-'|Y' => "\e[;1;33;40m", '|B' => "\e[;1;34;40m",
-'|M' => "\e[;1;35;40m", '|C' => "\e[;1;36;40m",
-'|W' => "\e[;1;37;40m", '|r' => "\e[;31;40m",
-'|g' => "\e[;32;40m", '|y' => "\e[;33;40m",
-'|b' => "\e[;34;40m", '|m' => "\e[;35;40m",
-'|c' => "\e[;36;40m", '|w' => "\e[;31;40m"
+  '|R' => "\e[;1;31;40m", '|G' => "\e[;1;32;40m",
+  '|Y' => "\e[;1;33;40m", '|B' => "\e[;1;34;40m",
+  '|M' => "\e[;1;35;40m", '|C' => "\e[;1;36;40m",
+  '|W' => "\e[;1;37;40m", '|r' => "\e[;31;40m",
+  '|g' => "\e[;32;40m", '|y' => "\e[;33;40m",
+  '|b' => "\e[;34;40m", '|m' => "\e[;35;40m",
+  '|c' => "\e[;36;40m", '|w' => "\e[;31;40m"
 }
 
 IRCCOLORTABLE = {
-"\cc04" => "\e[;1;31;40m", "\cc03" => "\e[;1;32;40m",
-"\cc08" => "\e[;1;33;40m", "\cc02" => "\e[;1;34;40m",
-"\cc06" => "\e[;1;35;40m", "\cc11" => "\e[;1;36;40m",
-"\cc16" => "\e[;1;37;40m", "\cc05" => "\e[;31;40m",
-"\cc09" => "\e[;32;40m", "\cc07" => "\e[;33;40m",
-"\cc12" => "\e[;34;40m", "\cc14" => "\e[;35;40m",
-"\cc10" => "\e[;36;40m", "\cc15" => "\e[;31;40m",
-"\co" =>  "\e[;1;37;40m"
+  "\cc04" => "\e[;1;31;40m", "\cc03" => "\e[;1;32;40m",
+  "\cc08" => "\e[;1;33;40m", "\cc02" => "\e[;1;34;40m",
+  "\cc06" => "\e[;1;35;40m", "\cc11" => "\e[;1;36;40m",
+  "\cc16" => "\e[;1;37;40m", "\cc05" => "\e[;31;40m",
+  "\cc09" => "\e[;32;40m", "\cc07" => "\e[;33;40m",
+  "\cc12" => "\e[;34;40m", "\cc14" => "\e[;35;40m",
+  "\cc10" => "\e[;36;40m", "\cc15" => "\e[;31;40m",
+  "\co" =>  "\e[;1;37;40m"
 }
 
 
@@ -300,26 +300,26 @@ IRCCOLORTABLE = {
 
 
 TIME_TABLE = {
-"40F0"  => "Atlantic", "412C"  => "Eastern",
-"4168"  => "Central", "41A4"  => "Mountain",
-"41E0"  => "Pacific", "421C"  => "Yukon",
-"4258"  => "Hawaii/Alaska", "4294"  => "Bering",
-"C0F0" => "Atlantic-D","C12C" => "Eastern-D",
-"C168" => "Central-D","C1A4" => "Mountain-D",
-"C1E0" => "Pacific","C21C" => "Yukon",
-"C258" => "Hawaii/Alaska-D","C294" => "BerinG-D",
-"2294" => "Midway","21E0" => "Vancouver",
-"21A4" => "Edmonton","2168" => "Winnipeg",
-"212C" => "Bogota","20F0" => "Caracas",
-"20B4" => "Rio de Janeiro","2078" => "Fernando de Noronha",
-"203C" => "Azores","1000" => "London",
-"103C" => "Berlin","1078" => "Athens",
-"10B4" => "Moscow","10F0" => "Dubai",
-"110E" => "Kabul","112C" => "Karachi",
-"114A" => "Bombay","1159" => "Kathmandu",
-"1168" => "Dhaka", "11A4" => "Bangkok",
-"11E0" => "Hong Kong","121C" => "Tokyo",
-"1258" => "Sydney","1294" => "Noumea",
+  "40F0"  => "Atlantic", "412C"  => "Eastern",
+  "4168"  => "Central", "41A4"  => "Mountain",
+  "41E0"  => "Pacific", "421C"  => "Yukon",
+  "4258"  => "Hawaii/Alaska", "4294"  => "Bering",
+  "C0F0" => "Atlantic-D","C12C" => "Eastern-D",
+  "C168" => "Central-D","C1A4" => "Mountain-D",
+  "C1E0" => "Pacific","C21C" => "Yukon",
+  "C258" => "Hawaii/Alaska-D","C294" => "BerinG-D",
+  "2294" => "Midway","21E0" => "Vancouver",
+  "21A4" => "Edmonton","2168" => "Winnipeg",
+  "212C" => "Bogota","20F0" => "Caracas",
+  "20B4" => "Rio de Janeiro","2078" => "Fernando de Noronha",
+  "203C" => "Azores","1000" => "London",
+  "103C" => "Berlin","1078" => "Athens",
+  "10B4" => "Moscow","10F0" => "Dubai",
+  "110E" => "Kabul","112C" => "Karachi",
+  "114A" => "Bombay","1159" => "Kathmandu",
+  "1168" => "Dhaka", "11A4" => "Bangkok",
+  "11E0" => "Hong Kong","121C" => "Tokyo",
+  "1258" => "Sydney","1294" => "Noumea",
 "12D0" => "Wellington"}
 
 

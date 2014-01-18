@@ -6,10 +6,10 @@ class Module
   def sync_reader(mutexname, *args)
     args.each {|var|
       module_eval <<-here
-       def #{var.to_s}
-       #{mutexname}.synchronize {@#{var.to_s}}
-       end
-       here
+      def #{var.to_s}
+        #{mutexname}.synchronize {@#{var.to_s}}
+      end
+      here
     }
   end
   private :sync_reader
@@ -25,7 +25,7 @@ module BBS_Logger
     fname = TEXTPATH + logfile
     if @log.line.length > 0 then
       lf = File.new(fname, File::CREAT|File::APPEND|File::RDWR, 0644)
-      @log.line.each {|x| 
+      @log.line.each {|x|
         if x == "REWRITE" then
           lf.close
           rewritelog(logfile)
@@ -44,7 +44,7 @@ module BBS_Logger
     if File.exists?(fname) then
       lf = File.new(fname, File::TRUNC|File::RDWR, 0644)
       lf.close
-    end 
+    end
   end
 end
 
@@ -74,28 +74,28 @@ class Listing
       key.kind_of?(Integer) ?  @list[key] :
       @list.find {|v| key == yield(v)}
     }
-  end 
+  end
 
   def clear
     @mutex.synchronize {
       @list.clear
-      self 
+      self
     }
   end
 
   def append(val)
     @mutex.synchronize {
-      @list.push(val) 
-      self 
+      @list.push(val)
+      self
     }
   end
 
-  def delete(val) 
+  def delete(val)
     @mutex.synchronize {
-      @list.delete_at(val) 
-      self 
+      @list.delete_at(val)
+      self
     }
-  end 
+  end
 
   def len
     return @list.length
@@ -103,9 +103,9 @@ class Listing
 
   def savelist(filename)
     @mutex.synchronize {
-      File.open(filename, "w+") do |f| 
-      Marshal.dump( @list, f) ## 
-      end 
+      File.open(filename, "w+") do |f|
+        Marshal.dump( @list, f) ##
+      end
     }
   end
 
@@ -113,21 +113,21 @@ class Listing
     @mutex.synchronize {
       puts "-SA: Loading #{listname}"
 
-      if File.exists?(filename) 
-        File.open(filename) do |f|   
-          @list = Marshal.load(f)  ## 
+      if File.exists?(filename)
+        File.open(filename) do |f|
+          @list = Marshal.load(f)  ##
         end
       else
         @list = defaultlist
-        print "-SA: #{listname.capitalize} not Found.  Creating new #{listname}\n" 
-        File.open(filename, "w+") do |f| 
-          Marshal.dump(@list, f) ## 
-          print "-SA: Saving #{listname}...\n" 
-        end 
+        print "-SA: #{listname.capitalize} not Found.  Creating new #{listname}\n"
+        File.open(filename, "w+") do |f|
+          Marshal.dump(@list, f) ##
+          print "-SA: Saving #{listname}...\n"
+        end
       end
     }
   end
-end	
+end
 
 
 
@@ -155,19 +155,19 @@ class Awho
 end
 
 class Who_old < Listing
-  def initialize 
+  def initialize
     super
-  end 
+  end
 
   sync_reader '@mutex', :irc, :node, :date, :threadn, :location, :name, :level, :where, :page
 
-  def [](key) 
-    findkey(key) {|who| who.threadn} 
-  end 
+  def [](key)
+    findkey(key) {|who| who.threadn}
+  end
 
-  def user(key) 
+  def user(key)
     findkey(key.upcase) {|who| who.name.upcase}
-  end 
+  end
 end   #of Class Who
 
 Airc_who = Struct.new('Airc_who', :where,  :date, :name, :page)
@@ -186,17 +186,17 @@ class Airc_who
 end
 
 class Irc_who < Listing
-  def initialize 
+  def initialize
     super
-  end 
+  end
 
   sync_reader '@mutex', :date, :name, :where, :page
 
 
- 
- def user(key) 
-   findkey(key.upcase) {|who| who.name.upcase}
- end 
+
+  def user(key)
+    findkey(key.upcase) {|who| who.name.upcase}
+  end
 end   #of Class Who
 
 class Parse
@@ -218,7 +218,7 @@ class Cmdstack
 
   def pullapart (input)
     happy = input.split(/\s*;\s*/)
-    @cmd = happy if happy 
+    @cmd = happy if happy
   end
 end #of def
 
@@ -241,24 +241,24 @@ class DebugLog
   def each
     @line.each {|n| yield n}
   end
-  
- def clear
+
+  def clear
     @line.clear
   end
 
- def push(x)
+  def push(x)
     @line.push(x)
   end
 
   attr_accessor :line
   sync_reader '@mutex', :line
-  
-  
+
+
 end #of class Log
 
 
 class LineEditor
-  def initialize 
+  def initialize
     @msgtext 	= []
     @line		= 0
     @save		= false

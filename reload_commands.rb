@@ -30,7 +30,7 @@ puts "connecting to #{cstr}"
 
 DataMapper.setup(:default, cstr)
 DataMapper::Logger.new('log/db', :debug)
-DataObjects::Postgres.logger = DataObjects::Logger.new(STDOUT,:debug) 
+DataObjects::Postgres.logger = DataObjects::Logger.new(STDOUT,:debug)
 DataMapper.finalize
 clear_commands
 

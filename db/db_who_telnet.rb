@@ -37,5 +37,5 @@ def fetch_who_t_list
 end
 
 def who_t_exists(name)
- Who_t.all(:name => name).count >0 
+ Who_t.all(:name => name).count >0
 end

@@ -30,7 +30,7 @@ def log_empty
 
   result = true
   temp = Ulog.count
-  result = false if temp > 0 
+  result = false if temp > 0
   return result
 end
 

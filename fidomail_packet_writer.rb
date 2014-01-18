@@ -1,10 +1,10 @@
 class FidomailPacketWriter
 
-require "db/db_system"
-require "db/db_log"
+  require "db/db_system"
+  require "db/db_log"
 
   def initialize(writer)
-  #  @writer = writer
+    #  @writer = writer
   end
 
   def bytes(*args)
@@ -32,13 +32,13 @@ require "db/db_log"
     buffer << 1
     total = 8
     password = f_hdr.password
-    password = password[0..7] if password.length > 8 
+    password = password[0..7] if password.length > 8
     nuls = total - password.length
     buffer <<  password.strip
     nuls.times {buffer << 0}
 
     buffer << bytes(f_hdr.orgzone, f_hdr.destzone)
-    buffer << 0 << 0 << 0 
+    buffer << 0 << 0 << 0
     buffer << 1
     buffer << 0 << 0
     buffer << 1 << 0
@@ -51,43 +51,43 @@ require "db/db_log"
 
 
   def write_nul_delimited(buffer,output,max)
-    output = output[0..max - 1] if output.length > max 
+    output = output[0..max - 1] if output.length > max
     buffer <<  output << 0
     return buffer
   end
 
   def add_kludge_lines(buffer,area,msgid,tzutc,charset,tid,fmpt,reply,topt,intl)
- 
- 
-  if !area.nil? and area != NETMAIL then 
-   buffer << "AREA:" << area << CR.chr
+
+
+    if !area.nil? and area != NETMAIL then
+      buffer << "AREA:" << area << CR.chr
+    end
+    if !msgid.nil? then
+      buffer << 1 << "MSGID: " <<msgid << CR.chr
+    end
+    if !tzutc.nil? then
+      buffer << 1 << "TZUTC: " <<tzutc << CR.chr
+    end
+    if !charset.nil? then
+      buffer << 1 << "CHARSET: " << charset << CR.chr
+    end
+    if !tid.nil? then
+      buffer << 1 << "TID: " << tid << CR.chr
+    end
+    if !fmpt.nil? then
+      buffer << 1 << "FMPT " << fmpt.to_s << CR.chr
+    end
+    if !reply.nil? then
+      buffer << 1 << "REPLY: " << reply << CR.chr
+    end
+    if !topt.nil? then
+      buffer << 1 << "TOPT " << topt.to_s << CR.chr
+    end
+    if !intl.nil? then
+      buffer << 1 << "INTL " << intl << CR.chr
+    end
+    return buffer
   end
-  if !msgid.nil? then
-   buffer << 1 << "MSGID: " <<msgid << CR.chr
-  end
-  if !tzutc.nil? then
-   buffer << 1 << "TZUTC: " <<tzutc << CR.chr
-  end
-  if !charset.nil? then
-   buffer << 1 << "CHARSET: " << charset << CR.chr
-  end
-  if !tid.nil? then
-   buffer << 1 << "TID: " << tid << CR.chr
-  end
-  if !fmpt.nil? then
-   buffer << 1 << "FMPT " << fmpt.to_s << CR.chr
-  end
-  if !reply.nil? then 
-   buffer << 1 << "REPLY: " << reply << CR.chr
-  end
-  if !topt.nil? then
-   buffer << 1 << "TOPT " << topt.to_s << CR.chr
-  end
-  if !intl.nil? then
-   buffer << 1 << "INTL " << intl << CR.chr
-  end
-  return buffer
- end
 
   def write_pkt_end
     @writer.write('' << 0 << 0)
@@ -120,9 +120,9 @@ require "db/db_log"
     destpoint = 0
 
     f_hdr = Packet_header_two.new(orgnode,destnode,year,month,day,hour,min,sec,pkttype,
-                                  orgnet,destnet,prodcode,sernum,password,orgzone,
-                                  destzone,auxnet,cwcopy,revision,cword,orgpoint,
-                                  destpoint)
+    orgnet,destnet,prodcode,sernum,password,orgzone,
+    destzone,auxnet,cwcopy,revision,cword,orgpoint,
+    destpoint)
 
     write_pkt_header(f_hdr)
   end
@@ -166,11 +166,11 @@ require "db/db_log"
     topt = msg.topt if !msg.topt.nil? and topt != -1
     fmpt = FMPT
     reply = nil
-    reply = msg.msgid if f_network 
+    reply = msg.msgid if f_network
     origin = nil
     smtp = false
 
-  buffer =''
+    buffer =''
     buffer << 2 << 0
     buffer << bytes(orgnode, destnode, orgnet, destnet, attribute, cost)
 
@@ -203,4 +203,4 @@ require "db/db_log"
     end
   end
 
- end
+end

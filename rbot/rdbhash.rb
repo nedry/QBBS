@@ -53,13 +53,13 @@ end
 
     def DBHash.create_db(name)
       #puts  "-DBHash: creating empty db #{name}"
-      return BDB::Hash.open(name, nil, 
+      return BDB::Hash.open(name, nil,
       BDB::CREATE | BDB::EXCL, 0600)
     end
 
 
 
-   
+
     def DBHash.open_db(name)
       #puts  "-DBHash: opening existing db #{name}"
       return BDB::Hash.open(name, nil, "r+", 0600)
@@ -76,7 +76,7 @@ end
     @@lg_max = 8*1024*1024
     # absfilename:: use +key+ as an actual filename, don't prepend the bot's
     #               config path and don't append ".db"
-    
+
     def initialize(bot, key, absfilename=false)
 
       @bot = bot
@@ -108,7 +108,7 @@ end
     end
 
 
-   
+
     def method_missing(method, *args, &block)
       return @db.send(method, *args, &block)
     end

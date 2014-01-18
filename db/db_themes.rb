@@ -11,7 +11,7 @@ end
 def delete_theme(r)
    r.destroy!
  end
- 
+
 def update_theme(r)
   r.save
 end
@@ -25,16 +25,16 @@ def renumber_themes
 end
 
 def add_theme_to_user(user,theme)
-  
+
   user.theme_key = theme.theme_key
   user.save!
- 
+
 end
 
 def get_user_theme(user)
 
   Theme.first(:theme_key => user.theme_key)
-  
+
 end
 
 def clear_commands
@@ -43,9 +43,9 @@ def clear_commands
 end
 
 def add_command(command,theme,ulevel,menu_item)
-  Command.new(:command => command, 
-                          :theme_key => theme.theme_key, 
-                          :ulevel => ulevel, 
+  Command.new(:command => command,
+                          :theme_key => theme.theme_key,
+                          :ulevel => ulevel,
                           :menu_item => menu_item)
 end
 
@@ -59,7 +59,7 @@ end
 def get_command(theme_key,cmd)
    Command.first(:theme_key => theme_key, :cmd => cmd)
  end
- 
+
 def add_theme(name, description)
   number = t_total + 1
   Theme.create(

@@ -32,7 +32,7 @@ def bbs_empty
 
   result = true
   temp = Bbslist.count
-  result = false if temp > 0 
+  result = false if temp > 0
   return result
 end
 
@@ -66,9 +66,9 @@ def delete_bbs_pointer(pointer)
 end
 
 def add_bbslist(name,born_date,software,sysop,email,website, number, minrate,
-			    maxrate,location,network,terminal,megs,msgs,files,
-			    nodes, users, subs, dirs,xterns,desc,imported)
-			    
+          maxrate,location,network,terminal,megs,msgs,files,
+          nodes, users, subs, dirs,xterns,desc,imported)
+
   megs = 32767 if megs.to_i > 32767  # this should be a bigint and why doesn't dm-validtions catch this?
 
   newbbs = Bbslist.new(

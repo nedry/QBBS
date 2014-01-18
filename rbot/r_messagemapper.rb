@@ -413,7 +413,7 @@ end
     # template _template_ and options _opts_
     #
     def initialize(botmodule, template, hash={})
-      
+
       raise ArgumentError, "Third argument must be a hash!" unless hash.kind_of?(Hash)
       @defaults = hash[:defaults].kind_of?(Hash) ? hash.delete(:defaults) : {}
       @requirements = hash[:requirements].kind_of?(Hash) ? hash.delete(:requirements) : {}

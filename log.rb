@@ -9,7 +9,7 @@ class Log
     if File.exists?(filename) then
       lf = File.new(filename, File::TRUNC|File::RDWR, 0644)
       lf.close
-    end 
+    end
   end
 
   def write(line)

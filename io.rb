@@ -52,7 +52,7 @@ module IOUtils
     }
     return text
   end
-  
+
   def getcmdandtest(prompt, echo, size, chat, errmsg,ovrwrite)
     while true do
       t = getcmd(prompt, echo, size, chat,ovrwrite)
@@ -166,8 +166,8 @@ class Session
   include IOUtils
   include IrcConference
 
-  # Input a line a character at a time. 
-  def getstr(echo, wrapon, width, prompt, chat, overwrite) 
+  # Input a line a character at a time.
+  def getstr(echo, wrapon, width, prompt, chat, overwrite)
     whole = "" # return value
     suppress = false # prevent telnet control codes being treated as user input
     idle = 0
@@ -186,33 +186,33 @@ class Session
     @socket.write whole
 
     while true do
-    #  puts @socket.eof?
+      #  puts @socket.eof?
       char = 0
-      if select([@socket],nil,nil,0.1) != nil then 
+      if select([@socket],nil,nil,0.1) != nil then
         @debuglog.push("-SA:#{@c_user.name} Dropped Carrier!") if @socket.eof? #testing for eof seems to force the thead to stop on disconnect.  has to be before the getc.  odd
         char = @socket.getc.ord  #this is a 1.9 hack... 1.8 behaviour returned the ascii value without the .ord
 
-      else 
+      else
 
-       
+
         if !@c_user.nil? and new_pages(@c_user) > 0 then
           begin
-          pages = get_all_pages(@c_user)
-          print; pages.each {|x| print "%W;PAGE %W;(%C;#{fetch_user(x.from).name}%W;): %WB;#{x.message}%W;"}
-          prompt += whole if !prompt.nil? 
-           write prompt
-           clear_pages(@c_user)
+            pages = get_all_pages(@c_user)
+            print; pages.each {|x| print "%W;PAGE %W;(%C;#{fetch_user(x.from).name}%W;): %WB;#{x.message}%W;"}
+            prompt += whole if !prompt.nil?
+            write prompt
+            clear_pages(@c_user)
           rescue  #maybe a page is corrupt or from a user that's been deleted.  just clear them all
-           clear_pages(@c_user)
+            clear_pages(@c_user)
           end
         end
 
         time = Time.now
-        tick = 0 if time.min.to_i == 0 
+        tick = 0 if time.min.to_i == 0
 
-        if time.min.to_i > tick then 
-         
-          tick = time.min.to_i 
+        if time.min.to_i > tick then
+
+          tick = time.min.to_i
           teatime = Time.now
           # puts "writing ping: #{teatime.to_i}"
           @who.user(@c_user.name).ping = teatime.to_i if !@c_user.nil?
@@ -229,7 +229,7 @@ class Session
 
       idle = 0
       warned = false
-      case char 
+      case char
       when TELNETCMD; suppress = true
       when CR
         if !overwrite then
@@ -246,11 +246,11 @@ class Session
         end
         break
       when BS;  i, whole = delchar(i, whole)
-      when DBS; i, whole = delchar(i, whole) #for UNIX based Telnet 
-      when PRINTABLE 
+      when DBS; i, whole = delchar(i, whole) #for UNIX based Telnet
+      when PRINTABLE
         i = i + 1
         if !suppress then
-          whole << char.chr 
+          whole << char.chr
           @socket.write(echo ? char.chr : NOECHOCHAR.chr)
         end
         whole,newline = wrapstr(whole, i, width, char) if wrapon
@@ -260,9 +260,9 @@ class Session
       suppress = false if char < 250
     end #of iterator
 
-    @socket.flush 
-    return whole 
-  end 
+    @socket.flush
+    return whole
+  end
 
   def warntimeout(idle, warn, warned, limit, todotime, prompt)
     if (idle >= limit)
@@ -273,7 +273,7 @@ class Session
       hangup
     end
 
-    if (idle >= warn) and (!warned) 
+    if (idle >= warn) and (!warned)
       screen = get_user_screen(@c_user)
       if SCREENSAVER  and @logged_on and !screen.nil? then
         print "%WR;Activating Screen Saver...%W;"
@@ -285,7 +285,7 @@ class Session
         warned = true
         write prompt
       else
-      if todotime > 1 then tempstr = "minutes" else tempstr = "minute" end
+        if todotime > 1 then tempstr = "minutes" else tempstr = "minute" end
         print; print "%WR;You have #{todotime} #{tempstr} in which to do something!%W;"
         write prompt
         warned = true
@@ -336,10 +336,10 @@ class Session
     nilv(@cmdstack.cmd.shift, "")
   end
 
-  def hangup 
-    @socket.flush 
-    @socket.close 
-  end     
+  def hangup
+    @socket.flush
+    @socket.close
+  end
 
   #make sure everything goes through this!
   def parse_c(line)
@@ -363,15 +363,15 @@ class Session
     return line
   end
 
-  # Write line without CR 
-  def write(line = '') 
-   
+  # Write line without CR
+  def write(line = '')
+
     out    = parse_c(line.to_s)
     @socket.write parse_celerity(out)
-  end 
+  end
 
-  # Write line with CR 
-  def print(line = '') 
+  # Write line with CR
+  def print(line = '')
     line = parse_c(line.to_s.gsub("\n","#{CRLF}"))
     @socket.write(parse_celerity(line) + CRLF)
   end

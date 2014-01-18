@@ -86,7 +86,7 @@ require 'uri'
     'thorn' => 'þ',
     'yuml' => 'ÿ'
         }
-        
+
     def Utils.decode_html_entities(str)
       if defined? ::HTMLEntities
         return HTMLEntities.decode_entities(str)
@@ -103,7 +103,7 @@ require 'uri'
         }
       end
     end
-    
+
     # turn a number of seconds into a human readable string, e.g
     # 2 days, 3 hours, 18 minutes, 10 seconds
     def Utils.secs_to_string(secs)

@@ -18,7 +18,7 @@ module Editors
     class Buffer
       def initialize(max_lines, in_file)
         @max_lines = max_lines
-				@buffer = read_from_file(in_file)
+        @buffer = read_from_file(in_file)
       end
 
       def row(y)
@@ -58,10 +58,10 @@ module Editors
       end
 
       def insert_line_at(y,ln)
-       @buffer[y+1] = []  if @buffer[y+1] == nil
-       @buffer.insert(y,ln)   
-     end
-		 
+        @buffer[y+1] = []  if @buffer[y+1] == nil
+        @buffer.insert(y,ln)
+      end
+
       def insert_at(y, x, chars)
         if chars
           row(y).insert(x, chars).flatten!
@@ -74,7 +74,7 @@ module Editors
       end
 
       def delete_line_at(y)
-        @buffer.delete_at(y - 1)    
+        @buffer.delete_at(y - 1)
       end
 
       def split_line_at(y, x)
@@ -93,15 +93,15 @@ module Editors
           return 0
         end
       end
-			
-    def length_y(y)
-       if !@buffer[y - 1].nil?
-	      return @buffer[y - 1].length
-       else
-	      return 0
-       end
-     end
-		 
+
+      def length_y(y)
+        if !@buffer[y - 1].nil?
+          return @buffer[y - 1].length
+        else
+          return 0
+        end
+      end
+
       def del_range(y,x1,x2)
         total = x2 - x1
         str = row(y).slice!(-(total),total)
@@ -127,15 +127,15 @@ module Editors
         highest = 0
         row(y).each_with_index {|c,i|
           highest = i
-          result = i	 if (c == " ") and (i <= space) 
+          result = i   if (c == " ") and (i <= space)
         }
         result= highest if highest <= space
         return result
-      end 
+      end
 
       def paragraph_up(start_y,width)
         for i in start_y..@buffer.length #- 1
-          break if @buffer[i,0].nil? 
+          break if @buffer[i,0].nil?
           pos = line_length(i-1)
           space = width - pos #how much space on the line above?
           unwrap_space = find_nearest_space(i,space)
@@ -199,9 +199,9 @@ module Editors
       def room_on_line(y,str,width)
         room = false
 
-        if !@buffer[y].nil? 
+        if !@buffer[y].nil?
           if !str.nil? then
-            room = true  if (@buffer[y].length - 1) + str.length < width 
+            room = true  if (@buffer[y].length - 1) + str.length < width
           end
         end
         return room
@@ -214,7 +214,7 @@ module Editors
           @buffer << line.split(//)
         }
       end
-			
+
 
       def read_from_file(filename)
         # if the filename is invalid, return an empty buffer rather than complain
@@ -223,13 +223,13 @@ module Editors
 
           return []
         end
-				file_array =[]
+        file_array =[]
         IO.foreach(filename) {|line|
           line.gsub!(/[\n\r]/,"")
           file_array << line.split(//)
-					}
+        }
 
-       return file_array
+        return file_array
       end
     end
 
@@ -308,7 +308,7 @@ module Editors
         new_y = current_y + x
         @wrapped = false
         if new_y >=@viewport_height  then
-          new_y = (current_y) 
+          new_y = (current_y)
           @buffer_top += x
           result = REDRAW
         end
@@ -318,7 +318,7 @@ module Editors
 
       def page_down
         down = @buffer.buffer_length - current_line
-        if down > @viewport_height then 
+        if down > @viewport_height then
           redraw = move_cursor_down(@viewport_height)
           return redraw
         else
@@ -334,7 +334,7 @@ module Editors
 
       def home_cursor
         place_cursor(1,current_y)
-      end 
+      end
 
       def move_cursor_right(x)
         new_x = current_x + x
@@ -346,7 +346,7 @@ module Editors
         end_line = @buffer.line_length(current_y)+1
         end_line = @viewport_width if end_line > @viewport_width
         place_cursor(end_line,current_y)
-      end 
+      end
 
       def clear_screen
         "#{ESC}[2J#{ESC}[H#{ESC}[00m"
@@ -377,7 +377,7 @@ module Editors
           [clear_screen,
             header,
             buffer.to_s(@buffer_top,@viewport_height),
-            update_cursor_position].join("")
+          update_cursor_position].join("")
         else
           ""
         end
@@ -413,7 +413,7 @@ module Editors
             home_cursor
             move_cursor_down(1)
             return [nil,NO_REDRAW]#
-						end
+          end
         end
       end
 
@@ -458,11 +458,11 @@ module Editors
       end
 
       def update_cursor_position
-        "#{ESC}[#{current_y + @header_height};#{current_x}H"    
+        "#{ESC}[#{current_y + @header_height};#{current_x}H"
       end
 
       def w_update_cursor(x,y)
-        "#{ESC}[#{y + @header_height};#{x}H"    
+        "#{ESC}[#{y + @header_height};#{x}H"
       end
 
       def w_clear
@@ -496,7 +496,7 @@ module Editors
 
       def center(string,width,color)
         result = String.new
-        outdash = ((width / 2 ) - (string.length / 2)) 
+        outdash = ((width / 2 ) - (string.length / 2))
         outdash.times {result << " "}
         result << color if !color.nil?
         result << string
@@ -519,10 +519,10 @@ module Editors
           window << bdr_color << " " << b_color
           (width - 2).times {window << " "}
           window << bdr_color << " "
-        #  window << bg("white")  << " "  
+          #  window << bg("white")  << " "
         end
         window << w_update_cursor(startx,starty+height) << bdr_color
-       # width.times  {window << " "}
+        # width.times  {window << " "}
         window << w_update_cursor(startx,starty+height+1) #<< bg("white")
         width.times  {window << " "}
         window << w_update_cursor(startx,starty)
@@ -537,17 +537,17 @@ module Editors
         width=58
         out = make_window(str,2,60,12,"BLACK","cyan","blue","Help Window")
         out << w_update_cursor(idt,str) << fg("yellow") << bg("cyan")
-        out << "CTRL-A" << fg("white")  << " Abort Message" 
-        out << w_update_cursor(idt,str+1) << fg("yellow") 
-        out << "CTRL-L" << fg("white") << " Refresh Screen"   
-        out << w_update_cursor(idt,str+2) << fg("yellow") 
-        out << "CTRL-N" << fg("white") << " New Line"  
-        out << w_update_cursor(idt,str+3) << fg("yellow") 
-        out << "CTRL-X" << fg("white") << " Save (Post) Message"  
-        out << w_update_cursor(idt,str+4) << fg("yellow") 
-        out << "CTRL-Y" << fg("white") << " Delete Line"  
-        out << w_update_cursor(idt,str+6) << fg("yellow") 
-        out << "INSERT" << fg("white") << " Toggle Insert/Overwrite"  
+        out << "CTRL-A" << fg("white")  << " Abort Message"
+        out << w_update_cursor(idt,str+1) << fg("yellow")
+        out << "CTRL-L" << fg("white") << " Refresh Screen"
+        out << w_update_cursor(idt,str+2) << fg("yellow")
+        out << "CTRL-N" << fg("white") << " New Line"
+        out << w_update_cursor(idt,str+3) << fg("yellow")
+        out << "CTRL-X" << fg("white") << " Save (Post) Message"
+        out << w_update_cursor(idt,str+4) << fg("yellow")
+        out << "CTRL-Y" << fg("white") << " Delete Line"
+        out << w_update_cursor(idt,str+6) << fg("yellow")
+        out << "INSERT" << fg("white") << " Toggle Insert/Overwrite"
         out << w_update_cursor(idt,str+8)
         out << "ESC to exit this window." << fg("white")
       end
@@ -561,11 +561,11 @@ module Editors
         out << w_update_cursor(idt,str+1) <<fg("yellow")  << bg("magenta")
         out << center("QUARKedit #{VERSION}",width,fg("white"))
         out << w_update_cursor(idt+5,str+3)
-        out << "By Dossy," << fg("white") 
-				out << w_update_cursor(idt+8,str+4)
-				out << "Mark Firestone" << fg("white")
-				out << w_update_cursor(idt+8,str+5)
-				out << "and Martin Demello" << fg("white")
+        out << "By Dossy," << fg("white")
+        out << w_update_cursor(idt+8,str+4)
+        out << "Mark Firestone" << fg("white")
+        out << w_update_cursor(idt+8,str+5)
+        out << "and Martin Demello" << fg("white")
         out << w_update_cursor(idt+36,str+7)
         #out << fg("hide")
       end
@@ -581,7 +581,7 @@ module Editors
         out << question << "(Y,n): "
       end
 
-      def screen_clear       
+      def screen_clear
         # I don't know why.  Needs two redraws or the background color is wrong....
         out = redraw(true)
         out << redraw(true)
@@ -593,7 +593,7 @@ module Editors
     class Editor
 
       #Window Constants
-      MESSAGE 	 = 1
+      MESSAGE    = 1
       ABORT      = 2
       SAVE       = 3
       SPELL      = 4
@@ -606,9 +606,9 @@ module Editors
         @w_type = MESSAGE
         @supress = false
         @bbs_mode = bbs_mode
-				@in_file = in_file
+        @in_file = in_file
       end
- 
+
       def run
         @out_io.sync = true
         @in_io.sync = false
@@ -625,17 +625,17 @@ module Editors
           catch :done do
             Signal.trap('INT') do
               Signal.trap('INT', 'DEFAULT') # reset to default
-									$lf.print "catch\n"
+              $lf.print "catch\n"
               #throw :done
-             end
-	        end
+            end
+          end
 
 
-          if select([@in_io], nil, nil, 0.1) 
+          if select([@in_io], nil, nil, 0.1)
 
 
             c = @in_io.read(1)
-      
+
             if @w_mode then    #We are in window mode, not edit mode...
 
               case c
@@ -665,7 +665,7 @@ module Editors
               when "\cX" # exit
                 @out_io.print @state.yes_no_window("Post message... Are you sure?")
                 @w_type = SAVE
-                @w_mode = true   
+                @w_mode = true
               when "\cG","\eOP"
                 @out_io.print @state.help_window
                 @w_type  = MESSAGE
@@ -673,7 +673,7 @@ module Editors
               when "\cA"
                 @out_io.print @state.yes_no_window("Abort message... Are you sure?")
                 @w_type = ABORT
-                @w_mode = true       
+                @w_mode = true
               when "\cN" #insert line
                 @state.newline
                 @out_io.print @state.redraw(true)

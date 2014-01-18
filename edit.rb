@@ -43,7 +43,7 @@ def writefile(filename, array)
   puts
 end
 
-	
+
 def pull_apart_args(args)
   bbs_mode = false
   filename = nil

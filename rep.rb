@@ -24,11 +24,11 @@ module Rep
     end
 
 
-  def convert_to_ansi(line)
+    def convert_to_ansi(line)
       COLORTABLE.each_pair {|color, result| line.gsub!(color,result) }
-    return line
-  end
-  
+      return line
+    end
+
     def log_message(message)
       log.write("DATE  : #{message.msg_date}")
       log.write("TO    : #{message.m_to}")
@@ -79,10 +79,10 @@ module Rep
       end
     end
 
- def replogandputs(m)
-   @log.write(m)
-   @debuglog.push(m)
- end
+    def replogandputs(m)
+      @log.write(m)
+      @debuglog.push(m)
+    end
 
     def makeexportlist
       xport =qwk_export_list(@qwknet.grp)
@@ -113,47 +113,47 @@ module Rep
       total = 0
       makeexportlist.each {|xp|
         @debuglog.push( "-REP: Now Processing #{xp.name} message area.")
-	@log.write "-REP: Now Processing #{xp.name} message area."
+        @log.write "-REP: Now Processing #{xp.name} message area."
 
-       user = fetch_user(get_uid(@qwknet.qwkuser))
-       scanforaccess(user)
-       pointer = get_pointer(user,xp.number)       
-       
+        user = fetch_user(get_uid(@qwknet.qwkuser))
+        scanforaccess(user)
+        pointer = get_pointer(user,xp.number)
+
         replogandputs "-REP: Last [absolute] Exported Message...#{pointer.lastread}"
 
         replogandputs "-REP: Highest [absolute] Message.........#{high_absolute(xp.number)}"
         replogandputs "-REP: Total Messages.....................#{m_total(xp.number)}"
         new = new_messages(xp.number,pointer.lastread)
         replogandputs "-REP: Messages to Export.................#{new}"
-	 
+
         if new > 0 then
 
-	  export_messages(xp.number,pointer.lastread).each {|msg|
+          export_messages(xp.number,pointer.lastread).each {|msg|
 
-              if  !msg.network   then
-                writemessage(msg,xp.netnum)
-		total += 1
-		msg.exported = true
-	        update_msg(msg)
-              else
-                error = msg.network ?
-                  "Message has already been imported.":
-                  "Message [#{msg.absolute}] doesn't exist."
-                m = "Message #{msg.absolute} not exported.  #{error}"
-                replogandputs "-#{m}"
-                add_log_entry(L_EXPORT,Time.now,"REP Export Complete.")
-	end
-	}
+            if  !msg.network   then
+              writemessage(msg,xp.netnum)
+              total += 1
+              msg.exported = true
+              update_msg(msg)
+            else
+              error = msg.network ?
+              "Message has already been imported.":
+              "Message [#{msg.absolute}] doesn't exist."
+              m = "Message #{msg.absolute} not exported.  #{error}"
+              replogandputs "-#{m}"
+              add_log_entry(L_EXPORT,Time.now,"REP Export Complete.")
             end
-            @debuglog.push( "-REP: Updating message pointer for board #{xp.name}")
-            pointer.lastread = high_absolute(xp.number)
-            update_pointer(pointer)
-         # end
+          }
+        end
+        @debuglog.push( "-REP: Updating message pointer for board #{xp.name}")
+        pointer.lastread = high_absolute(xp.number)
+        update_pointer(pointer)
+        # end
 
       }
       add_log_entry(L_EXPORT,Time.now,"Export Complete. #{total} message(s) exported.")
       @debuglog.push( "-REP: Export Complete. #{total} message(s) exported.")
-      
+
       @debuglog.push("-REP: Compressing Packet")
       happy = system("zip -j -D #{@reppacket} #{@repdata} > /dev/null 2>&1")
       if happy then
@@ -161,7 +161,7 @@ module Rep
         return worked
       else
         add_log_entry(8,Time.now,"Failed to zip REP packet.")
-	@debuglog.push("-REP: Failed to zip REP packet.")
+        @debuglog.push("-REP: Failed to zip REP packet.")
         return false
       end
     end

@@ -32,21 +32,21 @@ def add_screen(name, path)
 end
 
 def add_screen_to_user(user,screen)
-  
+
   user.screen_key = screen.screen_key
   user.save!
- 
+
 end
 
 def clear_screen(user)
-  
+
   user.screen_key = nil
   user.save!
- 
+
 end
 
 def get_user_screen(user)
 
   Screensaver.first(:screen_key => user.screen_key)
-  
+
 end

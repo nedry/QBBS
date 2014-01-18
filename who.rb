@@ -52,7 +52,7 @@ class Session
       fetch_who_list.each {|x|
         print cols.zip(["W",x.user.name,x.place,x.user.citystate]).map{|a,b| "#{a}#{b}"}.formatrow(widths)
       }
-addtowholist
+      addtowholist
     end
   end
 
@@ -62,13 +62,13 @@ addtowholist
       if !existfileout('whobanner',0,true)
         print "Telnet Users Online:"
         print
-     end
+      end
 
       cols = %w(Y G C M M M B).map {|i| "%"+i +";"}
-       hcols = %w(WY WG WC  WM WM WM WB).map {|i| "%"+i +";"}
+      hcols = %w(WY WG WC  WM WM WM WB).map {|i| "%"+i +";"}
       headings = %w(LN User Module S Min Class Location)
       widths = [4,15,21,2,4,10,15]
-      
+
       if !existfileout('whohdr',0,true)
         header = hcols.zip(headings).map {|a,b| a+b}.formatrow(widths) + "%W;"
         test= cols.zip(headings).map {|a,b| a+b}
@@ -77,10 +77,10 @@ addtowholist
       end
       @who.each_with_index {|w,i|
 
-	user = "USER"
-	user = "STAFF" if w.level = 255 
-	tme = (Time.now - w.date) / 60
-	
+        user = "USER"
+        user = "STAFF" if w.level = 255
+        tme = (Time.now - w.date) / 60
+
         print cols.zip([w.node, w.name, w.where, w.sex, tme.to_i, user , w.location]).map{|a,b| "#{a}#{b}"}.formatrow(widths)
       }
     else

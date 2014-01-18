@@ -24,7 +24,7 @@ class Session
 
     print "\e[2J"		  #Clear Screen
     print "\e[H"			#Home Cursor
-		print "\e[1m\e[37m"
+    print "\e[1m\e[37m"
 
     i = 0
     while i < 50
@@ -94,7 +94,7 @@ class Session
           #username.upcase!
           if yes("Create new user #{username}? [Y,n]",true,false,true)
             newuser(username, ip)
-	    break
+            break
           else
             next # input name again
           end
@@ -160,10 +160,10 @@ class Session
     @logged_on = true
     defaulttheme   # set default screensaver if there are any screensavers defined.
     if s_total > 0 then
-       screen = fetch_screen(1)
-       add_screen_to_user(@c_user,screen)    
+      screen = fetch_screen(1)
+      add_screen_to_user(@c_user,screen)
     end
-      
+
     ogfileout("newuser",2,true)
     yes("Press <--^: ",true,false,true)
     system = fetch_system
@@ -210,7 +210,7 @@ class Session
       headings = %w(Name Time-On Connection)
       widths = [30,20,10]
       header = hcols.zip(headings).map {|a,b| a+b}.formatrow(widths) +"%W;"
-      underscore = cols.zip(['-'*30]*5).map{|a,b| a+b}.formatrow(widths) 
+      underscore = cols.zip(['-'*30]*5).map{|a,b| a+b}.formatrow(widths)
       print header
       print underscore if !@c_user.ansi
       fetch_wall.each {|x|
@@ -256,12 +256,12 @@ class Session
       print "This may be changed at the User Configuration Menu."
       print
     end
-    
+
 
   end
 
   def qotd
-      if !QOTD.nil? then
+    if !QOTD.nil? then
       print
       print "Quote of the Day: " if !existfileout('qotdhdr',0,true)
       print quoteFromDir(QOTD)
@@ -271,9 +271,9 @@ class Session
       print
     end
   end
-	
- 
-  
+
+
+
   def checkmaxpwdmiss(count,username)
     if count == MAXPASSWORDMISS then
       fileout(TEXTPATH + "missed.txt")

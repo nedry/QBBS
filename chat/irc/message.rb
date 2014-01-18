@@ -3,7 +3,7 @@
 = chat/irc/message.rb
 
        Jonathan Perkin <jonathan@perkin.org.uk> wrote this file
- 
+
   You can freely distribute/modify it (and are encouraged to do so),
   and you are welcome to buy me a beer if we ever meet and you think
   this stuff is worth it.  Improvements and cleanups always welcome.
@@ -50,15 +50,15 @@ module IRC
       # Provide secure regular expression matching on the specified argument.
       m = IRC::Security.new
     #print "\nm.channel: #{m.channel}\n"
-      
+
       # Split message up into separate parts
 
-      
+
       case message
-            
+
         # Server messages
-	when (/^(PING)\s(#{m.ping})$/i)
-	 Ping.new(message, $1, $2)
+  when (/^(PING)\s(#{m.ping})$/i)
+   Ping.new(message, $1, $2)
 
         when (/^(ERROR)\s+:(.*)$/i)
           Error.new(message, $1, $2)
@@ -77,20 +77,20 @@ module IRC
         #      Command: NICK
         #   Parameters: <nickname>
 
-	#when (/^:(#{m.useraddr})\s(NICK)\s(#{m.nick})$/i)
-	# Nick.new(message, $1, $2, $3)
+  #when (/^:(#{m.useraddr})\s(NICK)\s(#{m.nick})$/i)
+  # Nick.new(message, $1, $2, $3)
 
-	when (/^:(.*)\s(NICK)\s(.*)$/i)
-	 m_type = $1; command = $2; params = $3
-	 
-	 secpass = /(#{m.useraddr})/i  =~ m_type
-	 secpass2 = /(#{m.nick})/i  =~ params 
-	 if !secpass.nil? then
-	  Nick.new(message, m_type, command, params)
-	 else
-	  logerror(message)
-	 end
-	 
+  when (/^:(.*)\s(NICK)\s(.*)$/i)
+   m_type = $1; command = $2; params = $3
+
+   secpass = /(#{m.useraddr})/i  =~ m_type
+   secpass2 = /(#{m.nick})/i  =~ params
+   if !secpass.nil? then
+    Nick.new(message, m_type, command, params)
+   else
+    logerror(message)
+   end
+
         # 3.1.5 User mode message
         #      Command: MODE
         #   Parameters: <nickname>
@@ -101,35 +101,35 @@ module IRC
         # 3.1.7 Quit
         #      Command: QUIT
         #   Parameters: [ <Quit Message> ]
-	
+
         when (/^:(.*)\s+(QUIT)\s+[:]?(.*)$/i)
-	  m_type = $1; command = $2; params = $3
-	  secpass = /(#{m.useraddr})/i  =~ m_type
-	  if !secpass.nil? then
+    m_type = $1; command = $2; params = $3
+    secpass = /(#{m.useraddr})/i  =~ m_type
+    if !secpass.nil? then
            Quit.new(message, m_type, command, params)
-	  else
-	   logerror(message)
-	  end
-	  
+    else
+     logerror(message)
+    end
+
         # 3.2.1 Join message
         #      Command: JOIN
         #   Parameters: ( <channel> *( "," <channel> )
         #               [ <key> *( "," <key> ) ] ) / "0"
-	
-	when (/^:(.*)\s+(JOIN)\s+:(.*)$/i) 
-	   m_type = $1; command = $2; params = $3
+
+  when (/^:(.*)\s+(JOIN)\s+:(.*)$/i)
+     m_type = $1; command = $2; params = $3
            secpass = /(#{m.useraddr})/i  =~ m_type
-	   if !secpass.nil? then
+     if !secpass.nil? then
             Join.new(message, m_type, command, params)
-	  else
-	   logerror(message)
-	  end
+    else
+     logerror(message)
+    end
 
         # 3.2.2 Part message
         #      Command: PART
         #   Parameters: <channel> *( "," <channel> ) [ <Part Message> ]
         when (/^:(#{m.useraddr})\s+(PART)\s+(#{m.channel})[:]?(.*)$/i)
-	#when (/^:(#{m.useraddr})\s+(PART)\s+(.*)[:]?(.*)$/i)
+  #when (/^:(#{m.useraddr})\s+(PART)\s+(.*)[:]?(.*)$/i)
           Part.new(message, $1, $2, $3, $4)
 
         # 3.2.3 Channel mode message
@@ -161,9 +161,9 @@ module IRC
           Private.new(message, $1, $2, $3, $4)
 
         when (/^(NOTICE AUTH)\s+(.*)$/i)
-	  Notice_auth.new(message, $1, $2)
-	  
-	when (/^:(#{m.useraddr})\s+(NOTICE)\s+(\S+)\s+:(.*)$/i)
+    Notice_auth.new(message, $1, $2)
+
+  when (/^:(#{m.useraddr})\s+(NOTICE)\s+(\S+)\s+:(.*)$/i)
           Notice.new(message, $1, $2, $3, $4)
 
         when (/^:(#{m.useraddr})\s+(PRIVMSG)\s+(\S+)\s+:\001(.*)\001$/i)
@@ -171,7 +171,7 @@ module IRC
 
         # Not supported yet
         else
-	 logerror(message)
+   logerror(message)
 
 
       end
@@ -180,15 +180,15 @@ module IRC
 
     # Return an array of ["nick", "user", "host"] from "nick!identuser@host"
     def user_to_params(usermask)
-	s = IRC::Security.new
+  s = IRC::Security.new
 
      if usermask =~ /(#{s.nick})!#{s.ident}(#{s.user})@(#{s.host})/
-	     puts "TRUE"
+       puts "TRUE"
         return ["#{$1}", "#{$2}", "#{$3}"]
       end
 
     end
-      
+
     # Single server messages
     class Server < Message
       def initialize(message, command, params)
@@ -199,7 +199,7 @@ module IRC
     end
 
     class Notice_auth < Server; end
-    
+
     # Set pingcmd and grab the argument.  Some IRC daemons require sending the
     # argument back with the PONG.
     class Ping < Server; end
@@ -239,7 +239,7 @@ module IRC
         @command  = command   # Command sent.
         @dest     = dest      # To whom/what the message was sent.
         @params   = params    # Full user arguments.
-  
+
         # Split up who sent the message into separate components.
         @sourcenick, @sourceuser, @sourcehost = user_to_params(useraddr)
       end

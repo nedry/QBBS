@@ -3,7 +3,7 @@
 = chat/talker/message.rb
 
        Jonathan Perkin <jonathan@perkin.org.uk> wrote this file
- 
+
   You can freely distribute/modify it (and are encouraged to do so),
   and you are welcome to buy me a beer if we ever meet and you think
   this stuff is worth it.  Improvements and cleanups always welcome.
@@ -80,7 +80,7 @@ module Talker
         # Shouldn't ever get this, but anyway...
         else
         #  raise NotImplementedError, "#{message}"
-          
+
       end
 
     end

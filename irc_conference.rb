@@ -20,9 +20,9 @@ module IrcConference
       out = "* #{m.sourcenick}#{$2}#{CRLF}%W;"
     else
       if private then
-         out = "%WC;PrivM: %B;<#{m.sourcenick}>%C; #{m.params}#{CRLF}%W;"
-       else
-      out = "%B;<#{m.sourcenick}>%C; #{m.params}#{CRLF}%W;"
+        out = "%WC;PrivM: %B;<#{m.sourcenick}>%C; #{m.params}#{CRLF}%W;"
+      else
+        out = "%B;<#{m.sourcenick}>%C; #{m.params}#{CRLF}%W;"
       end
     end
 
@@ -87,9 +87,9 @@ module IrcConference
     when IRC::RPL_WHOISSERVER
       (/^:(\S*)\s(\d*)\s(\S*)\s(\S*)\s(.*):(.*)/) =~ m.message
       out ="%Y;*** on irc via server #{$5}(#{$6})#{CRLF}%W;"
-      
+
     when IRC::RPL_TIME
-       (/^:(\w*\s\w*\s\w*\s\w*)\s:(.*)/) =~ m.message
+      (/^:(\w*\s\w*\s\w*\s\w*)\s:(.*)/) =~ m.message
       out ="%Y;*** #{$2}#{CRLF}%W;"
 
     when IRC::RPL_VERSION
@@ -119,17 +119,17 @@ module IrcConference
       out = nil
       m = @irc_client.getline
       params = m.params.strip if !m.nil?
-      if m.kind_of? IRC::Message::Private 
+      if m.kind_of? IRC::Message::Private
         out = handle_privmsg(m)
-      elsif m.kind_of? IRC::Message::Nick 
+      elsif m.kind_of? IRC::Message::Nick
         out = handle_nick(m)
-      elsif m.kind_of? IRC::Message::Part 
+      elsif m.kind_of? IRC::Message::Part
         out = handle_part(m)
-      elsif m.kind_of? IRC::Message::Join 
+      elsif m.kind_of? IRC::Message::Join
         out = handle_join(m)
-      elsif m.kind_of? IRC::Message::Numeric 
+      elsif m.kind_of? IRC::Message::Numeric
         out = handle_numeric(m)
-      elsif m.kind_of? IRC::Message::ServerNotice 
+      elsif m.kind_of? IRC::Message::ServerNotice
         out ="#{m.params}#{CRLF}%W;"
       end
 

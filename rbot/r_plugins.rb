@@ -9,12 +9,12 @@ require 'consts'
 def debug (str)
  # puts "-RBOT: Debug ... #{str}"
 end
-  
+
 class Language  #a hacked up language system.  we're only doing one language...
  def initialize
    scan
  end
- 
+
      def get(key)
       if(@strings.has_key?(key))
         return @strings[key][rand(@strings[key].length)]
@@ -39,7 +39,7 @@ class Language  #a hacked up language system.  we're only doing one language...
       }
     end
   end
-  
+
 #module Irc
 #class Bot
 #    Config.register Config::ArrayValue.new('plugins.blacklist',
@@ -54,7 +54,7 @@ class Language  #a hacked up language system.  we're only doing one language...
     require 'rbot/r_messagemapper'
      require 'open-uri'
     require "rbot/r_httputil"
-    
+
   class Butthole
     def initialize
       @httputil = HttpUtil.new(self)
@@ -62,27 +62,27 @@ class Language  #a hacked up language system.  we're only doing one language...
       @config.bot_associate(self)
       @lang = Language.new
    end
-   
+
       def say(to,msg)
         $botpassthru.send_me(to,msg)
       end
-      
+
       def lang
          @lang
       end
-       
+
       def who
         $botpassthru.who
       end
-      
+
       def httputil
         @httputil
       end
-      
+
       def config
         @config
       end
-      
+
       def nick
         IRCBOTUSER
       end
@@ -90,12 +90,12 @@ class Language  #a hacked up language system.  we're only doing one language...
       def myself
         IRCBOTUSER
       end
-      
+
      def path(file)
      ROOT_PATH + "rbot/" + file
-    end   
+    end
   end
-    
+
   class BotModule
     # the associated bot
     attr_reader :bot
@@ -125,13 +125,13 @@ class Language  #a hacked up language system.  we're only doing one language...
     # @handler::
     #   the MessageMapper that handles this plugin's maps
     #
-   
+
     def initialize
       @manager = Plugins::manager
 
       #@bot = @manager
       @priority = nil
-        
+
       @bot = Butthole.new
       @botmodule_triggers = Array.new
 
@@ -599,7 +599,7 @@ class Language  #a hacked up language system.  we're only doing one language...
     #    }
       end
    dirs << ROOT_PATH  + "/plugins"
-   
+
       dirs.each do |dir|
         next unless FileTest.directory?(dir)
         d = Dir.new(dir)
@@ -937,8 +937,8 @@ class Language  #a hacked up language system.  we're only doing one language...
               p.privmsg(m)
             rescue Exception => err
               raise if err.kind_of?(SystemExit)
-	      puts "class:#{p.botmodule_class}"
-	      puts "pname: #{p.name} privmsg() failed:"
+        puts "class:#{p.botmodule_class}"
+        puts "pname: #{p.name} privmsg() failed:"
              # error report_error("#{p.botmodule_class} #{p.name} privmsg() failed:", err)
               raise if err.kind_of?(BDB::Fatal)
             end

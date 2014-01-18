@@ -3,7 +3,7 @@ require "messagestrings.rb"
 
 
 def showscreen(number)
-  if s_total > 0 then 
+  if s_total > 0 then
     screen = fetch_screen(number)
     print "%R;#%W;#{number} %G; #{screen.name}"
     print "%C;Path:      %G;#{screen.path}"
@@ -11,7 +11,7 @@ def showscreen(number)
     print "%C;Drop Path: %G;#{screen.d_path}"
     print "%C;Drop Type: %G;#{screen.droptype}"
     print
-  else 
+  else
     print "%WR;No Screen Savers%W;"
   end
 end
@@ -51,7 +51,7 @@ def addscreen
 
   name = get_max_length("Enter new Screensaver name: ",40,"Door name")
   name.strip! if name != ""
-  path = get_max_length("Enter new Screensaver path (script file): ",40,"Screensaver path") 
+  path = get_max_length("Enter new Screensaver path (script file): ",40,"Screensaver path")
   path.strip! if path != ""
 
   if yes("Are you sure #{YESNO}", false, false,true)
@@ -64,7 +64,7 @@ end
 
 def changescreenname(dpointer)
   screen = fetch_screen(spointer)
-  name = get_max_length("Enter new Screensaver name: ",40,"Screensaver name") 
+  name = get_max_length("Enter new Screensaver name: ",40,"Screensaver name")
   name.strip! if name != ""
 
   if name !='' then
@@ -78,7 +78,7 @@ end
 
 def changescreentype(spointer)
   screen = fetch_screen(spointer)
-  temp = get_max_length("Enter new Screensaver type (DOS,LINUX,RSTS): ",10,"Screensaver type") 
+  temp = get_max_length("Enter new Screensaver type (DOS,LINUX,RSTS): ",10,"Screensaver type")
   temp.strip! if temp != ""
   screen.d_type = temp.upcase if temp != nil
   update_screen(screen)
@@ -104,7 +104,7 @@ def changescreendroppath(spointer)
   d_path = get_max_length("Enter new door Drop File path: ",40,"Drop File path")
   if d_path !="" then
     d_path.strip!
-    screen.d_path = d_path 
+    screen.d_path = d_path
   end
   update_screen(screen)
   print
@@ -164,7 +164,7 @@ def screensaver(parameters)
                if t > 0 and t <= t_total then
               screen = fetch_screen(t)
               print "%WG;Setting the #{screen.name} Screensaver.%W;"
-              add_screen_to_user(@c_user,screen)            
+              add_screen_to_user(@c_user,screen)
               return
             end
         end #of case

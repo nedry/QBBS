@@ -5,7 +5,7 @@ class Session
     write "%R; [DELETED]" if group.delete
     print ""
     print "%C;QWK/REP Mapping:"
-    print 
+    print
     if !get_qwknet(group).nil? then
       qwknet = get_qwknet(group)
 
@@ -40,10 +40,10 @@ class Session
     else
       print " %WR; No NNTP network assigned.%W;"
     end
-    
+
   end #displaygroup
 
- def nntpnetadd(number)
+  def nntpnetadd(number)
     group = fetch_group(number)
     if get_nntpnet(group).nil? then
       while true
@@ -67,7 +67,7 @@ class Session
           if !user_exists(nntpuser) then
             print "%WR; Local user does not exist.  Try again... %W;"
           else
-            break 
+            break
           end
         end
       end
@@ -112,8 +112,8 @@ class Session
 
   def groupmaintmenu
     readmenu(
-      :initval => 0,
-      :range => 0..(g_total - 1),
+    :initval => 0,
+    :range => 0..(g_total - 1),
     :loc => GROUP
     ) {|sel, gpointer, moved|
       displaygroup(gpointer) if moved
@@ -169,18 +169,18 @@ class Session
     end
     displaygroup(number)
   end
-  
-  
-    def change_group_nntp(number, prompt)
+
+
+  def change_group_nntp(number, prompt)
     group = fetch_group(number)
     nntpnet = get_nntpnet(group)
     if nntpnet then
       new_val = getinp(prompt)
-    #  if new_val == ""
-    #    print "%RCancelled"
-    #  else
-        yield [nntpnet, new_val]
-    #  end
+      #  if new_val == ""
+      #    print "%RCancelled"
+      #  else
+      yield [nntpnet, new_val]
+      #  end
     else
       print "%WR; No NNTP Network defined. %W;"
     end
@@ -214,7 +214,7 @@ class Session
       end
     end
   end
-  
+
   def changeftpaddress(number)
     prompt = "%W;Enter the FTP Address:%G;  "
     change_group(number, prompt) do |qwknet, inp|
@@ -228,8 +228,8 @@ class Session
       end
     end
   end
-  
-    def changenntpaddress(number)
+
+  def changenntpaddress(number)
     prompt = "%W;Enter the NNTP Server Address:%G;  "
     change_group_nntp(number, prompt) do |nntpnet, inp|
       nntpaddress = inp
@@ -257,7 +257,7 @@ class Session
         print "Cancelled."
       end
     end
-  end 
+  end
 
   def nntpnetremove(number)
     group = fetch_group(number)
@@ -273,8 +273,8 @@ class Session
         print "Cancelled."
       end
     end
-  end 
-  
+  end
+
   def changeftpaccount(number)
     prompt = "%W;Enter the FTP UserID:%G;  "
     change_group(number, prompt) do |qwknet, inp|
@@ -430,7 +430,7 @@ class Session
       end
     end
   end
-  
+
   def changeqwklocalaccount(number)
     prompt = "%W;Enter the User ID of QWK/REP service account on the LOCAL system:%G; "
     change_group(number, prompt) do |qwknet, inp|
@@ -448,8 +448,8 @@ class Session
       end
     end
   end
-  
-    def changenntplocalaccount(number)
+
+  def changenntplocalaccount(number)
     prompt = "%W;Enter the User ID of NNTP service account on the LOCAL system:%G; "
     change_group_nntp(number, prompt) do |nntpnet, inp|
       account = inp
@@ -499,7 +499,7 @@ class Session
           if !user_exists(qwkuser) then
             print "%WR; Local user does not exist.  Try again... %W;"
           else
-            break 
+            break
           end
         end
       end
@@ -562,7 +562,7 @@ class Session
   def addgroup
     while true
       prompt = "Enter new group name: "
-      name = getinp(prompt) 
+      name = getinp(prompt)
       if name == "" then
         print "%WR; Cancelled %W;"
         return
@@ -587,13 +587,13 @@ class Session
     group = fetch_group(gpointer)
 
     prompt = "Enter new group name: "
-    name = getinp(prompt) 
+    name = getinp(prompt)
     if name == "" then
-      print "%WR; Cancelled %W;" 
+      print "%WR; Cancelled %W;"
     else
       if name.length > 40 then
         print "Name too long. 40 Character Maximum"
-      else 
+      else
         group.name = name
         update_area(group)
         print

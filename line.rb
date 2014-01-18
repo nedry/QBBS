@@ -177,18 +177,18 @@ class Session
     len = @lineeditor.msgtext ? @lineeditor.msgtext.length : 0
     @lineeditor.line = len + 1
   end
-	
-	  def change_title(parameters,title)
-		 print "%Y;Current message title is: %C;#{title}%W;"
-     prompt = "%G;Enter new message title or enter <CR> to abort:%W; "
-		 temp_title = getinp(prompt)
-     if !temp_title.strip.nil? then
-			 print "%G;Message Title changed to: %C;#{temp_title}%W;"
-			 return temp_title
-		 else
-			 print "%WR;Aborted%W;"
-			 return title
-		 end
+
+  def change_title(parameters,title)
+    print "%Y;Current message title is: %C;#{title}%W;"
+    prompt = "%G;Enter new message title or enter <CR> to abort:%W; "
+    temp_title = getinp(prompt)
+    if !temp_title.strip.nil? then
+      print "%G;Message Title changed to: %C;#{temp_title}%W;"
+      return temp_title
+    else
+      print "%WR;Aborted%W;"
+      return title
+    end
 
   end
 
@@ -247,9 +247,9 @@ class Session
   end # of def
 
   def lineedit(options = {})
-	   
-  default = { :maxsize => MAXMESSAGESIZE,  :header => "%G;Enter message text.  %Y;", :reply_text => [], :file => false, :title => nil }
-  options = default.merge(options)
+
+    default = { :maxsize => MAXMESSAGESIZE,  :header => "%G;Enter message text.  %Y;", :reply_text => [], :file => false, :title => nil }
+    options = default.merge(options)
 
 
     print "#{options[:header]} #{options[:maxsize]}%G; lines maximum."
@@ -269,22 +269,22 @@ class Session
 
       @cmdstack.cmd.clear			#clear the command buffer
       @lineeditor.msgtext.clear			#clear the message buffer
-      
+
       if options[:file] then
-	if File.exists?(options[:file]) then
+        if File.exists?(options[:file]) then
           File.open(options[:file], "r").each_line {|line| temp = line
-          temp = temp.gsub(/\r/," ")
-          temp = temp.gsub(/\n/," ")
+            temp = temp.gsub(/\r/," ")
+            temp = temp.gsub(/\n/," ")
           @lineeditor.msgtext << temp}
-	     else
-		print "%RW;File does not exist!  A new file will be created.%W;\n"
-	     end
-          @lineeditor.line = @lineeditor.msgtext.length + 1
-     end
+        else
+          print "%RW;File does not exist!  A new file will be created.%W;\n"
+        end
+        @lineeditor.line = @lineeditor.msgtext.length + 1
+      end
 
 
       until (done)
-          len = @lineeditor.msgtext.length - 1
+        len = @lineeditor.msgtext.length - 1
         until (len > options[:maxsize]) or (done)
           prompt1 = "#{@lineeditor.line}: "
           write prompt1
@@ -307,7 +307,7 @@ class Session
           done,title = editprompt(options[:reply_text],options[:title],options[:maxsize])
         end
       end #of Outer until
-			@lineeditor.msgtext.compact!
+      @lineeditor.msgtext.compact!
       return [@lineeditor.save,title]
     end
   end #class Session

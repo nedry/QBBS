@@ -46,7 +46,7 @@ end
 
 def add_area(name, d_access,v_access,netnum,fido_net,nntp_net,group)
   number = a_total  #area's start with 0, so the total will be the next area
- 
+
   netnum = -1 if netnum.nil?
   group = 1 if group.nil?
 

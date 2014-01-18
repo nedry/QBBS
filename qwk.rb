@@ -9,9 +9,9 @@ module Qwk
   Area = Struct.new("Area", :area, :name)
 
   Message = Struct.new('Message',:error, :statusflag, :number,
-                       :date, :to, :from, :subject, :password,
-                       :reference, :blocks, :deleted,
-                       :logicalnum, :tagline, :text, :msgid, :via, :tz, :reply)
+  :date, :to, :from, :subject, :password,
+  :reference, :blocks, :deleted,
+  :logicalnum, :tagline, :text, :msgid, :via, :tz, :reply)
 
   class Message
     private :initialize
@@ -36,8 +36,8 @@ module Qwk
         a.via = ''
         a.tz = ''
         a.reply = ''
-        
-        
+
+
         return a
       end
     end
@@ -51,9 +51,9 @@ module Qwk
       if (year < 1996) or (year > 2010) then year = 2000 end # why?!
 
       if (month == 0) or (day == 0)
-        self.error = true 
-      else 
-        self.date = Time.gm(year,month,day,hour,min) 
+        self.error = true
+      else
+        self.date = Time.gm(year,month,day,hour,min)
       end
     end
   end
@@ -63,33 +63,33 @@ module Qwk
       @arealist_qwk = []
     end
 
-    def append(aArea) 
-      @arealist_qwk.push(aArea) 
-    end 
+    def append(aArea)
+      @arealist_qwk.push(aArea)
+    end
 
-    def [](key) 
+    def [](key)
       key.kind_of?(Integer) ? @arealist_qwk[key] :
-        @arealist_qwk.find {|arealist| key == arealist.name} 
-    end 
+      @arealist_qwk.find {|arealist| key == arealist.name}
+    end
 
-    def findarea(key) 
-      @arealist_qwk.find { |arealist| key == arealist.area } 
+    def findarea(key)
+      @arealist_qwk.find { |arealist| key == arealist.area }
     end
 
     def len
-      @arealist_qwk.length 
+      @arealist_qwk.length
     end
   end
 
   class Importer
     attr_accessor :file, :log
-    
-   def initialize(qwknet,debuglog)
+
+    def initialize(qwknet,debuglog)
       @qwknet = qwknet
       @debuglog = debuglog
       @log = Log.new("qwklog.txt")
     end
-    
+
     def putslog(output)
       @log.write(output)
       @debuglog.push("-QWK: #{output}")
@@ -120,56 +120,56 @@ module Qwk
     end
 
 
-class Q_Kludge
- attr_accessor  :msgid, :tz, :via, :reply
+    class Q_Kludge
+      attr_accessor  :msgid, :tz, :via, :reply
 
- def initialize (msgid=nil,tz=nil,via=nil,reply=nil)
-  @msgid	= msgid
-  @tz   	= tz
-  @via	= via
-  @reply	= reply
- end
-
- def []=(field, value)
-   field = field.downcase
-   self.send("#{field}=", value)
- end
-
-end #of class Kludge
-
- def qwk_kludge_search(buffer)	#searches the message buffer for kludge lines and returns them
-  kludge = Q_Kludge.new
-
-  msg_array = buffer.split(227.chr)  #split the message into an array so we can deal with it.
-
-  
-  # if we find any of these, reject the message
-  invalid = ["@MSGID:", "@VIA:", "@TZ:", "@REPLY:"]
-
-  valid_messages = []
-  msg_array.each do |x|
-    match = (/^(\S*)(.*)/) =~ x
-    if match then
-      header = $1
-      value = $2
-      if invalid.include? header
-        temp = header.gsub(/:/, '')
-	field = temp.gsub(/@/,'')
-        kludge[field] = value.strip!
-      else
-        valid_messages << x
+      def initialize (msgid=nil,tz=nil,via=nil,reply=nil)
+        @msgid	= msgid
+        @tz   	= tz
+        @via	= via
+        @reply	= reply
       end
-    end
-  end
 
-  return [valid_messages.join(227.chr) , kludge]
-end
+      def []=(field, value)
+        field = field.downcase
+        self.send("#{field}=", value)
+      end
+
+    end #of class Kludge
+
+    def qwk_kludge_search(buffer)	#searches the message buffer for kludge lines and returns them
+      kludge = Q_Kludge.new
+
+      msg_array = buffer.split(227.chr)  #split the message into an array so we can deal with it.
+
+
+      # if we find any of these, reject the message
+      invalid = ["@MSGID:", "@VIA:", "@TZ:", "@REPLY:"]
+
+      valid_messages = []
+      msg_array.each do |x|
+        match = (/^(\S*)(.*)/) =~ x
+        if match then
+          header = $1
+          value = $2
+          if invalid.include? header
+            temp = header.gsub(/:/, '')
+            field = temp.gsub(/@/,'')
+            kludge[field] = value.strip!
+          else
+            valid_messages << x
+          end
+        end
+      end
+
+      return [valid_messages.join(227.chr) , kludge]
+    end
 
     def getcontrol(path)
       filename = "#{path}/CONTROL.DAT"
       if File.exists?(filename) then
         return IO.readlines(filename)
-      else 
+      else
         @debuglog.push("-QWK: Invalid packet. Control.dat not found.")
         add_log_entry(L_IMPORT,Time.now,"Invalid QWK packet or Control.dat.")
         return []
@@ -230,17 +230,17 @@ end
 
           temp = file.read((message.blocks - 1) * 128)
           dekludgify, kludge = qwk_kludge_search(temp)
-	        message.text = convert_to_utf8(dekludgify)
+          message.text = convert_to_utf8(dekludgify)
           if !kludge.nil? then
             message.via = kludge.via
             message.tz = kludge.tz
             message.reply = kludge.reply
             message.msgid = kludge.msgid
           end
- 
+
         end
       end
-     @log.write("NSREC : #{startrec + message.blocks}")
+      @log.write("NSREC : #{startrec + message.blocks}")
 
       @log.write("")
       @log.write("ERROR: Corrupt packet detected.") if message.error
@@ -255,14 +255,14 @@ end
       @totalareas = num
       num = num * 2 + 13
       if num > 0 then
-        while i < num 
+        while i < num
           temp1 = list[i].to_i
           i = i + 1
           temp2 = list[i]
           i = i + 1
           @arealist.append(Area.new(temp1,temp2))
         end
-      else 
+      else
         @debuglog.push("-QWK: Invalid packet.  Control.dat truncated!")
       end
     end
@@ -300,29 +300,29 @@ end
     def clearoldqwk
       @debuglog.push("-QWK: Deleting old packets")
       happy = system("rm #{@qwknet.qwkdir}/* > /dev/null 2>&1")
-      if happy then 
+      if happy then
         @debuglog.push( "-Success")
-      else 
+      else
         add_log_entry(L_IMPORT,Time.now,"No old packets to delete.")
-       @debuglog.push("-QWK: No old packets to delete." )
+        @debuglog.push("-QWK: No old packets to delete." )
       end
     end
 
     def ftppacketdown
-	    
-       begin
-          Timeout.timeout(QWKDOWNLOADTIMEOUT) do
-              ftp = FtpClient.new(@qwknet,@debuglog)
-              ftp.qwk_packet_down
-	end
- 
+
+      begin
+        Timeout.timeout(QWKDOWNLOADTIMEOUT) do
+          ftp = FtpClient.new(@qwknet,@debuglog)
+          ftp.qwk_packet_down
+        end
+
       rescue Timeout::Error
-          add_log_entry(L_ERROR,Time.now,"QWK/REP FTP Hangup: #{@qwknet}")
-	  @debuglog.push( "-ERROR: QWK/REP FTP Hangup: #{@qwknet}")
+        add_log_entry(L_ERROR,Time.now,"QWK/REP FTP Hangup: #{@qwknet}")
+        @debuglog.push( "-ERROR: QWK/REP FTP Hangup: #{@qwknet}")
       rescue
-          add_log_entry(L_IMPORT,Time.now,"Unable to download QWK packet for #{@qwknet} No New Msg?")
-	  @debuglog.push("-QWK: Unable to download QWK packet for #{@qwknet} No New Msg?")
-       end
+        add_log_entry(L_IMPORT,Time.now,"Unable to download QWK packet for #{@qwknet} No New Msg?")
+        @debuglog.push("-QWK: Unable to download QWK packet for #{@qwknet} No New Msg?")
+      end
     end
 
     def unzippacket
@@ -336,7 +336,7 @@ end
         n_read += 1
         message = getmessage(@qwknet.qwkdir, msg_index)
         if message.error then
-          
+
           @debuglog.push("-QWK: ERROR detected in packet.  Aborting.")
           break
         else
@@ -351,13 +351,13 @@ end
 
     def import
       #relog.write
-      ddate = Time.now.strftime("%m/%d/%Y at %I:%M%p") 
+      ddate = Time.now.strftime("%m/%d/%Y at %I:%M%p")
       @debuglog.push("-QWK: Starting import.")
       add_log_entry(L_IMPORT,Time.now,"Starting QWK message import")
       if !QWK_DEBUG then
-       clearoldqwk
-       ftppacketdown
-       unzippacket
+        clearoldqwk
+        ftppacketdown
+        unzippacket
       end
 
       idxlist = getindexlist("#{@qwknet.qwkdir}/*.NDX")
@@ -379,14 +379,14 @@ end
         find = tempstr[0].to_i
         @debuglog.push("-QWK: Seeking Import Area for packet# #{find}...")
         if find > 0 then
-         area =  find_qwk_area(find,@qwknet.grp) 
+          area =  find_qwk_area(find,@qwknet.grp)
         else
           area = fetch_area(0)  #we want to import all email into email.  QWK/REP email is always 000
         end
         if area
           @log.write "Found! Importing #{idx} to #{area.name}"
           @debuglog.push("-QWK: Found. Importing #{idx} to #{area.name}")
-          
+
           x = 0
           #print "-QWK: Processing Message #"
 
@@ -394,9 +394,9 @@ end
             add_qwk_message(message, area,@qwknet.qwkuser) # in db_message
           end
         else
-          
+
           putslog "ERROR: No mapping found for area #{idx}"
-  
+
           add_log_entry(L_ERROR,Time.now,"No QWK mapping for area #{idx}")
         end
 

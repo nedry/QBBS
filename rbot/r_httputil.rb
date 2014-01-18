@@ -362,7 +362,7 @@ class HttpUtil
         if proxy_required(uri)
           proxy_host = proxy.host
           proxy_port = proxy.port
-          proxy_user = HTTPPROXYUSER 
+          proxy_user = HTTPPROXYUSER
           proxy_pass = HTTPPROXYPASS
         end
       end

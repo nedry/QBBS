@@ -1,9 +1,9 @@
 ##############################################
-#											
-#   smtp.rb --SMTP message routines for QBBS.		                                
-#   (C) Copyright 2004, Fly-By-Night Software (Ruby Version)                        
-#                                                                                                            
-############################################## 
+#
+#   smtp.rb --SMTP message routines for QBBS.
+#   (C) Copyright 2004, Fly-By-Night Software (Ruby Version)
+#
+##############################################
 
 require 'net/smtp'
 require "pg_ext"
@@ -44,14 +44,14 @@ def move_mail
   if File.exists?(MAILBOXDIR) then
     happy = system("mv -f #{MAILBOXDIR} #{TEMPSMTPDIR}")
     if happy then return SMTP_SUCCESS else return SMTP_MOVE_ERROR end
-  else 
+  else
     return NO_SMTP_TO_COPY
   end
 end
 
 def which_part(part)
 
-  return result 
+  return result
 end
 
 def find_a_part(message)
@@ -62,9 +62,9 @@ def find_a_part(message)
 end
 
 def s_local(user)
-  if !user_exists(user) then 
+  if !user_exists(user) then
     return false
-  else 
+  else
     return true
   end
 end
@@ -122,7 +122,7 @@ def read_mailbox
           msgtext = extract_multipart_msg(message)
         end
         puts msgtext
-	
+
         absolute = add_msg(l_address,from,area.tbl, :msg_date => msg_date, :subject => subject, :msg_text => msgtext,:smtp => true)
       else
         puts "-SMTP: Local user not found.  Bouncing Message."

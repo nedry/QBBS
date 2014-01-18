@@ -6,39 +6,39 @@ require 'encodings.rb'
 
 class Session
 
- def messagefirstmenu
-    theme = get_user_theme(@c_user) 
+  def messagefirstmenu
+    theme = get_user_theme(@c_user)
     done = false
 
-      GraphFile.new(self, "messagemenu",true).ogfileout(0)
-      prompt = theme.message_prompt
+    GraphFile.new(self, "messagemenu",true).ogfileout(0)
+    prompt = theme.message_prompt
 
     getinp(prompt) {|inp|
 
 
-        parameters = Parse.parse(inp)
+      parameters = Parse.parse(inp)
 
       case inp.upcase
-        when @cmd_hash["msgmenu"] ; run_if_ulevel("msgmenu") { GraphFile.new(self, "messagemenu",true).ogfileout(0)}
-        when @cmd_hash["read"] ; run_if_ulevel("read") {messagemenu(false)}
-        when @cmd_hash["write"] ; run_if_ulevel("write") {post}
-        when @cmd_hash["msgareach"] ; run_if_ulevel("msgareach") {areachange(parameters)}
-        when @cmd_hash["who"] ; run_if_ulevel("who") {displaywho}
-        when @cmd_hash["msgzipread"] ; run_if_ulevel("msgzipread") {messagemenu(true)}
-        when @cmd_hash["teleconference"]
+      when @cmd_hash["msgmenu"] ; run_if_ulevel("msgmenu") { GraphFile.new(self, "messagemenu",true).ogfileout(0)}
+      when @cmd_hash["read"] ; run_if_ulevel("read") {messagemenu(false)}
+      when @cmd_hash["write"] ; run_if_ulevel("write") {post}
+      when @cmd_hash["msgareach"] ; run_if_ulevel("msgareach") {areachange(parameters)}
+      when @cmd_hash["who"] ; run_if_ulevel("who") {displaywho}
+      when @cmd_hash["msgzipread"] ; run_if_ulevel("msgzipread") {messagemenu(true)}
+      when @cmd_hash["teleconference"]
         if IRC_ON then
           run_if_ulevel("teleconference") {teleconference(nil)}
         else
           print "%WR; Teleconference is disabled! %W;\r\n"
         end
-        when @cmd_hash["msgexit"] ; run_if_ulevel("msgexit") { done = true}
+      when @cmd_hash["msgexit"] ; run_if_ulevel("msgexit") { done = true}
       end
       done
     }
 
-  end 
-  
-  
+  end
+
+
   def displaylist
     cont = false
     user = @c_user
@@ -214,7 +214,7 @@ class Session
         end
 
         title = r_message.subject
-	nntpreferences = r_message.nntpreferences
+        nntpreferences = r_message.nntpreferences
 
         print "%G;Title: #{title}"
         title = get_or_cr("%C;Enter Title (<CR> for old):%W; ", title)
@@ -228,8 +228,8 @@ class Session
           suck_in_text(msg_file)
           #prompt = "Post message #{YESNO}"
           #saveit = yes(prompt, true, false,true)
-					saveit = false
-					saveit = true if @lineeditor.msgtext.length > 0
+          saveit = false
+          saveit = true if @lineeditor.msgtext.length > 0
         else
           saveit,title = lineedit(:reply_text => reply_text,:title => title)
         end
@@ -251,29 +251,29 @@ class Session
     end
 
     def savecurmessage(x, to,options = {})
-	   
-  default = {:title => "", :exported => false,  :reply => false, :destnode => nil, :destnet => nil, :intl => nil, :point => nil, :nntpreferences => "" }
-  options = default.merge(options)
 
-  area = fetch_area(x)
-    if !@c_user.signature.nil? then
-      @lineeditor.msgtext << "" << "---" 
-      @c_user.signature.split("\n").each {|text| @lineeditor.msgtext << text}
-    end
+      default = {:title => "", :exported => false,  :reply => false, :destnode => nil, :destnet => nil, :intl => nil, :point => nil, :nntpreferences => "" }
+      options = default.merge(options)
+
+      area = fetch_area(x)
+      if !@c_user.signature.nil? then
+        @lineeditor.msgtext << "" << "---"
+        @c_user.signature.split("\n").each {|text| @lineeditor.msgtext << text}
+      end
       @lineeditor.msgtext << DLIM
 
 
       absolute = add_msg(to,@c_user.name,area.number, :subject => options[:title], :msg_text => @lineeditor.msgtext.join(DLIM),
-            :exported => options[:exported], :destnode => options[:destnode],:destnet => options[:destnet], :intl => options[:intl], 
-	    :point => options[:topt], :reply => options[:reply], :nntpreferences => options[:nntpreferences])
-	    
+      :exported => options[:exported], :destnode => options[:destnode],:destnet => options[:destnet], :intl => options[:intl],
+      :point => options[:topt], :reply => options[:reply], :nntpreferences => options[:nntpreferences])
+
       add_log_entry(5,Time.now,"#{@c_user.name} posted msg # #{absolute}")
     end
 
 
 
-   def savesystemmessage(x, to, title,text)
-     #just to save a message from th    ende SYSTEM account.  The whole message saving system is kludgy.  Rewrite!
+    def savesystemmessage(x, to, title,text)
+      #just to save a message from th    ende SYSTEM account.  The whole message saving system is kludgy.  Rewrite!
 
       area = fetch_area(x)
       text << DLIM
@@ -357,11 +357,11 @@ class Session
         launch_editor(msg_file)
         suck_in_text(msg_file)
         #saveit = false
-	#saveit = true if @lineeditor.msgtext.length > 0
+        #saveit = true if @lineeditor.msgtext.length > 0
         prompt = "Post message #{YESNO}"
         saveit = yes(prompt, true, false,true)
       else
-	saveit,title = lineedit(:reply_text => reply_text,:title => title)
+        saveit,title = lineedit(:reply_text => reply_text,:title => title)
       end
       if saveit then
         savecurmessage(@c_area, to, :title => title)
@@ -373,14 +373,14 @@ class Session
       end
     end # of def post
 
-def msg_debug(mpointer)
-  area = fetch_area(@c_area)
-    if (h_msg > 0) and (mpointer > 0) then
-       print "--- message text dump ---"
-       dmsg = fetch_msg(absolute_message(@c_area,mpointer))
-       dmsg.msg_text.each_char {|c| write c;write("(#{c.ord})")}
-     end
-end
+    def msg_debug(mpointer)
+      area = fetch_area(@c_area)
+      if (h_msg > 0) and (mpointer > 0) then
+        print "--- message text dump ---"
+        dmsg = fetch_msg(absolute_message(@c_area,mpointer))
+        dmsg.msg_text.each_char {|c| write c;write("(#{c.ord})")}
+      end
+    end
 
     def display_fido_header(mpointer)
       area = fetch_area(@c_area)
@@ -396,16 +396,16 @@ end
           ["From", :m_from], "Subject", "Area", "Msgid", "Path",
           ["TzUTZ", :tzutc],"CharSet", ["Tosser ID", :tid], ["Proc ID", :pid], "Intl",
           "Topt", "Fmpt", "Reply", "Origin",["QWK Message ID", :q_msgid],
-        ["QWK Time Zone",:q_tz],["QWK Via",:q_via],["QWK Reply",:q_reply],
-	["NNTP Organization",:organization],"references",
-	"Bytes","Lines","xref","xtrace","nntppostinghost","xoriginalbytes",
-	"MsgId","nntpreferences"]
+          ["QWK Time Zone",:q_tz],["QWK Via",:q_via],["QWK Reply",:q_reply],
+          ["NNTP Organization",:organization],"references",
+          "Bytes","Lines","xref","xtrace","nntppostinghost","xoriginalbytes",
+        "MsgId","nntpreferences"]
 
         fields.each do |f|
           field, attr = (f.is_a? Array) ? f : [f, f.downcase]
           val = fidomessage.send(attr)
           print "%C;#{field}:%G; #{val}" if val
-	end
+        end
         print
       else
         print "\r\n%Y;This message area is empty. Why not %G;[P]ost%Y; a Message?" if h_msg == 0
@@ -462,9 +462,9 @@ end
           abs = absolute_message(table,mpointer)
         end
         curmessage = fetch_msg(abs)
-	   #in case a pointer got trashed.
-	   pointer.lastread = 0 if pointer.lastread.nil?
-				
+        #in case a pointer got trashed.
+        pointer.lastread = 0 if pointer.lastread.nil?
+
         if pointer.lastread < curmessage.absolute then
           pointer.lastread = curmessage.absolute
           update_pointer(pointer)
@@ -472,17 +472,17 @@ end
 
         message = []
         tempmsg=convert_to_ascii(curmessage.msg_text)
-				
-				#some QWK/REP messages seem to use linefeeds instead of 227 char characters
-				#to indicate EOL
-				
+
+        #some QWK/REP messages seem to use linefeeds instead of 227 char characters
+        #to indicate EOL
+
         tempmsg.gsub!(10.chr,DLIM)
         tempmsg.each_line(DLIM) {|line| message.push(line.chop!)} #changed from .each for ruby 1.9
 
 
 
-     j = GraphFile.new(self, "message").profileout(curmessage,mpointer)
-     
+        j = GraphFile.new(self, "message").profileout(curmessage,mpointer)
+
         cont = true
 
         message.each {|line|
@@ -490,7 +490,7 @@ end
           write line
           if j == u.length - 2 and u.more then
             print
-       cont = moreprompt
+            cont = moreprompt
 
             j = 1
             break if !cont
@@ -526,10 +526,10 @@ end
         @c_area = 1
         if !zipscan(1) then
           zip = false
-          return 
+          return
         end
       end
-      theme = get_user_theme(@c_user) 
+      theme = get_user_theme(@c_user)
       pointer = get_pointer(@c_user,@c_area)
       area = fetch_area(@c_area)
       l_read = new_messages(area.number,pointer.lastread)
@@ -546,7 +546,7 @@ end
         mpointer = h_msg if mpointer.nil?
         mpointer = h_msg if mpointer > h_msg
 
-          parameters = Parse.parse(sel)
+        parameters = Parse.parse(sel)
 
 
         if moved
@@ -555,10 +555,10 @@ end
           end
 
         end
-        theme = get_user_theme(@c_user) 
+        theme = get_user_theme(@c_user)
         case sel
-	when "MD"; msg_debug(mpointer)
-	when "TB"; testbitch("bbsinfo")
+        when "MD"; msg_debug(mpointer)
+        when "TB"; testbitch("bbsinfo")
         when @cmd_hash["email"] ; run_if_ulevel("email") {emailmenu}
         when @cmd_hash["post"] ; run_if_ulevel("post") {post}
         when @cmd_hash["page"] ; run_if_ulevel("page") {page}
@@ -573,54 +573,54 @@ end
         when @cmd_hash["readmenu"] ; run_if_ulevel("readmenu") {ogfileout("readmnu",1,true)}
         when @cmd_hash["readquit"] ; run_if_ulevel("readquit") {mpointer = true if !theme.nomainmenu}
         end
-     if theme.nomainmenu  #wbbs mode
-      case sel
-      when @cmd_hash["uprofile"] ; run_if_ulevel("uprofile") {profilemenu} 
-      when @cmd_hash["leave"] ; run_if_ulevel("leave") {leave}
-      when @cmd_hash["umaint"] ; run_if_ulevel("umaint") {usermenu}
-      when @cmd_hash["kill_log"] ; run_if_ulevel("kill_log") {clearlog}
-      when @cmd_hash["amaint"] ; run_if_ulevel("amaint") {areamaintmenu}
-      when @cmd_hash["bmaint"] ; run_if_ulevel("bmaint") {bullmaint}
-      when @cmd_hash["gmaint"] ; run_if_ulevel("gmaint") {groupmaintmenu}
-      when @cmd_hash["tmaint"] ; run_if_ulevel("tmaint") {thememaint}
-      when @cmd_hash["dmaint"] ; run_if_ulevel("dmaint") {doormaint}
-      when @cmd_hash["omaint"] ; run_if_ulevel("omaint") {telnetmaint}
-      when @cmd_hash["smaint"] ; run_if_ulevel("smaint") {screenmaint}
-      when @cmd_hash["areachange"] ; run_if_ulevel("areachange") {areachange(parameters)}
-      when @cmd_hash["bulletins"] ; run_if_ulevel("bulletins") {bullets(parameters)}
-      when @cmd_hash["feedback"] ; run_if_ulevel("feedback") { sendemail(true)}
-      when @cmd_hash["teleconference"]
-        if IRC_ON then
-          run_if_ulevel("teleconference") {teleconference(nil)}
-        else
-          print "%WR; Teleconference is disabled! %W;\r\n"
-        end
-        
-      when @cmd_hash["kick"] ; run_if_ulevel("kick") {youreoutahere}
-      when @cmd_hash["questionaire"] ; run_if_ulevel("questionaire") {questionaire}
-      when @cmd_hash["doors"] ; run_if_ulevel("doors") {doors(parameters)}
-      when @cmd_hash["other"] ; run_if_ulevel("other") {bbs(parameters)}
-      when @cmd_hash["email"] ; run_if_ulevel("email") {sendemail(true)}
-      when @cmd_hash["usrsetting"] ; run_if_ulevel("usrsetting") {usersettings}
-      when @cmd_hash["readmnu"] ; run_if_ulevel("readmnu") {messagemenu(false)}
-      when @cmd_hash["zipread"] ; run_if_ulevel("zipread") {messagemenu(true)}
-      when @cmd_hash["info"] ; run_if_ulevel("info") {ogfileout("user_information",1,true)}
-      when @cmd_hash["version"] ; run_if_ulevel("version") {ogfileout("version",1,true)}
-      when @cmd_hash["log"] ; run_if_ulevel("log") {displaylog}
-      when @cmd_hash["sysopmnu"] ; run_if_ulevel("sysopmnu") {ogfileout("sysopmnu",1,true)}
+        if theme.nomainmenu  #wbbs mode
+          case sel
+          when @cmd_hash["uprofile"] ; run_if_ulevel("uprofile") {profilemenu}
+          when @cmd_hash["leave"] ; run_if_ulevel("leave") {leave}
+          when @cmd_hash["umaint"] ; run_if_ulevel("umaint") {usermenu}
+          when @cmd_hash["kill_log"] ; run_if_ulevel("kill_log") {clearlog}
+          when @cmd_hash["amaint"] ; run_if_ulevel("amaint") {areamaintmenu}
+          when @cmd_hash["bmaint"] ; run_if_ulevel("bmaint") {bullmaint}
+          when @cmd_hash["gmaint"] ; run_if_ulevel("gmaint") {groupmaintmenu}
+          when @cmd_hash["tmaint"] ; run_if_ulevel("tmaint") {thememaint}
+          when @cmd_hash["dmaint"] ; run_if_ulevel("dmaint") {doormaint}
+          when @cmd_hash["omaint"] ; run_if_ulevel("omaint") {telnetmaint}
+          when @cmd_hash["smaint"] ; run_if_ulevel("smaint") {screenmaint}
+          when @cmd_hash["areachange"] ; run_if_ulevel("areachange") {areachange(parameters)}
+          when @cmd_hash["bulletins"] ; run_if_ulevel("bulletins") {bullets(parameters)}
+          when @cmd_hash["feedback"] ; run_if_ulevel("feedback") { sendemail(true)}
+          when @cmd_hash["teleconference"]
+            if IRC_ON then
+              run_if_ulevel("teleconference") {teleconference(nil)}
+            else
+              print "%WR; Teleconference is disabled! %W;\r\n"
+            end
 
-    end
-    end
+          when @cmd_hash["kick"] ; run_if_ulevel("kick") {youreoutahere}
+          when @cmd_hash["questionaire"] ; run_if_ulevel("questionaire") {questionaire}
+          when @cmd_hash["doors"] ; run_if_ulevel("doors") {doors(parameters)}
+          when @cmd_hash["other"] ; run_if_ulevel("other") {bbs(parameters)}
+          when @cmd_hash["email"] ; run_if_ulevel("email") {sendemail(true)}
+          when @cmd_hash["usrsetting"] ; run_if_ulevel("usrsetting") {usersettings}
+          when @cmd_hash["readmnu"] ; run_if_ulevel("readmnu") {messagemenu(false)}
+          when @cmd_hash["zipread"] ; run_if_ulevel("zipread") {messagemenu(true)}
+          when @cmd_hash["info"] ; run_if_ulevel("info") {ogfileout("user_information",1,true)}
+          when @cmd_hash["version"] ; run_if_ulevel("version") {ogfileout("version",1,true)}
+          when @cmd_hash["log"] ; run_if_ulevel("log") {displaylog}
+          when @cmd_hash["sysopmnu"] ; run_if_ulevel("sysopmnu") {ogfileout("sysopmnu",1,true)}
+
+          end
+        end
         p_return = [mpointer,h_msg,zip] # evaluate so this is the value that is returned
 
       }
     end
 
 
-  def testbitch (filename)
-	      print "Updating Synchronet BBS list details"
-	     savesystemmessage(@c_area, "SBL", SYSTEMNAME,GraphFile.new(self, filename).process_only)
-  end
+    def testbitch (filename)
+      print "Updating Synchronet BBS list details"
+      savesystemmessage(@c_area, "SBL", SYSTEMNAME,GraphFile.new(self, filename).process_only)
+    end
 
     def killmessage(mpointer)
 
@@ -708,18 +708,18 @@ end
         end
 
         print <<-here
-    %C;Default Access: %G;#{area.d_access}
-    %C;Validated Access: %G;#{area.v_access}
-    %C;QWK/REP Net # %G;#{out} 
-    %C;FidoNet Area: %G;#{area.fido_net}
-    %C;NNTP Newsgroup: %G;#{area.nntp_net}
-    %C;NajorBBS Net Newsgroup: %G;#{area.mbbs_net}
-    %C;NNTP Pointer: %G;#{area.nntp_pointer}
-    %C;Last Modified: %G;#{area.modify_date.strftime("%A the %d#{time_thingie(area.modify_date)} of %B, %Y at %I:%M%p")}
-    %C;Total Messages: %G;#{m_total(area.number)}
-    %C;Group: %G;#{area.group.groupname}
-    %C;Prune Level: %G;#{area.prune}
-here
+        %C;Default Access: %G;#{area.d_access}
+        %C;Validated Access: %G;#{area.v_access}
+        %C;QWK/REP Net # %G;#{out}
+        %C;FidoNet Area: %G;#{area.fido_net}
+        %C;NNTP Newsgroup: %G;#{area.nntp_net}
+        %C;NajorBBS Net Newsgroup: %G;#{area.mbbs_net}
+        %C;NNTP Pointer: %G;#{area.nntp_pointer}
+        %C;Last Modified: %G;#{area.modify_date.strftime("%A the %d#{time_thingie(area.modify_date)} of %B, %Y at %I:%M%p")}
+        %C;Total Messages: %G;#{m_total(area.number)}
+        %C;Group: %G;#{area.group.groupname}
+        %C;Prune Level: %G;#{area.prune}
+        here
 
       end #displayarea
 
@@ -747,7 +747,7 @@ here
           when "V"; changevalidatedaccess(apointer)
           when "K"; deletearea(apointer)
           when "S"; lockarea(apointer)
-	  when "NP";changenntppointer(apointer)
+          when "NP";changenntppointer(apointer)
           when "G"; leave
           when "CG"; changegroup(apointer)
           when "?"; gfileout ("areamnu")
@@ -756,7 +756,7 @@ here
         }
       end
 
-  def changepurge(apointer)
+      def changepurge(apointer)
 
         area = fetch_area(apointer)
         print
@@ -767,7 +767,7 @@ here
         print "Area Updated"
       end
 
-def changenntppointer(apointer)
+      def changenntppointer(apointer)
 
         area = fetch_area(apointer)
         print
@@ -835,13 +835,13 @@ def changenntppointer(apointer)
         groups.each_index {|j| print "#{j}: #{groups[j].groupname}"}
         prompt = "Enter new group number for board #{apointer}: "
         tempint = getnum(prompt,0,groups.length - 1)
-	if !tempint.nil? then
+        if !tempint.nil? then
           area.grp = groups[tempint].grp
           update_group(area)
           print "%WG;Area Updated%W;"
-	else
+        else
           print "%WR;Aborted%W;"
-	end
+        end
       end
 
       def changedefaultaccess(apointer)
@@ -904,8 +904,8 @@ def changenntppointer(apointer)
         update_area(area)
         print
       end
-    
-    
+
+
 
 
       def changeareaname(apointer)
@@ -924,7 +924,7 @@ def changenntppointer(apointer)
         area.name = name
         update_area(area)
         print
-end
+      end
 
       def changenntpgroup(apointer)
 
@@ -943,7 +943,7 @@ end
         update_area(area)
         print
       end
-			
+
       def changembbsgroup(apointer)
 
         area = fetch_area(apointer)

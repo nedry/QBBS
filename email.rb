@@ -1,20 +1,20 @@
 class Session
 
   def scanformail # revised
-    theme = get_user_theme(@c_user) 
+    theme = get_user_theme(@c_user)
     i = 0
     ptr_check
     u = @c_user
     area = fetch_area(0)
-    
+
     pointer = get_pointer(@c_user,0)
     new = new_email(pointer.lastread,u.name)
 
     if new > 0 then
-       print theme.yes_mail_prompt.gsub("@new@","#{new}")
+      print theme.yes_mail_prompt.gsub("@new@","#{new}")
       return true
     end
-    print theme.no_mail_prompt 
+    print theme.no_mail_prompt
     return false
   end
 
@@ -112,9 +112,9 @@ class Session
     if inp > 0 and inp < max and total > 0 then
       epointer = inp
       displaymessage(epointer,area.number,true)
-    else 
-      print "%WR;Out of Range%W;" 
-      end
+    else
+      print "%WR;Out of Range%W;"
+    end
     epointer
   end
 
@@ -303,7 +303,7 @@ class Session
       update_system(system)
       case m_type
       when LOCAL
-	savecurmessage(0, to, :title => title)
+        savecurmessage(0, to, :title => title)
         print "Sending Local e-mail..."
 
       when F_NETMAIL

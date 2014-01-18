@@ -105,12 +105,12 @@ def displaybbs
   i = 0
   if o_total <= 0 then
     print "%WR; No External BBS Systems. %W;"
-   else
-  print "%G;Systems Available:"
-  for i in 1..(o_total)
-    bbs = fetch_other(i)
-    print "   %B;#{i}...%G;#{bbs.name}"
-  end
+  else
+    print "%G;Systems Available:"
+    for i in 1..(o_total)
+      bbs = fetch_other(i)
+      print "   %B;#{i}...%G;#{bbs.name}"
+    end
   end
   print
 end

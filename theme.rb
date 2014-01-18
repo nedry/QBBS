@@ -3,8 +3,8 @@
 class Session
 
   def message_prompt(prompt,system,marea,left,nmessages,tmessages,aname,dir)
-   work_prompt = nil
-   work_prompt = prompt.dup if !prompt.nil?
+    work_prompt = nil
+    work_prompt = prompt.dup if !prompt.nil?
 
     main_prompt = {'@sys@' => system,
       '@area@' => marea.to_s,
@@ -12,7 +12,7 @@ class Session
       '@new@' => nmessages.to_s,
       '@total@' => tmessages.to_s,
       '@aname@' => aname,
-      '@dir@' => dir}
+    '@dir@' => dir}
 
 
     if !work_prompt.nil?
@@ -38,7 +38,7 @@ class Session
     print '%G;@name@%C;   Current User`s Name'
     if prompt == "Read" then
       print '%G;@dir@%C;    Read Direction'
-      print "%G;%p%C;       Message Pointer" 
+      print "%G;%p%C;       Message Pointer"
     end
     print
   end
@@ -53,10 +53,10 @@ class Session
     aname = "General Chat"
     sdir = "+"
 
- "#{message_prompt(prompt,system,marea,left,nmessages,tmessages,aname,sdir)}"
+    "#{message_prompt(prompt,system,marea,left,nmessages,tmessages,aname,sdir)}"
 
   end
- 
+
 
 
   def displaytheme(number)
@@ -145,7 +145,7 @@ class Session
     end
     print
   end
-  
+
   def changethemename(tpointer)
 
     theme = fetch_theme(tpointer)
@@ -158,7 +158,7 @@ class Session
     end
     print
   end
-  
+
   def changepath(tpointer)
 
     theme = fetch_theme(tpointer)

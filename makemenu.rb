@@ -30,25 +30,25 @@ puts "connecting to #{cstr}"
 
 DataMapper.setup(:default, cstr)
 DataMapper::Logger.new('log/db', :debug)
-DataObjects::Postgres.logger = DataObjects::Logger.new(STDOUT,:debug) 
+DataObjects::Postgres.logger = DataObjects::Logger.new(STDOUT,:debug)
 
 Theme.new(:number => 1,
-                   :name => "QBBS", 
-                   :description => "Default Theme", 
-                   :main_prompt => MAIN_PROMPT, 
-                    :read_prompt => "%M;[@area@: @aname@]%C; @dir@ Read [%p] (1-@total@): %W;",
-                   
-                   :text_directory => "text/").save!
-                   
-Theme.new(:number => 2, 
-                   :name => "WBBS", 
-                   :description => "WBBS Theme", 
-                   :main_prompt => MAIN_PROMPT,
-                  :read_prompt => "%M;Board @area@:%C; Read 1-@total@ [%p] (? for menu): %W;",
-                   :nomainmenu => true,
-                   :text_directory => "text/wbbs/").save!
+:name => "QBBS",
+:description => "Default Theme",
+:main_prompt => MAIN_PROMPT,
+:read_prompt => "%M;[@area@: @aname@]%C; @dir@ Read [%p] (1-@total@): %W;",
 
-  
+:text_directory => "text/").save!
+
+Theme.new(:number => 2,
+:name => "WBBS",
+:description => "WBBS Theme",
+:main_prompt => MAIN_PROMPT,
+:read_prompt => "%M;Board @area@:%C; Read 1-@total@ [%p] (? for menu): %W;",
+:nomainmenu => true,
+:text_directory => "text/wbbs/").save!
+
+
 YAML.load(IO.read('config/qbbscommands.yml')).each {|cmd|
   h = Command.new(cmd).save!
 

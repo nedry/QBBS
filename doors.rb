@@ -4,7 +4,7 @@ D_LIMIT = 1
 D_IDLE = 5
 
 def random_password
-return (0...8).map { (65 + rand(26)).chr }.join
+  return (0...8).map { (65 + rand(26)).chr }.join
 end
 
 def door_do (path,d_type)
@@ -17,19 +17,19 @@ def door_do (path,d_type)
   started = false
   i = 0
   ret = false
-	beg = false
-	u_name = @c_user.name
+  beg = false
+  u_name = @c_user.name
   user_len = u_name.length+1
-	user_arr =  ">#{u_name}"
-	
+  user_arr =  ">#{u_name}"
+
   begin
     PTY.spawn(path) do |read, w, p|
 
-  w.putc(13.chr) if d_type == "DOS" #we want to put a ENTER in so dosemu won't pause at intro
+      w.putc(13.chr) if d_type == "DOS" #we want to put a ENTER in so dosemu won't pause at intro
       exit = false
       temp_pass = random_password
       while !exit
-        while !exit 
+        while !exit
           ios = select([read, @socket],nil,nil,0.001) #and !exit
           r, * = ios
           if r != nil then
@@ -43,76 +43,76 @@ def door_do (path,d_type)
                   sleep (2)
                   w.puts(@c_user.rsts_pw)
                   send_init = true
-	  end
-	        total_c = 1
-	     #   total_c = @c_user.wg_pw.length  + @c_user.name.length + MBBS_HEADER_LENGTH 
-		#total_c = (@c_user.wg_pw.length *2) + @c_user.name.length + 5 + MBBS_HEADER_LENGTH if @c_user.wg_pw.nil? 
-		
+                end
+                total_c = 1
+                #   total_c = @c_user.wg_pw.length  + @c_user.name.length + MBBS_HEADER_LENGTH
+                #total_c = (@c_user.wg_pw.length *2) + @c_user.name.length + 5 + MBBS_HEADER_LENGTH if @c_user.wg_pw.nil?
+
                 if d_type == "MBBS" and char.chr == ":" and !send_init then
 
-		 if !@c_user.wg_pw.nil?  then
-                 
-                  w.puts(@c_user.name)
-		  w.puts(CR.chr)
-                  w.puts(@c_user.wg_pw)
-		  w.puts(CR.chr)
-		  w.puts(CR.chr)
-		 else
-		   w.puts("new")
-		   w.puts(CR.chr)
-		   w.puts("y")
-		   w.puts(CR.chr)
-		   w.puts(@c_user.name)
-		   w.puts(CR.chr)
-		   w.puts("y")
-		   w.puts(CR.chr)
-		   w.puts(temp_pass)
-w.puts(CR.chr)
-		   w.puts(temp_pass)
+                  if !@c_user.wg_pw.nil?  then
 
-		   w.puts(CR.chr)
-		   w.puts(CR.chr)
-		   @c_user.wg_pw = temp_pass
-		   update_user(@c_user)
-		   
-		 
-		  end
+                    w.puts(@c_user.name)
+                    w.puts(CR.chr)
+                    w.puts(@c_user.wg_pw)
+                    w.puts(CR.chr)
+                    w.puts(CR.chr)
+                  else
+                    w.puts("new")
+                    w.puts(CR.chr)
+                    w.puts("y")
+                    w.puts(CR.chr)
+                    w.puts(@c_user.name)
+                    w.puts(CR.chr)
+                    w.puts("y")
+                    w.puts(CR.chr)
+                    w.puts(temp_pass)
+                    w.puts(CR.chr)
+                    w.puts(temp_pass)
+
+                    w.puts(CR.chr)
+                    w.puts(CR.chr)
+                    @c_user.wg_pw = temp_pass
+                    update_user(@c_user)
+
+
+                  end
                   send_init = true
 
-	  end
+                end
 
                 if d_type == "QBBS" and char.chr == ">" and !send_init then
                   w.puts("#{u_name}#{CR.chr}")
                   send_init = true
-	  end
+                end
                 started = true
                 idle = 0
 
-		beg = true if char == MBBS_START_CHARACTER and d_type == "MBBS"
-			if  !ret and beg then	
-                          ochar = char				
-			  char = ""
-			  i += 1
-			  ret = true if i == total_c
-			 # print "#{i} char: #{ochar} ret: #{ret} beg:#{beg} total_c #{total_c}"
-		  end
-		  
-		#	beg = true if char == ">"
-		#	if user_arr.index(char) and !ret and beg then									
-		#	  char = ""
-		#	  i += 1
-		#	  ret = true if i == user_len
-		#	end
-              rescue 
-              #  sleep (5)
-              #  print (CLS)
+                beg = true if char == MBBS_START_CHARACTER and d_type == "MBBS"
+                if  !ret and beg then
+                  ochar = char
+                  char = ""
+                  i += 1
+                  ret = true if i == total_c
+                  # print "#{i} char: #{ochar} ret: #{ret} beg:#{beg} total_c #{total_c}"
+                end
+
+                #	beg = true if char == ">"
+                #	if user_arr.index(char) and !ret and beg then
+                #	  char = ""
+                #	  i += 1
+                #	  ret = true if i == user_len
+                #	end
+              rescue
+                #  sleep (5)
+                #  print (CLS)
                 #print (HOME)
 
                 @who.user(@c_user).where = "Main Menu"
                 return
               end
-                @socket.write CR.chr if char == LF
-								@socket.write(char.chr) 
+              @socket.write CR.chr if char == LF
+              @socket.write(char.chr)
             end
 
             if r.include?(@socket)
@@ -123,14 +123,14 @@ w.puts(CR.chr)
               if d_type == DOS then
                 w.putc(char.chr) if (char != 3) and (char != 27) #we want to block ctrl-c and esc
               else
-                w.putc(char.chr) if (char !=3) 
+                w.putc(char.chr) if (char !=3)
               end
             end
           end
         end
       end
-    end 
-  rescue 
+    end
+  rescue
 
     return
   end
@@ -152,12 +152,12 @@ def writedoorfile(outfile)
     doorfile.write("#{SYSTEMNAME}\r\n")
     sysop_out = SYSOPNAME.split
     doorfile.write("#{sysop_out[0]}\r\n")
-    if sysop_out.length > 1 then 
-      doorfile.write("#{sysop_out[1]}\r\n") 
+    if sysop_out.length > 1 then
+      doorfile.write("#{sysop_out[1]}\r\n")
     else
       doorfile.write("\r\n")
     end
-    doorfile.write("COM0\r\n")  # always com0, as we are using telnet 
+    doorfile.write("COM0\r\n")  # always com0, as we are using telnet
     doorfile.write("0 BAUD,N,8,1\r\n") # See above
     doorfile.write("0\r\n")  #Nobody seems to know what this does
     user_out = @users.name.split
@@ -168,22 +168,22 @@ def writedoorfile(outfile)
       doorfile.write("\r\n")
     end
     doorfile.write("#{@users.location}\r\n")
-    if @users.ansi then 
+    if @users.ansi then
       doorfile.write("1\r\n")
     else
       doorfile.write("0\r\n")
     end
-    doorfile.write("#{@users.level}\r\n")  
+    doorfile.write("#{@users.level}\r\n")
     doorfile.write("255\r\n")
     doorfile.close
   rescue
     add_log_entry(8,Time.now,"No path for door file #{outfile}")
     print "%WR;Could not write door info file... Please tell sysop.%W;"
-  end 
+  end
 end
 
 def showdoor(number)
-  if d_total > 0 then 
+  if d_total > 0 then
     door = fetch_door(number)
     print "%R;#%W;#{number} %G; #{door.name}"
     print "%C;Path:      %G;#{door.path}"
@@ -192,16 +192,16 @@ def showdoor(number)
     print "%C;Drop Type: %G;#{door.droptype}"
     print "%C;Level:     %G;#{door.level}"
     print
-  else 
+  else
     print "%WR; No Doors %W;"
   end
 end
 
 def doormaint
   readmenu(
-    :initval => 1,
-    :range => 1..(d_total),
-    :loc => DOOR
+  :initval => 1,
+  :range => 1..(d_total),
+  :loc => DOOR
   ) {|sel, dpointer, moved|
     if !sel.integer?
       parameters = Parse.parse(sel)
@@ -233,7 +233,7 @@ def adddoor
 
   name = get_max_length("Enter new Door name: ",40,"Door name")
   name.strip! if name != ""
-  path = get_max_length("Enter new door path (script file): ",40,"Door path") 
+  path = get_max_length("Enter new door path (script file): ",40,"Door path")
   path.strip! if path != ""
 
   if yes("Are you sure #{YESNO}", true, false,true)
@@ -246,7 +246,7 @@ end
 
 def changedoorname(dpointer)
   door = fetch_door(dpointer)
-  name = get_max_length("Enter new door name: ",40,"Door name") 
+  name = get_max_length("Enter new door name: ",40,"Door name")
   name.strip! if name != ""
 
   if name !='' then
@@ -260,7 +260,7 @@ end
 
 def changedoortype(dpointer)
   door = fetch_door(dpointer)
-  temp = get_max_length("Enter new door type (DOS,LINUX,RSTS,QBBS,MBBS): ",10,"Door type") 
+  temp = get_max_length("Enter new door type (DOS,LINUX,RSTS,QBBS,MBBS): ",10,"Door type")
   temp.strip! if temp != ""
   door.d_type = temp.upcase if temp != nil
   update_door(door)
@@ -286,7 +286,7 @@ def changedoordroppath(dpointer)
   d_path = get_max_length("Enter new door Drop File path: ",40,"Drop File path")
   if d_path !="" then
     d_path.strip!
-    door.d_path = d_path 
+    door.d_path = d_path
   end
   update_door(door)
   print
@@ -317,16 +317,16 @@ def displaydoors
   i = 0
   existfileout("doorhdr",0,true)
   if !existfileout('door',0,true)
-  if d_total < 1 then
-    print "%WR; No External Programs. %W;"
-    return
-  end
-  print "%G;Please select one of the following:"
-  for i in 1..(d_total)
-    door = fetch_door(i)
-    print "    %C;#{i} %Y;... #{door.name}"
-  end
-  print
+    if d_total < 1 then
+      print "%WR; No External Programs. %W;"
+      return
+    end
+    print "%G;Please select one of the following:"
+    for i in 1..(d_total)
+      door = fetch_door(i)
+      print "    %C;#{i} %Y;... #{door.name}"
+    end
+    print
   end
 end
 
@@ -337,7 +337,7 @@ def rundoor(number)
   if @c_user.level >= door.level then
     @who.user(@c_user.name).where = door.name
     update_who_t(@c_user.name,door.name)
-    case door.droptype 
+    case door.droptype
     when "RBBS"; f_name = RBBSDROPFILE
     end
 
@@ -374,18 +374,18 @@ end
 
 
 def dlist(total)
-	
-   list = "[NONE]"
-   if total > 0
-     list = ""
-     1.upto(total) {|i| list = list + "#{i},"}
-     list.chop!
-   end
-   return list
+
+  list = "[NONE]"
+  if total > 0
+    list = ""
+    1.upto(total) {|i| list = list + "#{i},"}
+    list.chop!
+  end
+  return list
 end
 
 def doors(parameters)
-  theme = get_user_theme(@c_user) 
+  theme = get_user_theme(@c_user)
   t = (parameters[0] > 0) ? parameters[0] : 0
   done = false
   if t == 0 then

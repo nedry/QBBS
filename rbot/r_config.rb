@@ -328,8 +328,8 @@ module Config
         return
       end
       begin
-	conf = @bot.path 'conf.yaml'
-	fnew = conf + '.new'
+  conf = @bot.path 'conf.yaml'
+  fnew = conf + '.new'
         debug "Writing new conf.yaml ..."
         File.open(fnew, "w") do |file|
           savehash = {}
@@ -352,7 +352,7 @@ module Config
   def Config.datadir
       ROOT_PATH
     end
-    
+
   # Returns the only Irc::Bot::Config::ManagerClass
   #
   def Config.manager

@@ -3,7 +3,7 @@
 = chat/common.rb
 
        Jonathan Perkin <jonathan@perkin.org.uk> wrote this file
- 
+
   You can freely distribute/modify it (and are encouraged to do so),
   and you are welcome to buy me a beer if we ever meet and you think
   this stuff is worth it.  Improvements and cleanups always welcome.
@@ -102,14 +102,14 @@ module Chat
     # digit      =  %x30-39                 ; 0-9
     # special    =  %x5B-60 / %x7B-7D       ; [, ], \, `, _, ^, {, |, }
     def letter
-      
+
       return "\x41-\x5a\x61-\x7a"
     end
     def digit
       return "\x30-\x39"
     end
     def special
-      return Regexp.escape("][\`_^{|}")	
+      return Regexp.escape("][\`_^{|}")
     end
 
     # Various implementations may want to override this to provide further

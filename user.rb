@@ -1,14 +1,14 @@
 class Session
 
-  def showareas 
+  def showareas
     print "Under Construction"
   end
 
   def displayuser(number)
     user = fetch_user(number)
-    ldate = user.laston.strftime("%A %B %d, %Y / %I:%M%p (%Z)") 
+    ldate = user.laston.strftime("%A %B %d, %Y / %I:%M%p (%Z)")
     write "%R;#%W;#{number} %G; #{user.name}"
-    write "%WR; [DELETED]%W;" if user.deleted 
+    write "%WR; [DELETED]%W;" if user.deleted
     write "%WG; [LOCKED]%W;" if user.locked
     print ""
     print <<-here
@@ -21,38 +21,38 @@ class Session
     %C;RSTS Account:  %G;#{RSTS_BASE},#{user.rsts_acc}
     %C;WG/MBBS Password: %G;#{user.wg_pw}
     here
-    print "%Y;                         1         2         3         4" 
+    print "%Y;                         1         2         3         4"
     print "%Y;Area#:         01234567890123456789012345678901234567890"
 
     write "%Y;Access:%W;        "
 
-    
+
     for i in 0..40
       pointers = get_all_pointers(user)
-      if i <  pointers.length then 
-	case pointers[i].access
-	  when "N"; write "%WR;N"	
-	  when "I"; write "%WR;I"
-	  when "R"; write "%W;R"
-	  when "W"; write "%WG;W"
-	  when "C"; write "%WM;C"
-	  when "M"; write "%WC;M"
-	end
-      else write "%W;-" 
+      if i <  pointers.length then
+        case pointers[i].access
+        when "N"; write "%WR;N"
+        when "I"; write "%WR;I"
+        when "R"; write "%W;R"
+        when "W"; write "%WG;W"
+        when "C"; write "%WM;C"
+        when "M"; write "%WC;M"
+        end
+      else write "%W;-"
       end
     end
     write  "%W;"
-    print 
-    print 
-    print 
+    print
+    print
+    print
   end #displayuser
 
-  def usermenu 
+  def usermenu
     total = u_total
     readmenu(
-      :initval => 1,
-      :range => 1..(u_total ),
-      :loc => USER
+    :initval => 1,
+    :range => 1..(u_total ),
+    :loc => USER
     ) {|sel, upointer, moved|
       if !sel.integer?
         sel.gsub!(/[-\d+]/,"")
@@ -69,7 +69,7 @@ class Session
       when "RA" ; changersts_acc(upointer)
       when "K"; deleteuser(upointer)
       when "W"; displaywho
-      when "PU"; page    
+      when "PU"; page
       when "S"; lockuser(upointer)
       when "P"; changepass(upointer)
       when "WP"; changewgpass(upointer)
@@ -83,22 +83,22 @@ class Session
   end
 
   def showuser(upointer)
-      u_scanforaccess(upointer)
+    u_scanforaccess(upointer)
     if u_total > -1 then
       displayuser(upointer)
-    else 
+    else
       print
       print "%RNo Users.  Something is really fucked up!"
     end
   end
-  
-    def u_scanforaccess(upointer)
+
+  def u_scanforaccess(upointer)
     user = fetch_user(upointer)
     for i in 0..(a_total - 1) do
       area = fetch_area(i)
-       pointer = get_pointer(user,i)
-       if pointer.nil? then 
-	add_pointer(user,i,area.d_access,0)
+      pointer = get_pointer(user,i)
+      if pointer.nil? then
+        add_pointer(user,i,area.d_access,0)
       end
     end
   end
@@ -107,7 +107,7 @@ class Session
   def changeaccess(upointer)
     u_scanforaccess(upointer)
     user = fetch_user(upointer)
-   
+
     prompt = "%W;Message Area to Change (0 - #{(a_total)})<?: list, Q: Quit>: "
     tempstr = ''
     getinp(prompt) {|inp|
@@ -116,9 +116,9 @@ class Session
       ((tempstr =~ /[0Q]/) or (tempstr.to_i > 0)) ? true : false
     }
     tempint2 = tempstr.to_i
-     pointer = get_pointer(user,tempint2)
-    
-     
+    pointer = get_pointer(user,tempint2)
+
+
 
     if tempstr != "Q" then
       if (0..a_total).include?(tempint2)
@@ -127,7 +127,7 @@ class Session
         if tempstr2 =~ /[NIWRMC]/
           pointer.access = tempstr2
           print "Area #{tempint2} access changed to #{tempstr2}"
-	   update_pointer(pointer)
+          update_pointer(pointer)
         else
           print "%WR;Out of Range%W;"
         end
@@ -166,8 +166,8 @@ class Session
     if upointer != 0 then
       user.name = getinp(prompt).slice(0..24)
       update_user(user)
-    else 
-      print "%WR;You cannot change the name of the SYSOP%W;" 
+    else
+      print "%WR;You cannot change the name of the SYSOP%W;"
     end
   end
 
@@ -197,13 +197,13 @@ class Session
       if user.deleted then
         user.deleted = false
         print "%WG;User ##{upointer} UNdeleted%W;"
-      else 
+      else
         user.deleted = true
         print "%WR;User ##{upointer} deleted.%W;"
       end
       update_user(user)
     else
-      print "%WR%You cannot delete the SYSOP.%W%" 
+      print "%WR%You cannot delete the SYSOP.%W%"
     end
   end
 
@@ -212,7 +212,7 @@ class Session
     if user.locked then
       user.locked = false
       print "%WG;User ##{upointer} UNlocked%W;"
-    else 
+    else
       user.locked = true
       print "%WR;User ##{upointer} locked.%W;"
     end
@@ -221,27 +221,27 @@ class Session
 
   def changepass(upointer)
     user = fetch_user(upointer)
-    pswd = getpwd("%W;Enter new password: ").strip.upcase 
-    pswd2 = getpwd("Enter again to confirm: ").strip.upcase 
+    pswd = getpwd("%W;Enter new password: ").strip.upcase
+    pswd2 = getpwd("Enter again to confirm: ").strip.upcase
     if pswd == pswd2
       print "%WG;Password Changed.%W;"
       user.password = pswd2
       update_user(user)
-    else 
-      print "%WR;Passwords don't match.  Try again.%W;" 
+    else
+      print "%WR;Passwords don't match.  Try again.%W;"
     end
   end
-  
+
   def changewgpass(upointer)
     user = fetch_user(upointer)
-    pswd = getpwd("%W;Enter new password: ").strip.upcase 
-    pswd2 = getpwd("Enter again to confirm: ").strip.upcase 
+    pswd = getpwd("%W;Enter new password: ").strip.upcase
+    pswd2 = getpwd("Enter again to confirm: ").strip.upcase
     if pswd == pswd2
       print "%WG;Password Changed.%W;"
       user.wg_pw = pswd2
       update_user(user)
-    else 
-      print "%WR;Passwords don't match.  Try again.%W;" 
+    else
+      print "%WR;Passwords don't match.  Try again.%W;"
     end
   end
 

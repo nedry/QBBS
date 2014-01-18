@@ -50,7 +50,7 @@ require 'rbot/rdbhash'
               dir = dirs[0,i+1].join("/")+"/"
               unless File.exist?(dir)
                 log "creating subregistry directory #{dir}"
-                Dir.mkdir(dir) 
+                Dir.mkdir(dir)
               end
             }
           end
@@ -118,15 +118,15 @@ require 'rbot/rdbhash'
   # (derived from the plugin's class name, so change it and lose your data).
   # Calls to registry.each etc, will only iterate over your namespace.
   class BotRegistryAccessor
-    
+
 
     # plugins don't call this - a BotRegistryAccessor is created for them and
     # is accessible via @registry.
-    
+
   def debug(msg)
     #puts "-BOT: #{msg}"
   end
-  
+
     def initialize(bot, name)
       @bot = bot
       @name = name.downcase
@@ -135,7 +135,7 @@ require 'rbot/rdbhash'
         dir = dirs[0,i+1].join("/")+"/"
         unless File.exist?(dir)
           debug "creating subregistry directory #{dir}"
-          Dir.mkdir(dir) 
+          Dir.mkdir(dir)
         end
       }
 

@@ -3,7 +3,7 @@
 = chat/irc/command.rb
 
        Jonathan Perkin <jonathan@perkin.org.uk> wrote this file
- 
+
   You can freely distribute/modify it (and are encouraged to do so),
   and you are welcome to buy me a beer if we ever meet and you think
   this stuff is worth it.  Improvements and cleanups always welcome.
@@ -56,7 +56,7 @@ module IRC
     #    RPL_TOPIC
     #
     #  Examples:
-    # 
+    #
     #    JOIN #foobar                    ; Command to join channel #foobar.
     #    JOIN &foo fubar                 ; Command to join channel &foo using
     #                                      key "fubar".
@@ -97,47 +97,47 @@ module IRC
     end
 
     # 4.1.3 User message
-    # 
+    #
     #     Command: USER
     #  Parameters: <username> <hostname> <servername> <realname>
-    # 
+    #
     #  The USER message is used at the beginning of connection to specify the
     #  username, hostname, servername and realname of a new user.  It is also
     #  used in communication between servers to indicate new user arriving on
     #  IRC, since only after both USER and NICK have been received from a
     #  client does a user become registered.
-    # 
+    #
     #  Between servers USER must to be prefixed with client's NICKname.
-    # 
+    #
     #  Numeric Replies:
-    # 
+    #
     #    ERR_NEEDMOREPARAMS  ERR_ALREADYREGISTRED
-    # 
+    #
     #  Examples:
-    # 
+    #
     #    USER guest tolmoon tolsun :Ronnie Reagan
     #    :testnick USER guest tolmoon tolsun :Ronnie Reagan
-     
+
     def user(nick, localhost, server, realname)
       return "USER #{nick} #{localhost} #{server} :#{realname}"
     end
-    
+
     def motd(server)
      return "MOTD #{server}"
     end
-    
+
     def privmsg(destination,message)
      return "PRIVMSG #{destination} :#{message}"
     end
-    
+
     def me(destination,message)
      return "PRIVMSG #{destination} :#{ACT}ACTION #{message}#{ACT}"
     end
-    
+
     def time(destination)
      return "TIME #{destination}"
     end
-    
+
     def version(destination)
      return "VERSION #{destination}"
     end
@@ -145,11 +145,11 @@ module IRC
    def names(params)
      return "NAMES #{params}"
     end
-    
+
    def list(params)
      return "LIST #{params}"
     end
-    
+
   def topic(channel,params)
     if !params.nil? then
      return "TOPIC #{channel} :#{params}"
@@ -157,15 +157,15 @@ module IRC
        return "TOPIC #{channel}"
      end
   end
-    
+
  def part(channel)
      return "PART #{channel}"
     end
-    
+
   def whois(nick)
      return "WHOIS #{nick}"
     end
-    
+
   def mode(parameters)
     return "MODE #{parameters}"
    end
@@ -173,7 +173,7 @@ module IRC
 def oper(user,password)
    return "OPER #{user} #{password}"
   end
-    
+
     # 4.1.6 Quit
     #
     #     Command: QUIT

@@ -12,7 +12,7 @@ end
 
 def get_profile_index(uname)
    u = User.first(:conditions => ["upper(name) = ?", uname.upcase], :profile_added => true)
-   result = nil  
+   result = nil
    fetch_profile_list.each_with_index {|a,i| result = i if a.number == u.number} if !u.nil?
    return result
 end
@@ -55,7 +55,7 @@ def get_uid(uname)
 end
 
 def update_user(r)
-   r.save  
+   r.save
  end
 
 def fetch_user(record)
@@ -66,7 +66,7 @@ def add_page(uid_from,to,message,system)
  uid =uid_from
  user = User.get(get_uid(to))
  page = user.pages.new(:message => message, :system => system, :from => uid)
- 
+
  page.save
  puts page.errors.each {|e| puts e}
 end
@@ -78,7 +78,7 @@ page.destroy!
 end
 
 def new_pages(user)
-  
+
   user.pages.all.count   #I don't know why it has to be like this and not the other way..
 end
 
@@ -86,14 +86,14 @@ def clear_pages(user)
    kill = user.pages.all
    kill.destroy! if kill
  end
- 
+
  def clear_system_pages(user)
    kill = user.pages.all(:system => true)
    kill.destroy! if kill
  end
- 
+
 def get_all_pages(user)
-  
+
   pages = user.pages.all(:order => [:left_at])
 end
 

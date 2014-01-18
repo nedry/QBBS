@@ -348,7 +348,7 @@ require "consts"
         @channel = @target
       end
 
-    
+
       # check for option extra addressing prefixes, e.g "|search foo", or
       # "!version" - first match wins
    #   bot.config['core.address_prefix'].each {|mprefix|
@@ -368,8 +368,8 @@ require "consts"
 
       if(@message =~ /^\001(\S+)(\s(.+))?\001/)
         @ctcp = $1
-	# FIXME need to support quoting of NULL and CR/LF, see
-	# http://www.irchelp.org/irchelp/rfc/ctcpspec.html
+  # FIXME need to support quoting of NULL and CR/LF, see
+  # http://www.irchelp.org/irchelp/rfc/ctcpspec.html
         @message = $3 || String.new
         @action = @ctcp == 'ACTION'
         debug "Received CTCP command #{@ctcp} with options #{@message} (action? #{@action})"

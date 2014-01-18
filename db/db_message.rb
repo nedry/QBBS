@@ -111,17 +111,17 @@ end
 #                 control, charset, contenttype, contenttransferencoding,
 #                 nntppostinghost, xcomplaintsto, xtrace, nntppostingdate,
 #                 xoriginalbytes, ftnarea, ftnflags, ftnmsgid, ftnreply,
-#		  ftntid, ftnpid, messageid)
+#      ftntid, ftnpid, messageid)
 
 
-  
+
 #  area = Area.first(:number => number)
 #  message = area.messages.new(
 #    :m_to => m_to,
 #    :m_from => m_from,
 #    :msg_date => msg_date,
 #    :subject => subject,
-#    :msg_text => msg_text, 
+#    :msg_text => msg_text,
 #    :exported => true,
 #    :usenet_network => true,
 #    :apparentlyto => apparentlyto,
@@ -135,10 +135,10 @@ end
 #    :bytes => bytes,
 #    :xref => xref,
 #    :messageto => messageto,
-		#added nntpreferences because you can't auto_update a field change.  
-		#this is so we can send the reference line back to the nntp server for threading on 
-		#newsreaders.  made it a text field because there can be *loads* of references.
-		#:references => references,
+    #added nntpreferences because you can't auto_update a field change.
+    #this is so we can send the reference line back to the nntp server for threading on
+    #newsreaders.  made it a text field because there can be *loads* of references.
+    #:references => references,
 #    :nntpreferences => references,
 #    :xgateway => xgateway,
 #    :control => control,
@@ -153,11 +153,11 @@ end
 #    :fntarea => ftnarea,
 #    :fntflags => ftnflags,
 #    :msgid => ftnmsgid,
-#    :tid  => ftntidtrue,  
+#    :tid  => ftntidtrue,
 #    :pid  => ftnpid,
-#		:msgid => messageid
-#  ) 
-  
+#    :msgid => messageid
+#  )
+
 #  worked = message.save
 #  if !worked then
 #   message.errors.each{|x| puts x}
@@ -167,50 +167,50 @@ end
 
 
 def add_msg(m_to,m_from,number,options = {})
-	
-  #added nntpreferences because you can't auto_update a field change. 
-  #this is so we can send the reference line back to the nntp server for threading on 
+
+  #added nntpreferences because you can't auto_update a field change.
+  #this is so we can send the reference line back to the nntp server for threading on
   #newsreaders.  made it a text field because there can be *loads* of references.
 
-		
+
   default = { :msg_date => Time.now.strftime("%Y-%m-%d %I:%M%p"),
-	       :subject => "No Subject",
-	       :msg_text => "",
-	       :exported => false,
-	       
-	       :network => false,
-	       
-	       :destnode => -1,
-	       :destnet => -1,
-	       :intl => nil,
-	       :topt => -1,
-	       
-	       :smtp => false,
-	       
-	       :f_network => false,
-	       
-	       :orgnode => nil,
-	       :orgnet => nil,
-	       :attribute => nil,
-	       :cost => nil,
-	       :area => nil,
-	       :msgid => nil,
-	       :path => nil,
-	       :tzutc => nil,
-	       :charset => nil,
-	       :tid => nil,
-	       :pid => nil,
-	       :fmpt => nil,
-	       :origin => nil,
-	       :reply => false,
-	       :q_msgid => nil,
-	       :q_tz => nil,
-	       :q_via => nil,
-	       :q_reply => nil,
-	       :nntpreferences => nil,
-	       
-	       :usenet_network => false,
-	       
+         :subject => "No Subject",
+         :msg_text => "",
+         :exported => false,
+
+         :network => false,
+
+         :destnode => -1,
+         :destnet => -1,
+         :intl => nil,
+         :topt => -1,
+
+         :smtp => false,
+
+         :f_network => false,
+
+         :orgnode => nil,
+         :orgnet => nil,
+         :attribute => nil,
+         :cost => nil,
+         :area => nil,
+         :msgid => nil,
+         :path => nil,
+         :tzutc => nil,
+         :charset => nil,
+         :tid => nil,
+         :pid => nil,
+         :fmpt => nil,
+         :origin => nil,
+         :reply => false,
+         :q_msgid => nil,
+         :q_tz => nil,
+         :q_via => nil,
+         :q_reply => nil,
+         :nntpreferences => nil,
+
+         :usenet_network => false,
+
                :apparentlyto => nil,
                :xcommentto => nil,
                :newsgroups => nil,
@@ -223,27 +223,27 @@ def add_msg(m_to,m_from,number,options = {})
                :messageto => nil,
                :nntpreferences => nil,
                :xgateway => nil,
-	       :control => nil,
+         :control => nil,
                :contenttype  => nil,
                :contenttransferencoding => nil,
-	       :nntppostinghost => nil,
+         :nntppostinghost => nil,
                :xcomplaintsto => nil,
                :xtrace  => nil,
                :nntppostingdate => nil,
                :xoriginalbytes => nil,
                :fntarea => nil,
                :fntflags => nil}
-	       
+
   options = default.merge(options)
 
- 
+
   area = Area.first(:number => number)
   message = area.messages.new(
     :m_to => m_to,
     :m_from => m_from,
     :msg_date => options[:msg_date],
     :subject => options[:subject],
-    :msg_text => options[:msg_text], 
+    :msg_text => options[:msg_text],
     :exported => options[:exported],
     :network => options[:network],
     :reply => options[:reply],
@@ -254,25 +254,25 @@ def add_msg(m_to,m_from,number,options = {})
     :smtp => options[:smtp],
     :exported => options[:exported],
     :f_network  => options[:f_network],
-    :orgnode  => options[:orgnode], 
-    :orgnet  => options[:orgnet], 
-    :attribute  => options[:attribute], 
+    :orgnode  => options[:orgnode],
+    :orgnet  => options[:orgnet],
+    :attribute  => options[:attribute],
     :cost  => options[:cost],
-    :area  => options[:area],  
-    :msgid  => options[:msgid], 
-    :path  => options[:path], 
-    :tzutc  => options[:tzutc],  
+    :area  => options[:area],
+    :msgid  => options[:msgid],
+    :path  => options[:path],
+    :tzutc  => options[:tzutc],
     :charset  => options[:charset],
-    :tid  => options[:tid],  
+    :tid  => options[:tid],
     :pid  => options[:pid],
-    :fmpt  => options[:fmpt],  
+    :fmpt  => options[:fmpt],
     :origin  => options[:origin],
     :q_msgid => options[:q_msgid],
     :q_tz => options[:q_tz],
     :q_via => options[:q_via],
     :q_reply => options[:q_reply],
     :nntpreferences => options[:nntpreferences],
-    :usenet_network => options[:usenet_network],       
+    :usenet_network => options[:usenet_network],
     :apparentlyto => options[:apparentlyto],
     :xcommentto => options[:xcommentto],
     :newsgroups => options[:organization],
@@ -295,8 +295,8 @@ def add_msg(m_to,m_from,number,options = {})
     :xoriginalbytes => options[:xoriginalbytes],
     :fntarea => options[:fntarea],
     :fntflags => options[:fntflags]
-  ) 
-  
+  )
+
   worked = message.save
   if !worked then
    message.errors.each{|x| puts x}
@@ -308,12 +308,12 @@ def add_qwk_message(message, area,qwkuser)
   user = fetch_user(get_uid(qwkuser))
   pointer = get_pointer(user,area.number)
   to = message.to.upcase.strip
-  m_from = message.from.upcase.strip  
+  m_from = message.from.upcase.strip
   group =  fetch_group_grp(area.grp)
   qwknet = get_qwknet(group)
   dest,route = get_qwk_dest(q_via)
   qwkroute_scavenge(qwknet)
-  
+
   if !route.nil?
    current = get_qwkroute(qwknet,dest)
    if !current.nil? then
@@ -323,18 +323,18 @@ def add_qwk_message(message, area,qwkuser)
    save_qwkroute(qwknet,dest,route)
  end
  end
-  
+
   absolute = add_msg(to, m_from, area.number,
-			:msg_date => message.date,
-			:subject => message.subject.strip, 
-			:msg_text => message.text, 
-			:exported => true, 
-			:network => true,
-			:q_msgid => message.msgid, 
-			:q_tz => message.tz ,
-			:q_via => message.via, 
-			:q_reply => message.reply)
-			
+      :msg_date => message.date,
+      :subject => message.subject.strip,
+      :msg_text => message.text,
+      :exported => true,
+      :network => true,
+      :q_msgid => message.msgid,
+      :q_tz => message.tz ,
+      :q_via => message.via,
+      :q_reply => message.reply)
+
   user.posted = user.posted + 1
   pointer.lastread = absolute
   update_pointer(pointer)
@@ -344,12 +344,12 @@ end
 def nntp_convert(text)
 
         text_out = ""
-	text_out = text.force_encoding('UTF-8').encode('UTF-16', :invalid => :replace, :replace => '?').encode('UTF-8') if !text.nil?
+  text_out = text.force_encoding('UTF-8').encode('UTF-16', :invalid => :replace, :replace => '?').encode('UTF-8') if !text.nil?
 
-	return text_out
+  return text_out
 end
-  
-	
+
+
 def convert_to_utf8(message, unixterm=false)
   # this makes messages display properly on a unix terminal
   if unixterm
@@ -381,16 +381,16 @@ def convert_to_ascii(message)
 
   message.each_char do |c|
     if c.ord <= 127 then
-      temp << c 
+      temp << c
     else
-      
-      if c.ord <= 254 
-				begin
-          temp << Encodings::UNICODE_ASCII[c] 
-				rescue
-				  puts "-NNTP: Encoding failed for chararcter: #{c}"
-					temp << " "
-				end
+
+      if c.ord <= 254
+        begin
+          temp << Encodings::UNICODE_ASCII[c]
+        rescue
+          puts "-NNTP: Encoding failed for chararcter: #{c}"
+          temp << " "
+        end
       end
     end
   end
@@ -415,7 +415,7 @@ end
     end
     return orig
   end
-  
+
   def qwkmailadr(address)
 
   to = nil;route = nil

@@ -5,7 +5,7 @@ class Session
   require 'telnet_bbs.rb'
 
   def leave
-   theme = get_user_theme(@c_user) 
+    theme = get_user_theme(@c_user)
     @who.user(@c_user.name).where="Goodbye"
     update_who_t(@c_user.name,"Goodbye")
     if yes(theme.logout_prompt, true, false,false) then
@@ -84,18 +84,18 @@ class Session
     end
   end
 
-def picklog
-  fetch_subsystems.each{|sub| print "#{sub.subsystem}: #{sub.name}"}
+  def picklog
+    fetch_subsystems.each{|sub| print "#{sub.subsystem}: #{sub.name}"}
     print
     prompt2 = "Enter Subsystem or #{RET} for all: "
     temp = getnum(prompt2,1,fetch_subsystems.length)
     displaylog(temp)
-end
+  end
 
   def commandLoop
     scanforaccess(@c_user)
     while true
-      theme = get_user_theme(@c_user) 
+      theme = get_user_theme(@c_user)
       area = fetch_area(@c_area)
       pointer = get_pointer(@c_user,@c_area)
       l_read = new_messages(area.number,pointer.lastread)
@@ -111,7 +111,7 @@ end
       ulevel = @c_user.level
 
       case sel
-      when @cmd_hash["uprofile"] ; run_if_ulevel("uprofile") {if theme.profile_flat_menu then profilebrowse(nil) else profilemenu end }     
+      when @cmd_hash["uprofile"] ; run_if_ulevel("uprofile") {if theme.profile_flat_menu then profilebrowse(nil) else profilemenu end }
       when @cmd_hash["bbslist"] ; run_if_ulevel("bbslist") {bbsmenu}
       when @cmd_hash["leave"] ; run_if_ulevel("leave") {leave}
       when @cmd_hash["umaint"] ; run_if_ulevel("umaint") {usermenu}
@@ -123,7 +123,7 @@ end
       when @cmd_hash["dmaint"] ; run_if_ulevel("dmaint") {doormaint}
       when @cmd_hash["omaint"] ; run_if_ulevel("omaint") {telnetmaint}
       when @cmd_hash["smaint"] ; run_if_ulevel("smaint") {screenmaint}
-        when @cmd_hash["areachange"]; run_if_ulevel("areachange") {areachange(parameters)}
+      when @cmd_hash["areachange"]; run_if_ulevel("areachange") {areachange(parameters)}
       when @cmd_hash["bulletins"] ; run_if_ulevel("bulletins") {bullets(parameters)}
       when @cmd_hash["feedback"] ; run_if_ulevel("feedback") { sendemail(true)}
       when @cmd_hash["teleconference"]
@@ -154,13 +154,13 @@ end
     end
   end
 
-    def run_if_ulevel(cmd)
-      command= get_command(@c_user.theme_key,cmd)
+  def run_if_ulevel(cmd)
+    command= get_command(@c_user.theme_key,cmd)
 
-      if  @c_user.level >= command.ulevel
-        yield
-      else
-        print "%WR;You do not have access!%W;"
-      end
+    if  @c_user.level >= command.ulevel
+      yield
+    else
+      print "%WR;You do not have access!%W;"
     end
   end
+end

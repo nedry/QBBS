@@ -3,7 +3,7 @@
 = chat/irc/security.rb
 
        Jonathan Perkin <jonathan@perkin.org.uk> wrote this file
- 
+
   You can freely distribute/modify it (and are encouraged to do so),
   and you are welcome to buy me a beer if we ever meet and you think
   this stuff is worth it.  Improvements and cleanups always welcome.
@@ -24,10 +24,10 @@ module IRC
 
     # user       =  1*( %x01-09 / %x0B-0C / %x0E-1F / %x21-3F / %x41-FF )
     #                 ; any octet except NUL, CR, LF, " " and "@"
-    
+
     # Ruby 2.0.0 didn't like the old regexp because of the encoding changes
     # so I made a new regexp
-    
+
     def user
 
       return "[A-Za-z0-9_`[{}^|\]\\-]+"
@@ -77,9 +77,9 @@ module IRC
 
       # XXX: RFC2812 is broken, they mean %x01-06 not 07 (else it uses BELL)
       #cs = Regexp.escape("[\x01-\x06\x08-\x09\x0b-\x0c\x0e-\x1f\x21-\x2b\x2d-\x39\x3b-\xff]")
-      
-      cs = ("[^:^\x00^\x07^\,]")  	#instead of including everything, lets exclude what we don't want.
-      
+
+      cs = ("[^:^\x00^\x07^\,]")    #instead of including everything, lets exclude what we don't want.
+
       # XXX: Maybe revisit this sometime, but there are too many quirks for me
       #      to spend ages parsing numerics using these special channels.
       ci = "\![#{letter}#{digit}]"
@@ -93,7 +93,7 @@ module IRC
 
     # Either a servername or a single alphanumeric string
     def ping
-      return "[#{letter}#{digit}:.]+"	#added the : character here, some (most) servers seem to send it.
+      return "[#{letter}#{digit}:.]+"  #added the : character here, some (most) servers seem to send it.
     end
 
     def numeric

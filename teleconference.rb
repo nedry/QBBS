@@ -48,14 +48,14 @@ class Session
       m = @irc_client.isdata ? @irc_client.getline : nil
       if m then
         if m.kind_of? IRC::Message::ServerNotice then
-           print "%Y;#{m.params}" if IRC_DEBUG
+          print "%Y;#{m.params}" if IRC_DEBUG
 
         elsif m.kind_of? IRC::Message::Numeric then
           case m.command
           when IRC::ERR_NICKNAMEINUSE
-            print "%Y;*** Nickname already in use." 
+            print "%Y;*** Nickname already in use."
             new_alias = "#{@c_user.alias}#{random(1..999)}"
-            print "%Y;*** Trying #{new_alias}" 
+            print "%Y;*** Trying #{new_alias}"
             @irc_client.login(new_alias, @c_user.alias, "8", "*", "Telnet User")
           when IRC::RPL_CREATED
             (/^:(.*):(.*):(.*)/) =~ m.message
@@ -90,7 +90,7 @@ class Session
 
 
     prompt = "%G;>%W;"
-     header
+    header
     print "%W;"
     while true
       getinp(nil,:chat) {|l|
@@ -100,45 +100,45 @@ class Session
         if test then
           happy = (/^\/(\S*)\s(.*)/) =~ line
           out = $1.to_s.upcase if happy
-            case out 
-              when "NICK"
-                 @irc_client.nick($2)
-               when "JOIN"
-                 @irc_client.join($2)
-               when "MOTD"
-                 #@irc_client.motd(@irc_channel)
-                 @irc_client.send("MOTD")  #irc system motd command seems to be broken.  fix me!
-               when "VERSION"
-                 @irc_client.version(IRCSERVER)
-               when "TIME"
-                 #@irc_client.time(IRCSERVER)
-                 @irc_client.send("TIME")
-              when "TOPIC"
-                 @irc_client.topic(@irc_channel,$2 )
-                  print "%Y;*** Topic Changed%W;"
-               when "NAMES"
-                  @irc_client.send("NAMES")
-               when "LIST"
-                  @irc_client.send("LIST")
-                when "ME"
-                  @irc_client.me(@irc_channel,$2)
-                  print "%Y;*** Action Sent%W;"
-                when "WHOIS"
-                  @irc_client.whois($2)
-               when "PAGE"
-                  page
-               when "U"
-                 displaywho
-               when "MSG"
-                 doit = (/^\/(\S*)\s(\S*)\s(.*)/) =~ line
-                 @irc_client.privmsg($2,$3) if doit
-                when "QUIT"
-                  @irc_client.quit($2)
-                  @irc_client.shutdown
-                  @irc_cleint = nil
-                  return
-              end #of case
-       else
+          case out
+          when "NICK"
+            @irc_client.nick($2)
+          when "JOIN"
+            @irc_client.join($2)
+          when "MOTD"
+            #@irc_client.motd(@irc_channel)
+            @irc_client.send("MOTD")  #irc system motd command seems to be broken.  fix me!
+          when "VERSION"
+            @irc_client.version(IRCSERVER)
+          when "TIME"
+            #@irc_client.time(IRCSERVER)
+            @irc_client.send("TIME")
+          when "TOPIC"
+            @irc_client.topic(@irc_channel,$2 )
+            print "%Y;*** Topic Changed%W;"
+          when "NAMES"
+            @irc_client.send("NAMES")
+          when "LIST"
+            @irc_client.send("LIST")
+          when "ME"
+            @irc_client.me(@irc_channel,$2)
+            print "%Y;*** Action Sent%W;"
+          when "WHOIS"
+            @irc_client.whois($2)
+          when "PAGE"
+            page
+          when "U"
+            displaywho
+          when "MSG"
+            doit = (/^\/(\S*)\s(\S*)\s(.*)/) =~ line
+            @irc_client.privmsg($2,$3) if doit
+          when "QUIT"
+            @irc_client.quit($2)
+            @irc_client.shutdown
+            @irc_cleint = nil
+            return
+          end #of case
+        else
           if line =="?" then
             gfileout("chatmnu")
           else
@@ -147,15 +147,15 @@ class Session
               cmd = g_test ? $1.upcase : ""
               @irc_client.privmsg(@irc_channel,line)
             end
+          end
         end
-      end
-      #i changed this from print to write to prevent an extra cr.  I don't know why this should be?
-       if !@chatbuff.empty? then
-        @chatbuff.each {|x| write parse_ircc(x.strip,@c_user.ansi,true) 
-        }
-        @chatbuff.clear
+        #i changed this from print to write to prevent an extra cr.  I don't know why this should be?
+        if !@chatbuff.empty? then
+          @chatbuff.each {|x| write parse_ircc(x.strip,@c_user.ansi,true)
+          }
+          @chatbuff.clear
 
-      end
+        end
       }
     end
   end

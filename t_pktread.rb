@@ -1,9 +1,9 @@
 ##############################################
-#											
-#   t_pktread.rb --Incomming Packet Processor for Fidomail tosser for QBBS.		                                
-#   (C) Copyright 2004, Fly-By-Night Software (Ruby Version)                        
-#                                                                                                            
-############################################## 
+#
+#   t_pktread.rb --Incomming Packet Processor for Fidomail tosser for QBBS.
+#   (C) Copyright 2004, Fly-By-Night Software (Ruby Version)
+#
+##############################################
 
 include BBS_Logger
 require "consts.rb"
@@ -18,11 +18,11 @@ def nul_delimited(buffer,pointer,max) #reads in a field delimited by nulls with 
   max.times {
     pointer += 1
     char = buffer[pointer]
-    if  char.ord == 0 then 
+    if  char.ord == 0 then
       return [result,pointer]
     else
-      result << char    
-    end 
+      result << char
+    end
   }
   return [result,pointer]
 end
@@ -39,7 +39,7 @@ def kludge_search(buffer)	#searches the message buffer for kludge lines and retu
     kludge.area = $2
     msg_array.delete_at(0) # We found it, so delete it from the message.
   else
-     @debuglog.push(  "No Area: Netmail Message")
+    @debuglog.push(  "No Area: Netmail Message")
     kludge.area = NETMAIL  # We need to check that the message is really for us?  add this?
   end
 
@@ -74,8 +74,8 @@ def kludge_search(buffer)	#searches the message buffer for kludge lines and retu
     end
   end
 
-#  puts
-#  puts "----"
+  #  puts
+  #  puts "----"
   return [valid_messages, kludge]
 end
 
@@ -83,8 +83,8 @@ def read_a_message(path,offset)
 
   if File.exists?(path) then
     happy = File.open(path,"rb")
-  else 
-     @debuglog.push(  "File Missing!")
+  else
+    @debuglog.push(  "File Missing!")
     return PACKET_NOT_FOUND
   end
   happy.read(offset) #move the record pointer to the next record
@@ -98,7 +98,7 @@ def read_a_message(path,offset)
   cost		= (buffer[0x0d].ord << 8) + buffer[0x0c].ord
 
   datetime = ""
-  for i in 0..19 do 
+  for i in 0..19 do
     datetime << buffer[0x0e + i]
   end
 
@@ -106,11 +106,11 @@ def read_a_message(path,offset)
   to,pointer = nul_delimited(buffer,pointer,36)
   from,pointer = nul_delimited(buffer,pointer,36)
   subject,pointer = nul_delimited(buffer,pointer,72)
-  
+
   r_loc = offset + pointer + 1	#start of the message text will be a total of the offset and where we stopped
-  #reading the header, which varies in size.  
+  #reading the header, which varies in size.
   message = ""
- 
+
   happy.rewind			#rewind to the beginning of the file
   happy.read(r_loc)		#move the file pointer to the end of the header,
 
@@ -119,7 +119,7 @@ def read_a_message(path,offset)
     if char.ord == 0 or char.nil? then 	#if the character is a null (end of message marker) or nil, then stop
       break
     else
-      message << char 				#add the character 
+      message << char 				#add the character
     end
   end
 
@@ -127,37 +127,37 @@ def read_a_message(path,offset)
   msg_array, kludges = kludge_search(message)
 
   fidomessage = A_fidonet_message.new(orgnode,destnode,orgnet,destnet,attribute,cost,
-                                      datetime,to,from,subject,msg_array,kludges.area,
-                                      kludges.msgid,kludges.path,kludges.tzutc,kludges.charset,
-                                      kludges.tid,kludges.pid,kludges.intl,kludges.topt,kludges.fmpt,
-                                      kludges.reply,kludges.origin)
+  datetime,to,from,subject,msg_array,kludges.area,
+  kludges.msgid,kludges.path,kludges.tzutc,kludges.charset,
+  kludges.tid,kludges.pid,kludges.intl,kludges.topt,kludges.fmpt,
+  kludges.reply,kludges.origin)
 
- # puts "Org:       #{fidomessage.orgnet}/#{fidomessage.orgnode}"
- # puts "Dest:      #{fidomessage.destnet}/#{fidomessage.destnode}"
- # puts "Attribute: #{fidomessage.attribute}"
- # puts "Cost:      #{fidomessage.cost}"
- # puts "Date Time: #{fidomessage.datetime}"
- # puts "To:        #{fidomessage.to}"
- # puts "From:      #{fidomessage.from}"
- # puts "Subject:   #{fidomessage.subject}"
- # puts "Area:      #{fidomessage.area}" if !fidomessage.area.nil?
- # puts "Msgid:     #{fidomessage.msgid}" if !fidomessage.msgid.nil?
- # puts "Path:      #{fidomessage.path}" if !fidomessage.path.nil?
- # puts "TzUTZ:     #{fidomessage.tzutc}" if !fidomessage.tzutc.nil?
- # puts "CharSet:   #{fidomessage.charset}" if !fidomessage.charset.nil?
- # puts "Tosser ID: #{fidomessage.tid}" if !fidomessage.tid.nil?
- # puts "Proc ID:   #{fidomessage.pid}" if !fidomessage.pid.nil?
- # puts "Intl:      #{fidomessage.intl}" if !fidomessage.intl.nil?
- # puts "Topt:      #{fidomessage.topt}" if !fidomessage.topt.nil?
- # puts "Fmpt:      #{fidomessage.fmpt}" if !fidomessage.fmpt.nil?
- # puts "Reply:     #{fidomessage.reply}" if !fidomessage.reply.nil?
- # puts "Origin:    #{fidomessage.origin}" if !fidomessage.origin.nil?
- # puts
-  
+  # puts "Org:       #{fidomessage.orgnet}/#{fidomessage.orgnode}"
+  # puts "Dest:      #{fidomessage.destnet}/#{fidomessage.destnode}"
+  # puts "Attribute: #{fidomessage.attribute}"
+  # puts "Cost:      #{fidomessage.cost}"
+  # puts "Date Time: #{fidomessage.datetime}"
+  # puts "To:        #{fidomessage.to}"
+  # puts "From:      #{fidomessage.from}"
+  # puts "Subject:   #{fidomessage.subject}"
+  # puts "Area:      #{fidomessage.area}" if !fidomessage.area.nil?
+  # puts "Msgid:     #{fidomessage.msgid}" if !fidomessage.msgid.nil?
+  # puts "Path:      #{fidomessage.path}" if !fidomessage.path.nil?
+  # puts "TzUTZ:     #{fidomessage.tzutc}" if !fidomessage.tzutc.nil?
+  # puts "CharSet:   #{fidomessage.charset}" if !fidomessage.charset.nil?
+  # puts "Tosser ID: #{fidomessage.tid}" if !fidomessage.tid.nil?
+  # puts "Proc ID:   #{fidomessage.pid}" if !fidomessage.pid.nil?
+  # puts "Intl:      #{fidomessage.intl}" if !fidomessage.intl.nil?
+  # puts "Topt:      #{fidomessage.topt}" if !fidomessage.topt.nil?
+  # puts "Fmpt:      #{fidomessage.fmpt}" if !fidomessage.fmpt.nil?
+  # puts "Reply:     #{fidomessage.reply}" if !fidomessage.reply.nil?
+  # puts "Origin:    #{fidomessage.origin}" if !fidomessage.origin.nil?
+  # puts
+
   r_loc = happy.pos 		#this is the next offset.
   test = happy.read(5)		#lets read a head and see if we hit eof.  beyond eof, you read nil
   if test.nil? then isnext = false else
-    isnext = !test[4].nil?		#if nil, we are done with the file.  
+    isnext = !test[4].nil?		#if nil, we are done with the file.
   end
   happy.close
   return [isnext,r_loc,fidomessage]
@@ -178,12 +178,12 @@ def read_pkt_header(path)
 
 
   buffer   = happy.read(0x3a)
- 
+
   #puts "buffer: #{buffer}"
   return INVALID_PACKET if buffer.nil?
 
   if ((buffer[0x12].ord + (buffer[0x13].ord << 8)) != 2) then
-     @debuglog.push( "Not a type 2 packet #{path}")
+    @debuglog.push( "Not a type 2 packet #{path}")
     return INVALID_PACKET;
   end
 
@@ -209,7 +209,7 @@ def read_pkt_header(path)
   capword = 0 if (capword != ((buffer[0x28].ord << 8) + buffer[0x29].ord))
 
   if (capword & 0x0001) then       # FSC-0039 packet type 2+
-     @debuglog.push(  "Type 2+ Packet")
+    @debuglog.push(  "Type 2+ Packet")
     prodx		= prodx + (buffer[0x2a].ord << 8)
     minor		= buffer[0x2b].ord
     orgzone		= buffer[0x2e].ord + (buffer[0x2f].ord << 8)
@@ -219,7 +219,7 @@ def read_pkt_header(path)
   end
 
   pktpwd = ""
-  for i in 0..7 do 
+  for i in 0..7 do
     pktpwd << buffer[0x1a + i].ord
   end
   # pktpwd[8]='\0'
@@ -230,9 +230,9 @@ end
 def add_fido_msg(fidomessage)
 
   if fidomessage.area == NETMAIL then
-    if user_exists(fidomessage.to) then 
+    if user_exists(fidomessage.to) then
       area = fetch_area(0)
-     # table = area.number
+      # table = area.number
       number = 0
     else
       number = find_fido_area(BADNETMAIL)
@@ -249,7 +249,7 @@ def add_fido_msg(fidomessage)
   fmpt = -1
   fmpt = fidomessage.fmpt if !fidomessage.fmpt.nil?
 
-  if !number.nil? then 
+  if !number.nil? then
 
     if !pid.nil? then
       pid = pid[0..79] if pid.length > 80
@@ -261,26 +261,26 @@ def add_fido_msg(fidomessage)
 
     #puts "----"
     a = fetch_area(number)
-     @debuglog.push(  "FIDO: importing message to: #{a.name}")
+    @debuglog.push(  "FIDO: importing message to: #{a.name}")
 
-    absolute = add_msg(fidomessage.to,fidomessage.from,area.number, :msg_date => fidomessage.datetime.strip, :subject =>fidomessage.subject, 
-              :msg_text => convert_to_utf8(fidomessage.message.join(DLIM)),:exported => true, :destnode => fidomessage.destnode,
-	      :orgnode => fidomessage.orgnode, :orgnet => fidomessage.orgnet, :destnet => fidomessage.destnet,
-	      :attribute => fidomessage.attribute, :cost => fidomessage.cost, :area => fidomessage.area, :msgid => fidomessage.msgid,
-	      :path => fidomessage.path, :tzutc => fidomessage.tzutc, :cost => fidomessage.charset, :tid => fidomessage.tid,
-	      :pid => fidomessage.pid, :orgin => fidomessage.origin, :f_network => true)
+    absolute = add_msg(fidomessage.to,fidomessage.from,area.number, :msg_date => fidomessage.datetime.strip, :subject =>fidomessage.subject,
+    :msg_text => convert_to_utf8(fidomessage.message.join(DLIM)),:exported => true, :destnode => fidomessage.destnode,
+    :orgnode => fidomessage.orgnode, :orgnet => fidomessage.orgnet, :destnet => fidomessage.destnet,
+    :attribute => fidomessage.attribute, :cost => fidomessage.cost, :area => fidomessage.area, :msgid => fidomessage.msgid,
+    :path => fidomessage.path, :tzutc => fidomessage.tzutc, :cost => fidomessage.charset, :tid => fidomessage.tid,
+    :pid => fidomessage.pid, :orgin => fidomessage.origin, :f_network => true)
 
-             #Update pointers
-             user = fetch_user(get_uid(FIDOUSER))
-             pointer = get_pointer(user,number)
-	     scanforaccess(user)
-             user.posted = user.posted + 1
-             pointer.lastread = high_absolute(number)
-             update_user(user)
-	     update_pointer(pointer)
-             return 
+    #Update pointers
+    user = fetch_user(get_uid(FIDOUSER))
+    pointer = get_pointer(user,number)
+    scanforaccess(user)
+    user.posted = user.posted + 1
+    pointer.lastread = high_absolute(number)
+    update_user(user)
+    update_pointer(pointer)
+    return
   else
-     @debuglog.push(  "Error: No mapping found for #{fidomessage.area}.  Not Importing")
+    @debuglog.push(  "Error: No mapping found for #{fidomessage.area}.  Not Importing")
   end
 end
 
@@ -289,18 +289,18 @@ def process_packet(path) 		#this is a shell for what will be the inbound packet 
   condition = read_pkt_header(path)
   ok = false
   total = 0
-  ddate = Time.now.strftime("%m/%d/%Y at %I:%M%p") 
+  ddate = Time.now.strftime("%m/%d/%Y at %I:%M%p")
   case condition
   when PACKET_NOT_FOUND
     add_log_entry(L_ERROR,Time.now,"Fido Import Error: No Packet Found.")
-     @debuglog.push(  "!No Packet Found")
+    @debuglog.push(  "!No Packet Found")
     #Log Stuff
   when PACKET_IO_ERROR
-     @debuglog.push(  "!Bad Packet Detected")
+    @debuglog.push(  "!Bad Packet Detected")
     add_log_entry(L_ERROR,Time.now,"Fido Import Error:Bad Packet Detected.")
     #Log Stuff
   when INVALID_PACKET
-     @debuglog.push(  "!Header Invalid or Not Type 2 or 2+")
+    @debuglog.push(  "!Header Invalid or Not Type 2 or 2+")
     add_log_entry(L_ERROR,Time.now,"Fido Import Error:Header Invalid")
     #Log Stuff
   else
@@ -316,7 +316,7 @@ def process_packet(path) 		#this is a shell for what will be the inbound packet 
       isnext,offset,fidomessage = read_a_message(path,offset)
       add_fido_msg(fidomessage)
       total +=1
-      #process the message we got.  
+      #process the message we got.
     end
     add_log_entry(4,Time.now,"#{total} Fido messages imported")
     @debuglog.push( "-FIDO: Import Complete.  #{total} messages imported.")

@@ -1,14 +1,14 @@
 ##############################################
-#											
-#   t_consts.rb --Constant dec. for Fidomail tosser for QBBS.		                                
-#   (C) Copyright 2004, Fly-By-Night Software (Ruby Version)                        
-#                                                                                                            
-############################################## 
+#
+#   t_consts.rb --Constant dec. for Fidomail tosser for QBBS.
+#   (C) Copyright 2004, Fly-By-Night Software (Ruby Version)
+#
+##############################################
 
 SUCCESS 				= 0
 
 PACKET_IO_ERROR 		= 1
-PACKET_NOT_FOUND 	= 2 
+PACKET_NOT_FOUND 	= 2
 INVALID_PACKET 		= 3
 
 MESSAGE_IO_ERROR	= 1

@@ -3,7 +3,7 @@
 = chat/irc.rb
 
        Jonathan Perkin <jonathan@perkin.org.uk> wrote this file
- 
+
   You can freely distribute/modify it (and are encouraged to do so),
   and you are welcome to buy me a beer if we ever meet and you think
   this stuff is worth it.  Improvements and cleanups always welcome.
@@ -33,7 +33,7 @@ module IRC
     # 4.1 Connection Registration
     #
     #  The commands described here are used to register a connection with
-    #  an IRC server as either a user or a server as well as correctly 
+    #  an IRC server as either a user or a server as well as correctly
     #  disconnect
 
     def login(nickname, username, localhost, server, realname)
@@ -46,13 +46,13 @@ module IRC
     end
 
     def isdata
-       if select([@sock],nil,nil,0.1) != nil then 
+       if select([@sock],nil,nil,0.1) != nil then
         return true
        else
         return false
        end
     end
-       
+
     def getline
 
       # Get next line from server.
@@ -75,7 +75,7 @@ module IRC
     def nick (name)
       send(@irccmd.nick(name))
     end
-    
+
     def privmsg (destination,message)
      send(@irccmd.privmsg(destination,message))
     end
@@ -83,7 +83,7 @@ module IRC
     def motd(server)
      send(@irccmd.join(server))
     end
-    
+
     def join(channel)
       send(@irccmd.join(channel))
     end
@@ -91,7 +91,7 @@ module IRC
     def quit(message)
       send(@irccmd.quit(message))
     end
-    
+
     def version(server)
      send(@irccmd.version(server))
     end
@@ -99,20 +99,20 @@ module IRC
     def time(server)
      send(@irccmd.time(server))
     end
-    
+
     def names(params)
      send(@irccmd.names(params))
     end
-    
+
    def list(params)
      send(@irccmd.list(params))
     end
-    
+
   def topic(channel,params)
      send(@irccmd.topic(channel,params))
      puts @irccmd.topic(channel,params)
     end
-    
+
    def whois(nick)
      send(@irccmd.whois(nick))
     end
@@ -120,7 +120,7 @@ module IRC
   def part(channel)
      send(@irccmd.part(channel))
     end
-    
+
   def mode(parameters)
      send(@irccmd.mode(parameters))
     end
