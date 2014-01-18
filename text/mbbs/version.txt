@@ -1,0 +1,19 @@
+%G;    
+ _______         __              ______ ______ _______ 
+|   |   |.---.-.|__|.-----.----.|   __ \   __ \     __|
+|       ||  _  ||  ||  _  |   _||   __ <   __ <__     |
+|__|_|__||___._||  ||_____|__|  |______/______/_______|
+               |___|  %C;Theme   %W;Version 6.5
+%W;  QUARKware 7 BBS for Linux   %g;Copyright %G;1985%g;-%G;2014 %g;Fly By Night Software
+   
+  %G;Programmers:
+       %WC; Mark Firestone %W;   %WG; Martin DeMello %W;    %WR; John Lorance %W;
+  			     
+  %G;Thanks to:
+             %WB; Wayne Conrad %W;          %WY; Rob Swindell %W;
+ 			
+  %G;APIs by:
+        %M;Datamapper (Database)...........%W;The Datamapper Team
+        %M;Natter (IRC)....................%W;Johnathan Perkins 
+        %M;RubyMail (SMTP Email)...........%W;Matt Armstrong      
+        %M;Rbot 0.9.15.....................%W;The Rbot Team
