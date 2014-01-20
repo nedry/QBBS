@@ -205,7 +205,7 @@ class MailSchedulethread
       when "Maxrate"
         maxrate = $2.strip
       when "Minrate"
-        maxrate = $2.strip
+        minrate = $2.strip
       when "Location"
         location= $2.strip
       when "Network"
