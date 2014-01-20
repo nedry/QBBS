@@ -43,14 +43,20 @@ def telnetmaint
   }
 end
 
+# get name and address
+def get_name
+  name = get_max_length("Enter new BBS name: ",40,"BBS name")
+  name ? name.strip : ""
+end
 
+def get_address
+  address = get_max_length("Enter new BBS telnet address: ",40,"BBS address")
+  address ? address.strip : ""
+end
 
 def addbbs
-
-  name = get_max_length("Enter new BBS name: ",40,"BBS name")
-  name.strip! if name != ""
-  address = get_max_length("Enter new BBS telnet address: ",40,"BBS address")
-  address.strip! if address != ""
+  name = get_name
+  address = get_address
 
   if yes("Are you sure #{YESNO}", true, false,true)
     add_other(name,address)
@@ -63,8 +69,7 @@ end
 
 def changebbsname(bpointer)
   bbs = fetch_other(bpointer)
-  name = get_max_length("Enter new BBS name: ",40,"BBS name")
-  name.strip! if name != ""
+  name = get_name
 
   if name !='' then
     bbs.name = name
@@ -77,8 +82,7 @@ end
 
 def changebbsaddress(bpointer)
   bbs = fetch_other(bpointer)
-  address = get_max_length("Enter new BBS telnet address: ",40,"BBS address")
-  address.strip! if address != nil
+  address = get_address
 
   if address !='' then
     bbs.address = address
