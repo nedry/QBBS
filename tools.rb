@@ -42,10 +42,6 @@ class String
     self =~ /^[+-]?\d+/
   end
 
-  def empty?
-    self == ""
-  end
-
   def stripcolor
     a = dup
     COLORTABLE.each_key {|color| a.gsub!(color, '')}
@@ -59,10 +55,6 @@ class String
 end
 
 class Array
-  def empty?
-    length == 0
-  end
-
   def has_index?(i)
     (0..(length-1)).include?(i)
   end
