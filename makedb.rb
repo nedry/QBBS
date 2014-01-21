@@ -228,6 +228,7 @@ add_area("dove data","W","W",2013,nil,nil,2)
 #add_area("Conspiracies","W","W",5018,nil,nil,4)
 #add_area("The Quickening","W","W",5019,nil,nil,4)
 
+add add_action("bounce", "%s bounces into you!", "bounces into $s","...Bounce, bounce, bounce", true)
 
 # initial system
 s = System.new(

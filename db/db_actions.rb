@@ -20,12 +20,15 @@ def renumber_action
   Action.renumber!
 end
 
-def add_action(name, address)
+def add_action(name, action, local_action, me_action, directed)
   number = ac_total + 1
   Action.create(
     :name => name,
     :number => number,
     :action => action,
+    :local_action => local_action,
+    :directed => directed,
+    :me_action => me_action,
     :modify_date => Time.now
   )
 end

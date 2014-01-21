@@ -88,19 +88,19 @@ class Session
       end
     end
 
-
-    prompt = "%G;>%W;"
+   prompt = "%G;:%W;"
     header
     print "%W;"
     while true
-      getinp(nil,:chat) {|l|
+      getinp(prompt,:chat) {|l|
         line = l.strip
-        out =  line.gsub("/","").to_s.upcase
-        test = (/^\/(.*)/) =~ line
+         test = (/(\S*)(.*)/) =~ line
+
         if test then
-          happy = (/^\/(\S*)\s(.*)/) =~ line
-          out = $1.to_s.upcase if happy
+          out = $1.upcase 
           case out
+	  when "?"
+	   gfileout("chatmnu") 
           when "NICK"
             @irc_client.nick($2)
           when "JOIN"
@@ -125,7 +125,7 @@ class Session
             print "%Y;*** Action Sent%W;"
           when "WHOIS"
             @irc_client.whois($2)
-          when "PAGE"
+          when "PAGE","/P"
             page
           when "U"
             displaywho
@@ -137,28 +137,22 @@ class Session
             @irc_client.shutdown
             @irc_cleint = nil
             return
-          end #of case
-        else
-          if line =="?" then
-            gfileout("chatmnu")
-          else
-            if line
-              g_test = (/(\S*)(.*)/) =~ line
-              cmd = g_test ? $1.upcase : ""
+ 
+            else
+              cmd = test ? $1.upcase : ""
               @irc_client.privmsg(@irc_channel,line)
-            end
-          end
-        end
+      end #of case
+      end
         #i changed this from print to write to prevent an extra cr.  I don't know why this should be?
         if !@chatbuff.empty? then
-          @chatbuff.each {|x| write parse_ircc(x.strip,@c_user.ansi,true)
-          }
+          @chatbuff.each {|x| write parse_ircc(x.strip,@c_user.ansi,true)}
           @chatbuff.clear
-
-        end
+      end
+  
       }
+ end
     end
-  end
+
 
   def check_user_alias
     if @c_user.alias.nil? then
