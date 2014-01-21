@@ -4,6 +4,8 @@ require 'menu.rb'
 require 'doors.rb'
 require 'encodings.rb'
 
+#TODO: clean up the line spacing and indentation in here
+#
 class Session
 
   def messagefirstmenu

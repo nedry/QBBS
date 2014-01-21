@@ -4,7 +4,7 @@ require 'tools.rb'
 require  'chat/irc'
 
 class Session
-
+ # TODO: move to library
   def random(r)
     # assume r is a range of integers first < last
     # this def by Mike Stok [mike@stok.co.uk] who deserves credit for it

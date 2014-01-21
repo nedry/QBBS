@@ -187,6 +187,15 @@ class Session
     displaygroup(number)
   end
 
+  # TODO: See if you can pull the validation into change_group. maybe something like
+  # change_setting(number, {
+  #   :prompt => "FTP Password",
+  #   :what => :ftppassword
+  #   :length => 40
+  #   })
+  #
+  # and within change_setting use qwknet.send("#{what}=".to_sym, new_value)
+  # 
   def changeftppassword(number)
     prompt = "%W;Enter the FTP Password:%G;  "
     change_group(number, prompt) do |qwknet, inp|

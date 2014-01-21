@@ -23,8 +23,7 @@ class WordWrapper
 
   def doWrap(text, margin)
     output = ''
-    text.each_line do #1.9 fix
-      | paragraph |
+    text.each_line do |paragraph|
       if (paragraph !~ /^>/)
         paragraph = wrapParagraph(paragraph, margin-1)
       end
@@ -45,7 +44,7 @@ class WordWrapper
         next
       end
       tryAt = lastSpaceOnLine(paragraph, lineStart, lineEnd)
-      paragraph[tryAt] = paragraph[tryAt].chr + "\r\n"
+      paragraph[tryAt] = paragraph[tryAt] + "\r\n"
       tryAt += 2
       lineStart = findFirstNonSpace(paragraph, tryAt)
       paragraph[tryAt...lineStart] = ''
@@ -55,26 +54,13 @@ class WordWrapper
     return paragraph
   end
 
-  def findFirstNonSpace(text, startAt)
-    startAt.upto(text.length) do
-      | at |
-      if text[at] != 32
-        return at
-      end
-    end
-    return text.length
+  def findFirstNonSpace(text, start)
+    text.index(/[^ ]/, start) || text.length
   end
 
   def lastSpaceOnLine(text, lineStart, lineEnd)
-    lineEnd.downto(lineStart) do
-      | tryAt |
-      case text[tryAt].chr
-      when ' ', '-'
-        return tryAt
-      end
-    end
-    return lineEnd
+    text = text[lineStart .. lineEnd]
+    p = text.rindex(/[ -]/)
+    p ? lineStart + p : lineEnd
   end
-
 end
-

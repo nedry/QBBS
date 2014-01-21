@@ -102,6 +102,12 @@ class GraphFile
             break
           end
         end
+
+        # TODO: Use if out.include?("%whatever%") if you're just checking for
+        # strings
+        #
+        # TODO: Move all these within an if @session.logged_on block rather
+        # than repeat the check everywhere.
         if !out.gsub!("%WHOLIST%","").nil? and @session.logged_on  then
           @session.displaywho
         end
@@ -140,16 +146,29 @@ class GraphFile
     @session.print
   end
 
-  def padding(string,p)
-    s = " "
-    s = string if !string.nil?
-    s = s.ljust(p.to_i) if !p.nil?
+  def padding(string, p)
+    s = string || " "
+    s = s.ljust(p.to_i) if p
     return s
   end
 
+  def matcher(text)
+    /\|#{text}(\d*)([^\|]*)\|/
+  end
+
+  # text substitution including %s
+  def replace_line(line, text, obj_data)
+    line.gsub!(matcher(text)) {|m|
+      out = ""
+      pad = $1
+      if obj_data
+        out = $2.gsub("%s", obj_data.to_s)
+      end
+      padding(out,pad)
+    }
+  end
 
   def profileout(obj,index)
-
     theme = get_user_theme(@session.c_user)
     area = fetch_area(@session.c_area)
 
@@ -187,86 +206,90 @@ class GraphFile
 
       IO.foreach(outfile) { |line|
         line = parse_text_commands(line.force_encoding("IBM437"))
-        line.gsub!(/\|NUMBER(\d*)([^\|]*)\|/){|m| out = "" ; pad = $1;pad = $1;  out = $2.gsub("%s",index.to_s) ;  padding(out,pad) }
+        replace_line(line, 'NUMBER', index.to_s)
 
+        # TODO: move each of these blocks into its own method to make this one
+        # easier to read
         if obj.kind_of?(User) then
-
-          line.gsub!(/\|UNAME(\d*)([^\|]*)\|/){|m| out = "" ; pad = $1; out = $2.gsub("%s",obj.name) if !obj.name.nil?;  padding(out,pad) }
-          line.gsub!(/\|REALNAME(\d*)([^\|]*)\|/){|m| out = "" ; pad = $1; out = $2.gsub("%s",obj.real_name) if !obj.real_name.nil?;  padding(out,pad) }
-          line.gsub!(/\|SEX(\d*)([^\|]*)\|/){|m| out = "" ; pad = $1; out = $2.gsub("%s",obj.sex) if !obj.sex.nil?;  padding(out,pad) }
-          line.gsub!(/\|AGE(\d*)([^\|]*)\|/){|m| out = "" ; pad = $1; out = $2.gsub("%s",obj.age.to_s) if !obj.age.nil?;  padding(out,pad) }
-          line.gsub!(/\|ALIASES(\d*)([^\|]*)\|/){|m| out = "" ; pad = $1; out = $2.gsub("%s",obj.aliases) if !obj.aliases.nil?;  padding(out,pad) }
-          line.gsub!(/\|CITYSTATE(\d*)([^\|]*)\|/){|m| out = "" ; pad = $1; out = $2.gsub("%s",obj.citystate) if !obj.citystate.nil?;  padding(out,pad) }
-          line.gsub!(/\|VPHONE(\d*)([^\|]*)\|/){|m| out = "" ; pad = $1; out = $2.gsub("%s",obj.voice_phone) if !obj.voice_phone.nil?;  padding(out,pad) }
-          line.gsub!(/\|PDESC(\d*)([^\|]*)\|/){|m| out = "" ; pad = $1; out = $2.gsub("%s",obj.p_description) if !obj.p_description.nil?;  padding(out,pad) }
-          line.gsub!(/\|URL(\d*)([^\|]*)\|/){|m| out = "" ; pad = $1; out = $2.gsub("%s",obj.url) if !obj.url.nil?;  padding(out,pad) }
-          line.gsub!(/\|MOVIE(\d*)([^\|]*)\|/){|m| out = "" ; pad = $1; out = $2.gsub("%s",obj.fav_movie) if !obj.fav_movie.nil?;  padding(out,pad) }
-          line.gsub!(/\|TV(\d*)([^\|]*)\|/){|m| out = "" ; pad = $1; out = $2.gsub("%s",obj.fav_tv) if !obj.fav_tv.nil?;  padding(out,pad) }
-          line.gsub!(/\|MUSIC(\d*)([^\|]*)\|/){|m| out = "" ; pad = $1; out = $2.gsub("%s",obj.fav_music) if !obj.fav_music.nil?;  padding(out,pad) }
-          line.gsub!(/\|INST(\d*)([^\|]*)\|/){|m| out = "" ; pad = $1; out = $2.gsub("%s",obj.insturments) if !obj.insturments.nil?;  padding(out,pad) }
-          line.gsub!(/\|FOOD(\d*)([^\|]*)\|/){|m| out = "" ; pad = $1; out = $2.gsub("%s",obj.fav_food) if !obj.fav_food.nil?;  padding(out,pad) }
-          line.gsub!(/\|SPORT(\d*)([^\|]*)\|/){|m| out = "" ; pad = $1; out = $2.gsub("%s",obj.fav_sport) if !obj.fav_sport.nil?;  padding(out,pad) }
-          line.gsub!(/\|HOBBIES(\d*)([^\|]*)\|/){|m| out = "" ; pad = $1; out = $2.gsub("%s",obj.hobbies) if !obj.hobbies.nil?;  padding(out,pad) }
-          line.gsub!(/\|GEN1(\d*)([^\|]*)\|/){|m| out = "" ; pad = $1; out = $2.gsub("%s",obj.gen_info1) if !obj.gen_info1.nil?;  padding(out,pad) }
-          line.gsub!(/\|GEN2(\d*)([^\|]*)\|/){|m| out = "" ; pad = $1; out = $2.gsub("%s",obj.gen_info2) if !obj.gen_info2.nil?;  padding(out,pad) }
-          line.gsub!(/\|SUM(\d*)([^\|]*)\|/){|m| out = "" ; pad = $1; out = $2.gsub("%s",obj.summary) if !obj.summary.nil?;  padding(out,pad) }
+          replace_line(line, 'UNAME' ,obj.name)
+          replace_line(line, 'REALNAME', obj.real_name)
+          replace_line(line, 'SEX', obj.sex)
+          replace_line(line, 'AGE', obj.age)
+          replace_line(line, 'ALIASES', obj.aliases)
+          replace_line(line, 'CITYSTATE', obj.citystate)
+          replace_line(line, 'VPHONE', obj.voice_phone)
+          replace_line(line, 'PDESC', obj.p_description)
+          replace_line(line, 'URL', obj.url)
+          replace_line(line, 'MOVIE', obj.fav_movie)
+          replace_line(line, 'TV', obj.fav_tv)
+          replace_line(line, 'MUSIC', obj.fav_music)
+          replace_line(line, 'INST', obj.insturments)
+          replace_line(line, 'FOOD', obj.fav_food)
+          replace_line(line, 'SPORT', obj.fav_sport)
+          replace_line(line, 'HOBBIES', obj.hobbies)
+          replace_line(line, 'GEN1', obj.gen_info1)
+          replace_line(line, 'GEN2', obj.gen_info2)
+          replace_line(line, 'SUM', obj.summary)
         end
         if obj.kind_of?(Bbslist) then
-
-          line.gsub!(/\|DATE(\d*)([^\|]*)\|/){|m| out = "";  pad = $1; out = $2.gsub("%s",obj.modify_date.strftime("%B %d, %Y")) if !obj.modify_date.nil?;  padding(out,pad) if !obj.modify_date.nil?}
-          line.gsub!(/\|NAME(\d*)([^\|]*)\|/){|m| out = "" ; pad = $1; out = $2.gsub("%s",obj.name) if !obj.name.nil?;  padding(out,pad) }
-          line.gsub!(/\|USER(\d*)([^\|]*)\|/){|m| out = "" ; pad = $1; out = $2.gsub("%s",obj.user) if !obj.user.nil?;  padding(out,pad) }
-          line.gsub!(/\|TELNET(\d*)([^\|]*)\|/){|m| out = "" ; pad = $1; out = $2.gsub("%s",obj.number.to_s) if !obj.number.nil?;  padding(out,pad) }
-          line.gsub!(/\|SYSOP(\d*)([^\|]*)\|/){|m| out = "" ; pad = $1; out = $2.gsub("%s",obj.sysop) if !obj.sysop.nil?;  padding(out,pad) }
-          line.gsub!(/\|EMAIL(\d*)([^\|]*)\|/){|m| out = "" ; pad = $1; out = $2.gsub("%s",obj.email) if !obj.email.nil?;  padding(out,pad) }
-          line.gsub!(/\|LOCATION(\d*)([^\|]*)\|/){|m| out = "" ; pad = $1; out = $2.gsub("%s",obj.location) if !obj.location.nil?;  padding(out,pad) }
-          line.gsub!(/\|SOFTWARE(\d*)([^\|]*)\|/){|m| out = "" ; pad = $1; out = $2.gsub("%s",obj.software) if !obj.software.nil?;  padding(out,pad) }
-          line.gsub!(/\|MSGS(\d*)([^\|]*)\|/){|m| out = "" ; pad = $1; out = $2.gsub("%s",obj.msgs.to_s) if !obj.msgs.nil?;  padding(out,pad) }
-          line.gsub!(/\|SUBS(\d*)([^\|]*)\|/){|m| out = "" ; pad = $1; out = $2.gsub("%s",obj.subs.to_s) if !obj.subs.nil?;  padding(out,pad) }
-          line.gsub!(/\|FILES(\d*)([^\|]*)\|/){|m| out = "" ; pad = $1; out = $2.gsub("%s",obj.files.to_s) if !obj.files.nil?;  padding(out,pad) }
-          line.gsub!(/\|DIRS(\d*)([^\|]*)\|/){|m| out = "" ; pad = $1; out = $2.gsub("%s",obj.dirs.to_s) if !obj.dirs.nil?;  padding(out,pad) }
-          line.gsub!(/\|MEGS(\d*)([^\|]*)\|/){|m| out = "" ; pad = $1; out = $2.gsub("%s",obj.megs.to_s) if !obj.megs.nil?;  padding(out,pad) }
-          line.gsub!(/\|TERMINAL(\d*)([^\|]*)\|/){|m| out = "" ; pad = $1; out = $2.gsub("%s",obj.terminal) if !obj.terminal.nil?;  padding(out,pad) }
-          line.gsub!(/\|WEBSITE(\d*)([^\|]*)\|/){|m| out = "" ; pad = $1; out = $2.gsub("%s",obj.website) if !obj.website.nil?;  padding(out,pad) }
-          line.gsub!(/\|NETWORK(\d*)([^\|]*)\|/){|m|
+          modify_date = obj.modify_date ? obj.modify_date.strftime("%B %d, %Y") : nil
+          replace_line(line, 'DATE', modify_date)
+          replace_line(line, 'NAME', obj.name)
+          replace_line(line, 'USER', obj.user)
+          replace_line(line, 'TELNET', obj.number)
+          replace_line(line, 'SYSOP', obj.sysop)
+          replace_line(line, 'EMAIL', obj.email)
+          replace_line(line, 'LOCATION', obj.location)
+          replace_line(line, 'SOFTWARE', obj.software)
+          replace_line(line, 'MSGS', obj.msgs)
+          replace_line(line, 'SUBS', obj.subs)
+          replace_line(line, 'FILES', obj.files)
+          replace_line(line, 'DIRS', obj.dirs)
+          replace_line(line, 'MEGS', obj.megs)
+          replace_line(line, 'TERMINAL', obj.terminal)
+          replace_line(line, 'WEBSITE', obj.website)
+          line.gsub!(matcher('NETWORK')) {|m|
             if !obj.network.nil? then
               out = "#{$2}"
               obj.network.split("|").each {|line| out << "\r\n   #{line.strip}"}
               padding(out,$1)
-            end}
-            line.gsub!(/\|DESC(\d*)([^\|]*)\|/){|m|
-              if !obj.desc.nil? then
-                out = "#{$2}"
-                obj.desc.split("|").each {|line| out << "\r\n   #{line.strip}"}
-                padding(out,$1)
-              end}
-              line.gsub!(/\|LOCAL(\d*)([^\|]*)\|/){||m|  out = ""; out = padding($2,$1) if !obj.imported; out}
-              line.gsub!(/\|IMPT(\d*)([^\|]*)\|/){|m|  out = ""; out = padding($2,$1) if obj.imported; out}
-              line.gsub!(/\$LOCKED(\d*)([^\|]*)\|/){|m|  out = ""; out = padding($2,$1) if obj.locked; out}
             end
-            if obj.kind_of?(Message) then
-              line.gsub!(/\|QWK(\d*)([^\|]*)\|/){|m|  out = ""; out = padding($2,$1) if obj.network; out}
-              line.gsub!(/\|NNTP(\d*)([^\|]*)\|/){|m|  out = ""; out = padding($2,$1) if obj.usenet_network; out}
-              line.gsub!(/\|SMTP(\d*)([^\|]*)\|/){|m|  out = ""; out = padding($2,$1) if obj.smtp; out}
-              line.gsub!(/\|FIDONET(\d*)([^\|]*)\|/){|m|  out = ""; out = padding($2,$1) if obj.f_network; out}
-              line.gsub!(/\|EXPORTED(\d*)([^\|]*)\|/){|m|  out = ""; out = padding($2,$1) if obj.exported and !obj.usenet_network and !obj.f_network and !obj.network; out}
-              line.gsub!(/\|REPLY(\d*)([^\|]*)\|/){|m|  out = ""; out = padding($2,$1) if obj.reply; out}
-
-
-              line.gsub!(/\|ABS(\d*)([^\|]*)\|/) {|m| out = "" ; pad = $1; out = $2.gsub("%s",obj.absolute.to_s) if !obj.absolute.nil?;  padding(out,pad) }
-              line.gsub!(/\|DATE(\d*)([^\|]*)\|/){|m| out = "" ; pad = $1; out = $2.gsub("%s",m_date) if !m_date.nil?; padding(out,pad) }
-              line.gsub!(/\|TZ(\d*)([^\|]*)\|/){|m| out = "" ; pad = $1; out = $2.gsub("%s",tzout) if !tzout.nil?;  padding(out,pad) }
-              line.gsub!(/\|TO(\d*)([^\|]*)\|/){|m| out = "" ; pad = $1; out = $2.gsub("%s",obj.m_to.strip) if !obj.m_to.nil?;  padding(out,pad) }
-              line.gsub!(/\|FROM(\d*)([^\|]*)\|/){|m| out = "" ; pad = $1; out = $2.gsub("%s",obj.m_from.strip) if !obj.m_from.nil?;  padding(out,pad) }
-              line.gsub!(/\|FNET(\d*)([^\|]*)\|/){|m| out = "" ; pad = $1; out = $2.gsub("%s",f_net) if !f_net.nil?;  padding(out,pad) }
-              line.gsub!(/\|QNET(\d*)([^\|]*)\|/){|m| out = "" ; pad = $1; out = $2.gsub("%s",q_net) if !q_net.nil?;  padding(out,pad) }
-              line.gsub!(/\|TITLE(\d*)([^\|]*)\|/){|m| out = "" ; pad = $1; out = $2.gsub("%s",obj.subject.strip) if !obj.subject.nil?;  padding(out,pad) }
-              line.gsub!(/\|AREA(\d*)([^\|]*)\|/) {|m| out = "" ; pad = $1; out = $2.gsub("%s",area.name) if !area.name.nil?;  padding(out,pad) }
-            end
-            line.gsub!(/\|CR\|/,"\r")
-            @session.write line + "\r" if !line.strip.empty?
-            i+=1
           }
+          line.gsub!(/\|DESC(\d*)([^\|]*)\|/){|m|
+            if !obj.desc.nil? then
+              out = "#{$2}"
+              obj.desc.split("|").each {|line| out << "\r\n   #{line.strip}"}
+              padding(out,$1)
+            end
+          }
+          # TODO: move this pattern into a method too
+          line.gsub!(/\|LOCAL(\d*)([^\|]*)\|/){||m|  out = ""; out = padding($2,$1) if !obj.imported; out}
+          line.gsub!(/\|IMPT(\d*)([^\|]*)\|/){|m|  out = ""; out = padding($2,$1) if obj.imported; out}
+          line.gsub!(/\$LOCKED(\d*)([^\|]*)\|/){|m|  out = ""; out = padding($2,$1) if obj.locked; out}
+        end
+        if obj.kind_of?(Message) then
+          line.gsub!(/\|QWK(\d*)([^\|]*)\|/){|m|  out = ""; out = padding($2,$1) if obj.network; out}
+          line.gsub!(/\|NNTP(\d*)([^\|]*)\|/){|m|  out = ""; out = padding($2,$1) if obj.usenet_network; out}
+          line.gsub!(/\|SMTP(\d*)([^\|]*)\|/){|m|  out = ""; out = padding($2,$1) if obj.smtp; out}
+          line.gsub!(/\|FIDONET(\d*)([^\|]*)\|/){|m|  out = ""; out = padding($2,$1) if obj.f_network; out}
+          line.gsub!(/\|EXPORTED(\d*)([^\|]*)\|/){|m|  out = ""; out = padding($2,$1) if obj.exported and !obj.usenet_network and !obj.f_network and !obj.network; out}
+          line.gsub!(/\|REPLY(\d*)([^\|]*)\|/){|m|  out = ""; out = padding($2,$1) if obj.reply; out}
+
+
+          replace_line(line, 'ABS', obj.absolute)
+          replace_line(line, 'DATE', m_date)
+          replace_line(line, 'TZ', tzout)
+          replace_line(line, 'TO', obj.m_to)
+          replace_line(line, 'FROM', obj.m_from)
+          replace_line(line, 'FNET', f_net)
+          replace_line(line, 'QNET', q_net)
+          replace_line(line, 'TITLE', obj.subject)
+          replace_line(line, 'AREA', area.name)
+        end
+        line.gsub!(/\|CR\|/,"\r")
+        @session.write line + "\r" if !line.strip.empty?
+        i+=1
+      }
         else
           @session.print "\n#{outfile} has run away...please tell sysop!\n"
           return i
@@ -301,12 +324,7 @@ class GraphFile
       end
     end
 
-
-
     def parse_text_commands(line)
-
-
-
       if @session.logged_on then
         system = fetch_system
         aname = ""

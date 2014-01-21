@@ -169,6 +169,7 @@ class Session
 
 
 
+  # TODO: useless function - just use user_exists instead
   def findlocal(user)
 
     if user_exists(user) then
@@ -198,6 +199,7 @@ class Session
           print underscore if !@c_user.ansi
           get_qwkroutes(qwknet).each {|route|
             t = route.modified.strftime("%m/%d/%y %I:%M%p")
+            # TODO: get rid of all the "fix for 1.9" comments
             temp = cols.zip([route.dest,route.route,t]).map{|a,b| "#{a}#{b}"}.formatrow(widths) #fix for 1.9
             j +=1
             if j == (@c_user.length - 4) and @c_user.more then
@@ -217,6 +219,7 @@ class Session
 
   end
 
+  # TODO: why is this in Session? move to a library
   def smtp_send(to,from,subject,message)
     msgstr = message.join("\n")
     from_smtp = "#{from.gsub(" ",".")}@#{SMTPDOMAIN}"

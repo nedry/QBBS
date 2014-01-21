@@ -199,6 +199,7 @@ def kludge_search(buffer)	#searches the message buffer for kludge lines and retu
     #	return INVALID_PACKET;
     #end
     puts buffer
+    # TODO: have a read_two_bytes method
     orgnode	= (buffer[0x01] << 8) + buffer[0x00]
     puts "orgnode: #{orgnode}"
 

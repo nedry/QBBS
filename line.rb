@@ -83,6 +83,7 @@ class Session
   end
 
   def displaycolors
+    # TODO: use an array to loop over the colour codes
     write "%Y;"
     @socket.write "Color Codes: "
     write "%R;"; @socket.write "%R; "

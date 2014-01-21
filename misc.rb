@@ -15,6 +15,7 @@ class String
 end
 
 
+# TODO: why are these in Session?
 class Session
   def pick_one(sequence)
     sequence[rand(sequence.length)]

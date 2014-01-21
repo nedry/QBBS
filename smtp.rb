@@ -40,18 +40,12 @@ def delete_mail
 end
 
 def move_mail
-
   if File.exists?(MAILBOXDIR) then
     happy = system("mv -f #{MAILBOXDIR} #{TEMPSMTPDIR}")
-    if happy then return SMTP_SUCCESS else return SMTP_MOVE_ERROR end
+    return happy ? SMTP_SUCCESS : SMTP_MOVE_ERROR
   else
     return NO_SMTP_TO_COPY
   end
-end
-
-def which_part(part)
-
-  return result
 end
 
 def find_a_part(message)
@@ -90,10 +84,9 @@ def bounce_message(to,user)
     smtp.send_message(msg, POSTMASTER, to)
     #smtp.send_message msg, "postmaster <#{POSTMASTER}>", to
   end
-
 end
-def read_mailbox
 
+def read_mailbox
   area = fetch_area(0)
 
   File.open(TEMPSMTPDIR) { |file|

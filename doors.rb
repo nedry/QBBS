@@ -26,6 +26,7 @@ def door_do (path,d_type)
     PTY.spawn(path) do |read, w, p|
 
       w.putc(13.chr) if d_type == "DOS" #we want to put a ENTER in so dosemu won't pause at intro
+      # TODO: don't use exit as a variable name; it's a keyword
       exit = false
       temp_pass = random_password
       while !exit

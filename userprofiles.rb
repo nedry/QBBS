@@ -1,6 +1,10 @@
 class Session
   include Comparable
 
+  # TODO: instead of a block. take in a key
+  # Then use @c_user.update(key => temp)
+  # You can do this in several other places too when setting a bunch of object
+  # properties using the same pattern (see datamapper docs)
   def changeuserstring(thing,len, loop, block)
     prompt = "Enter #{thing} (#{len} characters max): "
     getinp(prompt) {|temp|

@@ -132,6 +132,7 @@ module Encodings
     "\u0160" => 255.chr #255 non-breaking space
   }
 
+  # TODO: check out Hash#invert
   ASCII_UNICODE = {
     128.chr => "\u0199", #128 C, cedilla
     129.chr => "\u0252", #129 u, umlaut

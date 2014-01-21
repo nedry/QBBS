@@ -152,6 +152,10 @@ class MailSchedulethread
 
 
   def process_BBS (message)
+    # TODO: modify add_bbs_list to take a hash as an argument.
+    # Pass the hash to Bbslist.new()
+    # Have a mapping of $1 to hash keys below - default to $1.downcase and then
+    # have a case statement for any leftover keys
 
     name = nil
     born_date = DateTime.now
@@ -205,7 +209,7 @@ class MailSchedulethread
       when "Maxrate"
         maxrate = $2.strip
       when "Minrate"
-        maxrate = $2.strip
+        minrate = $2.strip
       when "Location"
         location= $2.strip
       when "Network"

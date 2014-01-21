@@ -1,3 +1,5 @@
+# TODO: reorganise tools, misc etc into one file
+# for random library functions
 def parse_intl(address)
   happy = (/^(\d?):(\d{1,4})\/(.*)/) =~ address
   if happy then
@@ -42,10 +44,6 @@ class String
     self =~ /^[+-]?\d+/
   end
 
-  def empty?
-    self == ""
-  end
-
   def stripcolor
     a = dup
     COLORTABLE.each_key {|color| a.gsub!(color, '')}
@@ -59,10 +57,6 @@ class String
 end
 
 class Array
-  def empty?
-    length == 0
-  end
-
   def has_index?(i)
     (0..(length-1)).include?(i)
   end

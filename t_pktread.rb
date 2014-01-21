@@ -132,6 +132,8 @@ def read_a_message(path,offset)
   kludges.tid,kludges.pid,kludges.intl,kludges.topt,kludges.fmpt,
   kludges.reply,kludges.origin)
 
+  #TODO: remove all the commented-out code
+
   # puts "Org:       #{fidomessage.orgnet}/#{fidomessage.orgnode}"
   # puts "Dest:      #{fidomessage.destnet}/#{fidomessage.destnode}"
   # puts "Attribute: #{fidomessage.attribute}"
