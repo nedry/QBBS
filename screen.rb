@@ -1,6 +1,4 @@
-
 require "messagestrings.rb"
-
 
 def showscreen(number)
   if s_total > 0 then
@@ -49,6 +47,8 @@ end
 
 def addscreen
 
+  # TODO: move the call to .strip into get_max_length
+  # also it's fine to call "".strip; you don't need to check for that.
   name = get_max_length("Enter new Screensaver name: ",40,"Door name")
   name.strip! if name != ""
   path = get_max_length("Enter new Screensaver path (script file): ",40,"Screensaver path")

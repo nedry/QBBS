@@ -34,21 +34,16 @@ DataObjects::Postgres.logger = DataObjects::Logger.new(STDOUT,:debug)
 DataMapper.finalize
 clear_commands
 
+# TODO: have a method for this
 YAML.load(IO.read('config/qbbscommands.yml')).each {|cmd|
   h = Command.new(cmd).save!
-
 }
 
 
 YAML.load(IO.read('config/wbbscommands.yml')).each {|cmd|
   h = Command.new(cmd).save!
-
 }
 
 YAML.load(IO.read('config/mbbscommands.yml')).each {|cmd|
   h = Command.new(cmd).save!
-
 }
-
-
-

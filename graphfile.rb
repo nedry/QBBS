@@ -102,6 +102,12 @@ class GraphFile
             break
           end
         end
+
+        # TODO: Use if out.include?("%whatever%") if you're just checking for
+        # strings
+        #
+        # TODO: Move all these within an if @session.logged_on block rather
+        # than repeat the check everywhere.
         if !out.gsub!("%WHOLIST%","").nil? and @session.logged_on  then
           @session.displaywho
         end
@@ -202,6 +208,8 @@ class GraphFile
         line = parse_text_commands(line.force_encoding("IBM437"))
         replace_line(line, 'NUMBER', index.to_s)
 
+        # TODO: move each of these blocks into its own method to make this one
+        # easier to read
         if obj.kind_of?(User) then
           replace_line(line, 'UNAME' ,obj.name)
           replace_line(line, 'REALNAME', obj.real_name)
@@ -228,16 +236,16 @@ class GraphFile
           replace_line(line, 'DATE', modify_date)
           replace_line(line, 'NAME', obj.name)
           replace_line(line, 'USER', obj.user)
-          replace_line(line, 'TELNET', obj.number.to_s)
+          replace_line(line, 'TELNET', obj.number)
           replace_line(line, 'SYSOP', obj.sysop)
           replace_line(line, 'EMAIL', obj.email)
           replace_line(line, 'LOCATION', obj.location)
           replace_line(line, 'SOFTWARE', obj.software)
-          replace_line(line, 'MSGS', obj.msgs.to_s)
-          replace_line(line, 'SUBS', obj.subs.to_s)
-          replace_line(line, 'FILES', obj.files.to_s)
-          replace_line(line, 'DIRS', obj.dirs.to_s)
-          replace_line(line, 'MEGS', obj.megs.to_s)
+          replace_line(line, 'MSGS', obj.msgs)
+          replace_line(line, 'SUBS', obj.subs)
+          replace_line(line, 'FILES', obj.files)
+          replace_line(line, 'DIRS', obj.dirs)
+          replace_line(line, 'MEGS', obj.megs)
           replace_line(line, 'TERMINAL', obj.terminal)
           replace_line(line, 'WEBSITE', obj.website)
           line.gsub!(matcher('NETWORK')) {|m|
@@ -252,7 +260,9 @@ class GraphFile
               out = "#{$2}"
               obj.desc.split("|").each {|line| out << "\r\n   #{line.strip}"}
               padding(out,$1)
-            end}
+            end
+          }
+          # TODO: move this pattern into a method too
           line.gsub!(/\|LOCAL(\d*)([^\|]*)\|/){||m|  out = ""; out = padding($2,$1) if !obj.imported; out}
           line.gsub!(/\|IMPT(\d*)([^\|]*)\|/){|m|  out = ""; out = padding($2,$1) if obj.imported; out}
           line.gsub!(/\$LOCKED(\d*)([^\|]*)\|/){|m|  out = ""; out = padding($2,$1) if obj.locked; out}
@@ -314,12 +324,7 @@ class GraphFile
       end
     end
 
-
-
     def parse_text_commands(line)
-
-
-
       if @session.logged_on then
         system = fetch_system
         aname = ""

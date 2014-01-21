@@ -1,8 +1,6 @@
 require 'doors.rb'
 require 'messagestrings.rb'
 
-
-
 def showbbs(num)
   if o_total > 0 then
     bbs = fetch_other(num)

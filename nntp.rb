@@ -110,6 +110,14 @@ end
 def nntp_parsearticle(article,area)
   article.slice!(0)  #remove first line which is the server response.
 
+  # TODO: why not just have a hash to store all these and pass it to add_msg at
+  # the end? you can have a separate hash mapping headers to keys and replace
+  # the case statement below with
+  #   key = header_lookup[$1]
+  #   if key
+  #     headers[key] = $2
+  #   end
+  #
   msgbody = []
   path = nil
   newsgroups = nil

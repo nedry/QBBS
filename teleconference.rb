@@ -5,6 +5,7 @@ require  'chat/irc'
 
 class Session
 
+  # TODO: move to library
   def random(r)
     # assume r is a range of integers first < last
     # this def by Mike Stok [mike@stok.co.uk] who deserves credit for it
@@ -18,7 +19,6 @@ class Session
       print "%G;Type %Y;? %G;for Help  %Y;/QUIT %G;to Quit\r\n"
     end
   end
-
 
   def teleconference(channel)
     print ""
@@ -151,10 +151,8 @@ class Session
         end
         #i changed this from print to write to prevent an extra cr.  I don't know why this should be?
         if !@chatbuff.empty? then
-          @chatbuff.each {|x| write parse_ircc(x.strip,@c_user.ansi,true)
-          }
+          @chatbuff.each {|x| write parse_ircc(x.strip,@c_user.ansi,true) }
           @chatbuff.clear
-
         end
       }
     end

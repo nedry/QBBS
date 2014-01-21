@@ -13,7 +13,7 @@ require "t_const.rb"
 require "db/db_area"
 require "db/db_message"
 
-
+#TODO: clean up all the blank lines
 
 require 'fidomail_packet_writer.rb'
 

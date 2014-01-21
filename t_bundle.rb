@@ -46,7 +46,6 @@ def name_a_bundle
 end
 
 def copy_bundles
-
   entries = Dir["*"]
   if entries.length > 0 then
     happy = system("mv -f #{TEMPOUTDIR}/* #{BUNDLEOUTDIR} > /dev/null 2>&1")
@@ -82,12 +81,10 @@ def bundle
 end
 
 def check_for_packets
-
   entries = Dir["#{BUNDLEINDIR}/*"]
   if entries.length > 0 then
     @debuglog.push( "-BUNDLE: Found #{entries.length} bundles to import.")
     entries.each {|entry|
-
       happy = system("cp -f #{entry} #{BACKUPIN} > /dev/null 2>&1")
       happy = system("mv -f #{entry} #{TEMPINDIR} > /dev/null 2>&1")
     }
@@ -96,12 +93,10 @@ def check_for_packets
     @debuglog.push( "-BUNDLE: No Incoming Bundles")
     return NO_BUNDLES_ERROR
   end
-
 end
 
 
 def process_packets
-
   entries = Dir["#{PKTTEMP}/*.pkt"]
   entries2 = Dir["#{PKTTEMP}/*.PKT"]
   c_entries = entries + entries2
@@ -110,15 +105,12 @@ def process_packets
     c_entries.each { |entry|
       @debuglog.push( "-BUNDLE: Processing packet #{entry}")
       process_packet("#{entry}")
-
     }
     c_entries.each {|entry| system("rm #{entry} > /dev/null 2>&1")}
-
   end
 end
 
 def process_incoming_pkt
-
   override = false
   entries = Dir["#{BUNDLEINDIR}/*.pkt"]
   entries2 = Dir["#{BUNDLEINDIR}/*.PKT"]
@@ -128,13 +120,11 @@ def process_incoming_pkt
     override = true
     c_entries.each { |entry|
       @debuglog.push( "-BUNDLE: Moving packet #{entry}")
-      happy = system("cp -f #{entry} #{BACKUPIN} > /dev/null 2>&1")
-      happy = system("mv -f #{entry} #{PKTTEMP} > /dev/null 2>&1")
-
+      system("cp -f #{entry} #{BACKUPIN} > /dev/null 2>&1")
+      system("mv -f #{entry} #{PKTTEMP} > /dev/null 2>&1")
     }
     process_packets
   end
-
 end
 
 def process_incoming
@@ -158,13 +148,10 @@ def process_incoming
       @debuglog.push( "-BUNDLE: No Bundles!")
       return NO_BUNDLES_ERROR
     end
-
   end
 end
 
 def unbundle
-
   process_incoming_pkt
   process_incoming
-
 end

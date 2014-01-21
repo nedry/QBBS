@@ -1,3 +1,5 @@
+# TODO: reorganise tools, misc etc into one file
+# for random library functions
 def parse_intl(address)
   happy = (/^(\d?):(\d{1,4})\/(.*)/) =~ address
   if happy then

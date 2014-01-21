@@ -59,6 +59,12 @@ class FidomailPacketWriter
   def add_kludge_lines(buffer,area,msgid,tzutc,charset,tid,fmpt,reply,topt,intl)
 
 
+    # TODO: have an add_to_buffer(buffer, header, data) function that does the
+    # if data.nil? check internally. then rewrite as
+    # [["MSGID: ", msgid],
+    #  ["TZUTC: ", tzutc]
+    #  ...
+    #  ].each {|header, data| add_to_buffer(buffer, header, data)}
     if !area.nil? and area != NETMAIL then
       buffer << "AREA:" << area << CR.chr
     end
