@@ -1,5 +1,12 @@
 # TODO: reorganise tools, misc etc into one file
 # for random library functions
+
+  def random(r)
+    # assume r is a range of integers first < last
+    # this def by Mike Stok [mike@stok.co.uk] who deserves credit for it
+    r.first + rand(r.last - r.first + (r.exclude_end? ? 0 : 1))
+  end
+  
 def parse_intl(address)
   happy = (/^(\d?):(\d{1,4})\/(.*)/) =~ address
   if happy then

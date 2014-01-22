@@ -45,6 +45,7 @@ SPACE = " "
 YESNO ="%W;(%Y;Y,%R;n%W;): "
 NOYES ="%W;(%R;y,%Y;N%W;): "
 RET = "%Y;<--^%W;"
+IRC_PROMPT= "%G;:%W;"
 
 
 ECHO = true

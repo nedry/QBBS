@@ -5,11 +5,7 @@ require  'chat/irc'
 
 class Session
  # TODO: move to library
-  def random(r)
-    # assume r is a range of integers first < last
-    # this def by Mike Stok [mike@stok.co.uk] who deserves credit for it
-    r.first + rand(r.last - r.first + (r.exclude_end? ? 0 : 1))
-  end
+
 
   def header
     print
@@ -47,6 +43,7 @@ class Session
 
       m = @irc_client.isdata ? @irc_client.getline : nil
       if m then
+
         if m.kind_of? IRC::Message::ServerNotice then
           print "%Y;#{m.params}" if IRC_DEBUG
 
@@ -88,11 +85,12 @@ class Session
       end
     end
 
-   prompt = "%G;:%W;"
+   
+  #prompt = nil
     header
     print "%W;"
     while true
-      getinp(prompt,:chat) {|l|
+      getinp(IRC_PROMPT,:chat) {|l|
         line = l.strip
          test = (/(\S*)(.*)/) =~ line
 
@@ -116,10 +114,9 @@ class Session
           when "TOPIC"
             @irc_client.topic(@irc_channel,$2 )
             print "%Y;*** Topic Changed%W;"
-          when "NAMES"
-            @irc_client.send("NAMES")
           when "LIST"
             @irc_client.send("LIST")
+
           when "ME"
             @irc_client.me(@irc_channel,$2)
             print "%Y;*** Action Sent%W;"
@@ -127,7 +124,7 @@ class Session
             @irc_client.whois($2)
           when "PAGE","/P"
             page
-          when "U"
+          when "USERS","#"
             displaywho
           when "MSG"
             doit = (/^\/(\S*)\s(\S*)\s(.*)/) =~ line

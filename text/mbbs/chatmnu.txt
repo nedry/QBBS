@@ -4,7 +4,7 @@
 %C;PAGE ON/OFF/OK        %Y;allows/prevents/encourages others to page %C;/P ON/OFF/OK
 %C;WHISPER TO <who> ...  %Y;sends a private message to another user   %C;/<who> ...
 %C;CHAT <who>            %Y;request or join in a "chat" with someone  %C;/C <who>
-%C;SCAN                  %Y;shows where everyone is in Teleconference %C;/S
+%C;WHOIS <who>           %Y;shows details on a Teleconference user
 %C;LIST                  %Y;lists all public channels you can join
 %C;USERS                 %Y;shows where everyone is on the whole BBS  %C;#
 %C;EDIT                  %Y;edit your Teleconference profile          %C;/E
@@ -13,7 +13,6 @@
 %C;INVITE <who>          %Y;invites a user to your private channel    %C;/I <who>
 %C;UNINVITE <who>        %Y;uninvites a user from your channel        %C;/U <who>
 %C;TOPIC ...             %Y;list a topic for your private channel     %C;/T ...
-%C;!HELP                 %Y;displays help on ChatLink
 %C;ACTION ON/OFF/?       %Y;turn your actions on or off, or get help  %C;/A ON/OFF/?
 %C;FORGET/REMEMBER <who> %Y;"forget" (ignore) a user annoying you
 %C;IGNORE/NOTICE <who>   %Y;ignore or notice a user's action words

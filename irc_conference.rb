@@ -60,7 +60,6 @@ module IrcConference
   end
 
   def handle_numeric(m)
-    puts "m command: #{m.command}"
     case m.command
 
     when IRC::RPL_NAMREPLY
@@ -73,7 +72,7 @@ module IrcConference
     when IRC::RPL_WHOISUSER
       (/^:(\S*)\s(\d*)\s(\S*)\s(\S*)\s(\S*)\s(\S*)\s\*\s:(.*)/) =~ m.message
       nick = $4; host = $6; desc = $7;rname= $5
-      out = "%Y;*** #{nick} is #{rname}@#{host} (#{desc})#{CRLF}%W;"
+      out = "\r\n\r\n%G;WhoIs User\r\n----------\r\n%C;User %Y;#{nick} %C;is %Y;#{rname}%C;@%Y;#{host} %C;(%Y;#{desc}%C;)\r\n"
 
     when IRC::RPL_WHOISIDLE
       (/^:(\S*)\s(\d*)\s(\S*)\s(\S*)\s(\S*)\s(\d*)\s(\d*)(.*)/) =~ m.message
@@ -89,8 +88,8 @@ module IrcConference
       out ="%Y;*** on irc via server #{$5}(#{$6})#{CRLF}%W;"
 
     when IRC::RPL_TIME
-      (/^:(\w*\s\w*\s\w*\s\w*)\s:(.*)/) =~ m.message
-      out ="%Y;*** #{$2}#{CRLF}%W;"
+     (/^:\S*\s\d*\s\S*\s\S*\s:(.*)/) =~ m.message
+      out ="%G;Teleconferece time is %Y; #{$1}%W;\r\n\r\n#{IRC_PROMPT}"
 
     when IRC::RPL_VERSION
       (/^:(\S*)\s(\d*)\s(\S*)\s(.*)/) =~ m.message
@@ -98,17 +97,26 @@ module IrcConference
 
     when IRC::RPL_CREATED
       (/^:\S\s(\S*)\s(\S*)\s(.*)/) =~ m.message
-      puts "rpl_created"
       out ="%Y;*** #{$3}#{CRLF}%W;"
 
     when IRC::RPL_LIST
-      (/^:(\S*)\s(\d*)\s(\S*)\s(\S*)\s(\d*)/) =~ m.message
-      out = "%Y;*** There are #{$5} user(s) on channel #{$4}#{CRLF}%W;"
+
+      (/^:(\S*)\s(\d*)\s(\S*)\s(\S*)\s(\d*)\s\:(.*)/) =~ m.message
+      chan = " ".ljust(20);users = " ".ljust(5)
+      chan = $4.ljust(20) if !$4.empty?
+      users = $5.ljust(5) if !$5.empty?
+      out = "%Y;#{chan}#{users}#{$6}\r\n"
+
+  when 321
+	out =  "\r\n%G;Channel             Users Topic\r\n---------------------------------------------------------------\r\n"
+  when 323
+     out = "%G;\r\nTo switch to any of these channels, type '%C;JOIN <channel>%G;'.\r\n\r\n#{IRC_PROMPT}"
 
     else
       (/^:(.*):(.*)/) =~ m.message
       #(/^:\S\s(\S*)\s(\S*)\s(.*)/) =~ m.message
-      out ="%Y;*** #{$2}#{CRLF}%W;"
+      #out ="%C;#{$2}\r\n\%W;"
+        out ="%Y;*** #{m.message} #%W;\r\n"
     end
 
     return out

@@ -4,7 +4,7 @@
 %C;PAGE ON/OFF/OK        %Y;allows/prevents/encourages others to page %C;/P ON/OFF/OK
 %C;WHISPER TO <who> ...  %Y;sends a private message to another user   %C;/<who> ...
 %C;CHAT <who>            %Y;request or join in a "chat" with someone  %C;/C <who>
-%C;SCAN                  %Y;shows where everyone is in Teleconference %C;/S
+%C;WHOIS <who>           %Y;shows details on a Teleconference user
 %C;LIST                  %Y;lists all public channels you can join
 %C;USERS                 %Y;shows where everyone is on the whole BBS  %C;#
 %C;EDIT                  %Y;edit your Teleconference profile          %C;/E

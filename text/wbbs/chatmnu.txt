@@ -1,16 +1,19 @@
-%C;    ________  ______   ________          __ 
-   /  _/ __ \/ ____/  / ____/ /_  ____ _/ /_
-   / // /_/ / /      / /   / __ \/ __ `/ __/
- _/ // _, _/ /___   / /___/ / / / /_/ / /_  
-/___/_/ |_|\____/   \____/_/ /_/\__,_/\__
-                     
-  
-%W;[%Y;/JOIN%W;]%G; a channel                    %W;[%Y;/LIST%W;]%G; Channels
-%W;[%Y;/NAMES%W;]%G; of users on current channel %W;[%Y;/ME%W;]%G; Perform Action
-%W;[%Y;/MOTD%W;]%G;Daily Message                 
-
-%W;[%Y;/TOPIC%W;]%G; Change Channel Topic        %W;[%Y;/WHOIS%W;]%G;Info on a user
-
-%W;[%Y;/PAGE%W;]%G; User (not in chat)           %W;[%Y;/U%W;]%G;sers on BBS
-
-%W;[%Y;/QUIT%W;]%G;Quit   
+%G;In Teleconference, anything you type is broadcast to everyone on the same
+"channel" with you.  Also, use these special commands:         --SHORTHAND--
+%C;PAGE <who> ...        %Y;"pages" the user with a message           %C;/P <who> ...
+%C;PAGE ON/OFF/OK        %Y;allows/prevents/encourages others to page %C;/P ON/OFF/OK
+%C;WHISPER TO <who> ...  %Y;sends a private message to another user   %C;/<who> ...
+%C;CHAT <who>            %Y;request or join in a "chat" with someone  %C;/C <who>
+%C;WHOIS <who>           %Y;shows details on a Teleconference user
+%C;LIST                  %Y;lists all public channels you can join
+%C;USERS                 %Y;shows where everyone is on the whole BBS  %C;#
+%C;EDIT                  %Y;edit your Teleconference profile          %C;/E
+%C;GAMES                 %Y;list of Teleconference games available
+%C;JOIN/JOIN <who>       %Y;join a private, public, or forum channel  %C;/J <who>
+%C;INVITE <who>          %Y;invites a user to your private channel    %C;/I <who>
+%C;UNINVITE <who>        %Y;uninvites a user from your channel        %C;/U <who>
+%C;TOPIC ...             %Y;list a topic for your private channel     %C;/T ...
+%C;ACTION ON/OFF/?       %Y;turn your actions on or off, or get help  %C;/A ON/OFF/?
+%C;FORGET/REMEMBER <who> %Y;"forget" (ignore) a user annoying you
+%C;IGNORE/NOTICE <who>   %Y;ignore or notice a user's action words
+%C;><who> <message>      %Y;direct a message to a user
