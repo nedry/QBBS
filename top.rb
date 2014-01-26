@@ -1,7 +1,7 @@
 #!/usr/bin/ruby
 
 # Quarkware BBS
-# Copyright (C) 2013  Mark Firestone / Fly By Night Software
+# Copyright (C) 2014  Mark Firestone / Fly By Night Software
 
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by

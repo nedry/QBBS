@@ -6,7 +6,7 @@ class Session
     @debuglog.push("-SA: Adding #{@c_user.name} to the Who is Online List")
     u = @c_user
     node = find_node
-    @who.append(Awho.create(u.name," ",node,u.citystate,Thread.current,u.level,"Logging On",u.sex))
+    @who.append(Awho.create(u.name," ",node,u.citystate,Thread.current,u.level,"Logging On",u.sex,u.alias))
     add_who_t(false,node,u.citystate,"Logging On",u.name)
     return node
   end
@@ -81,7 +81,7 @@ class Session
         user = "STAFF" if w.level = 255
         tme = (Time.now - w.date) / 60
 
-        print cols.zip([w.node, w.name, w.where, w.sex, tme.to_i, user , w.location]).map{|a,b| "#{a}#{b}"}.formatrow(widths)
+        print cols.zip([w.node, w.c_alias, w.where, w.sex, tme.to_i, user , w.location]).map{|a,b| "#{a}#{b}"}.formatrow(widths)
       }
     else
       print "No Users on Line.  That's fucked up, because you're on-line. Doh!"

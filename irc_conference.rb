@@ -22,13 +22,17 @@ module IrcConference
       if private then
         out = "%WC;PrivM: %B;<#{m.sourcenick}>%C; #{m.params}#{CRLF}%W;"
       else
-        out = "%B;<#{m.sourcenick}>%C; #{m.params}#{CRLF}%W;"
+        out = "%B;<#{m.source}>%C; #{m.params}#{CRLF}%W;"
       end
     end
 
     return out
   end
 
+  def handle_notice(m)
+    out ="%g;#{m.params}#{CRLF}%W;"
+  end
+  
   def handle_nick(m)
     (/^:(.*)!(.*)/) =~ m.message
     if $1 == @irc_alias then
@@ -48,7 +52,7 @@ module IrcConference
   end
 
   def handle_join(m)
-    (/^:(.*)!(.*)/) =~ m.message
+    (/^:(.*)!(.*)/) =~ m.messageW913PB06483
     if $1 == @irc_alias then
       @irc_client.part(@irc_channel)
       @irc_channel = m.params
@@ -72,21 +76,21 @@ module IrcConference
     when IRC::RPL_WHOISUSER
       (/^:(\S*)\s(\d*)\s(\S*)\s(\S*)\s(\S*)\s(\S*)\s\*\s:(.*)/) =~ m.message
       nick = $4; host = $6; desc = $7;rname= $5
-      out = "\r\n\r\n%G;WhoIs User\r\n----------\r\n%C;User %Y;#{nick} %C;is %Y;#{rname}%C;@%Y;#{host} %C;(%Y;#{desc}%C;)\r\n"
+      out = "\r\n\r\n%G;User: %Y;#{nick} %C;is %Y;#{rname}%C;@%Y;#{host} %C;(%Y;#{desc}%C;)\r\n"
 
     when IRC::RPL_WHOISIDLE
       (/^:(\S*)\s(\d*)\s(\S*)\s(\S*)\s(\S*)\s(\d*)\s(\d*)(.*)/) =~ m.message
       idle_minutes = $5.to_i / 60
-      out = "%Y;*** #{$4} has been idle for #{idle_minutes} minute(s).#{CRLF}%W;"
+      out = "%Y;      #{$4} %C;has been idle for %Y;#{idle_minutes}%C; minute(s).\r\n%W;"
 
     when IRC::RPL_WHOISCHANNELS
       (/:(.*):(.*)/) =~ m.message
-      out ="%Y;*** on channels: #{$2}#{CRLF}%W;"
+      out ="%C;      on channel(s): %Y;#{$2}\r\n%W;"
 
     when IRC::RPL_WHOISSERVER
       (/^:(\S*)\s(\d*)\s(\S*)\s(\S*)\s(.*):(.*)/) =~ m.message
-      out ="%Y;*** on irc via server #{$5}(#{$6})#{CRLF}%W;"
-
+      out ="%C;      from server: %Y;#{$5}%C;(%Y;#{$6}%C;)\r\n%W;"
+      
     when IRC::RPL_TIME
      (/^:\S*\s\d*\s\S*\s\S*\s:(.*)/) =~ m.message
       out ="%G;Teleconferece time is %Y; #{$1}%W;\r\n\r\n#{IRC_PROMPT}"
@@ -98,7 +102,9 @@ module IrcConference
     when IRC::RPL_CREATED
       (/^:\S\s(\S*)\s(\S*)\s(.*)/) =~ m.message
       out ="%Y;*** #{$3}#{CRLF}%W;"
-
+      
+    when IRC::ERR_NOTEXTTOSEND
+      out = "%g;sssshhhhhhh....\r\n#{IRC_PROMPT}"
     when IRC::RPL_LIST
 
       (/^:(\S*)\s(\d*)\s(\S*)\s(\S*)\s(\d*)\s\:(.*)/) =~ m.message
@@ -107,18 +113,22 @@ module IrcConference
       users = $5.ljust(5) if !$5.empty?
       out = "%Y;#{chan}#{users}#{$6}\r\n"
 
-  when 321
+  when IRC::ERR_NOSUCHNICK,IRC::ERR_NONICKNAMEGIVEN
+     out = "%g;Who?\r\n#{IRC_PROMPT}"
+  when IRC::RPL_ENDOFWHOIS
+     out = "\r\n\r\n#{IRC_PROMPT}"
+  when IRC::RPL_LISTSTART
 	out =  "\r\n%G;Channel             Users Topic\r\n---------------------------------------------------------------\r\n"
-  when 323
+  when IRC::RPL_LISTEND
      out = "%G;\r\nTo switch to any of these channels, type '%C;JOIN <channel>%G;'.\r\n\r\n#{IRC_PROMPT}"
-
+  when 378
+     (/^:(.*):(.*)/) =~ m.message
+        out ="      %Y;#{$2} #%W;\r\n"
     else
       (/^:(.*):(.*)/) =~ m.message
-      #(/^:\S\s(\S*)\s(\S*)\s(.*)/) =~ m.message
       #out ="%C;#{$2}\r\n\%W;"
-        out ="%Y;*** #{m.message} #%W;\r\n"
-    end
-
+        out ="%g;#{m.command}: #{m.message} #%W;\r\n"
+     end
     return out
   end
 
@@ -138,7 +148,8 @@ module IrcConference
       elsif m.kind_of? IRC::Message::Numeric
         out = handle_numeric(m)
       elsif m.kind_of? IRC::Message::ServerNotice
-        out ="#{m.params}#{CRLF}%W;"
+	out = handle_notice(m)
+        
       end
 
       if out then

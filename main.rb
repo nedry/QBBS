@@ -28,20 +28,21 @@ class Session
   end
 
 
-  def page
-    to = getinp("%G;User to Page: %W;")
-    exists = get_uid(to)
+  def page(to,message)
+	  
+    to = getinp("%G;User to Page: %W;") if to.nil?
+    exists = get_uid_alias(to)
     if exists.nil? then
       print "%WR; That user does not exist. %W;"
       print
       return
     end
     return if to.empty?
-    if @who.user(to).nil? and  !who_exists(exists) then
+    if @who.chat_alias(to).nil?  then
       print "%WR;#{to} is not online... %WG;they will get the message when they log in.%W;"
       print
     end
-    message = getinp("%C;Message: %W;")
+    message = getinp("%C;Message: %W;") if message.nil?
     return if message.empty?
     add_page(@c_user.number,to,message,false)
     print "%WG;Message Sent.%W;"
@@ -143,7 +144,7 @@ class Session
       when @cmd_hash["readmnu"] ; run_if_ulevel("readmnu") {messagemenu(false)}
       when @cmd_hash["msgmnu"] ; run_if_ulevel("msgmnu") {messagefirstmenu}
       when @cmd_hash["zipread"] ; run_if_ulevel("zipread") {messagemenu(true)}
-      when @cmd_hash["page"] ; run_if_ulevel("page") {page}
+      when @cmd_hash["page"] ; run_if_ulevel("page") {page(nil,nil)}
       when @cmd_hash["info"] ; run_if_ulevel("info") {ogfileout("user_information",1,true)}
       when @cmd_hash["version"] ; run_if_ulevel("version") {ogfileout("version",1,true)}
       when @cmd_hash["who"] ; run_if_ulevel("who") {displaywho}

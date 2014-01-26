@@ -6,7 +6,7 @@ NNTP = false
 FIDO = false
 SMTP = false
 IRC_ON =  true
-IRC_DEBUG = false
+IRC_DEBUG = true
 SCREENSAVER = true
 FLASH_POL = false
 
@@ -81,9 +81,9 @@ FULLSCREENDIR = "#{ROOT_PATH}quote"
 
 #IRC/Chat Settings
 
-IRCSERVER = "irc.larryniven.net"
+IRCSERVER = "irc.localhost"
 IRCPORT = 6667
-IRCCHANNEL = "#test"
+IRCCHANNEL = "#main"
 IRCBOTUSER = "testHAL"
 IRCTOPIC = "Knownspace and RetroBBS Chat"
 IRCBOTCMD = "!"

@@ -116,14 +116,15 @@ class Session
             print "%Y;*** Topic Changed%W;"
           when "LIST"
             @irc_client.send("LIST")
-
           when "ME"
             @irc_client.me(@irc_channel,$2)
             print "%Y;*** Action Sent%W;"
           when "WHOIS"
             @irc_client.whois($2)
           when "PAGE","/P"
-            page
+	    (/(\S*)\s(\S*)\s(.*)/) =~ line
+	    print "result #{$2}, #{$3}"
+            page($2,$3)
           when "USERS","#"
             displaywho
           when "MSG"

@@ -154,6 +154,9 @@ class Session
     fullscreen = yes(prompt,true,false,true)
     prompt = "MORE prompt                [Y,n]? "
     more =yes(prompt,true,false,true)
+    chatalias = username.gsub(/\W/,"").slice(0..14)
+    print "Your chat alias is #{chatalias}."
+    print "You many change that in the user configuation menu."
     add_user(username,ip,password,location,address,24,80,ansi, more, DEFLEVEL, fullscreen,"")
     @c_user = fetch_user(get_uid(username))
     add_log_entry(L_USER,Time.now,"New user #{@c_user.name} created.")

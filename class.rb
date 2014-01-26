@@ -132,11 +132,11 @@ end
 
 
 
-Awho = Struct.new('Awho', :irc, :node, :level, :location,:where, :threadn, :date, :name, :page, :ping,:sex)
+Awho = Struct.new('Awho', :irc, :node, :level, :location,:where, :threadn, :date, :name, :page, :ping, :sex, :c_alias)
 class Awho
   private :initialize
   class << self
-    def create(name,irc,node,location,threadn,level,where,sex)
+    def create(name,irc,node,location,threadn,level,where,sex,c_alias)
       a = self.new
       a.date		= Time.now
       a.irc			= irc
@@ -147,6 +147,7 @@ class Awho
       a.level		= level
       a.where		= where
       a.sex                  = sex
+      a.c_alias		= c_alias
       a.page    = []
       a.ping =0
       return a
@@ -159,7 +160,7 @@ class Who_old < Listing
     super
   end
 
-  sync_reader '@mutex', :irc, :node, :date, :threadn, :location, :name, :level, :where, :page
+  sync_reader '@mutex', :irc, :node, :date, :threadn, :location, :name, :level, :where, :page, :c_alias
 
   def [](key)
     findkey(key) {|who| who.threadn}
@@ -167,6 +168,10 @@ class Who_old < Listing
 
   def user(key)
     findkey(key.upcase) {|who| who.name.upcase}
+  end
+  
+  def chat_alias(key)
+    findkey(key.upcase) {|who| who.c_alias.upcase}
   end
 end   #of Class Who
 

@@ -54,6 +54,11 @@ def get_uid(uname)
   u ? u.number : nil
 end
 
+def get_uid_alias(c_alias)
+  u = User.first(:conditions => ["upper(alias) = ?", c_alias.upcase])
+  u ? u.number : nil
+end
+
 def update_user(r)
    r.save
  end
@@ -64,7 +69,7 @@ end
 
 def add_page(uid_from,to,message,system)
  uid =uid_from
- user = User.get(get_uid(to))
+ user = User.get(get_uid_alias(to))
  page = user.pages.new(:message => message, :system => system, :from => uid)
 
  page.save
@@ -121,9 +126,12 @@ def update_pointer(r)
 end
 
 def add_user(name,ip,password,citystate,address,length,width,ansi, more, level, fullscreen,sex)
+   c_alias = name.gsub(/\W/,"").slice(0..14)
+
   User.create(
     :name => name,
     :ip => ip,
+    :alias => c_alias,
     :password => password,
     :citystate => citystate,
     :address => address,
