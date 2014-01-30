@@ -109,7 +109,6 @@ class Session
           when "VERSION"
             @irc_client.version(IRCSERVER)
           when "TIME"
-            #@irc_client.time(IRCSERVER)
             @irc_client.send("TIME")
           when "TOPIC"
             @irc_client.topic(@irc_channel,$2 )

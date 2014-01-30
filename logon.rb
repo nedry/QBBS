@@ -18,11 +18,11 @@ class Session
   def detect_ansi
     print "\e[s"			#Save Cursor Position
     print "\e[99B_"		#locate Cursor as far down as possible
-    print "\e[6n"		  #Get Cursor Position
+    print "\e[6n"		  	#Get Cursor Position
     print "\e[u"			#Restore Cursor Position
     print "\e[0m_"		#Set Normal Colours
 
-    print "\e[2J"		  #Clear Screen
+    print "\e[2J"		  	#Clear Screen
     print "\e[H"			#Home Cursor
     print "\e[1m\e[37m"
 
@@ -156,7 +156,8 @@ class Session
     more =yes(prompt,true,false,true)
     chatalias = username.gsub(/\W/,"").slice(0..14)
     print "Your chat alias is #{chatalias}."
-    print "You many change that in the user configuation menu."
+    print "You may change it in the user configuation menu."
+    yes("Press <--^: ",true,false,true)
     add_user(username,ip,password,location,address,24,80,ansi, more, DEFLEVEL, fullscreen,"")
     @c_user = fetch_user(get_uid(username))
     add_log_entry(L_USER,Time.now,"New user #{@c_user.name} created.")
