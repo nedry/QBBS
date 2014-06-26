@@ -41,6 +41,31 @@ class Session
     return false
   end
 
+
+  def switchbaud(ansi)
+		
+	  if MULTIBBS then
+			if ansi and File.exists?(TEXTPATH + "welcome0.ans") then
+        fileout(TEXTPATH + "welcome0.ans")
+    else
+      fileout(TEXTPATH + "welcome0.txt")
+    end
+		displaysystems
+		prompt = "Select system: "
+		getinp(prompt) {|inp|
+		happy = inp.upcase
+		t = happy.to_i
+		case happy
+          when "CR"; crerror
+          else
+            if t > 0 and t <= t_total then
+              return(t)
+            end
+          end #of case
+        }
+		end
+end
+
   def logon
     ip= figureip(@socket.getpeername)
     print
@@ -54,14 +79,22 @@ class Session
       print "ANSI not Detected"
       ansi = false
     end
-    spam
-    print VER
+		
+   theme_no = switchbaud(ansi)
+	 path = TEXTPATH
+	 
+	 if !theme_no.nil? then
+		 theme = fetch_theme(theme_no)
+		 path = theme.text_directory
+	 end
+   # spam
+	 # print VER
     print ("IP Address detected: #{ip}")
     print ("Fidonet Node: #{FIDOZONE}:#{FIDONET}/#{FIDONODE}.#{FIDOPOINT}")
-    if ansi and File.exists?(TEXTPATH + "welcome1.ans") then
-      fileout(TEXTPATH + "welcome1.ans")
+    if ansi and File.exists?(path + "welcome1.ans") then
+      fileout(path + "welcome1.ans")
     else
-      fileout(TEXTPATH + "welcome1.txt")
+      fileout(path + "welcome1.txt")
     end
 
     checkmaxsessions
@@ -93,7 +126,7 @@ class Session
         if !user_exists(username) then
           #username.upcase!
           if yes("Create new user #{username}? [Y,n]",true,false,true)
-            newuser(username, ip)
+            newuser(username, ip,theme_no)
             break
           else
             next # input name again
@@ -114,7 +147,7 @@ class Session
     checkmultiplelogon
     @who.each {|who| add_page(get_uid("SYSTEM"),who.name,"*** #{@c_user.name} has just logged into the system.",true)}
     defaulttheme
-    logandgreetuser(username, ip)
+    logandgreetuser(username, ip,theme_no)
 
 
   end
@@ -130,7 +163,7 @@ class Session
     end
   end
 
-  def newuser(username, ip)
+  def newuser(username, ip,theme_no)
     password = nil
 
     while !password
@@ -162,7 +195,12 @@ class Session
     @c_user = fetch_user(get_uid(username))
     add_log_entry(L_USER,Time.now,"New user #{@c_user.name} created.")
     @logged_on = true
-    defaulttheme   # set default screensaver if there are any screensavers defined.
+ 		if !theme_no.nil? then
+			theme = fetch_theme(theme_no) #change to get default theme
+      add_theme_to_user(@c_user,theme)
+		else
+      defaulttheme  #prevent crash in case user has no theme, set the default.
+		end
     if s_total > 0 then
       screen = fetch_screen(1)
       add_screen_to_user(@c_user,screen)
@@ -173,7 +211,7 @@ class Session
     system = fetch_system
     system.newu_today += 1
     update_system(system)
-    themes(nil)  #set a theme for the user
+    themes(nil)  if theme_no.nil? #set a theme for the user
 
   end
 
@@ -235,12 +273,17 @@ class Session
 
   end
 
-  def logandgreetuser(username, ip)
+  def logandgreetuser(username, ip,theme_no)
     clear_system_pages(@c_user)
     system = fetch_system
     system.total_logons += 1
     system.logons_today += 1
-    defaulttheme  #prevent crash in case user has no theme, set the default.
+		if !theme_no.nil? then
+			theme = fetch_theme(theme_no) #change to get default theme
+      add_theme_to_user(@c_user,theme)
+		else
+      defaulttheme  #prevent crash in case user has no theme, set the default.
+		end
     add_log_entry(L_USER,Time.now,"#{@c_user.name} logged on sucessfully.")
     @logged_on = true
     @debuglog.push("-SA: Logon - #{@c_user.name}")

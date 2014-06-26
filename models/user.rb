@@ -48,9 +48,9 @@ class User
   property :gen_info2, String, :length =>80
   property :summary, String, :length =>40
   property :profile_added, Boolean, :default => false
-  
   property :birthdate,Date
   property :fastlogon, Boolean
+	property :page_on, Boolean, :default => true
   property :theme_key, Integer
   property :screen_key, Integer
 

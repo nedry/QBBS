@@ -7,6 +7,7 @@ require 'consts'
 require 'db/db_area'
 require 'db/db_groups'
 require 'db/db_message'
+require 'db/db_actions'
 
 
 
@@ -56,7 +57,7 @@ Subsys.new(:subsystem => 9, :name => 'MESSAGE').save!
 
 Theme.new(:number => 1,
 :name => "QBBS",
-:description => "Default Theme",
+:description => "Tardis BBS",
 :main_prompt => MAIN_PROMPT,
 :read_prompt => "%M;[@area@: @aname@]%C; @dir@ Read [%p] (1-@total@): %W;",
 :logout_prompt => "%W;Log off now (%Y;Y%W;,%R;n%W;): ",
@@ -81,7 +82,7 @@ Theme.new(:number => 1,
 
 Theme.new(:number => 2,
 :name => "WBBS",
-:description => "WBBS Theme",
+:description => "Pascaholics Annonymous",
 :main_prompt => MAIN_PROMPT,
 :read_prompt => "%M;Board @area@:%C; Read 1-@total@ [%p] (? for menu): %W;",
 :logout_prompt => "%W;Log off now (%Y;Y%W;,%R;n%W;): ",
@@ -106,7 +107,7 @@ Theme.new(:number => 2,
 
 Theme.new(:number => 3,
 :name => "MajorBBS",
-:description => "The Rock Garden Theme",
+:description => "The Rock Garden BBS",
 :main_prompt => "\r\n%G;Main System Menu %w;(%G;MAIN%w;)\r\n%w;Select (%C;T,I,F,E,A,P,G,R,? %W;for help, or %C;X%W; to exit%w;): %W;",
 :read_prompt => "%M;Board @area@:%C; Read 1-@total@ [%p] (? for menu): %W;",
 :logout_prompt => "%R;You are about to terminate this connection!\r\n\r\n%C;Are you sure (Y/N)?",
@@ -228,7 +229,7 @@ add_area("dove data","W","W",2013,nil,nil,2)
 #add_area("Conspiracies","W","W",5018,nil,nil,4)
 #add_area("The Quickening","W","W",5019,nil,nil,4)
 
-add add_action("bounce", "%s bounces into you!", "bounces into $s","...Bounce, bounce, bounce", true)
+add_action("bounce", "%s bounces into you!", "bounces into $s","...Bounce, bounce, bounce", true)
 
 # initial system
 s = System.new(

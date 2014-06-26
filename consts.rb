@@ -5,10 +5,11 @@ QWK_DEBUG = false
 NNTP = false
 FIDO = false
 SMTP = false
-IRC_ON =  true
+IRC_ON =  false
 IRC_DEBUG = true
 SCREENSAVER = true
 FLASH_POL = false
+MULTIBBS = true
 
 #this is the port for the flash policy server, which is for allowing flash based
 #telnet clients.  It actually runs on port 843, but that cannot be done on

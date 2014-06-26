@@ -200,9 +200,23 @@ class Session
     end
   end
 
+
+ def displaysystems
+
+    i = 0
+    if t_total < 1 then
+      print "%WR;No Themes.  That's a crash!%W;"
+      return
+    end
+      for i in 1..(t_total)
+        theme = fetch_theme(i)
+        print "   #{i}...#{theme.description} (#{theme.name})"
+      end
+    print
+  end
+
+
   def displaythemes
-
-
 
     i = 0
     if t_total < 1 then

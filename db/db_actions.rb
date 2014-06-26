@@ -1,11 +1,11 @@
-require 'models/other'
+require 'models/actions'
 
 def ac_total
-  Action.count
+  Actions.count
 end
 
 def delete_action(ind)
-  Action.delete_number(ind)
+  Actions.delete_number(ind)
 end
 
 def update_action(r)
@@ -13,16 +13,16 @@ def update_action(r)
 end
 
 def fetch_actionr(record)
-  Action.first(:number => record)
+  Actions.first(:number => record)
 end
 
 def renumber_action
-  Action.renumber!
+  Actions.renumber!
 end
 
 def add_action(name, action, local_action, me_action, directed)
   number = ac_total + 1
-  Action.create(
+  Actions.create(
     :name => name,
     :number => number,
     :action => action,
