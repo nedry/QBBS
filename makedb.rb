@@ -82,7 +82,7 @@ Theme.new(:number => 1,
 
 Theme.new(:number => 2,
 :name => "WBBS",
-:description => "Pascaholics Annonymous",
+:description => "Nostromo BBS",
 :main_prompt => MAIN_PROMPT,
 :read_prompt => "%M;Board @area@:%C; Read 1-@total@ [%p] (? for menu): %W;",
 :logout_prompt => "%W;Log off now (%Y;Y%W;,%R;n%W;): ",
