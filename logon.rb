@@ -145,6 +145,7 @@ end
 
     checkkillfile(username)
     checkmultiplelogon
+		@node = addtowholist
     @who.each {|who| add_page(get_uid("SYSTEM"),who.name,"*** #{@c_user.name} has just logged into the system.",true)}
     defaulttheme
     logandgreetuser(username, ip,theme_no)
@@ -193,6 +194,7 @@ end
     yes("Press <--^: ",true,false,true)
     add_user(username,ip,password,location,address,24,80,ansi, more, DEFLEVEL, fullscreen,"")
     @c_user = fetch_user(get_uid(username))
+		@node = addtowholist
     add_log_entry(L_USER,Time.now,"New user #{@c_user.name} created.")
     @logged_on = true
  		if !theme_no.nil? then
@@ -287,7 +289,7 @@ end
     add_log_entry(L_USER,Time.now,"#{@c_user.name} logged on sucessfully.")
     @logged_on = true
     @debuglog.push("-SA: Logon - #{@c_user.name}")
-    @node = addtowholist
+    #@node = addtowholist
     @c_user.logons = @c_user.logons.succ
     @c_user.ip = ip
     add_user_to_wall

@@ -10,6 +10,7 @@
   level: 255
   fullscreen: false
   sex: 'M'
+  alias: 'SYSOP'
   
 - name: SYSTEM
   ip: '000.000.000.000'
@@ -23,6 +24,7 @@
   level: 255
   fullscreen: false
   sex: 'M'
+  alias: 'SYSTEM'
   
 - name: DOVEQWK 
   ip: '000.000.000.000'
@@ -36,6 +38,7 @@
   level: 255
   fullscreen: false
   sex: 'M'
+  alias: 'DOVEQWK'
   
 - name: PARAQWK 
   ip: '000.000.000.000'
@@ -49,6 +52,7 @@
   level: 255
   fullscreen: false
   sex: 'M'
+  alias: 'PARAQWK'
   
 - name: FIDONET
   ip: '000.000.000.000'
@@ -62,6 +66,7 @@
   level: 255
   fullscreen: false
   sex: 'M'
+  alias: 'FIDONET'
   
 - name: GIGANEWS
   ip: '000.000.000.000'
@@ -75,6 +80,7 @@
   level: 255
   fullscreen: false
   sex: 'M'
+  alias: 'GIGANEWS'
   
 - name: BBSINFO
   ip: '000.000.000.000'
@@ -88,4 +94,4 @@
   level: 255
   fullscreen: false
   sex: 'M'
-  
+  alias: 'BBSINFO'

@@ -68,8 +68,13 @@ def fetch_user(record)
 end
 
 def add_page(uid_from,to,message,system)
+	puts "uid_from: #{uid_from}"
+	puts "uid_to: #{to}"
  uid =uid_from
+ puts "get_uid_alias(to): #{get_uid_alias(to)}"
  user = User.get(get_uid_alias(to))
+ puts "user: #{user}"
+ puts "system: #{system}"
  page = user.pages.new(:message => message, :system => system, :from => uid)
 
  page.save
