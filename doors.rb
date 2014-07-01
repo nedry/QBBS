@@ -52,9 +52,10 @@ def door_do (path,d_type)
                 if d_type == "MBBS" and char.chr == ":" and !send_init then
 
                   if !@c_user.wg_pw.nil?  then
-
+										sleep(2)
                     w.puts(@c_user.name)
                     w.puts(CR.chr)
+										sleep(2)
                     w.puts(@c_user.wg_pw)
                     w.puts(CR.chr)
                     w.puts(CR.chr)
@@ -67,8 +68,10 @@ def door_do (path,d_type)
                     w.puts(CR.chr)
                     w.puts("y")
                     w.puts(CR.chr)
+										sleep(2)
                     w.puts(temp_pass)
                     w.puts(CR.chr)
+										sleep(2)
                     w.puts(temp_pass)
 
                     w.puts(CR.chr)

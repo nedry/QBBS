@@ -134,8 +134,14 @@ end
         end
 
         password = getpwd("Enter password for user #{username}: ")
-
-        break if check_password(username.upcase, password)
+       if check_password(username.upcase, password) then
+					checkmultiplelogon
+					@c_user = fetch_user(get_uid(username))
+					@node = addtowholist
+          @who.each {|who| add_page(get_uid("SYSTEM"),who.name,"*** #{@c_user.name} has just logged into the system.",true)}
+          defaulttheme
+        break 
+			end
         checkmaxpwdmiss(count,username)
       else
         print "User IDs must be between 3 and 25 characters, and may not contain"
@@ -144,10 +150,8 @@ end
     end #of while...true
 
     checkkillfile(username)
-    checkmultiplelogon
-		@node = addtowholist
-    @who.each {|who| add_page(get_uid("SYSTEM"),who.name,"*** #{@c_user.name} has just logged into the system.",true)}
-    defaulttheme
+    
+		
     logandgreetuser(username, ip,theme_no)
 
 
@@ -289,7 +293,6 @@ end
     add_log_entry(L_USER,Time.now,"#{@c_user.name} logged on sucessfully.")
     @logged_on = true
     @debuglog.push("-SA: Logon - #{@c_user.name}")
-    #@node = addtowholist
     @c_user.logons = @c_user.logons.succ
     @c_user.ip = ip
     add_user_to_wall
