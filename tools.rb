@@ -1,6 +1,11 @@
 # TODO: reorganise tools, misc etc into one file
 # for random library functions
 
+def pingable?(addr)
+  output = `ping -c 2 #{addr}`
+  !output.include? "100% packet loss"
+end
+
   def random(r)
     # assume r is a range of integers first < last
     # this def by Mike Stok [mike@stok.co.uk] who deserves credit for it

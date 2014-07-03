@@ -19,7 +19,7 @@ class User
   property :more, Boolean
   property :level, Integer
   property :create_date, DateTime
-  property :laston, DateTime, :default => Time.now
+  property :laston, DateTime, :default => DateTime.now
   property :logons, Integer, :default => 0
   property :posted, Integer, :default => 0
   property :rsts_pw, String, :length => 40

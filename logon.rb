@@ -138,7 +138,7 @@ end
 					checkmultiplelogon
 					@c_user = fetch_user(get_uid(username))
 					@node = addtowholist
-          @who.each {|who| add_page(get_uid("SYSTEM"),who.name,"*** #{@c_user.name} has just logged into the system.",true)}
+          @who.each {|who| add_page(get_uid("SYSTEM"),who.c_alias,"*** #{@c_user.name} has just logged into the system.",true)}
           defaulttheme
         break 
 			end

@@ -6,7 +6,7 @@ class Qwkroute
 
   property :route_id, Serial
   property :qwk_id, Integer
-  property :modified, DateTime, :default => Time.now
+  property :modified, DateTime, :default => DateTime.now
   property :dest, String, :length => 80
   property :route, String, :length => 255
   belongs_to :qwknet, :child_key => [:qwk_id]

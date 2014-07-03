@@ -13,5 +13,6 @@ class Door
   property :d_type, String, :length => 10 
   property :path, String, :length => 40
   property :level, Integer, :default => 0 
+	property :pingtest, String, :length => 40
   property :droptype, String, :length => 10, :default => 'RBBS'
 end

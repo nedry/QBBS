@@ -10,30 +10,19 @@ end
 def door_do (path,d_type)
 
   send_init = false
-  time = Time.now
-  tick = time.min.to_i
-  idle = 0
-  timeout = 0
-  started = false
-  i = 0
-  ret = false
-  beg = false
-  u_name = @c_user.name
-  user_len = u_name.length+1
-  user_arr =  ">#{u_name}"
-
+	
   begin
     PTY.spawn(path) do |read, w, p|
 
       w.putc(13.chr) if d_type == "DOS" #we want to put a ENTER in so dosemu won't pause at intro
-      # TODO: don't use exit as a variable name; it's a keyword
-      exit = false
+
+      done = false
       temp_pass = random_password
-      while !exit
-        while !exit
-          ios = select([read, @socket],nil,nil,0.001) #and !exit
+      while !done
+        while !done
+          ios = select([read, @socket],nil,nil,0.001) #and !done
           r, * = ios
-          if r != nil then
+          if !r.nil? then
             if r.include?(read)
               begin
                 char = read.getc
@@ -45,9 +34,6 @@ def door_do (path,d_type)
                   w.puts(@c_user.rsts_pw)
                   send_init = true
                 end
-                total_c = 1
-                #   total_c = @c_user.wg_pw.length  + @c_user.name.length + MBBS_HEADER_LENGTH
-                #total_c = (@c_user.wg_pw.length *2) + @c_user.name.length + 5 + MBBS_HEADER_LENGTH if @c_user.wg_pw.nil?
 
                 if d_type == "MBBS" and char.chr == ":" and !send_init then
 
@@ -78,45 +64,23 @@ def door_do (path,d_type)
                     w.puts(CR.chr)
                     @c_user.wg_pw = temp_pass
                     update_user(@c_user)
-
-
                   end
-                  send_init = true
-
                 end
-
+								
+								send_init = true if char.chr =="|" and d_type =="MBBS"
+								
                 if d_type == "QBBS" and char.chr == ">" and !send_init then
-                  w.puts("#{u_name}#{CR.chr}")
+                  w.puts("#{@c_user.name}#{CR.chr}")
                   send_init = true
                 end
                 started = true
                 idle = 0
-
-                beg = true if char == MBBS_START_CHARACTER and d_type == "MBBS"
-                if  !ret and beg then
-                  ochar = char
-                  char = ""
-                  i += 1
-                  ret = true if i == total_c
-                  # print "#{i} char: #{ochar} ret: #{ret} beg:#{beg} total_c #{total_c}"
-                end
-
-                #	beg = true if char == ">"
-                #	if user_arr.index(char) and !ret and beg then
-                #	  char = ""
-                #	  i += 1
-                #	  ret = true if i == user_len
-                #	end
               rescue
-                #  sleep (5)
-                #  print (CLS)
-                #print (HOME)
-
                 @who.user(@c_user).where = "Main Menu"
                 return
               end
               @socket.write CR.chr if char == LF
-              @socket.write(char.chr)
+              @socket.write(char.chr)  if send_init
             end
 
             if r.include?(@socket)
@@ -124,7 +88,7 @@ def door_do (path,d_type)
               time = Time.now
               @who.user(@c_user.name).ping =  time.to_i if !@c_user.nil?
 
-              if d_type == DOS then
+              if d_type == "DOS" then
                 w.putc(char.chr) if (char != 3) and (char != 27) #we want to block ctrl-c and esc
               else
                 w.putc(char.chr) if (char !=3)
@@ -195,6 +159,7 @@ def showdoor(number)
     print "%C;Drop Path: %G;#{door.d_path}"
     print "%C;Drop Type: %G;#{door.droptype}"
     print "%C;Level:     %G;#{door.level}"
+		print "%C;Ping Addr: %G;#{door.pingtest}"
     print
   else
     print "%WR; No Doors %W;"
@@ -225,6 +190,7 @@ def doormaint
     when "DP"; changedoordroppath(dpointer)
     when "DT"; changedoortype(dpointer)
     when "N"; changedoorname(dpointer)
+		when "PI"; changedoorping(dpointer)
     when "K"; deletedoor(dpointer)
     when "G"; leave
     when "?"; gfileout ("doormnu")
@@ -270,7 +236,16 @@ def changedoortype(dpointer)
   update_door(door)
 end
 
+def changedoorping(dpointer)
+  door = fetch_door(dpointer)
+  ping = get_max_length("Enter new ping test address: ",40,"Ping Address")
+ 
+    ping.strip!
+    door.pingtest = ping
 
+  update_door(door)
+  print
+end
 
 def changedoorpath(dpointer)
   door = fetch_door(dpointer)
@@ -337,7 +312,13 @@ end
 
 def rundoor(number)
   door = fetch_door(number)
-
+  if !door.pingtest.nil? then
+		if !pingable?(door.pingtest) then
+			 print "%R;External Program #{door.name} is not repsonding.  Please try again later."
+			 add_log_entry(5,Time.now,"#{door.name} External program failed ping check.")
+			 return
+		end
+	end
   if @c_user.level >= door.level then
     @who.user(@c_user.name).where = door.name
     update_who_t(@c_user.name,door.name)
