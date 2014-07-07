@@ -67,7 +67,27 @@ def door_do (path,d_type)
                   end
                 end
 								
-								send_init = true if char.chr =="|" and d_type =="MBBS"
+								if d_type == "MBBS" and !send_init
+									if char.chr == "|" then 
+										send_init = true
+									else
+									case char.chr
+										 when "<" 
+												print "%R;Your game server account is missing!  Please tell the sysop."
+												return										   
+										 when "@"
+		 									 print "%R;The game server is running nightly maintenance.   Please wait some time and try again."
+											 return
+										 when "`"
+											  print "%R;Your account is already in use on the game server.  This can happen if you disconnect from the BBS"
+												print "during a session without logging out.  Please wait some time and try again, or tell the sysop."
+										 return
+										 when "~"	
+											 print "%R;Your account and password are out of sync.  Please tell sysop"
+											 return
+										end
+								  end
+								end
 								
                 if d_type == "QBBS" and char.chr == ">" and !send_init then
                   w.puts("#{@c_user.name}#{CR.chr}")
@@ -91,7 +111,7 @@ def door_do (path,d_type)
               if d_type == "DOS" then
                 w.putc(char.chr) if (char != 3) and (char != 27) #we want to block ctrl-c and esc
               else
-                w.putc(char.chr) if (char !=3)
+                w.putc(char.chr) if (char !=3) and send_init
               end
             end
           end
