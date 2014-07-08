@@ -234,8 +234,8 @@ class Session
 
   def changewgpass(upointer)
     user = fetch_user(upointer)
-    pswd = getpwd("%W;Enter new password: ").strip.upcase
-    pswd2 = getpwd("Enter again to confirm: ").strip.upcase
+    pswd = getinp("%W;Enter new password: ").strip
+    pswd2 = getinp("Enter again to confirm: ").strip
     if pswd == pswd2
       print "%WG;Password Changed.%W;"
       user.wg_pw = pswd2
