@@ -7,44 +7,78 @@ class FidomailPacketWriter
     #  @writer = writer
   end
 
-  def bytes(*args)
-    buffer = ''
-    args.each {|x|
-      buffer << (x & 0x0ff) << ((x & 0xff00) >> 8)
-    }
-    buffer
-  end
 
   def write_pkt_header(f_hdr)
-    buffer = ''
-    buffer << bytes(f_hdr.orgnode, f_hdr.destnode, f_hdr.year)
+      buffer = "".force_encoding("ASCII-8BIT")
+	    # pos 0
+      buffer << (f_hdr.orgnode & 0x00ff) 
+			buffer << ((f_hdr.orgnode & 0xff00) >> 8) 
+		  # pos 2
+			buffer <<  (f_hdr.destnode & 0x00ff) 
+      buffer << ((f_hdr.destnode & 0xff00) >> 8) 
+	    #pos 4
+      buffer << (f_hdr.year & 0x00ff) 
+      buffer << ((f_hdr.year & 0xff00) >> 8) 
+      #pos 6
+      buffer << f_hdr.month - 1 << 0 
+      #pos 8 
+      buffer << f_hdr.day << 0 
+      #pos 10
+      buffer << f_hdr.hour << 0 
+      #pos 12 
+      buffer << f_hdr.min << 0 
+      #pos 14
+       buffer << f_hdr.sec << 0 
+			#pos 16 (baud)   
+  buffer << 0 << 0 
+ #pos 18
+	buffer << 2 << 0 
+ #pos 20
+  buffer << (f_hdr.orgnet & 0x00ff) 
+  buffer << ((f_hdr.orgnet & 0xff00) >> 8) 
+ #pos 22   
+  buffer << (f_hdr.destnet & 0x00ff) 
+  buffer << ((f_hdr.destnet & 0xff00) >> 8) 
+  #pos 24 (product code / revision) 
+  buffer << 255 
+	buffer << 1 
+	#pos 26
+  total = 8 
+  password = f_hdr.password 
+  password = password[0..7] if password.length > 8  
+  nuls = total - password.length 
+  buffer <<  password.strip 
+  nuls.times {buffer << 0} 
+  #pos 34  
+  buffer << ((f_hdr.orgzone & 0x00ff)) 
+  buffer << ((f_hdr.orgzone & 0xff00) >> 8) 
+ #pos 36
+  buffer << ((f_hdr.destzone & 0x00ff)) 
+  buffer << ((f_hdr.destzone & 0xff00) >> 8) 
+ #pos 38 (auxnet)
+  buffer << 0 << 0 
+ #pos 40 (CW Validation)  
+  buffer << 0 << 1 
+#pos 42 (Product Code)
+  buffer << 0 << 0 
+#pos 44 (Capibility Word)
+  buffer << 1  << 0 
+ #pos 46
+  buffer << ((f_hdr.orgzone & 0x00ff)) 
+  buffer << ((f_hdr.orgzone & 0xff00) >> 8) 
+#pos 48
+  buffer << ((f_hdr.destzone & 0x00ff)) 
+  buffer << ((f_hdr.destzone & 0xff00) >> 8) 
+# pos 50
+  buffer << (f_hdr.orgpoint & 0x00ff) 
+  buffer << ((f_hdr.orgpoint & 0xff00) >> 8) 
+ #pos 52  
+  buffer << (f_hdr.destpoint & 0x00ff) 
+  buffer << ((f_hdr.destpoint & 0xff00) >> 8) 
+# pos 54 (product specific data)
+  buffer << 0 << 0 << 0 << 0 
+# pos 58 (end of packet header)
 
-    [f_hdr.month - 1, f_hdr.day, f_hdr.hour, f_hdr.min, f_hdr.sec].each {|i|
-      buffer << i << 0
-    }
-
-    buffer << 0 << 0 << 2 << 0
-
-    buffer << bytes(f_hdr.orgnet, f_hdr.destnet)
-
-    buffer << 255
-
-    buffer << 1
-    total = 8
-    password = f_hdr.password
-    password = password[0..7] if password.length > 8
-    nuls = total - password.length
-    buffer <<  password.strip
-    nuls.times {buffer << 0}
-
-    buffer << bytes(f_hdr.orgzone, f_hdr.destzone)
-    buffer << 0 << 0 << 0
-    buffer << 1
-    buffer << 0 << 0
-    buffer << 1 << 0
-
-    buffer << bytes(f_hdr.orgzone, f_hdr.destzone, f_hdr.orgpoint, f_hdr.destpoint)
-    buffer << 0 << 0 << 0 << 0
 
     @writer.write buffer
   end
@@ -87,7 +121,9 @@ class FidomailPacketWriter
       buffer << 1 << "REPLY: " << reply << CR.chr
     end
     if !topt.nil? then
-      buffer << 1 << "TOPT " << topt.to_s << CR.chr
+			if topt > 0 then 
+        buffer << 1 << "TOPT " << topt.to_s << CR.chr
+			end
     end
     if !intl.nil? then
       buffer << 1 << "INTL " << intl << CR.chr
@@ -176,10 +212,26 @@ class FidomailPacketWriter
     origin = nil
     smtp = false
 
-    buffer =''
+		buffer =''.force_encoding("ASCII-8BIT")
     buffer << 2 << 0
-    buffer << bytes(orgnode, destnode, orgnet, destnet, attribute, cost)
+    buffer << (orgnode & 0x00ff)
+		buffer << ((orgnode & 0xff00) >> 8)
 
+    buffer << (destnode & 0x00ff)
+    buffer << ((destnode & 0xff00) >> 8)
+  
+    buffer << (orgnet & 0x00ff)
+    buffer << ((orgnet & 0xff00) >> 8)
+
+     buffer << (destnet & 0x00ff)
+     buffer << ((destnet & 0xff00) >> 8)
+  
+     buffer << (attribute & 0x00ff)
+     buffer << ((attribute & 0xff00) >> 8)
+ 
+     buffer << (cost & 0x00ff)
+     buffer << ((cost & 0xff00) >> 8)
+		 
     datetime = msg_date.strftime ("%d %b %y  %H:%M:%S")
     buffer << datetime.fit(19)
     buffer << 0
@@ -202,7 +254,7 @@ class FidomailPacketWriter
 
   def open_pkt(path)
     begin
-      @writer = File.new("#{path}", File::CREAT|File::RDWR, 0644)
+      @writer = File.new("#{path}", "ab", 0644)
     rescue
       puts "Error writing file."
       return PACKET_CREATE_ERROR
