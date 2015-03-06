@@ -134,27 +134,28 @@ def read_a_message(path,offset)
 
   #TODO: remove all the commented-out code
 
-  # puts "Org:       #{fidomessage.orgnet}/#{fidomessage.orgnode}"
-  # puts "Dest:      #{fidomessage.destnet}/#{fidomessage.destnode}"
-  # puts "Attribute: #{fidomessage.attribute}"
-  # puts "Cost:      #{fidomessage.cost}"
-  # puts "Date Time: #{fidomessage.datetime}"
-  # puts "To:        #{fidomessage.to}"
-  # puts "From:      #{fidomessage.from}"
-  # puts "Subject:   #{fidomessage.subject}"
-  # puts "Area:      #{fidomessage.area}" if !fidomessage.area.nil?
-  # puts "Msgid:     #{fidomessage.msgid}" if !fidomessage.msgid.nil?
-  # puts "Path:      #{fidomessage.path}" if !fidomessage.path.nil?
-  # puts "TzUTZ:     #{fidomessage.tzutc}" if !fidomessage.tzutc.nil?
-  # puts "CharSet:   #{fidomessage.charset}" if !fidomessage.charset.nil?
-  # puts "Tosser ID: #{fidomessage.tid}" if !fidomessage.tid.nil?
-  # puts "Proc ID:   #{fidomessage.pid}" if !fidomessage.pid.nil?
-  # puts "Intl:      #{fidomessage.intl}" if !fidomessage.intl.nil?
-  # puts "Topt:      #{fidomessage.topt}" if !fidomessage.topt.nil?
-  # puts "Fmpt:      #{fidomessage.fmpt}" if !fidomessage.fmpt.nil?
-  # puts "Reply:     #{fidomessage.reply}" if !fidomessage.reply.nil?
-  # puts "Origin:    #{fidomessage.origin}" if !fidomessage.origin.nil?
-  # puts
+ @debuglog.push( "Org:       #{fidomessage.orgnet}/#{fidomessage.orgnode}")
+ @debuglog.push( "Dest:      #{fidomessage.destnet}/#{fidomessage.destnode}")
+ @debuglog.push( "Attribute: #{fidomessage.attribute}")
+ @debuglog.push( "Cost:      #{fidomessage.cost}")
+ @debuglog.push( "Date Time: #{fidomessage.datetime}")
+ @debuglog.push( "To:        #{fidomessage.to}")
+ @debuglog.push( "From:      #{fidomessage.from}")
+ @debuglog.push( "Subject:   #{fidomessage.subject}")
+ @debuglog.push( "Area:      #{fidomessage.area}") if !fidomessage.area.nil?
+ @debuglog.push( "Msgid:     #{fidomessage.msgid}") if !fidomessage.msgid.nil?
+ @debuglog.push( "Path:      #{fidomessage.path}") if !fidomessage.path.nil?
+ @debuglog.push( "TzUTZ:     #{fidomessage.tzutc}") if !fidomessage.tzutc.nil?
+ @debuglog.push( "CharSet:   #{fidomessage.charset}") if !fidomessage.charset.nil?
+ @debuglog.push( "Tosser ID: #{fidomessage.tid}") if !fidomessage.tid.nil?
+ @debuglog.push( "Proc ID:   #{fidomessage.pid}") if !fidomessage.pid.nil?
+ @debuglog.push( "Intl:      #{fidomessage.intl}") if !fidomessage.intl.nil?
+ @debuglog.push( "Topt:      #{fidomessage.topt}") if !fidomessage.topt.nil?
+ @debuglog.push( "Fmpt:      #{fidomessage.fmpt}") if !fidomessage.fmpt.nil?
+ @debuglog.push( "Reply:     #{fidomessage.reply}") if !fidomessage.reply.nil?
+ @debuglog.push( "Origin:    #{fidomessage.origin}") if !fidomessage.origin.nil?
+ # puts
+   puts
 
   r_loc = happy.pos 		#this is the next offset.
   test = happy.read(5)		#lets read a head and see if we hit eof.  beyond eof, you read nil
@@ -246,29 +247,30 @@ def add_fido_msg(fidomessage)
   end
 
   topt = -1
-  topt = fidomessage.topt if !fidomessage.topt.nil?
+  topt = fidomessage.topt.to_i if !fidomessage.topt.nil?
   intl = fidomessage.intl
   fmpt = -1
-  fmpt = fidomessage.fmpt if !fidomessage.fmpt.nil?
+  fmpt = fidomessage.fmpt.to_i if !fidomessage.fmpt.nil?
 
   if !number.nil? then
 
-    if !pid.nil? then
-      pid = pid[0..79] if pid.length > 80
+   if !fidomessage.pid.nil? then
+      fidomessage.pid = fidomessage.pid[0..79] if fidomessage.pid.length > 80
     end
 
-    if !msgid.nil?
-      msgid = msgid[0..79] if msgid.length > 80
+    if !fidomessage.msgid.nil?
+      fidomessage.msgid = fidomessage.msgid[0..79] if fidomessage.msgid.length > 80
     end
 
     #puts "----"
     a = fetch_area(number)
     @debuglog.push(  "FIDO: importing message to: #{a.name}")
-
-    absolute = add_msg(fidomessage.to,fidomessage.from,area.number, :msg_date => fidomessage.datetime.strip, :subject =>fidomessage.subject,
+		    @debuglog.push(  "fidomessage.message: #{fidomessage.message}")
+  
+    absolute = add_msg(fidomessage.to,fidomessage.from,number, :msg_date => fidomessage.datetime.strip, :subject =>fidomessage.subject,
     :msg_text => convert_to_utf8(fidomessage.message.join(DLIM)),:exported => true, :destnode => fidomessage.destnode,
     :orgnode => fidomessage.orgnode, :orgnet => fidomessage.orgnet, :destnet => fidomessage.destnet,
-    :attribute => fidomessage.attribute, :cost => fidomessage.cost, :area => fidomessage.area, :msgid => fidomessage.msgid,
+    :attribute => fidomessage.attribute, :cost => fidomessage.cost, :fntarea => fidomessage.area, :msgid => fidomessage.msgid,
     :path => fidomessage.path, :tzutc => fidomessage.tzutc, :cost => fidomessage.charset, :tid => fidomessage.tid,
     :pid => fidomessage.pid, :orgin => fidomessage.origin, :f_network => true)
 

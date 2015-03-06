@@ -171,6 +171,10 @@ class GraphFile
   def profileout(obj,index)
     theme = get_user_theme(@session.c_user)
     area = fetch_area(@session.c_area)
+		    group = fetch_group_grp(area.grp)
+        qwknet = get_qwknet(group)
+        bbsid = ""
+        bbsid = qwknet.bbsid if !qwknet.nil?
 
     f_net = nil
     i = 0
@@ -190,12 +194,12 @@ class GraphFile
         f_net = "UNKNOWN"
         if !obj.intl.nil? then
           if obj.intl.length > 1 then
-            o_adr = curmessage.intl.split[1]
+            o_adr = obj.intl.split[1]
             zone,net,node,point = parse_intl(o_adr)
             f_net = "#{zone}:#{net}/#{node}"
             f_net << ".#{point}" if !point.nil?
           end
-        else f_net = get_orig_address(curmessage.msgid) end
+        else f_net = get_orig_address(obj.msgid) end
       end
       if obj.network then
         q_net = bbsid

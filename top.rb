@@ -623,7 +623,8 @@ class ConsoleThread
 
 
   def update_debug(line)
-
+		
+		line.gsub!(/\0/, '') if line.kind_of? String # remove null bytes
     waddstr(@inner_win, "#{line}\n")
     wrefresh(@inner_win)
     #wrefresh(@win)
@@ -631,6 +632,7 @@ class ConsoleThread
 
 
   def run
+		bug_log = Log.new("debug_log.log")
     FFI::NCurses.initscr
     FFI::NCurses.start_color
     FFI::NCurses.curs_set 0
@@ -638,6 +640,10 @@ class ConsoleThread
     FFI::NCurses.noecho
     FFI::NCurses.keypad(FFI::NCurses.stdscr, true)
 
+    at_exit do
+			system("reset")
+		end
+		
     begin
       # main_window
       flushinp
@@ -695,8 +701,7 @@ class ConsoleThread
           when 24   #Control X for exit
             update_debug("-SA: Shutting Down...")
             sleep(1)
-            #put exit code here
-            FFI::NCurses.endwin
+						endwin
             exit
           when 4  #Control D for Display
             case @display_debug
@@ -710,6 +715,8 @@ class ConsoleThread
           end
           #   update_debug("You pressed: #{ch}")
         end
+				@debuglog.each{|line| bug_log.write(line)} if DLOG 
+
         if @display_debug then
           @debuglog.each {|line| update_debug(line)}
           @debuglog.clear

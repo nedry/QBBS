@@ -251,8 +251,7 @@ class Session
 
     default = { :maxsize => MAXMESSAGESIZE,  :header => "%G;Enter message text.  %Y;", :reply_text => [], :file => false, :title => nil }
     options = default.merge(options)
-
-
+		title = options[:title]
     print "#{options[:header]} #{options[:maxsize]}%G; lines maximum."
     if @c_user.ansi
       then
@@ -309,6 +308,7 @@ class Session
         end
       end #of Outer until
       @lineeditor.msgtext.compact!
+
       return [@lineeditor.save,title]
     end
   end #class Session

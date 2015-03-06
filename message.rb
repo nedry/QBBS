@@ -210,9 +210,9 @@ class Session
           end
         end
 
-        case reptype
-        when "Y"; private =add_msg true
-        when "X"; returnlineedit
+				case reptype
+          when "Y"; private = true
+          when "X"; return
         end
 
         title = r_message.subject
@@ -235,6 +235,7 @@ class Session
         else
           saveit,title = lineedit(:reply_text => reply_text,:title => title)
         end
+				@debuglog.push("pretitle: #{title}")
         if (saveit) then
           system = fetch_system
           if !private then
@@ -263,7 +264,7 @@ class Session
         @c_user.signature.split("\n").each {|text| @lineeditor.msgtext << text}
       end
       @lineeditor.msgtext << DLIM
-
+    @debuglog.push("title: #{options[:title]}")
 
       absolute = add_msg(to,@c_user.name,area.number, :subject => options[:title], :msg_text => @lineeditor.msgtext.join(DLIM),
       :exported => options[:exported], :destnode => options[:destnode],:destnet => options[:destnet], :intl => options[:intl],
@@ -298,7 +299,7 @@ class Session
       num = rand(100000).to_s
       outfile = "msg#{num}"
       path = "#{FULLSCREENDIR}/#{outfile}"
-      quotefile = File.nadd_msgew(path, File::CREAT|File::APPEND|File::RDWR, 0666)
+      quotefile = File.new(path, File::CREAT|File::APPEND|File::RDWR, 0666)
       quotefile.puts "#{CRLF}"
       reply_text.each {|line| quotefile.puts "#{line.chop![0..75]}#{CRLF}"} if reply_text != nil
       quotefile.close
@@ -365,6 +366,8 @@ class Session
       else
         saveit,title = lineedit(:reply_text => reply_text,:title => title)
       end
+							@debuglog.push("pretitle: #{title}")
+
       if saveit then
         savecurmessage(@c_area, to, :title => title)
         @c_user.posted += 1
@@ -464,6 +467,7 @@ class Session
           abs = absolute_message(table,mpointer)
         end
         curmessage = fetch_msg(abs)
+				
         #in case a pointer got trashed.
         pointer.lastread = 0 if pointer.lastread.nil?
 
@@ -535,6 +539,7 @@ class Session
       pointer = get_pointer(@c_user,@c_area)
       area = fetch_area(@c_area)
       l_read = new_messages(area.number,pointer.lastread)
+
       readmenu(
       :zip => zip,
       :initval => p_msg,
@@ -543,7 +548,7 @@ class Session
       :l_read => l_read,
       :loc => READ
 
-      ) {|sel, mpointeradd_msg, moved, zip|
+      ) {|sel, mpointer, moved, zip|
 
         mpointer = h_msg if mpointer.nil?
         mpointer = h_msg if mpointer > h_msg
@@ -552,6 +557,7 @@ class Session
 
 
         if moved
+
           if (mpointer > 0) and (mpointer <= h_msg) then # range check
             showmessage(mpointer)
           end

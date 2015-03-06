@@ -1,6 +1,7 @@
 require 'db/db_log'
 require 'consts'
 
+
 class FtpClient
   attr_reader :address, :account, :passwd
 
@@ -11,6 +12,7 @@ class FtpClient
 
   def connect
     begin
+		
       ftp = Net::FTP.new(@qwknet.ftpaddress)
       ftp.debug_mode = false
       ftp.passive = true
@@ -18,6 +20,7 @@ class FtpClient
       yield ftp
     ensure
       ftp.close
+			
     end
   end
 

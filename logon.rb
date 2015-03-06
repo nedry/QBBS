@@ -90,7 +90,9 @@ end
    # spam
 	 # print VER
     print ("IP Address detected: #{ip}")
-    print ("Fidonet Node: #{FIDOZONE}:#{FIDONET}/#{FIDONODE}.#{FIDOPOINT}")
+		fnpoint = ""
+		fnpoint  = ".#{FIDOPOINT}" if FIDOPOINT != 0 
+    print ("Fidonet Node: #{FIDOZONE}:#{FIDONET}/#{FIDONODE}#{fnpoint}")
     if ansi and File.exists?(path + "welcome1.ans") then
       fileout(path + "welcome1.ans")
     else

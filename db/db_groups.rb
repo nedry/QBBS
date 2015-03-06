@@ -52,7 +52,7 @@ end
 def find_qwk_route(dest)
   area = nil
   route = nil
-  puts "dest: #{dest}"
+  @debuglog.push("dest: #{dest}")
   qwkroute = Qwkroute.first(:conditions => ["upper(dest) = ?", dest.upcase])
   if !qwkroute.nil? then
     group = fetch_qwknet_qwk(qwkroute.qwk_id)
@@ -64,7 +64,7 @@ def find_qwk_route(dest)
 
 def find_qwk_single_hop(bbsid)
   area = nil
-  puts "bbsid: #{bbsid}"
+  @debuglog.push("bbsid: #{bbsid}")
   qwknet = Qwknet.first(:conditions => ["upper(bbsid) = ?", bbsid.upcase])
   area = fetch_area_grp(qwknet.grp)  if !qwknet.nil?
   return area
@@ -132,8 +132,8 @@ def add_qwknet(group,name,bbsid,qwkuser,ftpaddress,ftpaccount,ftppassword)
                                                 :qwkdir => qwkdir, :repdir => repdir, :qwkpacket => qwkpacket,
                                                 :reppacket => reppacket, :repdata => repdata)
  e = qwkrep.save
- puts "Worked: #{e}"
- qwkrep.errors.each{|error| puts error}
+ @debuglog.push("Worked: #{e}")
+ qwkrep.errors.each{|error| @debuglog.push(error)}
 end
 
 def g_total
@@ -159,6 +159,6 @@ def add_nntpnet(group,name,nntpuser,nntpaddress,nntpaccount,nntppassword)
  nntprep = group.nntpnets.new(:name => name, :nntpuser => nntpuser, :nntpaddress => nntpaddress,
           :nntpaccount => nntpaccount, :nntppassword => nntppassword, :nntptag => nntptag)
  e = nntprep.save
- puts "Worked: #{e}"
- nntprep.errors.each{|error| puts error}
+ @debuglog.push("Worked: #{e}")
+ nntprep.errors.each{|error| @debuglog.push(error)}
 end

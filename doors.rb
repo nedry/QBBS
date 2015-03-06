@@ -8,6 +8,88 @@ def random_password
 end
 
 def door_do (path,d_type)
+  send_init = false
+  time = Time.now
+  tick = time.min.to_i
+  idle = 0
+  timeout = 0
+  started = false
+  i = 0
+  ret = false
+	beg = false
+	u_name = @c_user.name
+  user_len = u_name.length+1
+	user_arr =  ">#{u_name}"
+	
+  begin
+    PTY.spawn(path) do |read, w, p|
+
+  w.putc(13.chr) if d_type == "DOS" #we want to put a ENTER in so dosemu won't pause at intro
+      exit = false
+      while !exit
+        while !exit 
+          ios = select([read, @socket],nil,nil,0.001) #and !exit
+          r, * = ios
+          if r != nil then
+            if r.include?(read)
+              begin
+                char = read.getc
+                if d_type == "RSTS" and char.chr == ":" and !send_init then
+                  account = "#{RSTS_BASE},#{@c_user.rsts_acc}"
+                  sleep(2)
+                  w.puts(account)
+                  sleep (2)
+                  w.puts(@c_user.rsts_pw)
+                  send_init = true
+                end
+                if d_type == "QBBS" and char.chr == ">" and !send_init then
+                  w.puts("#{u_name}#{CR.chr}")
+                  send_init = true
+                end
+                started = true
+                idle = 0
+							  beg = true if char == ">"
+								if user_arr.index(char) and !ret and beg then									
+								 char = ""
+								 i += 1
+								 ret = true if i == user_len
+							 end
+              rescue 
+                sleep (5)
+                print (CLS)
+                print (HOME)
+
+                @who.user(@c_user).where = "Main Menu"
+                return
+              end
+                @socket.write CR.chr if char == LF
+								@socket.write(char.chr) 
+            end
+
+            if r.include?(@socket)
+              char = @socket.getc
+              time = Time.now
+              @who.user(@c_user.name).ping =  time.to_i if !@c_user.nil?
+
+              if d_type == DOS then
+                w.putc(char.chr) if (char != 3) and (char != 27) #we want to block ctrl-c and esc
+              else
+                w.putc(char.chr) if (char !=3) 
+              end
+            end
+          end
+        end
+      end
+    end 
+  rescue 
+
+    return
+  end
+
+
+end
+
+def door_do_mbbs (path,d_type)
 
   send_init = false
 	

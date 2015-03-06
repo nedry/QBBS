@@ -9,5 +9,5 @@
 %W;[%Y;Q%W;]%G;uit               %W;[%Y;/%W;]%G;Redisplay
 %W;[%Y;?%W;]%G;This Menu
 
-%C;Use a %R%; %C%to stack commands together %W;(%C;I.E., %R;%;a;q%W;)
+%C;Use a %R;; %C;to stack commands together %W;(%C;I.E., %R;%;a;q%W;)
 %C;Some commands take parameters %W;(%C;I.E., %R;a2%W;)

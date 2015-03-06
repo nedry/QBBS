@@ -85,6 +85,7 @@ class FidomailPacketWriter
 
 
   def write_nul_delimited(buffer,output,max)
+		output = " " if output.nil?
     output = output[0..max - 1] if output.length > max
     buffer <<  output << 0
     return buffer
@@ -235,6 +236,7 @@ class FidomailPacketWriter
     datetime = msg_date.strftime ("%d %b %y  %H:%M:%S")
     buffer << datetime.fit(19)
     buffer << 0
+
     buffer = write_nul_delimited(buffer,m_to,35)
     buffer = write_nul_delimited(buffer,m_from,35)
     buffer = write_nul_delimited(buffer,subject,35)

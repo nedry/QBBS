@@ -313,7 +313,10 @@ module Qwk
       begin
         Timeout.timeout(QWKDOWNLOADTIMEOUT) do
           ftp = FtpClient.new(@qwknet,@debuglog)
+					@debuglog.push( "-FTP: Starting FTP Download")
           ftp.qwk_packet_down
+										@debuglog.push( "-FTP: Done")
+
         end
 
       rescue Timeout::Error

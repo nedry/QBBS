@@ -172,7 +172,7 @@ def add_msg(m_to,m_from,number,options = {})
   #this is so we can send the reference line back to the nntp server for threading on
   #newsreaders.  made it a text field because there can be *loads* of references.
 
-
+  #@debuglog.push("NUMBER: #{number}")
   default = { :msg_date => Time.now.strftime("%Y-%m-%d %I:%M%p"),
          :subject => "No Subject",
          :msg_text => "",
@@ -238,6 +238,8 @@ def add_msg(m_to,m_from,number,options = {})
 
 
   area = Area.first(:number => number)
+	#@debuglog.push("area.number: #{area.number}")
+	#@debuglog.push("area.name: #{area.name}")
   message = area.messages.new(
     :m_to => m_to,
     :m_from => m_from,
@@ -311,7 +313,7 @@ def add_qwk_message(message, area,qwkuser)
   m_from = message.from.upcase.strip
   group =  fetch_group_grp(area.grp)
   qwknet = get_qwknet(group)
-  dest,route = get_qwk_dest(q_via)
+  dest,route = get_qwk_dest(message.via)
   qwkroute_scavenge(qwknet)
 
   if !route.nil?

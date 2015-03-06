@@ -154,13 +154,27 @@ class Session
     }
   end
 
+ def changeqwktag(number)
+    prompt = "%W;Enter the QWK tag:%G;  "
+    change_group(number, prompt) do |qwknet, inp|
+      qwktag = inp
+
+      if qwktag.length > 78 then
+        print "%WR; Tag too long. 78 Character Maximum %W;"
+      else
+        qwknet.qwktag =  convert_to_utf8(qwktag)
+        update_qwknet(qwknet)
+      end
+    end
+  end
+	
   def change_group(number, prompt)
     group = fetch_group(number)
     qwknet = get_qwknet(group)
     if qwknet then
       new_val = getinp(prompt)
       if new_val == ""
-        print "%RCancelled"
+        print "%R;Cancelled"
       else
         yield [qwknet, new_val]
       end
@@ -202,7 +216,7 @@ class Session
       ftppassword = inp
 
       if ftppassword.length > 40 then
-        print "%%WR; Password too long. 40 Character Maximum %W;"
+        print "%WR; Password too long. 40 Character Maximum %W;"
       else
         qwknet.ftppassword = ftppassword
         update_qwknet(qwknet)
@@ -216,7 +230,7 @@ class Session
       nntppassword = inp
 
       if nntppassword.length > 40 then
-        print "%%WR; Password too long. 40 Character Maximum %W;"
+        print "%WR; Password too long. 40 Character Maximum %W;"
       else
         nntpnet.nntppassword = nntppassword
         update_nntpnet(nntpnet)
@@ -304,7 +318,7 @@ class Session
       nntpaccount = inp
 
       if nntpaccount.length > 40 then
-        print "%RUserID too long. 40 Character Maximum"
+        print "%R;UserID too long. 40 Character Maximum"
       else
         nntpnet.nntpaccount = nntpaccount
         update_nntpnet(nntpnet)
@@ -313,7 +327,7 @@ class Session
   end
 
   def changenntptag(number)
-    prompt = "%WEnter the NNTP tag:%G;  "
+    prompt = "%W;Enter the NNTP tag:%G;  "
     change_group(number, prompt) do |nntpnet, inp|
       nntptag = inp
 
@@ -480,7 +494,7 @@ class Session
     group = fetch_group(number)
     if get_qwknet(group).nil? then
       while true
-        prompt = "%W;Enter QWK/REP network name:%G "
+        prompt = "%W;Enter QWK/REP network name:%G; "
         name = getinp(prompt)
         if name == "" then
           print "%WR; Cancelled %W;"
@@ -514,10 +528,10 @@ class Session
       end
 
       while true
-        prompt = "%WEnter the User ID of QWK/REP ftp account on the REMOTE system:%G "
+        prompt = "%W;Enter the User ID of QWK/REP ftp account on the REMOTE system:%G; "
         ftpaccount = getinp(prompt) {|n| n != ""}
         if ftpaccount.length > 40 then
-          print "%RName too long. 40 Character Maximum"
+          print "%R;Name too long. 40 Character Maximum"
         else break end
       end
 
