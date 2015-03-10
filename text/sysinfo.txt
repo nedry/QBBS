@@ -1,14 +1,14 @@
 %WR;About TARDIS BBS%W;
 
-This system has been in operation, in one form or antoher, since 1993.
+%C;This system has been in operation, in one form or antoher, since 1985. For much
+of that time, it has run QBBS, our homebrew BBS software. First written in 
+Turbo Pascal, it has been complete rewritten and "modernized" in Ruby.
 
-For much of that time, it has run QBBS, our homebrew BBS software.
+It has run on systems ranging from an Apple //, to a Tandy 1000HD, to it's 
+current home, a virtual machine running Ubuntu linux.
 
-It has run on systems ranging from an Apple //, to a Tandy 1000HD, to it's current home.
+This (new) version of the software is a bit of a Beta.  There may be missing 
+menus, or things that don't work.  Please send (F)eedback with any problems 
+you find.
 
-The system used to be written in Turbo Pascal.  It is currently written in Ruby 1.8.4
-
-Currently, it runs in a Debian virtual machine, on a Mac Mini.
-
-
-
+--The Doctor, Sysop.

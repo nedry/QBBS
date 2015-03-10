@@ -22,7 +22,7 @@ module IrcConference
       if private then
         out = "%WC;PrivM: %B;<#{m.sourcenick}>%C; #{m.params}#{CRLF}%W;"
       else
-        out = "%B;<#{m.source}>%C; #{m.params}#{CRLF}%W;"
+        out = "%B;<#{m.sourcenick}>%C; #{m.params}#{CRLF}%W;"
       end
     end
 

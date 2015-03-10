@@ -313,7 +313,7 @@ def nntp_parsearticle(article,area)
   organization = "" if organization.nil?
   if (organization.strip != SYSTEMNAME.strip) and !area.nil? then
 
-    absolute = add_msg(to,from.name,area.number, :subject => subject,  :msg_text => msg_text,
+    absolute = add_msg(to,from,area.number, :subject => subject,  :msg_text => msg_text,
     :apparentlyto => apparentlyto, :xcommentto => xcommentto,:newsgroups => newsgroups, :path => path,
     :organization => organization, :replyto => replyto, :inreplyto => inreplyto, :lines => lines,
     :bytes => bytes, :xref => xref, :messageto => messageto, :references => references,

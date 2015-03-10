@@ -301,7 +301,7 @@ def add_msg(m_to,m_from,number,options = {})
 
   worked = message.save
   if !worked then
-   message.errors.each{|x| puts x}
+   message.errors.each{|x| @debuglog.push(x)}
   end
   return high_absolute(area.number)
 end
@@ -390,7 +390,7 @@ def convert_to_ascii(message)
         begin
           temp << Encodings::UNICODE_ASCII[c]
         rescue
-          puts "-NNTP: Encoding failed for chararcter: #{c}"
+          @debuglog.push("-NNTP: Encoding failed for chararcter: #{c}")
           temp << " "
         end
       end
@@ -401,10 +401,8 @@ end
 
 def qwk_route(route)
   out_area=find_qwk_single_hop(route)
-  puts "hub: #{out_area.name}" if !out_area.nil?
   if out_area.nil? then     #the message is not to a hub
     out_area = find_qwk_route(route) #is the message to a node we know about?
-  #  puts "route: #{out_area.name}" if !out_area.nil?
   end
   return out_area
 end

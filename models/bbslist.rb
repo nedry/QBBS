@@ -30,14 +30,14 @@ class Bbslist
   property :network, Text
   #terminal types, seperated by ;
   property :terminal, String, :length => 255 
-  property :megs, Integer
-  property :msgs, Integer
-  property :files, Integer
-  property :nodes, Integer
-  property :users, Integer  
-  property :subs, Integer
-  property :dirs, Integer
-  property :xterns, Integer
+  property :megs, Integer, :min => 0, :max => 2**32
+  property :msgs, Integer, :min => 0, :max => 2**32
+  property :files, Integer, :min => 0, :max => 2**32
+  property :nodes, Integer, :min => 0, :max => 2**32
+  property :users, Integer, :min => 0, :max => 2**32  
+  property :subs, Integer, :min => 0, :max => 2**32
+  property :dirs, Integer, :min => 0, :max => 2**32
+  property :xterns, Integer, :min => 0, :max => 2**32
   property :desc, Text
   
 end

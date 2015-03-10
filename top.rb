@@ -455,7 +455,7 @@ class MailSchedulethread
       #uncomment to reload from scratch.  will put this in a command
       # delete_all_bbs
       # update_BBS_list
-      @debuglog.push("-SCHED: Starting Message Transfer Thread.")
+      @debuglog.push("-SCHED: Starting Message Transfer Thread. #{Time.now.strftime("%I:%M%p %m/%d/%Y")}")
 
 
       idle = 0
@@ -464,9 +464,9 @@ class MailSchedulethread
       doit(idle)
       tick = Time.now.min.to_i
       # up_down
-      ddate = Time.now.strftime("%m/%d/%Y at %I:%M%p")
+      ddate = Time.now.strftime("%I:%M%p %m/%d/%Y")
       while true
-        @debuglog.line.push("-SCHED: Thread Pause 30 seconds: Current Day #{current_day}")
+        @debuglog.line.push("-SCHED: Thread Pause 30 seconds:  ... #{Time.now.strftime("%I:%M%p %m/%d/%Y")} (CDay #{current_day})")
         sleep(30)
         new_day = Time.now.strftime("%j")
         if new_day != current_day then  #do daily maintenance
@@ -689,7 +689,7 @@ class ConsoleThread
 
       wrefresh(@win)
       wrefresh(@border_win)
-      update_debug("-QBBS Server Starting up.")
+      update_debug("-QBBS Server Starting up. #{Time.now.strftime("%I:%M%p %m/%d/%Y")}")
       wtimeout(@inner_win,100)
       update_debug ("-SA: Screen size detected: #{@height} #{@width} #{debug_lines}")
       while true
@@ -756,7 +756,7 @@ class FlashPolicyServer
   end
 
   def run
-    @debuglog.push( "-SA: Starting flash policy server...")
+    @debuglog.push( "-SA: Starting flash policy server #{Time.now.strftime("%I:%M%p %m/%d/%Y")}...")
     policy = load_policy_file
 
     if policy then
@@ -792,7 +792,7 @@ class ServerSocket
   def run
     #    set_up_database
 
-    add_log_entry(L_MESSAGE,Time.now,"#{VER} Server Starting.")
+    add_log_entry(L_MESSAGE,Time.now,"#{VER} Server Starting. #{Time.now.strftime("%I:%M%p %m/%d/%Y")}")
     if DEBUG then
       Thread.abort_on_exception = true
       add_log_entry(L_MESSAGE,Time.now,"System running in Debug mode.")
@@ -807,11 +807,11 @@ class ServerSocket
     Thread.new {FlashPolicyServer.new(@debuglog).run} if FLASH_POL
 
     while true
-      @debuglog.push("-SA: Starting Server Accept Thread")
+      @debuglog.push("-SA: Starting Server Accept Thread #{Time.now.strftime("%I:%M%p %m/%d/%Y")}")
 
       if socket = @serverSocket.accept then
         Thread.new {
-          @debuglog.push("-SA: New Incoming Connection")
+          @debuglog.push("-SA: New Incoming Connection #{Time.now.strftime("%I:%M%p %m/%d/%Y")}")
           Session.new(@irc_who,@who,@message,@debuglog,socket).run
         }
       end

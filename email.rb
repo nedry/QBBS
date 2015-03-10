@@ -373,7 +373,7 @@ class Session
       if zone.nil? then
         zone = FIDOZONE
         net = r_message.orgnet
-        node = r_message.orgzone
+        node = r_message.orgnode
       end
       intl = "#{zone}:#{net}/#{node} #{FIDOZONE}:#{FIDONET}/#{FIDONODE}"
       m_type = F_NETMAIL

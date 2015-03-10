@@ -17,7 +17,7 @@ end
 
 
 def fetch_log(sys)
-puts "sys: #{sys}"
+
   if sys then
     result = Ulog.all(:subsystem => sys, :order => [ :ent_date.desc ])
   else

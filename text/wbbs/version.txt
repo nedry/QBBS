@@ -6,7 +6,7 @@
    \ `\___x___/\ \____/ \ \____/ \ `\____\
     '\/__//__/  \/___/   \/___/   \/_____/ %C;Theme
 %W;WBBS, version 4.50 (IBM-PC), 11/1/96  Copyright (C) 1986 by Wayne Conrad
-%W;  QUARKware 7 BBS for Linux   %g;Copyright %G;1985%g;-%G;2014 %g;Fly By Night Software
+%W;  QUARKware 8a BBS for Linux   %g;Copyright %G;1985%g;-%G;2014 %g;Fly By Night Software
    
   %G;Programmers:
        %WC; Mark Firestone %W;   %WG; Martin DeMello %W;    %WR; John Lorance %W;

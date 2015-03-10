@@ -168,6 +168,22 @@ class GraphFile
     }
   end
 
+    def non_standard_zone(inzone)
+      inzone = inzone[4..7] if inzone.length == 7
+      num = inzone.to_i(16)
+      minutes_utc = num - 65536
+      if minutes_utc > -720 and minutes_utc < 720 then
+        hours_utc = minutes_utc / 60.0
+        rem_h = hours_utc.ceil
+        remainder = minutes_utc - (hours_utc.ceil * 60)
+        t_remainder = remainder.abs.to_s
+        t_remainder << "0" if t_remainder.length < 2
+        return "#{rem_h}:#{t_remainder} UTC"
+      else
+        return "UNKNOWN"
+      end
+    end
+		
   def profileout(obj,index)
     theme = get_user_theme(@session.c_user)
     area = fetch_area(@session.c_area)
@@ -367,7 +383,7 @@ class GraphFile
           "%U_ALIAS%" => ualias,
           "%IP%" => ip,
           "%BBSNAME%" => SYSTEMNAME,
-          "%FIDOADDR%" => "#{FIDOZONE}:#{FIDONET}/#{FIDONODE}.#{FIDOPOINT}",
+          "%FIDOADDR%" => "#{FIDOZONE}:#{FIDONET}/#{FIDONODE}#{"." + FIDOPOINT if FIDOPOINT != 0}",
           "%VER%" => VER,
           "%WEBVER%" => "Sinatra #{Sinatra::VERSION}",
           "%TNODES%" => NODES.to_s,
