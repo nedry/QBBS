@@ -137,9 +137,9 @@ class Session
 
   def changeuserlevel(upointer)
     user = fetch_user(upointer)
-    prompt = "%W;User Level? (1-255): "
+    prompt = "%W;User Level? (0-255): "
     if upointer != 0 then
-      tempint = getnum(prompt,1,255)
+      tempint = getnum(prompt,0,255)
       if !tempint.nil? then
         user.level = tempint
         update_user(user)

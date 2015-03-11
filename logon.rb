@@ -152,6 +152,7 @@ end
     end #of while...true
 
     checkkillfile(username)
+		checklevelzero
     
 		
     logandgreetuser(username, ip,theme_no)
@@ -243,6 +244,17 @@ end
       end
     end
   end
+	
+	  def checklevelzero
+   
+      if @c_user.level ==0 then
+        add_log_entry(L_SECURITY,Time.now,"#{@c_user.name} attempted interactive logon.")
+        gfileout("interactive")
+        sleep(10)
+        hangup
+      end
+    end
+
 
   def add_user_to_wall
     add_wall(@c_user.number,"","Telnet")
