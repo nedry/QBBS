@@ -1,4 +1,5 @@
 require 'tools.rb'
+require 'tools.rb'
 require 'messagestrings.rb'
 require 'menu.rb'
 require 'doors.rb'
@@ -593,7 +594,7 @@ class Session
           when @cmd_hash["kick"] ; run_if_ulevel("kick") {youreoutahere}
           when @cmd_hash["questionaire"] ; run_if_ulevel("questionaire") {questionaire}
           when @cmd_hash["doors"] ; run_if_ulevel("doors") {doors(parameters)}
-          when @cmd_hash["other"] ; run_if_ulevel("other") {bbs(parameters)}
+          when @cmd_hash["bbslist"] ; run_if_ulevel("bbslist") {bbsmenu}
           when @cmd_hash["email"] ; run_if_ulevel("email") {sendemail(true)}
           when @cmd_hash["usrsetting"] ; run_if_ulevel("usrsetting") {usersettings}
           when @cmd_hash["readmnu"] ; run_if_ulevel("readmnu") {messagemenu(false)}
