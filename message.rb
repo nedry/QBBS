@@ -569,7 +569,7 @@ class Session
         end
         if theme.nomainmenu  #wbbs mode
           case sel
-          when @cmd_hash["uprofile"] ; run_if_ulevel("uprofile") {profilemenu}
+          when @cmd_hash["uprofile"] ; run_if_ulevel("uprofile") {if theme.profile_flat_menu then profilebrowse(nil) else profilemenu end }
           when @cmd_hash["leave"] ; run_if_ulevel("leave") {leave}
           when @cmd_hash["umaint"] ; run_if_ulevel("umaint") {usermenu}
           when @cmd_hash["kill_log"] ; run_if_ulevel("kill_log") {clearlog}

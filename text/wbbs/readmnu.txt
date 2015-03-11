@@ -1,6 +1,6 @@
 %W;MESSAGE COMMANDS:
-  %C;A%W;-%G;Area     %C;R %W;-%G;Reply          %C;-%W;-%G;Previous   %C;L%W;-%G;List
-  %C;E%W;-%G;Enter    %C;K %W;-%G;Kill           %C;+%W;-%G;Next       %C;\%W;-%G;Last
+  %C;A%W;-%G;Area     %C;R%W;-%G;Reply          %C;-%W;-%G;Previous   %C;L%W;-%G;List
+  %C;E%W;-%G;Enter    %C;K%W;-%G;Kill           %C;+%W;-%G;Next       %C;\%W;-%G;Last
   %C;/%W;-%G;Reread   %C;Z%W;-%G;Zip read   
 
 %W;To read the next message you haven't seen, just press RETURN (or ENTER).
