@@ -69,7 +69,14 @@ def add_bbslist(name,born_date,software,sysop,email,website, number, minrate,
           maxrate,location,network,terminal,megs,msgs,files,
           nodes, users, subs, dirs,xterns,desc,imported)
 
-  megs = 32767 if megs.to_i > 32767  # this should be a bigint and why doesn't dm-validtions catch this?
+  megs = 2147483647 if megs.to_i > 2147483647  # this should be a bigint and why doesn't dm-validtions catch this?
+	msgs = 2147483647 if msgs.to_i > 2147483647
+  files = 2147483647 if files.to_i > 2147483647
+  nodes = 2147483647 if nodes.to_i > 2147483647
+  users = 2147483647 if users.to_i > 2147483647 
+  subs = 2147483647 if  subs.to_i > 2147483647
+  dirs = 2147483647 if dirs.to_i > 2147483647
+  xterns = 2147483647 if xterns.to_i > 2147483647
 
   newbbs = Bbslist.new(
     :user => "SYSTEM",

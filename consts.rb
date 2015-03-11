@@ -4,7 +4,7 @@ LISTENPORT = 2323
 QWK = false
 QWK_DEBUG = false
 NNTP = false
-FIDO = false
+FIDO =true 
 SMTP = false
 IRC_ON =  false
 IRC_DEBUG = true
@@ -23,7 +23,7 @@ POLICYPORT = 8430
 BOT_RECONNECT_DELAY = 60
 
 BBS_LIST_MSG_AREA = 4
-BBS_LIST_USER = "BBSLIST"
+BBS_LIST_USER = "BBSINFO"
 
 #if the schedule thread hangs, how long to wait to try again.
 SCHED_RECONNECT_DELAY = 480

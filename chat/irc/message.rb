@@ -183,7 +183,6 @@ module IRC
   s = IRC::Security.new
 
      if usermask =~ /(#{s.nick})!#{s.ident}(#{s.user})@(#{s.host})/
-       puts "TRUE"
         return ["#{$1}", "#{$2}", "#{$3}"]
       end
 

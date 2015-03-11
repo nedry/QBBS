@@ -368,6 +368,7 @@ class Session
     if r_message.f_network then
       happy = (/(.*) (.*)/) =~ r_message.intl
       r_intl = $2
+			r_intl = "#{FIDOZONE}:#{r_message.orgnet}/#{r_message.orgnode}" if !happy
       print "Replying to: #{to} (#{r_intl})"
       zone,net,node,point = parse_intl(r_intl)
       if zone.nil? then
@@ -412,7 +413,7 @@ class Session
       update_system(system)
       case m_type
       when F_NETMAIL
-        table,number = find_fido_area(NETMAIL)
+        number = find_fido_area(NETMAIL)
         savecurmessage(number, to, :title => title,:destnode => node,:destnet => net,:intl => intl, :point => point)
         print "Sending Netmail..."
       when Q_NETMAIL

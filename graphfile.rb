@@ -383,7 +383,7 @@ class GraphFile
           "%U_ALIAS%" => ualias,
           "%IP%" => ip,
           "%BBSNAME%" => SYSTEMNAME,
-          "%FIDOADDR%" => "#{FIDOZONE}:#{FIDONET}/#{FIDONODE}#{"." + FIDOPOINT if FIDOPOINT != 0}",
+          "%FIDOADDR%" => "#{FIDOZONE}:#{FIDONET}/#{FIDONODE}#{"." + FIDOPOINT.to_s if FIDOPOINT != 0}",
           "%VER%" => VER,
           "%WEBVER%" => "Sinatra #{Sinatra::VERSION}",
           "%TNODES%" => NODES.to_s,
