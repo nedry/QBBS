@@ -4,12 +4,12 @@
   menu_item: A
   
 - cmd: masskill
-  theme_key: 1
+  theme_key: 2
   ulevel: 255
   menu_item: MK
   
 - cmd: smaint
-  theme_key: 1
+  theme_key: 2
   ulevel: 255
   menu_item: SM
   
