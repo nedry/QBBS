@@ -1,0 +1,12 @@
+%W;USER PROFILES:
+  %C;A%W;-%G;dd / Edit Your Entry     %C;S%W;-%G;earch for Entry         
+ %C;PU%W;-%G;Page User                %C;C%W;-%G;ontinous List
+  %C;W%W;-%G;ho is Online             %C;I%W;-%G;nformation
+	  %C;+%W;-%G;Next                     %C;-%W;-%G;Last
+  %C;/%W;-%G;Reread                   %C;Q%W;-%G;uit  
+  %C;?%W;-%G;This Menu
+	
+   The User Profile entries may be read like messages, by pressing 
+   return after each entry, or may be read all at once in condensed 
+   format using the %C;C%W;-%G;ondensed List command.
+
