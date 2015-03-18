@@ -162,14 +162,14 @@ def togglemore
 end
 
 def displayzipheader
-  print "%W;#      %B;Board Description                    %W;Include?"
-  print "%W;--     %B;-----------------                    %W;--------"
+  print "%W;#      %C;Board Description                    %G;Include?"
+  print "%W;--     %C;-----------------                    %G;--------"
 end
 
 def displayziplist
 
   displayzipheader
-  scanforaccess
+  scanforaccess(@c_user)
   more = 0
   cont = true
   for i in 1..(a_total - 1)
@@ -182,7 +182,7 @@ def displayziplist
     pointer = get_pointer(@c_user,i)
     if (pointer.access[i] != "I") or (user.level == 255)
       more += 1
-      write "%W#{i.to_s.ljust(5)}  %B#{a_name.ljust(40)}"
+      write "%W;#{i.to_s.ljust(5)}  %C;#{a_name.ljust(40)}%G;"
       print "#{pointer.zipread ? "Yes" : "No"}"
       if more > 19 then
         cont = yes_num(prompt,true,true)

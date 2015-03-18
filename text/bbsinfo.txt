@@ -9,7 +9,7 @@ Web-site:      bbs.cortex-media.info
 
 Number:        bbs.cortex-media.info
 MinRate:       65535
-MaxRate:       23
+MaxRate:       4223
 Location:      %SYSLOC%
 
 Network:       DOVE-Net

@@ -131,7 +131,7 @@ class MailSchedulethread
     @totalareas = 0
     @debuglog = debuglog
     #@arealist = Arealist_qwk.new
-    sleep (60) if !DEBUG #give the bot thread time to start before we launch other stuff
+    sleep (60) if IRC_ON #give the bot thread time to start before we launch other stuff
 
   end
 
@@ -190,7 +190,6 @@ class MailSchedulethread
           born_date = Date.parse($2.strip)
         rescue
           @debuglog.push ("-ERROR: Invalid date in BBS List Entry")
-          sleep(1)
         end
       when "Sysop"
         sysop = $2.strip
@@ -338,7 +337,7 @@ class MailSchedulethread
   end
 
   def savesystemmessage(x, to, title,text)
-    #just to save a message from the SYSTEM account.  The whole message saving system is kludgy.  Rewrite!
+
 
     area = fetch_area(x)
     text << DLIM
@@ -589,10 +588,12 @@ class Happythread
     rescue Exception => e
       add_log_entry(8,Time.now,"Who Thread Crash! #{$!}")
       @debuglog.push("-ERROR: Who Thread Crash.  #{$!}")
-      print $!
-      print e.backtrace.map { |x| x.match(/^(.+?):(\d+)(|:in `(.+)')$/);
+      @debuglog.push($!)
+      @debuglog.push (e.backtrace.map { |x| x.match(/^(.+?):(\d+)(|:in `(.+)')$/);
         [$1,$2,$3]
-      }
+      })
+			sleep(60)
+			retry
 
     end
   end
@@ -671,13 +672,13 @@ class ConsoleThread
       @height, @width = TermInfo.screen_size
       @win = newwin(22, @width - 2, 1, 1)
       #box(@win, 0, 0)
-      debug_lines = @height - 15
+      debug_lines = @height - 10
       #  if DEBUG then
       #   @border_win = newwin(9,@width - 6,12,3)
       #  @inner_win = newwin(7, @width - 10, 13, 5)
       #  else
-      @border_win = newwin(debug_lines,@width - 6,12,3)
-      @inner_win = newwin(debug_lines - 2, @width - 10,13, 5)
+      @border_win = newwin(debug_lines,@width - 6,8,3)
+      @inner_win = newwin(debug_lines - 2, @width - 10,9, 5)
       # end
       # wborder(@border_win, 124, 124, 45, 45, 43, 43, 43, 43)
       wattr_set(@border_win, A_BOLD, 3, nil)
