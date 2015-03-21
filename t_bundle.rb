@@ -85,8 +85,8 @@ def check_for_packets
   if entries.length > 0 then
     @debuglog.push( "-BUNDLE: Found #{entries.length} bundles to import.")
 		#we don't need these files unless we are a hub which we aren't so... move them so they don't confuse the unbundler...
-    system ("mv -f *.tic #{BACKUPIN} > /dev/null 2>&1")
-    system ("mv -f nodelist.* #{BACKUPIN} > /dev/null 2>&1")
+    system ("mv -f #{BUNDLEINDIR}/*.tic #{BACKUPIN} > /dev/null 2>&1")
+    system ("mv -f #{BUNDLEINDIR}/nodelist.* #{BACKUPIN} > /dev/null 2>&1")
 		
     entries.each {|entry|
       happy = system("cp -f #{entry} #{BACKUPIN} > /dev/null 2>&1")
