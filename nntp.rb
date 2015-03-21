@@ -91,7 +91,7 @@ def nntp_getarticle(artnum)
   nntp_send("ARTICLE #{artnum}") if !artnum.nil?
   while !done
     line = nntp_recv
-    @debuglog.push( "-NNTP: #{line}")
+   # @debuglog.push( "-NNTP: #{line}")
     article << line
     count = count + 1
     done = true if line == "."
@@ -322,8 +322,10 @@ def nntp_parsearticle(article,area)
     :xcomplaintsto => xcomplaintsto, :xtrace => xtrace, :nntppostingdate => nntppostingdate,
     :xoriginalbytes => xoriginalbytes, :ftnarea => ftntid, :ftnpid => ftnpid, :messageid => messageid,
     :exported => true, :usenet_network => true)
+	    @debuglog.push("-NNTP: adding message: #{absolute}")
+
   else
-    "-NNTP: Dropping article it's from us!"
+		    @debuglog.push("-NNTP: Dropping article it's from us!")
     absolute = nil
   end
   return absolute
