@@ -137,8 +137,9 @@ end
 
         password = getpwd("Enter password for user #{username}: ")
        if check_password(username.upcase, password) then
-					checkmultiplelogon
+					
 					@c_user = fetch_user(get_uid(username))
+							checkmultiplelogon
 					@node = addtowholist
           @who.each {|who| add_page(get_uid("SYSTEM"),who.c_alias,"*** #{@c_user.name} has just logged into the system.",true)}
           defaulttheme
@@ -156,6 +157,7 @@ end
     
 		
     logandgreetuser(username, ip,theme_no)
+
 
 
   end

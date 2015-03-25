@@ -24,7 +24,7 @@ def door_do (path,d_type)
   begin
     PTY.spawn(path) do |read, w, p|
 
-  w.putc(13.chr) if d_type == "DOS" #we want to put a ENTER in so dosemu won't pause at intro
+# w.putc(13.chr) if d_type == "DOS" #we want to put a ENTER in so dosemu won't pause at intro
       exit = false
       while !exit
         while !exit 
@@ -55,15 +55,15 @@ def door_do (path,d_type)
 								 ret = true if i == user_len
 							 end
               rescue 
-                sleep (5)
+                sleep (1)
                 print (CLS)
                 print (HOME)
 
                 @who.user(@c_user).where = "Main Menu"
                 return
               end
-                @socket.write CR.chr if char == LF
-								@socket.write(char.chr) 
+              #  @socket.write CR if (char == LF) and (d_type == "DOS")
+								@socket.write(char) 
             end
 
             if r.include?(@socket)
@@ -71,18 +71,20 @@ def door_do (path,d_type)
               time = Time.now
               @who.user(@c_user.name).ping =  time.to_i if !@c_user.nil?
 
-              if d_type == DOS then
-                w.putc(char.chr) if (char != 3) and (char != 27) #we want to block ctrl-c and esc
-              else
-                w.putc(char.chr) if (char !=3) 
-              end
+             # if d_type == "DOS" then
+             #   w.putc(char) if (char.ord != 3) and (char.ord != 27) #we want to block ctrl-c and esc
+           #   else
+                w.putc(char) if (char.ord !=3) and (char.ord != 0) and (char.ord != 10)
+@debuglog.push("#{char}:#{char.ord}")
+            #  end
             end
           end
         end
       end
     end 
-  rescue 
-
+  rescue Exception => e
+ #@debuglog.push( e.backtrace.map { |x| x.match(/^(.+?):(\d+)(|:in `(.+)')$/);
+  #    [$1,$2,$3]})
     return
   end
 
