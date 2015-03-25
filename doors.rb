@@ -75,7 +75,7 @@ def door_do (path,d_type)
              #   w.putc(char) if (char.ord != 3) and (char.ord != 27) #we want to block ctrl-c and esc
            #   else
                 w.putc(char) if (char.ord !=3) and (char.ord != 0) and (char.ord != 10)
-@debuglog.push("#{char}:#{char.ord}")
+
             #  end
             end
           end
