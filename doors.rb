@@ -1,7 +1,14 @@
 require "pty"
 require "messagestrings.rb"
+require 'digest/md5'
+
 D_LIMIT = 1
 D_IDLE = 5
+
+def hex_to_base64_digest(hexdigest)
+  [[hexdigest].pack("H*")].pack("m0")
+end
+
 
 def random_password
   return (0...8).map { (65 + rand(26)).chr }.join
@@ -22,7 +29,13 @@ def door_do (path,d_type)
 	user_arr =  ">#{u_name}"
 	
   begin
-    PTY.spawn(path) do |read, w, p|
+   
+	 #make an MD5 hash in Base 64 for InterBBS userid
+	 
+   code = Digest::MD5.hexdigest(@c_user.name)
+	 out_path = path.gsub("%uid",hex_to_base64_digest(code).slice(0..7))
+
+    PTY.spawn(out_path) do |read, w, p|
 
 # w.putc(13.chr) if d_type == "DOS" #we want to put a ENTER in so dosemu won't pause at intro
       exit = false
