@@ -34,6 +34,7 @@ def door_do (path,d_type)
 	 
    code = Digest::MD5.hexdigest(@c_user.name)
 	 out_path = path.gsub("%uid",hex_to_base64_digest(code).slice(0..7))
+	 @debuglog.push ("Door opening path - #{out_path}")
 
     PTY.spawn(out_path) do |read, w, p|
 
