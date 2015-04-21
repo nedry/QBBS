@@ -1,5 +1,4 @@
-<pre>Welcome Aboard The:
-
+Welcome Aboard The:
 
           |[]|\                   ////\
           |[]| | ////\   ////\   //// /  ////\   ////\    ////\  ////\
@@ -16,8 +15,8 @@
       |[]| |    \\\\/  //// /   |[]|/ |[]| |    \\\\/ |[]| |    \\\\/
        \\\\|           \\\\/           \\\\|           \\\\|
 
-
                          [ Sysop   /  :MOTHER: ]
                          [ Remote  /     RS    ]
 
                 [ "In space, no one can hear you scream" ]
+				A MEMBER OF  THE BBSLINKINTERBBS GAMES SERVER 

@@ -523,8 +523,7 @@ class MailSchedulethread
     rescue Exception => e
       @debuglog.push("ERROR: An error occurred in QWK/REP scheduler thread died: #{$!}" )
       add_log_entry(L_ERROR,Time.now,"An error occurred in QWK/REP scheduler thread died: #{$!}")
-      @debuglog.push( e.backtrace.map { |x| x.match(/^(.+?):(\d+)(|:in `(.+)')$/);
-      [$1,$2,$3]})
+      @debuglog.push( e.backtrace)
 
       if SCHED_RECONNECT_DELAY > 0 then
         add_log_entry(L_MESSAGE,Time.now,"Sched thread restart in #{SCHED_RECONNECT_DELAY} seconds.")
@@ -589,9 +588,7 @@ class Happythread
       add_log_entry(8,Time.now,"Who Thread Crash! #{$!}")
       @debuglog.push("-ERROR: Who Thread Crash.  #{$!}")
       @debuglog.push($!)
-      @debuglog.push (e.backtrace.map { |x| x.match(/^(.+?):(\d+)(|:in `(.+)')$/);
-        [$1,$2,$3]
-      })
+      @debuglog.push (e.backtrace)
 			sleep(60)
 			retry
 
@@ -624,8 +621,10 @@ class ConsoleThread
 
 
   def update_debug(line)
-		
-		line.gsub!(/\0/, '') if line.kind_of? String # remove null bytes
+		if line.kind_of? String then # remove null bytes
+		line.encode!('UTF-8', 'UTF-8', :invalid => :replace)
+		line.gsub!(/\0/, '') 
+		end
     waddstr(@inner_win, "#{line}\n")
     wrefresh(@inner_win)
     #wrefresh(@win)
@@ -645,7 +644,7 @@ class ConsoleThread
 			system("reset")
 		end
 		
-    begin
+    #begin
       # main_window
       flushinp
 
@@ -728,15 +727,21 @@ class ConsoleThread
         sleep(1)
       end
 
-    rescue => e
-      FFI::NCurses.endwin
-      raise
+    rescue Exception => e
+      add_log_entry(8,Time.now,"Console Thread Crash! #{$!}")
+      puts("-ERROR: Console Thread Crash.  #{$!}")
+      puts($!)
+      puts(e.backtrace)
+			FFI::NCurses.endwin
+			sleep(60)
+		retry
+
     ensure
       FFI::NCurses.endwin
     end
   end
 
-end
+#end
 
 class FlashPolicyServer
 

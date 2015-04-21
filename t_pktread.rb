@@ -262,13 +262,21 @@ def add_fido_msg(fidomessage)
       fidomessage.msgid = fidomessage.msgid[0..79] if fidomessage.msgid.length > 80
     end
 
+fidomessage.subject.encode!('UTF-8', 'UTF-8', :invalid => :replace,  :undef => :replace)   if !fidomessage.to.nil?
+fidomessage.from.encode!('UTF-8', 'UTF-8', :invalid => :replace,  :undef => :replace)   if !fidomessage.from.nil?
+fidomessage.to.encode!('UTF-8', 'UTF-8', :invalid => :replace,  :undef => :replace)   if !fidomessage.subject.nil?
+msgout = fidomessage.message.join(DLIM)
+msgout.encode!('UTF-8', 'UTF-8', :invalid => :replace)   if !fidomessage.message.nil?
+
     #puts "----"
     a = fetch_area(number)
     @debuglog.push(  "FIDO: importing message to: #{a.name}")
 		    @debuglog.push(  "fidomessage.message: #{fidomessage.message}")
   
-    absolute = add_msg(fidomessage.to,fidomessage.from,number, :msg_date => fidomessage.datetime.strip, :subject =>fidomessage.subject,
-    :msg_text => convert_to_utf8(fidomessage.message.join(DLIM)),:exported => true, :destnode => fidomessage.destnode,
+    absolute = add_msg(fidomessage.to,
+		fidomessage.from,number, :msg_date => fidomessage.datetime.strip, 
+		:subject =>fidomessage.subject,
+    :msg_text => msgout ,:exported => true, :destnode => fidomessage.destnode,
     :orgnode => fidomessage.orgnode, :orgnet => fidomessage.orgnet, :destnet => fidomessage.destnet,
     :attribute => fidomessage.attribute, :cost => fidomessage.cost, :fntarea => fidomessage.area, :msgid => fidomessage.msgid,
     :path => fidomessage.path, :tzutc => fidomessage.tzutc, :cost => fidomessage.charset, :tid => fidomessage.tid,
