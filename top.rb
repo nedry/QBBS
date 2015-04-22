@@ -622,7 +622,7 @@ class ConsoleThread
 
   def update_debug(line)
 		if line.kind_of? String then # remove null bytes
-		line.encode!('UTF-8', 'UTF-8', :invalid => :replace)
+		line = line.force_encoding('UTF-8').encode('UTF-16', :invalid => :replace, :replace => '?').encode('UTF-8')
 		line.gsub!(/\0/, '') 
 		end
     waddstr(@inner_win, "#{line}\n")
@@ -728,11 +728,12 @@ class ConsoleThread
       end
 
     rescue Exception => e
+			FFI::NCurses.endwin
       add_log_entry(8,Time.now,"Console Thread Crash! #{$!}")
-      puts("-ERROR: Console Thread Crash.  #{$!}")
+     # puts("-ERROR: Console Thread Crash.  #{$!}")
       puts($!)
       puts(e.backtrace)
-			FFI::NCurses.endwin
+
 			sleep(60)
 		retry
 

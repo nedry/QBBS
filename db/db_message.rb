@@ -344,7 +344,7 @@ def add_qwk_message(message, area,qwkuser)
 end
 
 def nntp_convert(text)
-
+	text = "" if text.nil?
         text_out = ""
   text_out = text.force_encoding('UTF-8').encode('UTF-16', :invalid => :replace, :replace => '?').encode('UTF-8') if !text.nil?
 

@@ -133,7 +133,7 @@ def read_a_message(path,offset)
   kludges.reply,kludges.origin)
 
   #TODO: remove all the commented-out code
-
+ STDERR.puts
  @debuglog.push( "Org:       #{fidomessage.orgnet}/#{fidomessage.orgnode}")
  @debuglog.push( "Dest:      #{fidomessage.destnet}/#{fidomessage.destnode}")
  @debuglog.push( "Attribute: #{fidomessage.attribute}")
@@ -154,6 +154,8 @@ def read_a_message(path,offset)
  @debuglog.push( "Fmpt:      #{fidomessage.fmpt}") if !fidomessage.fmpt.nil?
  @debuglog.push( "Reply:     #{fidomessage.reply}") if !fidomessage.reply.nil?
  @debuglog.push( "Origin:    #{fidomessage.origin}") if !fidomessage.origin.nil?
+ 
+ 
  # puts
    puts
 
@@ -262,20 +264,26 @@ def add_fido_msg(fidomessage)
       fidomessage.msgid = fidomessage.msgid[0..79] if fidomessage.msgid.length > 80
     end
 
-fidomessage.subject.encode!('UTF-8', 'UTF-8', :invalid => :replace,  :undef => :replace)   if !fidomessage.to.nil?
-fidomessage.from.encode!('UTF-8', 'UTF-8', :invalid => :replace,  :undef => :replace)   if !fidomessage.from.nil?
-fidomessage.to.encode!('UTF-8', 'UTF-8', :invalid => :replace,  :undef => :replace)   if !fidomessage.subject.nil?
-msgout = fidomessage.message.join(DLIM)
-msgout.encode!('UTF-8', 'UTF-8', :invalid => :replace)   if !fidomessage.message.nil?
+subject = nntp_convert(fidomessage.subject) 
+from = nntp_convert(fidomessage.from)
+to = nntp_convert(fidomessage.to)
+
+msgout = ""
+if !fidomessage.message.nil?
+msgout = nntp_convert(fidomessage.message.join(DLIM))
+
+end
+
+
 
     #puts "----"
     a = fetch_area(number)
     @debuglog.push(  "FIDO: importing message to: #{a.name}")
 		    @debuglog.push(  "fidomessage.message: #{fidomessage.message}")
-  
-    absolute = add_msg(fidomessage.to,
-		fidomessage.from,number, :msg_date => fidomessage.datetime.strip, 
-		:subject =>fidomessage.subject,
+
+
+
+    absolute = add_msg(to,from,number, :msg_date => fidomessage.datetime.strip, :subject =>subject,
     :msg_text => msgout ,:exported => true, :destnode => fidomessage.destnode,
     :orgnode => fidomessage.orgnode, :orgnet => fidomessage.orgnet, :destnet => fidomessage.destnet,
     :attribute => fidomessage.attribute, :cost => fidomessage.cost, :fntarea => fidomessage.area, :msgid => fidomessage.msgid,
