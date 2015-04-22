@@ -93,7 +93,6 @@ class Session
       when "K"; deletemessage(epointer)
       when "N"; gfileout ("emailsnd");sendemail(false)
       when "S"; gfileout ("emailsnd");sendemail(false)
-			when "FH"; display_fido_header(epointer)
       when "Q"; break # exit input loop
       when /\d+/; epointer = jumpemail(happy.to_i,epointer,e_total(u.name)+1)
       else; print "%WR;Out of Range.%W;"

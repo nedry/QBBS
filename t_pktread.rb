@@ -288,7 +288,7 @@ end
     :orgnode => fidomessage.orgnode, :orgnet => fidomessage.orgnet, :destnet => fidomessage.destnet,
     :attribute => fidomessage.attribute, :cost => fidomessage.cost, :fntarea => fidomessage.area, :msgid => fidomessage.msgid,
     :path => fidomessage.path, :tzutc => fidomessage.tzutc, :cost => fidomessage.charset, :tid => fidomessage.tid,
-    :pid => fidomessage.pid, :orgin => fidomessage.origin, :f_network => true)
+    :pid => fidomessage.pid, :orgin => fidomessage.origin, :f_network => true, :intl => fidomessage.intl)
 
     #Update pointers
     user = fetch_user(get_uid(FIDOUSER))
