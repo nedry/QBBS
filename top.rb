@@ -644,7 +644,7 @@ class ConsoleThread
 			system("reset")
 		end
 		
-    #begin
+   # begin
       # main_window
       flushinp
 
@@ -702,7 +702,7 @@ class ConsoleThread
             update_debug("-SA: Shutting Down...")
             sleep(1)
 						endwin
-            exit
+            abort #
           when 4  #Control D for Display
             case @display_debug
             when true
@@ -727,22 +727,22 @@ class ConsoleThread
         sleep(1)
       end
 
-    rescue Exception => e
-			FFI::NCurses.endwin
+   # rescue Exception => e
+		#	FFI::NCurses.endwin
       add_log_entry(8,Time.now,"Console Thread Crash! #{$!}")
      # puts("-ERROR: Console Thread Crash.  #{$!}")
-      puts($!)
-      puts(e.backtrace)
+     # puts($!)
+     # puts(e.backtrace)
 
-			sleep(60)
-		retry
+			#sleep(60)
+		#retry
 
-    ensure
+   # ensure
       FFI::NCurses.endwin
-    end
+ #   end
   end
 
-#end
+end
 
 class FlashPolicyServer
 

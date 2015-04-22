@@ -139,11 +139,11 @@ class Session
     ptr_check
     u = @c_user
     area = fetch_area(0)
-    total = e_total(area.tbl,u.name)
+    total = e_total(u.name)
 
     if epointer > 1 then
       epointer -=1
-      displaymessage(epointer,area.tbl,true)
+      displaymessage(epointer,area.number,true)
     else
       print("%WR; No More Email %W;")
     end
