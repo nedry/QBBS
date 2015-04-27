@@ -3,7 +3,7 @@
 | | | | | | |/ _ \ | |_) | ' /\ \ /\ / / _` | '__/ _ \ |  _ \|  _ \___ \ 
 | |_| | |_| / ___ \|  _ <| . \ \ V  V / (_| | | |  __/ | |_) | |_) |__) |
  \__\_\\___/_/   \_\_| \_\_|\_\ \_/\_/ \__,_|_|  \___| |____/|____/____/ 
-%W;  QUARKware 8a BBS for Linux   %g;Copyright %G;1985%g;-%G;2015 %g;Fly By Night Software
+%W;  QUARKware 8b BBS for Linux   %g;Copyright %G;1985%g;-%G;2015 %g;Fly By Night Software
 
    
   %G;Programmers:
@@ -16,5 +16,5 @@
         %M;Datamapper (Database)...........%W;The Datamapper Team
         %M;Natter (IRC)....................%W;Johnathan Perkins 
         %M;RubyMail (SMTP Email)...........%W;Matt Armstrong      
-        %M;Rbot 0.9.15.....................%W;The Rbot Team
+        %M;Converted Rbot Plugins..........%W;The Rbot Team
  

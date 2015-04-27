@@ -54,7 +54,7 @@ ECHO = true
 NOECHO = false
 WRAP = true
 NOWRAP = false
-VER = "QUARKware (QBBS) 8a"
+VER = "QUARKware (QBBS) 8b"
 DONE = false
 
 SYSOPNAME = "SYSOP"

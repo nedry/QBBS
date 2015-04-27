@@ -143,7 +143,7 @@ class Session
 
     if epointer > 1 then
       epointer -=1
-      displaymessage(epointer,area.number,true)
+      displaymessage(epointer,area.tbl,true)
     else
       print("%WR; No More Email %W;")
     end

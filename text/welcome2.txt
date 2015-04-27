@@ -16,10 +16,10 @@ You have connected from IP Address: %IP%.
 %g;  Copyright %G;1985%g;-%G;2012 %g;Fly By Night Software - http://www.cortex-media.info  
   
   
-New features in this version:  %W;o%G; "Full" FIDO support  
+New features in this version:  %W;o%G; full FIDO support  
                                %W;o%G; Multiple BBS "systems"  
                                %W;o%G; Synchronet Compatable BBS list  
-                               %W;o%G; BBSLink Support
+                               %W;o%G; Native IRC / Chat plugins  
   
   
 %PAUSE%  

@@ -52,13 +52,13 @@ module IrcConference
   end
 
   def handle_join(m)
-    (/^:(.*)!(.*)/) =~ m.messageW913PB06483
+    (/^:(.*)!(.*)/) =~ m.message
     if $1 == @irc_alias then
       @irc_client.part(@irc_channel)
       @irc_channel = m.params
       out ="%Y;*** You have joined the channel #{@irc_channel}#{CRLF}%W;"
     else
-      out ="%Y;*** #{$1} has joined this channel#{CRLF}%W;"
+   #   out ="%Y;*** #{$1} has joined this channel#{CRLF}%W;"
     end
     return out
   end

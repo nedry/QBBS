@@ -1,16 +1,8 @@
 # Load the API.
 require 'chat/irc'
-require 'rbconfig'
 require 'cgi'
 require "db/db_class.rb"
-require "rbot/r_timer"
-require "rbot/r_message"
 
-require "rbot/r_config"
-require "rbot/r_config-compat"
-require "rbot/r_utils"
-require "rbot/r_extends"
-require "rbot/rregistry"
 
 
 
@@ -66,27 +58,18 @@ require "wrap"
 
 class Botthread
 
+require "PlugMan.rb"
 
-
-  require "rbot/r_plugins"
-  require "rbot/rregistry"
-  require "rbot/r_wrap"
-  require  "rbot/r_load-gettext"
 
 
   def initialize (irc_who,who,message,debuglog)
-    @irc_who,@who, @message = irc_who,who, message
-    @plugins = Plugins::manager
-    $botpassthru = self   #for shame.  using this to get
-    @plugins.scan
-    @registry = BotRegistry.new self
-    @debuglog = debuglog
-
+    @irc_who,@who, @message, @debuglog = irc_who,who, message, debuglog
   end
 
+############################################################
+# The following code is from Rbot 0.9.15
 
-
-  def send_me(where, message) #compatiblity with r_bot plugins
+  def send_me(where, message)  
     where = IRCCHANNEL if where.nil?
     @flood_delay = 0
     #split lines longer than 400 char into mulitipile lines.  limit is 512 so this gives us some margin
@@ -94,41 +77,69 @@ class Botthread
     output.each_line { |line|
       line.chomp!
       sleep (@flood_delay)
-
       next unless(line.length > 0)
       send_irc(where,line)
       @flood_delay = 1 + line.length/100
     }
   end
 
-  def who #compatiblity with r_bot plugins  def who  # expose bbs who list to plugins
-    @who
-  end
-
-  def myself
-    IRCBOTUSER
-  end
-
-
-  def nick #compatiblity with r_bot plugins
-    IRCBOTUSER
-  end
-
-
-
-
-
-  def delegate_privmsg(message) #compatiblity with r_bot plugins
-    [@plugins].each {|m|
-      if m.privmsg(message)
-        break
+def doWrap(text, margin)
+    output = ''
+    text.each_line do #1.9 fix
+      | paragraph |
+      if (paragraph !~ /^>/)
+        paragraph = wrapParagraph(paragraph, margin-1)
       end
-    }
+      output += paragraph
+    end
+    return output
   end
 
-  def delegate_join(message)
-    [@plugins].each {|m| m.irc_delegate(:join,message)}
+
+  def wrapParagraph(paragraph, width)
+    lineStart = 0
+    lineEnd = lineStart + width
+    while lineEnd < paragraph.length
+      newLine = paragraph.index("\n", lineStart)
+      if newLine && newLine < lineEnd
+        lineStart = newLine+1
+        lineEnd = lineStart + width
+        next
+      end
+      tryAt = lastSpaceOnLine(paragraph, lineStart, lineEnd)
+      paragraph[tryAt] = paragraph[tryAt].chr + "\r\n"
+      tryAt += 2
+      lineStart = findFirstNonSpace(paragraph, tryAt)
+      paragraph[tryAt...lineStart] = ''
+      lineStart = tryAt
+      lineEnd = lineStart+width
+    end
+    return paragraph
   end
+
+  def findFirstNonSpace(text, startAt)
+    startAt.upto(text.length) do
+      | at |
+      if text[at] != 32
+        return at
+      end
+    end
+    return text.length
+  end
+
+  def lastSpaceOnLine(text, lineStart, lineEnd)
+    lineEnd.downto(lineStart) do
+      | tryAt |
+      case text[tryAt].chr
+        when ' ', '-'
+          return tryAt
+      end
+    end
+    return lineEnd
+  end
+	
+#End
+############################################################
 
   def send_irc(user,message)
     @irc_bot.privmsg(user,message) if message != ""
@@ -138,38 +149,92 @@ class Botthread
     @irc_bot.privmsg(IRCCHANNEL,message) if message != ""
   end
 
-  def help(topic=nil)
-    topic = nil if topic == ""
-    case topic
-    when nil
-      helpstr = _("help: ")
-      helpstr += @plugins.helptopics
-      helpstr += _(" (help <topic> for more info)")
-    else
-      unless(helpstr = @plugins.help(topic))
-        helpstr = _("no help for topic %{topic}") % { :topic => topic }
-      end
-    end
-    return helpstr
-  end
 
+	
+PlugMan.define :main do
+  author "Mark"
+  version "1.0.0"
+  extends(:root => [:root])
+  requires []
+  extension_points [:bots]
+  params()
+	
+	def delegate(m,debuglog,who)
+		      chan = nil; out = nil;
+	        if m.kind_of? IRC::Message::Private then
+            if (m.dest ==  IRCCHANNEL) or (m.dest == IRCBOTUSER)  then
+              instr = m.params.to_s
+              happy = /^\!(.*)/ =~ instr
+              if happy then
+								  cmd = $1.split.first(1).join(' ').downcase
+							    PlugMan.extensions(:main, :bots).each do |plugin|
+									out,chan = plugin.do(m,:debuglog => debuglog, :who => who) if plugin.params.has_value? (cmd)
+							end
+	          end
+					end
+          return [chan,out]
+				end
+
+	        if m.kind_of? IRC::Message::Join then
+							    PlugMan.extensions(:main, :bots).each do |plugin|
+									out,chan = plugin.do(m,:debuglog => debuglog, :who => who) if plugin.params.has_key? (:join)
+					end
+          return [chan,out]
+			end
+
+	end
+		
+
+		
+	  def plugin_info(debuglog)
+    debuglog.push( "-BOT: Registered plugins")
+    puts
+    
+    # loop all the plugins in the system, sorting before we loop
+    PlugMan.registered_plugins.sort do |a,b|
+      a.to_s <=> b.to_s
+    end.each do |k,v|
+      # printout plugin information
+
+      debuglog.push ("    Name #{k.inspect} (#{v.version}) Author: #{v.author} ")
+      
+      # gather the plugins connected to the plugin's extension points
+      str = ""
+      v.extension_points.each do |extpt|
+        conn = []
+        PlugMan.extensions(k, extpt).each do |pl|
+          conn << pl.name.to_s
+        end
+        str = "#{extpt.inspect}(#{conn.join(", ")})"
+      end if v.extension_points
+		
+
+    end
+		
+  end
+	
+end
   #
   def run
     begin
       @debuglog.push("-BOT: Starting up...")
       add_log_entry(L_MESSAGE,Time.now,"IRC Bot thread starting.")
-      @irc_bot = IrcBot.new(IRCSERVER, IRCPORT)
+			@debuglog.push("-BOT: Loading Plugins")
+			PlugMan.load_plugins "./botplugins"
+			PlugMan.start_all_plugins
+      PlugMan.registered_plugins[:main].plugin_info(@debuglog)
+      @irc_bot = IRC::Client::new(IRCSERVER, IRCPORT)
 
       IRC::Event::Ping.new(@irc_bot)
 
       # Log onto the server.
-      @irc_bot.login
+      @irc_bot.login(IRCBOTUSER, IRCBOTUSER, "8", "*", "I am the BBS bot.")
 
       names = false
       tick = 0
 
       loop do
-        sleep(5) if !@irc_bot.isdata
+        sleep(1) if !@irc_bot.isdata
         tick += 1
 
         @message.each {|x| send_irc_all(x)}
@@ -186,7 +251,7 @@ class Botthread
         end
 
         if m then
-          #puts "BOT: #{m.message}"
+         # @debuglog.push( "BOT: #{m.message}")
           if m.is_a? IRC::Message::Numeric then
             if m.command == IRC::RPL_NAMREPLY then
 
@@ -211,54 +276,17 @@ class Botthread
           end
 
           if m.command == IRC::RPL_ENDOFMOTD || m.command == IRC::ERR_NOMOTD
-            @irc_bot.join_channel
-          end
-          if m.kind_of? IRC::Message::Join then
-            instr = m.message.to_s
-            happy = /^:(\S*)\!(.*)/ =~ instr
-            if happy then
-              mess = JoinMessage.new(self,nil,$1,m.params.to_s,nil)
-              delegate_join(mess)
-            end
-          end
-          if m.kind_of? IRC::Message::Private then
-            if (m.dest ==  IRCCHANNEL) or (m.dest == IRCBOTUSER)  then
-              instr = m.params.to_s
-              happy = /^\!(.*)/ =~ instr
-              if happy then
-
-                mess = PrivMessage.new(self,nil,m.sourcenick,m.dest,$1)
-                cmdline = $1
-                delegate_privmsg(mess)
-
-
-                deporter = /^(\S*)\s(.*)/  =~ cmdline
-                cmd =cmdline
-                param = nil
-                if deporter then
-                  cmd = $1
-                  param = $2
-                end
-                dest = m.dest
-                dest = m.sourcenick if m.dest == IRCBOTUSER  #send  to the right place, baby!
-
-                case cmd.downcase
-                when "help"
-                  send_me(dest,help($2))
-                when "version"
-                  send_me(dest, "QBBS Bot v.5... With many thanks to Rbot... http://ruby-rbot.org")
-                end
-              end
-            end
-          end
+          @irc_bot.join(IRCCHANNEL)
+				end
+				chan,out = PlugMan.registered_plugins[:main].delegate(m,@debuglog,@who)
+				send_me(chan,out) if !out.nil?
+				
         end
       end # loop do
     rescue Exception => e
       add_log_entry(L_ERROR,Time.now,"Bot TC E:#{$!}")
       @debuglog.push("-ERROR: Bot Thread Crash. Disconnect? #{$!}")
-      @debuglog.push(e.backtrace.map { |x| x.match(/^(.+?):(\d+)(|:in `(.+)')$/);
-        [$1,$2,$3]
-      })
+      @debuglog.push(e.backtrace)
 
       if BOT_RECONNECT_DELAY > 0 then
         @debuglog.push("-BOT: thread restart in #{BOT_RECONNECT_DELAY} seconds.")

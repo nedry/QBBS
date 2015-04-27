@@ -8,7 +8,7 @@
 #!/usr/bin/ruby
 $LOAD_PATH << "."
 
-#require "iconv"
+
 require "socket"
 
 
@@ -297,8 +297,10 @@ def nntp_parsearticle(article,area)
 
   # msgbody.pop  #remove last line, which is the end of message char
 
-  #remove any illegal characters...
-
+  #Remove that annoying crap at the beginning of usenet messages...
+msgbody.reject! {|line| line =~ (/^\<\S*@\S*\.\S*\>/)}
+	  
+	#remove any illegal characters...
   msg_string = msgbody.join(DLIM)
   msg_text = nntp_convert(msg_string)
   subject = nntp_convert(subject)
