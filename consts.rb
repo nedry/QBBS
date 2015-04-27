@@ -6,7 +6,7 @@ QWK_DEBUG = false
 NNTP = false
 FIDO =false 
 SMTP = false
-IRC_ON =  false
+IRC_ON =  true
 IRC_DEBUG = true
 SCREENSAVER = true
 FLASH_POL = false
@@ -83,7 +83,7 @@ FULLSCREENDIR = "#{ROOT_PATH}quote"
 
 #IRC/Chat Settings
 
-IRCSERVER = "irc.localhost"
+IRCSERVER = "irc.larryniven.net"
 IRCPORT = 6667
 IRCCHANNEL = "#main"
 IRCBOTUSER = "testHAL"

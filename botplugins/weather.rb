@@ -131,7 +131,7 @@ PlugMan.define :version do
   end
 	
 def do(m,options = {})
-    load_("weather")
+    load_registry("weather")
 		
 	instr = m.params.to_s
 	param =""
