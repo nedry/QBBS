@@ -38,6 +38,7 @@ class Session
     area = fetch_area(0)
     u = @c_user
     if (e_total(u.name) > 0) and (epointer > 0) then
+			epointer = e_total(@c_user.name) if epointer > e_total(@c_user.name)
       displaymessage(epointer,area.number,true)
     else
       print "\r\n%Y;You have no email.  You have to send some to get some." if e_total(u.name) == 0

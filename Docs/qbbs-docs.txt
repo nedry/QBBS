@@ -54,25 +54,6 @@ On my system I had to create a symbolic link for the library to load correctly:
 
 sudo ln -s /lib/i386-linux-gnu/libncursesw.so.5 /lib/i386-linux-gnu/libncursesw.so
 
-
-Install berkeley db...
-
-I am now running Ubuntu Saucy (13.10) but our library for berkeley db is a bit
-old.  The last version it recognizes is 4.7, so we need to install that.  To do this 
-in Ubuntu using the package manager you should:
-
-sudo gedit /etc/apt/sources.list
-
-and add the line:
-
-deb http://http.us.debian.org/debian squeeze main contrib non-free
-
-and then:
-
-sudo apt-get update
-sudo apt-get -y install libdb4.7
-sudo apt-get -y install libdb4.7-dev
-
 The following gems are required:
 o haml
 o sinatra
@@ -82,9 +63,7 @@ o pg
 o dm-postgres-adapter
 o ffi-ncurses
 o ruby-terminfo
-
-
-
+o excon
 
 As root, install each gem in turn with the command:
 gem install <gem name>
