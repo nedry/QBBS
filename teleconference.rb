@@ -11,7 +11,7 @@ class Session
     print
     if !existfileout('irchdr',0,true) then
       print "%G;Welcome to QUARKirc v1.1 You are in the %C;#{@irc_channel} %G;channel."
-      print "%G;Type %Y;? %G;for Help  %Y;/QUIT %G;to Quit\r\n"
+      print "%G;Type %Y;? %G;for Help  %Y;QUIT %G;to Quit\r\n"
     end
   end
 
@@ -127,7 +127,10 @@ class Session
           when "USERS","#"
             displaywho
           when "MSG"
-            doit = (/^\/(\S*)\s(\S*)\s(.*)/) =~ line
+					@debuglog.push("line: #{line}")
+            doit = (/(\S*)\s(\S*)\s(.*)/) =~ line
+						@debuglog.push("do it: #{doit}")
+						@debuglog.push("1 #{$1} 2: #{$2} 3: #{$3}")
             @irc_client.privmsg($2,$3) if doit
           when "QUIT"
             @irc_client.quit($2)
