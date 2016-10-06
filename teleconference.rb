@@ -11,7 +11,7 @@ class Session
     print
     if !existfileout('irchdr',0,true) then
       print "%G;Welcome to QUARKirc v1.1 You are in the %C;#{@irc_channel} %G;channel."
-      print "%G;Type %Y;? %G;for Help  %Y;QUIT %G;to Quit\r\n"
+      print "%G;Type %Y;? %G;for Help  %Y;/QUIT %G;to Quit\r\n"
     end
   end
 
@@ -39,7 +39,7 @@ class Session
     @irc_client.login(@c_user.alias, @c_user.alias, "8", "*", "Telnet User")
     loop do
       count +=1
-      return if count > 30
+      return if count > 100
 
       m = @irc_client.isdata ? @irc_client.getline : nil
       if m then
@@ -75,8 +75,10 @@ class Session
         if m.command == IRC::RPL_ENDOFMOTD || m.command == IRC::ERR_NOMOTD then
           @irc_client.join(ircchannel)
           loop do
-            m = @irc_client.getline
+            m = @irc_client.getline 
+	    if !m.nil? then 
             break if m.command == IRC::RPL_ENDOFNAMES
+	    end
           end
           break
         end
@@ -127,10 +129,7 @@ class Session
           when "USERS","#"
             displaywho
           when "MSG"
-					@debuglog.push("line: #{line}")
-            doit = (/(\S*)\s(\S*)\s(.*)/) =~ line
-						@debuglog.push("do it: #{doit}")
-						@debuglog.push("1 #{$1} 2: #{$2} 3: #{$3}")
+            doit = (/^\/(\S*)\s(\S*)\s(.*)/) =~ line
             @irc_client.privmsg($2,$3) if doit
           when "QUIT"
             @irc_client.quit($2)

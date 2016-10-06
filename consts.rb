@@ -1,10 +1,10 @@
-DEBUG = true
+DEBUG = false
 DLOG = true
 LISTENPORT = 2323
-QWK = false
+QWK = true
 QWK_DEBUG = false
-NNTP = false
-FIDO =false 
+NNTP = true
+FIDO =true
 SMTP = false
 IRC_ON =  true
 IRC_DEBUG = true
@@ -22,7 +22,7 @@ POLICYPORT = 8430
 #how long to wait between IRC reconnect attempts.  Set to 0 to not reconnect.
 BOT_RECONNECT_DELAY = 60
 
-BBS_LIST_MSG_AREA = 4
+BBS_LIST_MSG_AREA = 21
 BBS_LIST_USER = "BBSINFO"
 
 #if the schedule thread hangs, how long to wait to try again.
@@ -83,10 +83,10 @@ FULLSCREENDIR = "#{ROOT_PATH}quote"
 
 #IRC/Chat Settings
 
-IRCSERVER = "irc.larryniven.net"
+IRCSERVER = "irc.rizon.net"
 IRCPORT = 6667
-IRCCHANNEL = "#main"
-IRCBOTUSER = "testHAL"
+IRCCHANNEL = "#hecnet_chat" 
+IRCBOTUSER = "HAL9000"
 IRCTOPIC = "Knownspace and RetroBBS Chat"
 IRCBOTCMD = "!"
 

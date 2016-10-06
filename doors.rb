@@ -325,7 +325,7 @@ def adddoor
   path.strip! if path != ""
 
   if yes("Are you sure #{YESNO}", true, false,true)
-    add_door(name,path)
+    add_door(name,path,"LINUX")
   else
     print "%WR; Aborted. %W;"
   end
@@ -421,6 +421,7 @@ def displaydoors
     print "%G;Please select one of the following:"
     for i in 1..(d_total)
       door = fetch_door(i)
+      write " " if i < 10
       print "    %C;#{i} %Y;... #{door.name}"
     end
     print

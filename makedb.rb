@@ -5,6 +5,7 @@ require "dm-validations"
 require 'yaml'
 require 'consts'
 require 'db/db_area'
+require 'db/db_doors'
 require 'db/db_groups'
 require 'db/db_message'
 require 'db/db_actions'
@@ -39,10 +40,18 @@ DataMapper.auto_migrate!
 
 Group.new(:groupname => 'Local', :number => 0 ).save!
 Group.new(:groupname => 'Dove.net', :number => 1 ).save!
-#Group.new(:groupname => 'Fidonet', :number => 2 ).save!
-#Group.new(:groupname => 'Paranormal Net', :number =>  3 ).save!
+Group.new(:groupname => 'Fidonet', :number => 2 ).save!
+Group.new(:groupname => 'Usenet', :number => 3 ).save!
 
-Group.new(:groupname => 'Usenet', :number =>  1 ).save!
+
+group = fetch_group(1)
+add_qwknet(group,"Dove.Net","VERT","DOVEQWK","vert.synchro.net","QBBS","FLATMO")
+
+nntpgroup = fetch_group(3)
+add_nntpnet(nntpgroup,"eternal september","GIGANEWS","news.eternal-september.org","TardisBBS","ikbogbifr")
+
+
+
 
 Subsys.new(:subsystem => 1, :name => 'SCHEDULE').save!
 Subsys.new(:subsystem => 2, :name => 'FIDO').save!
@@ -175,61 +184,56 @@ YAML.load(IO.read('config/initusers.yml')).each {|u|
 add_area("Email","I","I",nil,nil,nil,1)
 add_area("General Discussions","W","W",nil,nil,nil,1)
 add_area("The APC Net","W","W",nil,nil,nil,1)
+add_area("In Space No One Can Hear You Scream","W","W",nil,nil,nil,1)
 
 #Synchronet
 
 add_area("General","W","W",2001,nil,nil,2)
-#add_area("Adverstisements","W","W",2002,nil,nil,2)
-#add_area("Entertainment","W","W",2003,nil,nil,2)
-#add_area("Debate","W","W",2004,nil,nil,2)
-#add_area("Hardware/Software Help","W","W",2005,nil,nil,2)
-#add_area("Programming","W","W",2006,nil,nil,2)
-#add_area("Unix Discussion","W","W",2009,nil,nil,2)
-#add_area("Ham Radio","W","W",2015,nil,nil,2)
-#add_area("Internet","W","W",2016,nil,nil,2)
-#add_area("Pro-Audio","W","W",2017,nil,nil,2)
-#add_area("Firearms","W","W",2008,nil,nil,2)
-#add_area("Sports Discussion","W","W",2019,nil,nil,2)
-#add_area("Religious Nuts","W","W",2020,nil,nil,2)
-#add_area("Synchronet Announcements","W","W",2030,nil,nil,2)
-#add_area("Hobbies","W","W",2021,nil,2)
-#add_area("Synchronet Discussion","W","W",2007,nil,nil,2)
-#add_area("Sysops Only","I","I",2008,nil,nil,2)
+add_area("Adverstisements","W","W",2002,nil,nil,2)
+add_area("Entertainment","W","W",2003,nil,nil,2)
+add_area("Debate","W","W",2004,nil,nil,2)
+add_area("Hardware/Software Help","W","W",2005,nil,nil,2)
+add_area("Programming","W","W",2006,nil,nil,2)
+add_area("Unix Discussion","W","W",2009,nil,nil,2)
+add_area("Ham Radio","W","W",2015,nil,nil,2)
+add_area("Internet","W","W",2016,nil,nil,2)
+add_area("Pro-Audio","W","W",2017,nil,nil,2)
+add_area("Firearms","W","W",2008,nil,nil,2)
+add_area("Sports Discussion","W","W",2019,nil,nil,2)
+add_area("Religious Nuts","W","W",2020,nil,nil,2)
+add_area("Synchronet Announcements","W","W",2030,nil,nil,2)
+add_area("Hobbies","W","W",2021,nil,nil,2)
+add_area("Synchronet Discussion","W","W",2007,nil,nil,2)
+add_area("Sysops Only","I","I",2008,nil,nil,2)
 add_area("dove data","W","W",2013,nil,nil,2)
-#add_area("Synchronet Prog. (Javascript)","W","W",2012,nil,nil,2)
-#add_area("Synchronet Prog. (c/c++/cvs)","W","W",2010,nil,nil,2)
-
-#add_area("DoveQWKMail","I","I",0,nil,nil,2)
+add_area("Synchronet Prog. (Javascript)","W","W",2012,nil,nil,2)
+add_area("Synchronet Prog. (c/c++/cvs)","W","W",2010,nil,nil,2)
+add_area("DoveQWKMail","I","I",0,nil,nil,2)
 
 #FidoNet
-#add_area("Sysop712","I","I",nil,"SYSOP712",nil,3)
-#add_area("Netmail","I","I",nil,"NETMAIL",nil,3)
-#add_area("BadNetMail","I","I",nil,"BADNETMAIL",nil,3)
-#add_area("Weather","W","W",nil,"WEATHER",nil,3)
+add_area("Sysop712","I","I",nil,"SYSOP712",nil,3)
+add_area("Netmail","I","I",nil,"NETMAIL",nil,3)
+add_area("BadNetMail","I","I",nil,"BADNETMAIL",nil,3)
+add_area("Weather","W","W",nil,"WEATHER",nil,3)
 
-#add_area("ParaQWKMail","I","I",0,nil,nil,4)
-
-#add_area("UFO Reports","W","W",5001,nil,nil,4)
-#add_area("UFO Discussion","W","W",5002,nil,nil,4)
-#add_area("Origins and Ancients","W","W",5003,nil,nil,4)
-#add_area("Mars","W","W",5004,nil,nil,4)
-#add_area("NASA - The Moon and Beyond","W","W",5005,nil,nil,4)
-#add_area("Out of Body","W","W",5006,nil,nil,4)
-#add_area("Past Lives and Deja Vu","W","W",5007,nil,nil,4)
-#add_area("Hauntings, Ghosts and Spirits","W","W",5008,nil,nil,4)
-#add_area("Psychic Healing","W","W",5009,nil,nil,4)
-#add_area("Angles and Miracles","W","W",5010,nil,nil,4)
-#add_area("Paranormal Net Sysops","I","I",5011,nil,nil,4)
-#add_area("Abductions","W","W",5012,nil,nil,4)
-#add_area("Crop Circles","W","W",5013,nil,nil,4)
-#add_area("Psychic","W","W",5014,nil,nil,4)
-#add_area("Pagan/Wiccan","W","W",5015,nil,nil,4)
-#add_area("Super Sciences and Events","W","W",5016,nil,nil,4)
-#add_area("X-Files TV Show","W","W",5017,nil,nil,4)
-#add_area("Conspiracies","W","W",5018,nil,nil,4)
-#add_area("The Quickening","W","W",5019,nil,nil,4)
 
 add_action("bounce", "%s bounces into you!", "bounces into $s","...Bounce, bounce, bounce", true)
+
+add_door("Dungeon","telnet -E 127.0.0.1 4000","RSTS")
+add_door("Global Destruction","telnet -E 127.0.0.1 3000","QBBS")
+add_door("Legend of the Red Dragon","python bbslink.py lord %uid","LINUX")
+add_door("Legend of the Red Dragon: New World","python bbslink.py lord2 %uid","LINUX")
+add_door("Overkill II","python bbslink.py ooii %uid","LINUX")
+add_door("Tradewars 2002","python bbslink.py tw %uid","LINUX")
+add_door("Pimp Wars","python bbslink.py pimp %uid","LINUX")
+add_door("Lunatix","python bbslink.py luna %uid","LINUX")
+add_door("BBS Crash","python bbslink.py bbsc %uid","LINUX")
+add_door("Global War","python bbslink.py gwar %uid","LINUX")
+add_door("Global Backgammon","python bbslink.py ggam %uid","LINUX")
+add_door("Door Mud","python bbslink.py dmud %uid","LINUX")
+add_door("Mega Slots","python bbslink.py mega %uid","LINUX")
+
+
 
 # initial system
 s = System.new(

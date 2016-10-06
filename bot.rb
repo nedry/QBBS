@@ -42,13 +42,13 @@ class IrcBot < IRC::Client
   def join_channel
     join(IRCCHANNEL)
     oper(IRCOPERID,IRCOPERPSWD)
-    mode("#{IRCCHANNEL} +o #{IRCBOTUSER}")
-    mode("#{IRCBOTUSER} +F")
+    mode("#{IRCCHANNEL} +o #{@ircbotuser}")
+    mode("#{@ircbotuser} +F")
   end
 
-  def login
-    super(IRCBOTUSER, IRCBOTUSER, "8", "*", "I am the BBS bot.")
-  end
+#  def login
+#    super(IRCBOTUSER, IRCBOTUSER, "8", "*", "I am the BBS bot.")
+#  end
 
 
 
@@ -217,6 +217,7 @@ end
   #
   def run
     begin
+      @ircbotuser = IRCBOTUSER
       @debuglog.push("-BOT: Starting up...")
       add_log_entry(L_MESSAGE,Time.now,"IRC Bot thread starting.")
 			@debuglog.push("-BOT: Loading Plugins")
@@ -228,7 +229,7 @@ end
       IRC::Event::Ping.new(@irc_bot)
 
       # Log onto the server.
-      @irc_bot.login(IRCBOTUSER, IRCBOTUSER, "8", "*", "I am the BBS bot.")
+      @irc_bot.login(@ircbotuser, @ircbotuser, "8", "*", "I am the BBS bot.")
 
       names = false
       tick = 0
@@ -251,8 +252,14 @@ end
         end
 
         if m then
-         # @debuglog.push( "BOT: #{m.message}")
+          @debuglog.push( "BOT: #{m.message}") if IRC_DEBUG
           if m.is_a? IRC::Message::Numeric then
+				
+	    if m.command ==  IRC::ERR_NICKNAMEINUSE then
+		@ircbotuser = "#{IRCBOTUSER}_#{(0...3).map { (65 + rand(26)).chr }.join}"
+		@irc_bot.login(@ircbotuser, @ircbotuser, "8", "*", "I am the BBS bot.")
+                sleep(1)
+	    end
             if m.command == IRC::RPL_NAMREPLY then
 
               /^:(\S*)\s(\d*)\s(\S*)(.*):(.*)/ =~ m.message
